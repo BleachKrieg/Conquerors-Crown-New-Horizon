@@ -17,6 +17,8 @@ class j1Audio;
 class j1Scene;
 class j1Map;
 class j1Fonts;
+class j1EntityManager;
+class j1Entity;
 
 
 
@@ -95,6 +97,7 @@ public:
 	j1Scene*			scene;
 	j1Map*				map;
 	j1Fonts*			font = NULL;
+	j1EntityManager*	entity;
 	
 
 

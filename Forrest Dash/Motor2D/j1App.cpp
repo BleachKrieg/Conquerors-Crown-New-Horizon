@@ -13,6 +13,8 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1Fonts.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
 
 
 
@@ -31,6 +33,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	entity = new j1EntityManager();
 	
 	font = new j1Fonts();
 	
@@ -44,6 +47,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(entity);
 	AddModule(font);
 	AddModule(render);
 

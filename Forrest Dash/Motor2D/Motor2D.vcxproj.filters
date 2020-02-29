@@ -39,6 +39,15 @@
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Modules\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_1.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -103,13 +112,19 @@
     <ClInclude Include="j1Url.h">
       <Filter>Modules\Gui</Filter>
     </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_1.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
       <UniqueIdentifier>{cec924b1-93fd-4a3d-b9a4-064c9412ba77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\Entities">
-      <UniqueIdentifier>{39fc0b56-37af-4d6a-8f1b-ee97b9e360d7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{368b5bf7-9517-4db0-95b0-53a1049bb956}</UniqueIdentifier>
@@ -122,6 +137,12 @@
     </Filter>
     <Filter Include="Modules\Gui">
       <UniqueIdentifier>{d4fdf8b2-029b-4a9c-b43e-f2c4d2c7999f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\EntitySystem">
+      <UniqueIdentifier>{39fc0b56-37af-4d6a-8f1b-ee97b9e360d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\EntitySystem\Entities">
+      <UniqueIdentifier>{4d15984d-efbd-40d7-8a32-60084243cd7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
