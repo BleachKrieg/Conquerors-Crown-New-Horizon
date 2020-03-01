@@ -7,6 +7,7 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"
+#include "DynamicEnt.h"
 
 struct SDL_Texture;
 
@@ -35,7 +36,7 @@ public:
 	bool CleanUp();
 
 	// Create a new entity
-	j1Entity* CreateEntity(j1Entity::entityType type, int posx = 0, int posy = 0);
+	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
 	// Delete an entity
 	bool DeleteEntity(j1Entity* entity);

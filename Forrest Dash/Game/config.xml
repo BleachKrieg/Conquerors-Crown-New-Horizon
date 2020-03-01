@@ -72,6 +72,5 @@
 
    <scene>
      <map name="maplevel1.tmx"/>
-     <map name="maplevel2.tmx"/>
    </scene>
 </config>

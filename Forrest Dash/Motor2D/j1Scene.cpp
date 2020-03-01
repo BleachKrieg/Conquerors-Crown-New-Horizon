@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1EntityManager.h"
 #include "Brofiler/Brofiler.h"
 
 
@@ -59,6 +60,7 @@ bool j1Scene::Start()
 	}*/
 	
 	Hello = App->tex->Load("textures/Hello-World.png");
+	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	
 	return true;
 }
@@ -87,6 +89,11 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y -= 500*dt;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		App->render->camera.x -= 500*dt;
+	int x, y;
+	App->input->GetMousePosition(x, y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
 
 	
 	//App->map->Draw();

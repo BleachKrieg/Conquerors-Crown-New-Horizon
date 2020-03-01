@@ -5,13 +5,15 @@
 #include "p2Log.h"
 #include "j1App.h"
 
+struct SDL_Texture;
+
 class j1Entity : public j1Module
 {
 public:
 	enum entityType
 	{
 		NO_TYPE,
-		TEST_1
+		DYNAMIC
 	};
 
 	entityType type;
@@ -29,15 +31,21 @@ public:
 	bool CleanUp();
 
 public:
-	// Size
-	int width;
-	int high;
 
 	// Position
 	iPoint position;
 
-	// Speed
-	float speed;
+	int hp;
+
+	bool isSelected;
+
+
+	SDL_Texture* texture;
+	//SDL_Rect Rect;
+
+	int cost;
+	int MaxCreationTime;
+	int CurrentCreationTime;
 
 	// Blit
 	bool blit = false;

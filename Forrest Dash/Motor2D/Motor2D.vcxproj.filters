@@ -48,6 +48,9 @@
     <ClCompile Include="Test_1.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicEnt.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -120,6 +123,9 @@
     </ClInclude>
     <ClInclude Include="Test_1.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicEnt.h">
+      <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

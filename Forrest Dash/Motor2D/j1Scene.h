@@ -8,6 +8,8 @@
 
 struct SDL_Texture;
 class j1Entity;
+class DynamicEnt;
+
 class GuiItem;
 
 class j1Scene : public j1Module

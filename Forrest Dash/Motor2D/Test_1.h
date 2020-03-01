@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"
+#include "DynamicEnt.h"
 
 enum states_test_1
 {
@@ -14,7 +15,7 @@ enum states_test_1
 	ST_TEST_1_DEAD
 };
 
-class Test_1 : public j1Entity
+class Test_1 : public DynamicEnt
 {
 public:
 	// Constructor
@@ -40,11 +41,8 @@ public:
 	states_test_1	actualState;
 	Animation* current_animation = nullptr;
 	Animation idle;
-	Animation right;
-	Animation left;
-	Animation up;
-	Animation down;
-	Animation dead;
+	int attackrange;
+
 };
 
 #endif // __TEST_1_H__

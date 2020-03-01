@@ -64,16 +64,28 @@ bool j1EntityManager::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateEntity", Profiler::Color::Azure)
 
+
+		p2List_item<j1Entity*>* entities_list = entities.start;
+	while (entities_list)
+	{
+		if (entities_list->data->to_delete == true)
+			DeleteEntity(entities_list->data);
+
+
+		entities_list->data->Update(dt);
+		entities_list = entities_list->next;
+	}
+
 		return true;
 }
 
-j1Entity* j1EntityManager::CreateEntity(j1Entity::entityType type, int posx, int posy)
+j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int posx, int posy)
 {
 	j1Entity* ret = nullptr;
 
 	switch (type)
 	{
-	case j1Entity::entityType::TEST_1: ret = new Test_1(posx, posy); break;
+	case DynamicEnt::DynamicEntityType::TEST_1: ret = new Test_1(posx, posy); break;
 	}
 
 	if (ret != nullptr)
