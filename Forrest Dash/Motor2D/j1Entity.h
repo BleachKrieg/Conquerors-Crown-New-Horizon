@@ -13,6 +13,7 @@ public:
 	enum entityType
 	{
 		NO_TYPE,
+		STATIC,
 		DYNAMIC
 	};
 
@@ -36,7 +37,6 @@ public:
 	iPoint position;
 
 	int hp;
-
 	bool isSelected;
 
 
@@ -51,7 +51,7 @@ public:
 	bool blit = false;
 
 	// Colliders
-	Collider* collider = nullptr;
+	Collider* collider;
 	bool to_delete;
 
 };

@@ -8,6 +8,8 @@
 #include "p2DynArray.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
+#include "StaticEnt.h"
+
 
 struct SDL_Texture;
 
@@ -37,6 +39,9 @@ public:
 
 	// Create a new entity
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
+
+	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0);
+
 
 	// Delete an entity
 	bool DeleteEntity(j1Entity* entity);

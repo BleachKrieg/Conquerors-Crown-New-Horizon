@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __DynamicEnt_H__
-#define __DynamicEnt_H__
+#ifndef __StaticEnt_H__
+#define __StaticEnt_H__
 
 #include "p2Point.h"
 #include "p2Log.h"
@@ -9,30 +9,21 @@
 
 
 
-class DynamicEnt : public j1Entity
+class StaticEnt : public j1Entity
 {
 public:
-	enum entityDirection
-	{
-		UP,
-		DOWN,
-		FRONT,
-		DIAGONALUP,
-		DIAGONALDOWN,
-	};
-
-	enum DynamicEntityType
+	
+	enum StaticEntType
 	{
 		NO_TYPE,
-		TEST_1,
-		TEST_2
+		TEST_3,
 	};
 
 	// Constructor
-	DynamicEnt(DynamicEntityType type);
+	StaticEnt(StaticEntType type);
 
 	// Destructor
-	~DynamicEnt();
+	~StaticEnt();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
@@ -42,9 +33,6 @@ public:
 
 public:
 
-
-	iPoint speed;
-	entityDirection direction;
 //	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	j1Entity* target;
 	int vision;

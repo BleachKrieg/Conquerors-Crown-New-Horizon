@@ -51,6 +51,15 @@
     <ClCompile Include="DynamicEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
+    <ClCompile Include="Test_2.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticEnt.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_3.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -126,6 +135,15 @@
     </ClInclude>
     <ClInclude Include="DynamicEnt.h">
       <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_2.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticEnt.h">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_3.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

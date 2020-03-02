@@ -1,6 +1,9 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "Test_1.h"
+#include "Test_2.h"
+#include "Test_3.h"
+
 #include "j1App.h"
 #include<stdio.h>
 #include "p2Log.h"
@@ -69,10 +72,13 @@ bool j1EntityManager::PostUpdate(float dt)
 	while (entities_list)
 	{
 		if (entities_list->data->to_delete == true)
+		{
 			DeleteEntity(entities_list->data);
-
-
-		entities_list->data->Update(dt);
+		}
+		else {
+			entities_list->data->PostUpdate(dt);
+		}
+			  
 		entities_list = entities_list->next;
 	}
 
@@ -86,6 +92,26 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	switch (type)
 	{
 	case DynamicEnt::DynamicEntityType::TEST_1: ret = new Test_1(posx, posy); break;
+	case DynamicEnt::DynamicEntityType::TEST_2: ret = new Test_2(posx, posy); break;
+
+	}
+
+	if (ret != nullptr)
+	{
+		entities.add(ret);
+		entities.end->data->Start();
+	}
+	return ret;
+}
+
+j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy)
+{
+	j1Entity* ret = nullptr;
+
+	switch (type)
+	{
+	case StaticEnt::StaticEntType::TEST_3: ret = new Test_3(posx, posy); break;
+
 	}
 
 	if (ret != nullptr)

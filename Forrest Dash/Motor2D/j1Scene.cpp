@@ -92,8 +92,14 @@ bool j1Scene::Update(float dt)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_2, x, y-20);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x, y);
 
 	
 	//App->map->Draw();

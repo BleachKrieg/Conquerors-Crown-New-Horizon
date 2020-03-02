@@ -5,16 +5,15 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_1.h"
-#include "DynamicEnt.h"
+#include "Test_3.h"
+#include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 
-Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
+Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 {
 	name.create("test_1");
 
-	actualState = ST_TEST_1_IDLE;
-	speed = { 2, 0 };
+	actualState = ST_TEST_3_IDLE;
 	cost = 1;
 	position.x = posx;
 	position.y = posy;
@@ -22,43 +21,42 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	// Load all animations
 }
 
-Test_1::~Test_1()
+Test_3::~Test_3()
 {}
 
-bool Test_1::Start()
+bool Test_3::Start()
 {
 
 	return true;
 }
 
-bool Test_1::Update(float dt)
+bool Test_3::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
 	CheckAnimation(dt);
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
-	App->render->DrawQuad({ position.x, position.y, 10, 10 }, 0, 200, 0);
-	position.x += speed.x;
-	position.y += speed.y;
+	App->render->DrawQuad({ position.x, position.y, 20, 20 }, 0, 0, 200);
+
 	if (position.x > 800)
 		to_delete = true;
 	return true;
 }
 
-bool Test_1::PostUpdate(float dt)
+bool Test_3::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateTest_1", Profiler::Color::BurlyWood)
 
 	return true;
 }
 
-void Test_1::CheckAnimation(float dt)
+void Test_3::CheckAnimation(float dt)
 {
 
 }
 
-bool Test_1::CleanUp()
+bool Test_3::CleanUp()
 {
 
 	return true;
