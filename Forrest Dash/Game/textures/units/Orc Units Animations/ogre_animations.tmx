@@ -4,7 +4,7 @@
   <image source="../maps/summer floor_64.png" width="1252" height="1318"/>
  </tileset>
  <tileset firstgid="1" name="ogre_orc" tilewidth="64" tileheight="64" tilecount="60" columns="10">
-  <image source="../../sprites/ogre_orc.png" width="640" height="384"/>
+  <image source="../sprites/ogre_orc.png" width="640" height="384"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="175"/>
