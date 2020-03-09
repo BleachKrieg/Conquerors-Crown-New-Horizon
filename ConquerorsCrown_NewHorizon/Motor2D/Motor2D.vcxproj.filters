@@ -60,6 +60,9 @@
     <ClCompile Include="Test_3.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Modules\Gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -144,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="Test_3.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Modules\Gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

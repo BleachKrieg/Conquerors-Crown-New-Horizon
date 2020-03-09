@@ -11,7 +11,7 @@
 
 class j1App;
 struct Collider;
-class GuiItem;
+class UI;
 
 
 class j1Module
@@ -73,7 +73,7 @@ public:
 	}
 
 	virtual void OnCollision(Collider*, Collider*) {}
-	virtual void GuiInput(GuiItem*) {}
+	virtual void GuiInput(UI*) {}
 
 public:
 

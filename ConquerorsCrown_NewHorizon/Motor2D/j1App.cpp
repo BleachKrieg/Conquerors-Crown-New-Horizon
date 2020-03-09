@@ -4,6 +4,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 
+#include "j1App.h"
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -11,7 +12,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
-#include "j1App.h"
+#include "j1Gui.h"
 #include "j1Fonts.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
@@ -33,6 +34,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	gui = new  j1Gui();
 	entity = new j1EntityManager();
 	
 	font = new j1Fonts();
@@ -48,6 +50,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(entity);
+	AddModule(gui);
 	AddModule(font);
 	AddModule(render);
 
