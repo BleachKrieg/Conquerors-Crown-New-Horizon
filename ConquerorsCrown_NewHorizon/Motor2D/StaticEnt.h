@@ -6,8 +6,8 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Entity.h"
-
-
+#include "j1Input.h"
+#include "EntityRequest.h"
 
 class StaticEnt : public j1Entity
 {
