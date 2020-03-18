@@ -14,7 +14,7 @@ class DynamicEnt : public j1Entity
 {
 public:
 
-	enum DynamicEntityType
+	enum class DynamicEntityType
 	{
 		NO_TYPE,
 		TEST_1,

@@ -66,6 +66,9 @@
     <ClCompile Include="j1Gui.cpp">
       <Filter>Modules\Gui</Filter>
     </ClCompile>
+    <ClCompile Include="EntityRequest.cpp">
+      <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="j1Gui.h">
       <Filter>Modules\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityRequest.h">
+      <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

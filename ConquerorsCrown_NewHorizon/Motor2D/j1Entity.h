@@ -13,7 +13,7 @@ struct SDL_Texture;
 class j1Entity : public j1Module
 {
 public:
-	enum entityType
+	enum class entityType
 	{
 		NO_TYPE,
 		STATIC,

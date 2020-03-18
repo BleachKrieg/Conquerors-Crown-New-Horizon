@@ -13,7 +13,7 @@ class StaticEnt : public j1Entity
 {
 public:
 	
-	enum StaticEntType
+	enum class StaticEntType
 	{
 		NO_TYPE,
 		TEST_3,

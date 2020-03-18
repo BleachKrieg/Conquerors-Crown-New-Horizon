@@ -18,6 +18,7 @@
 #include "J1GroupMov.h"
 #include "j1Gui.h"
 #include "j1Fonts.h"
+#include "EntityRequest.h"
 
 
 
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	entity = new j1EntityManager();
+	requests = new EntityRequest();
 	gui = new  j1Gui();
 	font = new j1Fonts();
 	pathfinding = new j1PathFinding();
@@ -53,8 +55,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(pathfinding);
-	AddModule(movement);
 	AddModule(entity);
+	AddModule(movement);
+	AddModule(requests);
 	AddModule(render);
 	AddModule(gui);
 	AddModule(font);
