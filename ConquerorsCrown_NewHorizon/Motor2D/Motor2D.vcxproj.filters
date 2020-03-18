@@ -149,10 +149,10 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Url.h" />
-    <ClInclude Include="j1Gui.h">
+    <ClInclude Include="j1Fonts.h">
       <Filter>Modules\Gui</Filter>
     </ClInclude>
-    <ClInclude Include="j1Fonts.h">
+    <ClInclude Include="j1Gui.h">
       <Filter>Modules\Gui</Filter>
     </ClInclude>
   </ItemGroup>

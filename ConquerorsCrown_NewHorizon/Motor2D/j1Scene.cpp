@@ -11,6 +11,7 @@
 #include "j1EntityManager.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Pathfinding.h"
+#include "j1Gui.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -68,10 +69,18 @@ bool j1Scene::Start()
 	}
 	
 	Hello = App->tex->Load("textures/Hello-World.png");
-	debug_tex = App->tex->Load("textures//sprites/bullside.png");
+	debug_tex = App->tex->Load("textures/sprites/bullside.png");
 
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	
+	buttonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 444, 169, 244, 65 }, nullptr, this, NULL);
+	buttonNewGame->setRects({ 444, 413, 244, 66 }, { 444, 661, 244, 65 });
+
+	SDL_Rect rect = { 0, 0, 427, 218 };
+
+	App->gui->CreateGuiElement(Types::text, 50, 14, rect, nullptr, this, "CONTINUE");
+	App->gui->CreateGuiElement(Types::slider, 100, 100, { 28, 257, 12, 189 }, nullptr, this);
+	App->gui->CreateGuiElement(Types::inputText, 400, 0, { 444, 661, 244, 65 }, nullptr, this);
+
 	return true;
 }
 

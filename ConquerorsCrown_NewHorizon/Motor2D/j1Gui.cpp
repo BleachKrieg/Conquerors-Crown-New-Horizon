@@ -5,10 +5,12 @@
 #include "j1Textures.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
-#include "j1Window.h"
 #include "j1Gui.h"
-#include "j1Audio.h"
-#include "j1Scene.h"
+#include "j1Window.h"
+#include "Brofiler/Brofiler.h"
+
+
+
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -23,49 +25,144 @@ j1Gui::~j1Gui()
 bool j1Gui::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading GUI atlas");
+
 	bool ret = true;
 
-	atlas_file_name = conf.child("atlas").attribute("source").as_string("");
-
+	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	
 	return ret;
 }
 
 // Called before the first frame
 bool j1Gui::Start()
 {
-	atlas = App->tex->Load(atlas_file_name.GetString());
-	click_sfx = App->audio->LoadFx("audio/fx/Click.wav");
-	slider = 89;
 
+	atlas = App->tex->Load(atlas_file_name.GetString());
+	FocusIt = 0;
+	debug = false;
 	return true;
 }
 
 // Update all guis
-bool j1Gui::PreUpdate()
+bool j1Gui::PreUpdate(float dt)
 {
-	bool mouse = false;
-	int count = 0;
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
-		for (int i = UIs.count() - 1; i >= 0 && mouse == false; i--) {
-			mouse = UIs.At(i)->data->CheckMouse();
-			if (mouse == true)count = i;
+	BROFILER_CATEGORY("Gui PreUpdate", Profiler::Color::LightGoldenRodYellow);
+
+	buttonPressed = false;
+	bool ret = true;
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) 
+	{
+		buttonPressed = true;
+	}
+	/*if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) 
+	{
+		App->gui->IterateFocus();
+	}*/
+
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	{
+		App->input->text.Cut(App->input->text.Length() - 1, App->input->text.Length()-1);
+	}
+		p2List_item<GuiItem*>* gui_list = guiElements.end;
+		while (gui_list && ret) {
+			int x, y;
+			if (gui_list->data->follow)
+			{
+				x = -App->render->camera.x + gui_list->data->initposx;
+				y = -App->render->camera.y + gui_list->data->initposy;
+				gui_list->data->SetLocalPos(x, y);
+			}
+
+			
+			App->input->GetMousePosition(x, y);
+			if (gui_list->data->isDynamic)
+			{
+				if (gui_list->data->checkBoundaries(-App->render->camera.x + x, -App->render->camera.y + y)) {
+					gui_list->data->SetFocus();
+					
+					ret = false;
+				}
+			}
+		
+		
+			gui_list = gui_list->prev;
 		}
-	}
-	if (mouse == true) {
-		UIs.At(count)->data->Move();
-	}
-	for (int i = 0; i < UIs.count(); i++) {
-		UIs.At(i)->data->PreUpdate();
-	}
+	
 	return true;
 }
 
 // Called after all Updates
-bool j1Gui::PostUpdate()
+bool j1Gui::Update(float dt)
 {
-	for (int i = 0; i < UIs.count(); i++) {
-		UIs.At(i)->data->PostUpdate();
+	BROFILER_CATEGORY("Gui Update", Profiler::Color::LightGray);
+
+	p2List_item<GuiItem*>* gui_list = guiElements.start;
+	while (gui_list) {
+		int x, y;
+		if (gui_list->data->focus)
+			gui_list->data->Input();
+
+		gui_list->data->GetScreenPos(x, y);
+		//	LOG("%d", gui_list->data->textureRect.h);
+		if (!gui_list->data->delayBlit) 
+		{
+
+		
+		if (gui_list->data->type == Types::text) 
+		{
+		App->render->Blit(gui_list->data->texture, x, y, &gui_list->data->textureRect);
+		}
+		else {
+			App->render->Blit(GetAtlas(), x, y, &gui_list->data->textureRect);
+			if (debug) 
+			{
+				SDL_Rect* rect = gui_list->data->GetLocalRect();
+				rect->x = x;
+				rect->y = y;
+				App->render->DrawQuad(*rect, 0, 0, 255, 100);
+			}
+		}
+		}
+		gui_list = gui_list->next;
 	}
+	DeleteGuiElement();
+
+	return true;
+}
+
+bool j1Gui::PostUpdate(float dt)
+{
+	BROFILER_CATEGORY("Gui PostUpdate", Profiler::Color::GreenYellow);
+
+	p2List_item<GuiItem*>* gui_list = guiElements.start;
+	while (gui_list) {
+		int x, y;
+		if (gui_list->data->focus)
+			gui_list->data->Input();
+
+		gui_list->data->GetScreenPos(x, y);
+		//	LOG("%d", gui_list->data->textureRect.h);
+		if (gui_list->data->delayBlit)
+		{
+			if (gui_list->data->type == Types::text)
+			{
+				App->render->Blit(gui_list->data->texture, x, y, &gui_list->data->textureRect);
+			}
+			else {
+				App->render->Blit(GetAtlas(), x, y, &gui_list->data->textureRect);
+				if (debug)
+				{
+					SDL_Rect* rect = gui_list->data->GetLocalRect();
+					rect->x = x;
+					rect->y = y;
+					App->render->DrawQuad(*rect, 0, 0, 255, 100);
+				}
+			}
+		}
+		gui_list = gui_list->next;
+	}
+
+
 	return true;
 }
 
@@ -74,485 +171,438 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 
-	for (int i = UIs.count() - 1; i >= 0; i--)
+	p2List_item<GuiItem*>* gui_list = guiElements.end;
+
+	while (gui_list != NULL)
 	{
-		UIs.At(i)->data->CleanUp();
-		UIs.del(UIs.At(i));
+		RELEASE(gui_list->data);
+		gui_list = gui_list->prev;
 	}
-	UIs.clear();
-	if (atlas)
-	{
-		App->tex->UnLoad(atlas);
-	}
+	guiElements.clear();
 
 	return true;
 }
 
+void j1Gui::DeleteGuiElement() {
+
+	p2List_item<GuiItem*>* gui_list = guiElements.end;
+	while (gui_list) {
+		if (gui_list->data->to_delete == true) 
+		{
+			guiElements.del(gui_list);
+		}
+		else if (gui_list->data->parent != nullptr)
+		{
+			if(gui_list->data->parent->to_delete == true)
+			guiElements.del(gui_list);
+		}
+		gui_list = gui_list->prev;
+	}
+}
+
 // const getter for atlas
-const SDL_Texture* j1Gui::GetAtlas() const
+SDL_Texture* j1Gui::GetAtlas() const
 {
 	return atlas;
 }
 
-// class Gui ---------------------------------------------------
-
-UI* j1Gui::CreateUIElement(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, p2SString str, SDL_Rect sprite2, SDL_Rect sprite3, bool drageable, SDL_Rect drag_area, j1Module* s_listener)
-{
-	UI* ui_element = nullptr;
-	switch (type)
+void j1Gui::IterateFocus() {
+	if (FocusIt == 0)
 	{
-	case Type::BUTTON:
-		ui_element = new ButtonUI(Type::BUTTON, p, r, sprite, sprite2, sprite3, true, true, drag_area);
-		break;
-	case Type::IMAGE:
-		ui_element = new ImageUI(Type::IMAGE, p, r, sprite, drageable, drageable, drag_area);
-		break;
-	case Type::WINDOW:
-		ui_element = new WindowUI(Type::WINDOW, p, r, sprite, drageable, drageable, drag_area);
-		break;
-	case Type::TEXT:
-		ui_element = new TextUI(Type::TEXT, p, r, str, drageable, drageable, drag_area);
-		break;
-	case Type::SLIDER:
-		ui_element = new SliderUI(Type::SLIDER, p, r, sprite, sprite2, drageable, drageable, drag_area);
-		break;
-	}
-
-	ui_element->name = str;
-
-	if (s_listener) ui_element->listener = s_listener;
-	else ui_element->listener = nullptr;
-
-	return UIs.add(ui_element)->data;
-}
-
-bool j1Gui::DeleteUIElement(UI* ui) {
-	int n = UIs.find(ui);
-	if (n == -1) {
-		return false;
+		guiElements.At(guiElements.count()-1)->data->focus = false;
 	}
 	else
 	{
-		UIs.At(n)->data->CleanUp();
-		UIs.del(UIs.At(n));
-		return true;
+		guiElements.At(FocusIt - 1)->data->focus = false;
 	}
+	
+	if (FocusIt == guiElements.count())
+		FocusIt = 0;
+
+	guiElements.At(FocusIt)->data->focus = true;
+	FocusIt++;
+	
 }
 
-void j1Gui::ChangeDebug() {
-	for (int i = 0; i < UIs.count(); i++) {
-		UIs.At(i)->data->debug = !UIs.At(i)->data->debug;
-	}
+
+
+GuiItem::GuiItem() {
+
 }
 
-void j1Gui::ChangeFocus() {
-	bool exit = false;
-	bool focus = false;
-	int count = 0;
-	for (int i = 0; i < UIs.count() && exit == false; i++) {
-		bool focusable = UIs.At(i)->data->CheckFocusable();
-		if (focusable == true) {
-			count++;
-			if (focus == true) {
-				UIs.At(i)->data->focus = true;
-				exit = true;
-			}
-			else {
-				focus = UIs.At(i)->data->focus;
-				UIs.At(i)->data->focus = false;
-			}
-		}
-	}
-	if (count > 0 && exit == false) {
-		for (int i = 0; i < UIs.count() && exit == false; i++) {
-			bool focusable = UIs.At(i)->data->CheckFocusable();
-			if (focusable == true) {
-				UIs.At(i)->data->focus = true;
-				exit = true;
-			}
-		}
-	}
+GuiItem::~GuiItem() {
+
 }
 
-void j1Gui::DeleteFocus() {
-	for (int i = 0; i < UIs.count(); i++) {
-		UIs.At(i)->data->focus = false;
+
+GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiItem* parentnode, j1Module* callback, char* text) {
+
+	GuiItem* ret;
+	switch (type) {
+	case Types::image: ret = new GuiImage(x, y, rect, callback); ret->parent = parentnode; break;
+	case Types::text: ret = new GuiText(x, y, rect, text, callback); ret->parent = parentnode; break;
+	case Types::button: ret = new GuiButton(x, y, rect, callback); ret->parent = parentnode; break;
+	case Types::inputText: ret = new InputText(x, y, rect, callback); ret->parent = parentnode; break;
+	case Types::slider: ret = new GuiSlider(x, y, rect, callback); ret->parent = parentnode; break;
 	}
+
+	
+	guiElements.add(ret);
+
+	return ret;
 }
 
-void j1Gui::ClearUI()
+void j1Gui::sendInput(GuiItem* Item)
 {
-	UIs.clear();
+	Item->CallBack->GuiInput(Item);
 }
 
-UI::UI(Type s_type, SDL_Rect r, UI* p, bool d, bool f, SDL_Rect d_area)
+//Ui Classes
+bool GuiItem::checkBoundaries(int x, int y) 
 {
-	name.create("UI");
-	type = s_type;
-	drageable = d;
-	focusable = f;
-	screen_rect = { r.x,r.y,r.w,r.h };
-	parent = p;
-	if (parent != nullptr) {
-		local_rect = { screen_rect.x - parent->screen_rect.x, screen_rect.y - parent->screen_rect.y, screen_rect.w, screen_rect.h };
-	}
-	else {
-		local_rect = screen_rect;
-	}
-	mask_rect = screen_rect;
-	debug = false;
-	focus = false;
-	drag_area = d_area;
-}
+	if (type == Types::button)
+		textureRect = idleRect; //idle Button
+	int posx, posy;
+	GetScreenPos(posx, posy);
 
-bool UI::PreUpdate() {
-	UI* ui = this;
-
-	screen_rect.x = local_rect.x;
-	screen_rect.y = local_rect.y;
-	while (ui->parent != nullptr) {
-		screen_rect.x += ui->parent->local_rect.x;
-		screen_rect.y += ui->parent->local_rect.y;
-		ui = ui->parent;
-	}
-
-	uint win_x, win_y;
-	App->win->GetWindowSize(win_x, win_y);
-	mask_rect = screen_rect;
-
-	if (parent != nullptr) {
-		if (mask_rect.x < parent->mask_rect.x) {
-			mask_rect.x += parent->mask_rect.x - mask_rect.x;
-			mask_rect.w -= parent->mask_rect.x - mask_rect.x;
-		}
-		else if (mask_rect.x + mask_rect.w > parent->mask_rect.x + parent->mask_rect.w) {
-			mask_rect.w -= mask_rect.x + mask_rect.w - parent->mask_rect.x - parent->mask_rect.w;
-		}
-		if (mask_rect.y < parent->mask_rect.y) {
-			mask_rect.y += parent->mask_rect.y - mask_rect.y;
-			mask_rect.h -= parent->mask_rect.y - mask_rect.y;
-		}
-		else if (mask_rect.y + mask_rect.h > parent->mask_rect.y + parent->mask_rect.h) {
-			mask_rect.h -= mask_rect.y + mask_rect.h - parent->mask_rect.y - parent->mask_rect.h;
-		}
-	}
-	else {
-		if (mask_rect.x < 0) {
-			mask_rect.w -= mask_rect.x;
-			mask_rect.x = 0;
-		}
-		else if (mask_rect.x + mask_rect.w > win_x) {
-			mask_rect.w -= mask_rect.x + mask_rect.w - win_x;
-		}
-		if (mask_rect.y < 0) {
-			mask_rect.h -= mask_rect.y;
-			mask_rect.y = 0;
-		}
-		else if (mask_rect.y + mask_rect.h > win_y) {
-			mask_rect.h -= mask_rect.y + mask_rect.h - win_y;
-		}
-	}
-	return true;
-}
-
-bool UI::PostUpdate() {
-	if (debug == true) {
-		App->render->DrawQuad(screen_rect, 255, 0, 0, 255, false, false);
-	}
-	return true;
-}
-
-SDL_Rect UI::GetScreenRect()
-{
-	return screen_rect;
-}
-SDL_Rect UI::GetLocalRect() {
-	return local_rect;
-}
-iPoint UI::GetScreenPos() {
-	return { screen_rect.x,screen_rect.y };
-}
-iPoint UI::GetScreenToWorldPos() {
-	return { screen_rect.x / (int)App->win->GetScale(),screen_rect.y / (int)App->win->GetScale() };
-}
-iPoint UI::GetLocalPos() {
-	return { local_rect.x,local_rect.y };
-}
-void UI::SetLocalPos(iPoint pos) {
-	iPoint r = { -local_rect.x + pos.x,-local_rect.y + pos.y };
-	local_rect.x = pos.x;
-	local_rect.y = pos.y;
-	screen_rect.x += r.x;
-	screen_rect.y += r.y;
-}
-
-bool UI::CheckMouse() {
-	if (drageable == true) {
-		int x, y;
-		App->input->GetMousePosition(x, y);
-		if (x >= screen_rect.x && x <= screen_rect.x + screen_rect.w && y >= screen_rect.y && y <= screen_rect.y + screen_rect.h || focus == true)
+	if (x > posx && x < (posx + LocalRect.w))
+		if (y > posy && y < (posy + LocalRect.h)) {
+			if (type == Types::button)
+			textureRect = illuminatedRect; //Illuminated Button
 			return true;
-	}
+		}
 	return false;
 }
 
-bool UI::Move() {
-	int x, y;
-	App->input->GetMouseMotion(x, y);
-	if (screen_rect.x + x >= drag_area.x && screen_rect.x + screen_rect.w + x <= drag_area.x + drag_area.w)
-		local_rect.x += x;
-	else if (screen_rect.y + y >= drag_area.y && screen_rect.y + screen_rect.h + y <= drag_area.y + drag_area.h)
-		local_rect.y += y;
-	return true;
-}
-
-SDL_Rect UI::Check_Printable_Rect(SDL_Rect sprite, iPoint& spirte_dif) {
-	if (mask_rect.x > screen_rect.x) {
-		spirte_dif.x = mask_rect.x - screen_rect.x;
-		sprite.x += spirte_dif.x;
-		sprite.w -= spirte_dif.x;
-	}
-	else if (mask_rect.w < screen_rect.w) {
-		sprite.w -= screen_rect.w - mask_rect.w;
-	}
-	if (mask_rect.y > screen_rect.y) {
-		spirte_dif.y = mask_rect.y - screen_rect.y;
-		sprite.y += spirte_dif.y;
-		sprite.h -= spirte_dif.y;
-	}
-	else if (mask_rect.h < screen_rect.h) {
-		sprite.h -= screen_rect.h - mask_rect.h;
-	}
-	return sprite;
-}
-
-ImageUI::ImageUI(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, bool d, bool f, SDL_Rect d_area) :UI(type, r, p, d, f, d_area) {
-	name.create("ImageUI");
-	sprite1 = sprite;
-	quad = r;
-	SDL_Rect drag_area = GetDragArea();
-	drag_position_0 = { drag_area.x, drag_area.y };
-	drag_position_1 = { drag_area.w + drag_area.x - GetLocalRect().w,drag_area.h + drag_area.y - GetLocalRect().h };
-}
-
-bool ImageUI::PreUpdate() {
-	int x, y;
-	iPoint initial_position = GetScreenPos();
-	App->input->GetMousePosition(x, y);
-	if (CheckFocusable() == true && (x >= GetScreenPos().x && x <= GetScreenPos().x + GetScreenRect().w && y >= GetScreenPos().y && y <= GetScreenPos().y + GetScreenRect().h)) {
-		if (App->input->GetMouseButtonDown(1) == KEY_DOWN) {
-			App->gui->DeleteFocus();
+void GuiItem::SetFocus() {
+	if (type != Types::text) 
+	{
+		if (App->gui->buttonPressed == true)
+		{
+			p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
+			while (gui_list) {
+				gui_list->data->focus = false;
+				App->input->DisableTextInput();
+				gui_list = gui_list->prev;
+			}
 			focus = true;
 		}
-	}
-	if (focus == true && App->input->GetMouseButtonDown(1) == KEY_UP) {
-		focus = false;
-	}
-	UI::PreUpdate();
-	if (initial_position != GetScreenPos()) {
-		fPoint drag_position = GetDragPositionNormalized();
-		/////HERE LISTENER WITH DRAG POSITION
-	}
-	return true;
-}
-
-bool ImageUI::PostUpdate() {
-	iPoint spirte_dif = { 0,0 };
-	SDL_Rect sprite = UI::Check_Printable_Rect(sprite1, spirte_dif);
-	quad.x = GetScreenPos().x + spirte_dif.x;
-	quad.y = GetScreenPos().y + spirte_dif.y;
-
-	//App->render->BlitInQuad((SDL_Texture*)App->gui->GetAtlas(), sprite, quad);
-	UI::PostUpdate();
-	return true;
-}
-
-fPoint ImageUI::GetDragPositionNormalized() {
-	fPoint position_normalized;
-	position_normalized.x = GetScreenPos().x - drag_position_0.x;
-	position_normalized.y = GetScreenPos().y - drag_position_0.y;
-	position_normalized.x /= drag_position_1.x - drag_position_0.x;
-	position_normalized.y /= drag_position_1.y - drag_position_0.y;
-	return position_normalized;
-}
-
-WindowUI::WindowUI(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, bool d, bool f, SDL_Rect d_area) :UI(type, r, p, d, f, d_area) {
-	name.create("WindowUI");
-	sprite1 = sprite;
-	quad = r;
-}
-
-bool WindowUI::PostUpdate() {
-	iPoint spirte_dif = { 0,0 };
-	SDL_Rect sprite = UI::Check_Printable_Rect(sprite1, spirte_dif);
-	App->render->Blit((SDL_Texture*)App->gui->GetAtlas(), GetScreenPos().x + spirte_dif.x, GetScreenPos().y + spirte_dif.y, &sprite, 0.f);
-	UI::PostUpdate();
-	return true;
-}
-
-TextUI::TextUI(Type type, UI* p, SDL_Rect r, p2SString str, bool d, bool f, SDL_Rect d_area) :UI(type, r, p, d, f, d_area) {
-	name.create("TextUI");
-	stri = str;
-	quad = r;
-}
-
-bool TextUI::PostUpdate() {
-	SDL_Rect rect = { 0,0,0,0 };
-	iPoint spirte_dif = { 0,0 };
-
-	SDL_Texture* text = App->font->Print(stri.GetString());
-
-	SDL_QueryTexture(text, NULL, NULL, &rect.w, &rect.h);
-
-
-	SDL_Rect sprite = UI::Check_Printable_Rect(rect, spirte_dif);
-	App->render->Blit(text, GetScreenToWorldPos().x + spirte_dif.x, GetScreenToWorldPos().y + spirte_dif.y, &sprite, 0.f);
-	UI::PostUpdate();
-
-	App->tex->UnLoad(text);
-
-	return true;
-}
-
-ButtonUI::ButtonUI(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, SDL_Rect spriten2, SDL_Rect spriten3, bool d, bool f, SDL_Rect d_area) :UI(type, r, p, d, f, d_area) {
-	name.create("ButtonUI");
-	sprite1 = sprite;
-	sprite2 = spriten2;
-	sprite3 = spriten3;
-	over = false;
-	pushed = false;
-	if (p != nullptr) {
-		quad.x = p->quad.x + r.x;
-		quad.y = p->quad.y + r.y;
-		quad.w = r.w;
-		quad.h = r.h;
-	}
-	else quad = r;
-}
-
-bool ButtonUI::PostUpdate() {
-	SDL_Rect sprite;
-	iPoint spirte_dif = { 0,0 };
-	if (pushed == true) {
-		sprite = UI::Check_Printable_Rect(sprite2, spirte_dif);
-	}
-	else if (over == true) {
-		sprite = UI::Check_Printable_Rect(sprite1, spirte_dif);
+		else {
+			focus = false;
+		}
 	}
 	else {
-		sprite = UI::Check_Printable_Rect(sprite3, spirte_dif);
+		if (App->gui->buttonPressed == true)
+		{ 
+		p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
+		while (gui_list) {
+			gui_list->data->focus = false;
+			App->input->DisableTextInput();
+			gui_list = gui_list->prev;
+		}
+		App->input->EnableTextInput("");
+		focus = true;
+		}
 	}
-
-	quad.x = GetScreenPos().x + spirte_dif.x;
-	quad.y = GetScreenPos().y + spirte_dif.y;
-	//App->render->BlitInQuad((SDL_Texture*)App->gui->GetAtlas(), sprite, quad);
-
-	UI::PostUpdate();
-	return true;
 }
 
-bool ButtonUI::PreUpdate() {
-	int x, y;
-	App->input->GetMousePosition(x, y);
-
-	if ((x >= GetScreenPos().x && x <= GetScreenPos().x + GetScreenRect().w && y >= GetScreenPos().y && y <= GetScreenPos().y + GetScreenRect().h) || focus == true)
-		over = true;
-	else over = false;
-	bool button = false;
-	if (App->input->GetMouseButtonDown(1) == KEY_UP || App->input->GetKey(SDL_SCANCODE_RETURN))
-		button = true;
-	if (over == true && button == true)
-		pushed = true;
-	else pushed = false;
-
-	if (pushed)
-	{
-		App->audio->PlayFx(App->gui->click_sfx);
-		//Button clicked
-		if (listener)
+void GuiItem::SetSingleFocus() {
+	
+		if (type == Types::text)
 		{
-			listener->GuiInput(this);
+			p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
+			while (gui_list) {
+				gui_list->data->focus = false;
+				App->input->DisableTextInput();
+				gui_list = gui_list->prev;
+			}
+			App->input->EnableTextInput("");
+			focus = true;
+		}
+	
+}
+
+void GuiItem::Input() {
+
+	if (type == Types::button) {
+		if (focus == true)
+		{
+			textureRect = pushedRect; //Pushed Button
+			App->gui->sendInput(this);
+		}
+
+	}
+	if(parent!= nullptr){
+	if (parent->type == Types::slider) {
+		if (focus == true)
+		{
+			App->gui->sendInput(this);
+			parent->slide();
+		}
+
+	}
+
+	if (parent->type == Types::inputText) {
+
+		if (focus == true)
+		{
+			SDL_DestroyTexture(texture);
+			texture = App->font->Print(App->input->text.GetString());
+			App->font->CalcSize(App->input->text.GetString(), textureRect.w, textureRect.h);
+			
+			int x, y;
+			GetScreenPos(x, y);
+			App->render->DrawQuad({ x + textureRect.w, y, 1, textureRect.h }, 255, 255, 255);
+			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN){
+				SetText(App->input->text.GetString());
+				App->gui->sendInput(this);
+				focus = false;
+				App->input->DisableTextInput();
+			}
+
 		}
 	}
-
-	UI::PreUpdate();
-
-	return true;
+	}
 }
 
+void GuiItem::GetScreenRect(SDL_Rect& rect) {
+	GuiItem* it = this->parent;
+	int addx = 0, addy = 0;
+	while (it != NULL) {
+		addx += it->LocalRect.x;
+		addy += it->LocalRect.y;
+		it = it->parent;
+	}
+	rect.x = addx + LocalRect.x;
+	rect.y = addy + LocalRect.y;
+	rect.w = LocalRect.w;
+	rect.h = LocalRect.h;
 
-SliderUI::SliderUI(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, SDL_Rect spriten2, bool d, bool f, SDL_Rect d_area) :UI(type, r, p, d, f, d_area) {
-	name.create("ButtonUI");
-	sprite1 = sprite;
-	sprite2 = spriten2;
-	base.x = r.x;
-	base.y = r.y;
-	base.w = r.w;
-	base.h = r.h;
-
-	quad.x = App->gui->slider + base.x;
-	quad.y = r.y - 2;
-	quad.w = spriten2.w;
-	quad.h = spriten2.h;
-
-	clickRet = false;
 }
 
-bool SliderUI::PostUpdate()
-{
-	iPoint spirte_dif = { 0,0 };
-	iPoint spirte_dif1 = { 0,0 };
-	SDL_Rect sprite = UI::Check_Printable_Rect(sprite1, spirte_dif);
-	SDL_Rect sprite_ = UI::Check_Printable_Rect(sprite2, spirte_dif1);
-	base.x = GetScreenPos().x + spirte_dif.x;
-	base.y = GetScreenPos().y + spirte_dif.y;
+SDL_Rect* GuiItem::GetLocalRect() {
+	return 	&LocalRect;
+}
 
-	//App->render->BlitInQuad((SDL_Texture*)App->gui->GetAtlas(), sprite, base);
-
-	if (OnClick()) {
-		int xpos;
-		int ypos;
-		App->input->GetMousePosition(xpos, ypos);
-		if (xpos<base.x + base.w - 5 && xpos>base.x + 5)
-			quad.x = xpos - 5;
+void GuiItem::GetScreenPos(int& x, int& y) {
+	GuiItem* it = this->parent;
+	int addx = 0, addy = 0;
+	while (it != NULL) {
+		addx += it->LocalX;
+		addy += it->LocalY;
+		it = it->parent;
 	}
 
-	//App->render->BlitInQuad((SDL_Texture*)App->gui->GetAtlas(), sprite_, quad);
-
-	App->gui->slider = quad.x - base.x;
-
-	UI::PostUpdate();
-	return true;
+	x = addx + LocalX;
+	y = addy + LocalY;
 }
 
-bool SliderUI::PreUpdate()
-{
-	/*
-	Mix_VolumeMusic((int)App->gui->slider * 1.28);
-
-	p2List_item<Mix_Chunk*>* item = App->audio->fx.start;
-	while (item != nullptr) {
-		Mix_VolumeChunk(item->data, (int)App->gui->slider * 1.28);
-		item = item->next;
-	}
-	UI::PreUpdate();
-	*/
-	return true;
+void GuiItem::GetLocalPos(int& x, int& y) {
+	x = LocalX;
+	y = LocalY;
 }
 
-bool SliderUI::OnClick()
+void GuiItem::SetLocalPos(int& x, int& y) {
+	LocalX = x;
+	LocalY = y;
+}
+
+
+//-------------------------------------------------------------
+GuiImage::GuiImage(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
+	type = Types::image;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	delayBlit = false;
+	textureRect = texrect;
+	LocalRect = textureRect;
+	isDynamic = false;
+	texture = App->gui->GetAtlas();
+	focus = false;
+	follow = false;
+	CallBack = callback;
+	to_delete = false;
+}
+
+GuiImage::~GuiImage() {
+
+}
+//-------------------------------------------------------------
+GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, j1Module* callback) : GuiItem() {
+	type = Types::text;
+	text = inputtext;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	LocalRect = texrect;
+	delayBlit = false;
+	isDynamic = false;
+	focus = false;
+	follow = false;
+	textureRect.x = 0;
+	textureRect.y = 0;
+	color = SDL_Color{ 255,255,255 };
+	CallBack = callback;
+	texture = App->font->Print(text, color);
+	App->font->CalcSize(text, textureRect.w, textureRect.h);
+	to_delete = false;
+
+}
+
+GuiText::~GuiText() {
+
+}
+//-------------------------------------------------------------
+GuiButton::GuiButton(int x, int y, SDL_Rect idle_rect, j1Module* callback) : GuiItem() {
+	type = Types::button;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	textureRect = idle_rect;
+	idleRect = idle_rect;
+	LocalRect = textureRect;
+	isDynamic = true;
+	delayBlit = false;
+	follow = false;
+	texture = App->gui->GetAtlas();
+	focus = false;
+	CallBack = callback;
+	to_delete = false;
+
+}
+
+GuiButton::~GuiButton() {
+
+}
+
+
+void GuiButton::setRects(SDL_Rect iluminated, SDL_Rect pushed) {
+
+	illuminatedRect = iluminated;
+	pushedRect = pushed;
+}
+//--------------------------------------------------------------
+InputText::InputText(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem()
+	{
+	type = Types::inputText;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	textureRect = { 0, 0, 0, 0 };
+	LocalRect = textureRect;
+	isDynamic = true;
+	follow = false;
+	texture = App->gui->GetAtlas();
+	focus = false;
+	CallBack = callback;
+	delayBlit = false;
+
+	to_delete = false;
+
+	image = App->gui->CreateGuiElement(Types::image, 0, 0, { 444, 661, 244, 65 }, this);
+	text = App->gui->CreateGuiElement(Types::text, 20, 15, texrect, this, callback, "Insert Text");
+	text->isDynamic = true;
+
+}
+
+InputText::~InputText() {
+	
+}
+
+GuiItem* InputText::GetInputText() const {
+	return text;
+}
+//--------------------------------------------------------------
+GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem()
 {
-	App->input->GetMousePosition(mouse.x, mouse.y);
-	if (mouse.x<quad.x + quad.w && mouse.x>quad.x) {
-		if (mouse.y<quad.y + quad.h && mouse.y>quad.y) {
-			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT))
-				clickRet = true;
+	type = Types::slider;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	textureRect = { 0, 0, 0, 0 };
+	LocalRect = textureRect;
+	isDynamic = false;
+	follow = false;
+	texture = App->gui->GetAtlas();
+	focus = false;
+	CallBack = callback;
+	Image = App->gui->CreateGuiElement(Types::image, 0, 0, texrect, this);
+	Image->delayBlit = false;
+	ScrollThumb = App->gui->CreateGuiElement(Types::image, -18, 0, { 56, 280, 46, 23 }, this, callback);
+	ScrollThumb->setRects({ 78, 912, 46, 23 }, { 78, 888, 46, 23 });
+	ScrollThumb->isDynamic = true;
+	ScrollThumb->delayBlit = false;
+	to_delete = false;
+	delayBlit = false;
+
+
+}
+
+GuiSlider::~GuiSlider() {
+
+}
+
+void GuiSlider::slide() {
+	int x, y, LocalX, LocalY, ScreenX, ScreenY, parentx, parenty, difference, height;
+	App->input->GetMousePosition(x, y);
+	x -= 5 + App->render->camera.x;
+	y -= 5 + App->render->camera.y;
+	height = Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h + 1;
+	GetScreenPos(parentx, parenty);
+	ScrollThumb->GetScreenPos(ScreenX, ScreenY);
+	ScrollThumb->GetLocalPos(LocalX, LocalY);
+
+	if (y > ScreenY) 
+	{
+		difference = LocalY + y - ScreenY;
+		if(ScreenY <= parenty+ Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h)
+		{
+			
+			ScrollThumb->SetLocalPos(LocalX, difference);
+		}
+		else {
+			
+			ScrollThumb->SetLocalPos(LocalX, height);
 		}
 	}
-
-	if (!App->input->GetMouseButtonDown(SDL_BUTTON_LEFT)) {
-		clickRet = false;
+	else if (y < ScreenY){
+		difference = LocalY + y - ScreenY ;
+		if (ScreenY >= parenty) 
+		{
+			ScrollThumb->SetLocalPos(LocalX, difference);
+		}
+		else {
+			int pos = -1;
+			ScrollThumb->SetLocalPos(LocalX, pos);
+		}
+	}
+	else if (y == ScreenY)
+	{
+		ScrollThumb->SetLocalPos(LocalX, LocalY);
 	}
 
-	return clickRet;
+}
+float GuiSlider::returnSliderPos()
+{
+	float ratio;
+	int x, y;
+	float a, b;
+	a = Image->GetLocalRect()->h;
+	b = ScrollThumb->GetLocalRect()->h;
+	a = a - b;
+	ScrollThumb->GetLocalPos(x, y);
+	ratio =  1 - (y / a);
+
+	return ratio;
+}
+
+void GuiSlider::returnChilds(GuiItem* imagepointer, GuiItem* ScrollPointer)
+{
+	imagepointer = Image;
+	ScrollPointer = ScrollThumb;
+}
+const char* GuiText::GetText() const{
+	
+	return text;
+}
+
+void GuiText::SetText(const char* newtext)
+{
+	text = newtext;
 }

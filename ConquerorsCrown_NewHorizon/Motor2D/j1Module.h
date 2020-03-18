@@ -11,7 +11,7 @@
 
 class j1App;
 class UI;
-
+class GuiItem;
 
 class j1Module
 {
@@ -71,7 +71,7 @@ public:
 		return true;
 	}
 
-	virtual void GuiInput(UI*) {}
+	virtual void GuiInput(GuiItem*) {}
 
 public:
 

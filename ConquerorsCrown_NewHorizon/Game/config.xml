@@ -18,6 +18,10 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <gui>
+      <atlas file="textures/UI/ui.png"/>
+  </gui>
+
   <audio>
     <music>
       <folder>audio/music/</folder>
