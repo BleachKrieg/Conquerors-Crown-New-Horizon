@@ -7,7 +7,7 @@
 #include "p2DynArray.h"
 #include "j1Entity.h"
 #include "StaticEnt.h"
-
+#include "EntityRequest.h"
 
 class Test_3 : public StaticEnt
 {
@@ -35,7 +35,7 @@ public:
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;
-
+	int collrange;
 };
 
 #endif // __TEST_1_H__

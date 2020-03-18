@@ -31,30 +31,65 @@ bool j1GroupMov::Start() {
 bool j1GroupMov::Update(float dt) {
 
 	static iPoint origin, mouse;
-
+	iPoint start;
 	// TODO 0 ---------------------- Nothing to do here, just getting you in context
 	// Every time we press leftclick button, we create a rect. The we check all entities with
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		App->input->GetMousePosition(origin.x, origin.y);
-
-	}
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
-		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
-	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-	{
 		list<j1Entity*>::iterator entities_list;
 		j1Entity* it;
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 			it = *entities_list;
 
+			if (it->selectable == false)
+			{
+				int xstatic = it->position.x, ystatic = it->position.y;
+				if (mouse.x > xstatic && mouse.x < xstatic + 32 && mouse.y > ystatic && mouse.y < ystatic + 32)
+				{
+					it->isSelected = true;
+				}
+				else {
+					it->isSelected = false;
+				}
+			}
+		}
+	}
+	
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		LOG("KEYREPEAT");
+		App->input->GetMousePosition(mouse.x, mouse.y);
+		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
+		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		App->input->GetMousePosition(origin.x, origin.y);
+
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		LOG("KEYRup");
+		list<j1Entity*>::iterator entities_list;
+		j1Entity* it;
+		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
+			it = *entities_list;
+			
+			if (it->selectable == false) 
+			{
+				int xstatic = it->position.x, ystatic = it->position.y;
+				if (mouse.x > xstatic && mouse.x < xstatic + 32 && mouse.y > ystatic && mouse.y < ystatic + 32)
+				{
+					it->isSelected = true;
+				}
+				else {
+					it->isSelected = false;
+				}
+			}
 			if (it->selectable)
 			{
 				it->isSelected = false;
