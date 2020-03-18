@@ -10,6 +10,7 @@
 #include "j1Scene.h"
 #include "j1EntityManager.h"
 #include "Brofiler/Brofiler.h"
+#include "j1Pathfinding.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -32,7 +33,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	for (map = config.child("map"); map; map = map.next_sibling("map")) {
 		p2SString lvlname;
 		lvlname.create(map.attribute("name").as_string());
-		levels.add(lvlname.GetString());
 	}
 	
 	bool ret = true;
@@ -45,21 +45,31 @@ bool j1Scene::Start()
 {
 	LOG("Start scene");
 
-	/*current_level = "menu.tmx";
-	
+	current_level = "test.tmx";
+	debug = false;
 	if (App->map->Load(current_level.GetString()) == true)
 	{
-		App->audio->PlayMusic(App->map->data.music.GetString());
+		//App->audio->PlayMusic(App->map->data.music.GetString());
 
 		LOG("%s", current_level.GetString());
 		int w, h;
 		uchar* data = NULL;
 		if (App->map->CreateWalkabilityMap(w, h, &data))
+		{
+			LOG("Setting map %d", data[1]);
+			App->pathfinding->SetMap(w, h, data);
+		}
+		else {
+			LOG("Could not create walkability");
+		}
+
 
 		RELEASE_ARRAY(data);
-	}*/
+	}
 	
 	Hello = App->tex->Load("textures/Hello-World.png");
+	debug_tex = App->tex->Load("textures//sprites/bullside.png");
+
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	
 	return true;
@@ -79,7 +89,7 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 		
-	App->render->Blit(Hello, 0, 0, NULL, 1.0f, 1.0f);
+//	App->render->Blit(Hello, 0, 0, NULL, 1.0f, 1.0f);
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		App->render->camera.y += 500*dt;
@@ -89,20 +99,27 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y -= 500*dt;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		App->render->camera.x -= 500*dt;
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (debug)debug = false;
+		else {
+			debug = true;
+		}
+
 	int x, y;
 	App->input->GetMousePosition(x, y);
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
 		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
+	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_2, x, y-20);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x, y);
 
 	
-	//App->map->Draw();
+	App->map->Draw();
+
+
 
 	return true;
 }

@@ -36,9 +36,6 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="j1Fonts.cpp">
-      <Filter>Modules\Gui</Filter>
-    </ClCompile>
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
@@ -51,14 +48,20 @@
     <ClCompile Include="DynamicEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
-    <ClCompile Include="Test_2.cpp">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="StaticEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
     <ClCompile Include="Test_3.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1GroupMov.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Modules\Gui</Filter>
     </ClCompile>
     <ClCompile Include="j1Gui.cpp">
       <Filter>Modules\Gui</Filter>
@@ -121,12 +124,6 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="j1Fonts.h">
-      <Filter>Modules\Gui</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Url.h">
-      <Filter>Modules\Gui</Filter>
-    </ClInclude>
     <ClInclude Include="j1EntityManager.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
@@ -139,16 +136,23 @@
     <ClInclude Include="DynamicEnt.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
-    <ClInclude Include="Test_2.h">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="StaticEnt.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
     <ClInclude Include="Test_3.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="J1GroupMov.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Url.h" />
     <ClInclude Include="j1Gui.h">
+      <Filter>Modules\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
       <Filter>Modules\Gui</Filter>
     </ClInclude>
   </ItemGroup>

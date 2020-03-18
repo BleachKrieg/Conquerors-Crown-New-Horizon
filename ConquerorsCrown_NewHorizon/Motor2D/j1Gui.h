@@ -7,6 +7,7 @@
 
 #define CURSOR_WIDTH 2
 
+class UI;
 enum class Type
 {
 	NONE,

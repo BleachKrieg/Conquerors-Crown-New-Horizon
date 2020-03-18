@@ -9,23 +9,15 @@
 
 
 
+
 class DynamicEnt : public j1Entity
 {
 public:
-	enum entityDirection
-	{
-		UP,
-		DOWN,
-		FRONT,
-		DIAGONALUP,
-		DIAGONALDOWN,
-	};
 
 	enum DynamicEntityType
 	{
 		NO_TYPE,
 		TEST_1,
-		TEST_2
 	};
 
 	// Constructor
@@ -40,17 +32,23 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void CheckCollisions(fPoint* speed);
+
 public:
 
 
-	iPoint speed;
-	entityDirection direction;
-//	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	j1Entity* target;
-	int vision;
-	int damage;
-	int armor;
 
+protected:
+	int followpath;
+	int collrange;
+	int vision;
+	bool move;
+	iPoint origin, mouse, relative_target;
+	p2DynArray<iPoint> path;
+	list<j1Entity*> close_entity_list;
+	list<j1Entity*> colliding_entity_list;
+
+	
 };
 
 #endif // __j1Entity_H__

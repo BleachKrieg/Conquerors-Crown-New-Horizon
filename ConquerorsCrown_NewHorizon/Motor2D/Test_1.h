@@ -8,13 +8,6 @@
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 
-enum states_test_1
-{
-	ST_TEST_1_IDLE,
-	ST_TEST_1_MOVE,
-	ST_TEST_1_DEAD
-};
-
 class Test_1 : public DynamicEnt
 {
 public:
@@ -35,14 +28,10 @@ public:
 
 	bool CleanUp();
 	// Animation
-	void CheckAnimation(float dt);
 
-public:
-	// Animations
-	states_test_1	actualState;
-	Animation* current_animation = nullptr;
-	//Animation idle;
-	int attackrange;
+	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
+
+	private:
 
 };
 

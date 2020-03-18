@@ -9,6 +9,8 @@
 struct SDL_Texture;
 class j1Entity;
 class DynamicEnt;
+class StaticEnt;;
+
 
 class GuiItem;
 
@@ -49,9 +51,9 @@ private:
 
 public:
 	p2SString current_level;
-	p2List<p2SString> levels;
 	SDL_Texture* Hello;
-	
+	SDL_Texture* debug_tex;
+	bool debug;
 };
 
 #endif // __j1SCENE_H__

@@ -34,7 +34,7 @@
   </file_system>
 
   <map>
-    <folder>maps/</folder>
+    <folder>textures/maps/</folder>
   </map>
 
   <entity_manager>

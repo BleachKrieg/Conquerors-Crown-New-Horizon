@@ -6,6 +6,9 @@
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
+#include <list>
+
+using namespace std;
 
 #define MAXTEXT 100
 // Modules
@@ -16,11 +19,14 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Map;
-class j1Gui;
-class j1Fonts;
 class j1EntityManager;
 class j1Entity;
-
+class j1PathFinding;
+class j1GroupMov;
+class j1PathFinding;
+class j1GroupMov;
+class j1Gui;
+class j1Fonts;
 
 
 class j1App
@@ -86,7 +92,7 @@ private:
 
 	// Load / Save
 	bool LoadGameNow();
-	bool SavegameNow() const;
+	bool SavegameNow();
 public:
 
 	// Modules
@@ -97,10 +103,11 @@ public:
 	j1Audio*			audio;
 	j1Scene*			scene;
 	j1Map*				map;
+	j1EntityManager*	entity;
+	j1PathFinding*		pathfinding;
+	j1GroupMov*			movement;
 	j1Gui*				gui;
 	j1Fonts*			font = NULL;
-	j1EntityManager*	entity;
-	
 
 
 	uint32				framerate = 0u;
@@ -114,7 +121,7 @@ public:
 
 private:
 
-	p2List<j1Module*>	modules;
+	list<j1Module*>		modules;
 	uint				frames;
 	int					argc;
 	char**				args;

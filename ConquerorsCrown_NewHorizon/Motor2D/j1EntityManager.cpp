@@ -1,7 +1,6 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "Test_1.h"
-#include "Test_2.h"
 #include "Test_3.h"
 
 #include "j1App.h"
@@ -36,14 +35,16 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::CleanUp()
 {
-	p2List_item<j1Entity*>* entities_list = entities.start;
+	
+	list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
 
-	while (entities_list != nullptr)
-	{
-		entities_list->data->CleanUp();
-		RELEASE(entities_list->data);
-		entities_list = entities_list->next;
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+		it = *entities_list;
+		it->CleanUp();
+		RELEASE(it);
 	}
+
 	entities.clear();
 
 	return true;
@@ -53,12 +54,15 @@ bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
 
-	p2List_item<j1Entity*>* entities_list = entities.start;
-	while (entities_list)
-	{
-		entities_list->data->Update(dt);
-		entities_list = entities_list->next;
+	list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
+
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+		it = *entities_list;
+		it->Update(dt);
 	}
+
+	
 
 	return true;
 }
@@ -67,19 +71,19 @@ bool j1EntityManager::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateEntity", Profiler::Color::Azure)
 
+		list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
 
-		p2List_item<j1Entity*>* entities_list = entities.start;
-	while (entities_list)
-	{
-		if (entities_list->data->to_delete == true)
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+		it = *entities_list;
+		if (it->to_delete == true)
 		{
-			DeleteEntity(entities_list->data);
+			DeleteEntity(it);
 		}
-		else {
-			entities_list->data->PostUpdate(dt);
+		else
+		{
+			it->PostUpdate();
 		}
-			  
-		entities_list = entities_list->next;
 	}
 
 		return true;
@@ -92,14 +96,13 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	switch (type)
 	{
 	case DynamicEnt::DynamicEntityType::TEST_1: ret = new Test_1(posx, posy); break;
-	case DynamicEnt::DynamicEntityType::TEST_2: ret = new Test_2(posx, posy); break;
 
 	}
 
 	if (ret != nullptr)
 	{
-		entities.add(ret);
-		entities.end->data->Start();
+		entities.push_back(ret);
+		entities.back()->Start();
 	}
 	return ret;
 }
@@ -116,16 +119,16 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 
 	if (ret != nullptr)
 	{
-		entities.add(ret);
-		entities.end->data->Start();
+		entities.push_back(ret);
+		entities.back()->Start();
 	}
 	return ret;
 }
 
 bool j1EntityManager::DeleteEntity(j1Entity* entity)
 {
-	entity->CleanUp();
-	entities.del(entities.At(entities.find(entity)));
+	/*entity->CleanUp();
+	entities.del(entities.At(entities.find(entity)));*/
 
 	return true;
 }

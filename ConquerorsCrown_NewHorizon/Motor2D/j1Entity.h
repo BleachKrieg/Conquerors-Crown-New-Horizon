@@ -4,6 +4,9 @@
 #include "p2Point.h"
 #include "p2Log.h"
 #include "j1App.h"
+#include <list>
+
+using namespace std;
 
 struct SDL_Texture;
 
@@ -31,29 +34,15 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-public:
-
-	// Position
-	iPoint position;
-
-	int hp;
+public: 	
 	bool isSelected;
-
-
-	SDL_Texture* texture;
-	//SDL_Rect Rect;
-
-	int cost;
-	int MaxCreationTime;
-	int CurrentCreationTime;
-
-	// Blit
-	bool blit = false;
-
-	// Colliders
-	Collider* collider;
+	bool selectable;
+	fPoint position;
 	bool to_delete;
+	int body;
+	fPoint speed;
 
+	
 };
 
 #endif // __j1Entity_H__

@@ -4,7 +4,6 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 
-#include "j1App.h"
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -12,10 +11,13 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
-#include "j1Gui.h"
-#include "j1Fonts.h"
+#include "j1App.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
+#include "j1Pathfinding.h"
+#include "J1GroupMov.h"
+#include "j1Gui.h"
+#include "j1Fonts.h"
 
 
 
@@ -34,10 +36,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
-	gui = new  j1Gui();
 	entity = new j1EntityManager();
-	
+	gui = new  j1Gui();
 	font = new j1Fonts();
+	pathfinding = new j1PathFinding();
+	movement = new j1GroupMov();
 	
 
 
@@ -49,11 +52,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(pathfinding);
+	AddModule(movement);
 	AddModule(entity);
+	AddModule(render);
 	AddModule(gui);
 	AddModule(font);
-	AddModule(render);
-
 	
 
 	// render last to swap buffer
@@ -66,21 +70,21 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 j1App::~j1App()
 {
 	// release modules
-	p2List_item<j1Module*>* item = modules.end;
+	list<j1Module*>::reverse_iterator item;
+	item = modules.rbegin();
 
-	while(item != NULL)
+	while (item != modules.rend())
 	{
-		RELEASE(item->data);
-		item = item->prev;
+		delete* item;
+		item++;
 	}
-
 	modules.clear();
 }
 
 void j1App::AddModule(j1Module* module)
 {
 	module->Init();
-	modules.add(module);
+	modules.push_back(module);
 }
 
 // Called before render is available
@@ -111,14 +115,15 @@ bool j1App::Awake()
 
 	if(ret == true)
 	{
-		p2List_item<j1Module*>* item;
-		item = modules.start;
 
-		while(item != NULL && ret == true)
-		{
-			ret = item->data->Awake(config.child(item->data->name.GetString()));
-			item = item->next;
+		list<j1Module*>::iterator item_list;
+		j1Module* it;
+
+		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+			it = *item_list;
+				ret = it->Awake(config.child(it->name.GetString()));	
 		}
+
 	}
 
 	PERF_PEEK(ptimer);
@@ -131,14 +136,15 @@ bool j1App::Start()
 {
 	PERF_START(ptimer);
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
 
-	while(item != NULL && ret == true)
-	{
-		ret = item->data->Start();
-		item = item->next;
+	list<j1Module*>::iterator item_list;
+	j1Module* it;
+
+	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+		it = *item_list;
+		ret = it->Start();
 	}
+
 	startup_time.Start();
 
 	PERF_PEEK(ptimer);
@@ -227,7 +233,6 @@ void j1App::FinishUpdate()
 	
 	App->win->SetTitle(title);
 
-	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
 	delaytimer.Start();
 	
 	int delay = 1 * 1000 / framerate - last_frame_ms;
@@ -244,20 +249,23 @@ void j1App::FinishUpdate()
 bool j1App::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
+
+	list<j1Module*>::iterator item_list;
+	j1Module* it;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
-	{
-		pModule = item->data;
+	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+		it = *item_list;
+		
+		pModule = it;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->PreUpdate(dt);
+		ret = it->PreUpdate(dt);
 	}
+
 
 	return ret;
 }
@@ -266,22 +274,21 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
+
+	list<j1Module*>::iterator item_list;
+	j1Module* it;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
-	{
-		pModule = item->data;
+	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+		it = *item_list;
 
-		if(pModule->active == false) {
+		pModule = it;
+
+		if (pModule->active == false) {
 			continue;
 		}
 
-		// send dt as an argument to all updates
-		// you will need to update module parent class
-		// and all modules that use update
-		ret = item->data->Update(dt);
+		ret = it->Update(dt);
 	}
 
 	return ret;
@@ -291,18 +298,22 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
+
+
+	list<j1Module*>::iterator item_list;
+	j1Module* it;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
-	{
-		pModule = item->data;
+	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+		it = *item_list;
 
-		if(pModule->active == false) {
+		pModule = it;
+
+		if (pModule->active == false) {
 			continue;
 		}
 
-		ret = item->data->PostUpdate(dt);
+		ret = it->PostUpdate(dt);
 	}
 
 	return ret;
@@ -313,13 +324,13 @@ bool j1App::CleanUp()
 {
 	PERF_START(ptimer);
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.end;
+	list<j1Module*>::reverse_iterator item;
+	item = modules.rbegin();
 
-	while(item != NULL && ret == true)
+	while (item != modules.rend() && ret == true)
 	{
-		ret = item->data->CleanUp();
-		item = item->prev;
+		ret = (*item)->CleanUp();
+		item++;
 	}
 
 	PERF_PEEK(ptimer);
@@ -402,13 +413,12 @@ bool j1App::LoadGameNow()
 		LOG("Loading new Game State from %s...", load_game.GetString());
 		root = data.child("game_state");
 
-		p2List_item<j1Module*>* item = modules.start;
-		ret = true;
+		list<j1Module*>::iterator item_list;
+		j1Module* it = NULL;
 
-		while(item != NULL && ret == true)
-		{
-			ret = item->data->Load(root.child(item->data->name.GetString()));
-			item = item->next;
+		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+			it = *item_list;
+			ret = it->Load(root.child(it->name.GetString()));
 		}
 
 		data.reset();
@@ -418,7 +428,7 @@ bool j1App::LoadGameNow()
 		}
 		else
 		{
-			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+			LOG("...loading process interrupted with error on module %s", (it != NULL) ? it->name.GetString() : "unknown");
 		}
 	}
 	else {
@@ -446,7 +456,7 @@ bool j1App::CheckSaveGame()
 }
 
 
-bool j1App::SavegameNow() const
+bool j1App::SavegameNow()
 {
 	bool ret = true;
 	save_game.create("save_game.xml");
@@ -457,13 +467,15 @@ bool j1App::SavegameNow() const
 
 	root = data.append_child("game_state");
 
-	p2List_item<j1Module*>* item = modules.start;
+	list<j1Module*>::iterator item_list;
+	j1Module* it = NULL;
 
-	while (item != NULL && ret == true)
-	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
-		item = item->next;
+	for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
+		it = *item_list;
+		ret = it->Save(root.append_child(it->name.GetString()));
 	}
+
+
 
 	if (ret == true)
 	{
@@ -475,7 +487,7 @@ bool j1App::SavegameNow() const
 	
 	}
 	else {
-	LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
+	LOG("Save process halted from an error in module %s", (it != NULL) ? it->name.GetString() : "unknown");
 	}
 	data.reset();
 	want_to_save = false;

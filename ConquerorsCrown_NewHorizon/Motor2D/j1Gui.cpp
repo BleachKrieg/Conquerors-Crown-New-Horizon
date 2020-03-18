@@ -80,7 +80,7 @@ bool j1Gui::CleanUp()
 		UIs.del(UIs.At(i));
 	}
 	UIs.clear();
-	if (atlas) 
+	if (atlas)
 	{
 		App->tex->UnLoad(atlas);
 	}
@@ -117,7 +117,7 @@ UI* j1Gui::CreateUIElement(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, p2SStr
 		ui_element = new SliderUI(Type::SLIDER, p, r, sprite, sprite2, drageable, drageable, drag_area);
 		break;
 	}
-	
+
 	ui_element->name = str;
 
 	if (s_listener) ui_element->listener = s_listener;
@@ -180,7 +180,7 @@ void j1Gui::DeleteFocus() {
 	}
 }
 
-void j1Gui::ClearUI() 
+void j1Gui::ClearUI()
 {
 	UIs.clear();
 }
@@ -262,7 +262,7 @@ bool UI::PostUpdate() {
 	return true;
 }
 
-SDL_Rect UI::GetScreenRect() 
+SDL_Rect UI::GetScreenRect()
 {
 	return screen_rect;
 }
@@ -270,7 +270,7 @@ SDL_Rect UI::GetLocalRect() {
 	return local_rect;
 }
 iPoint UI::GetScreenPos() {
-	return { screen_rect.x,screen_rect.y};
+	return { screen_rect.x,screen_rect.y };
 }
 iPoint UI::GetScreenToWorldPos() {
 	return { screen_rect.x / (int)App->win->GetScale(),screen_rect.y / (int)App->win->GetScale() };
@@ -426,7 +426,8 @@ ButtonUI::ButtonUI(Type type, UI* p, SDL_Rect r, SDL_Rect sprite, SDL_Rect sprit
 		quad.y = p->quad.y + r.y;
 		quad.w = r.w;
 		quad.h = r.h;
-	}else quad = r;
+	}
+	else quad = r;
 }
 
 bool ButtonUI::PostUpdate() {
@@ -468,9 +469,9 @@ bool ButtonUI::PreUpdate() {
 	{
 		App->audio->PlayFx(App->gui->click_sfx);
 		//Button clicked
-		if (listener) 
+		if (listener)
 		{
-			listener->GuiInput(this);	
+			listener->GuiInput(this);
 		}
 	}
 
@@ -507,7 +508,7 @@ bool SliderUI::PostUpdate()
 	base.y = GetScreenPos().y + spirte_dif.y;
 
 	//App->render->BlitInQuad((SDL_Texture*)App->gui->GetAtlas(), sprite, base);
-	
+
 	if (OnClick()) {
 		int xpos;
 		int ypos;
