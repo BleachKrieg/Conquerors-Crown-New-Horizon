@@ -12,6 +12,7 @@
 #include "Brofiler/Brofiler.h"
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
+#include "EntityRequest.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -119,7 +120,12 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, x, y);
+		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::SWORDMAN, { x, y });
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		App->requests->AddRequest(Petition::SPAWN, 3.f, SpawnTypes::SWORDMAN, { x, y });
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)

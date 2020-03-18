@@ -5,9 +5,33 @@
 #include "j1Module.h"
 
 #include <list>
+#include <vector>
 
 using namespace std;
+class j1Timer;
 
+enum class Petition
+{
+	NONE,
+	UPGRADE,
+	SPAWN
+};
+enum class SpawnTypes
+{
+	NONE,
+	SWORDMAN,
+	ARCHER,
+	PEASANT
+};
+
+struct QueueItem
+{
+	int			time;
+	j1Timer		timer;
+	Petition	type;
+	SpawnTypes	spawn;
+	iPoint		pos;
+};
 
 class EntityRequest : public j1Module
 {
@@ -34,8 +58,10 @@ public:
 	bool CleanUp();
 
 	// Delete an entity
+	void AddRequest(Petition type, float time, SpawnTypes spawn = SpawnTypes::NONE, iPoint pos = { 0, 0 });
 
-public:
+private:
+	vector<QueueItem*>	Queue;
 	
 };
 

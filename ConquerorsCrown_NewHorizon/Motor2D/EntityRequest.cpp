@@ -39,7 +39,23 @@ bool EntityRequest::CleanUp()
 
 bool EntityRequest::Update(float dt)
 {
-
+	for (int i = 0; i < Queue.size(); i++)
+	{
+		if (Queue[i]->timer.ReadSec() >= Queue[i]->time)
+		{
+			if (Queue[i]->type == Petition::SPAWN)
+			{
+				switch (Queue[i]->spawn)
+				{
+				case SpawnTypes::SWORDMAN:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				}
+			}
+			Queue.erase(Queue.begin() + i);
+			i--;
+		}
+	}
 	return true;
 }
 
@@ -47,5 +63,27 @@ bool EntityRequest::PostUpdate(float dt)
 {
 
 	return true;
+}
+
+void EntityRequest::AddRequest(Petition type, float time, SpawnTypes spawn, iPoint pos)
+{
+	QueueItem* item = new QueueItem();
+
+	switch (type)
+	{
+	case Petition::NONE: 
+		break;
+	case Petition::SPAWN: 
+		item->time = time;
+		item->timer.Start();
+		item->type = type;
+		item->spawn = spawn;
+		item->pos = pos;
+		break;
+	case Petition::UPGRADE: 
+		break;
+	}
+
+	Queue.push_back(item);
 }
 
