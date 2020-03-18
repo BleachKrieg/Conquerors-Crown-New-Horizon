@@ -28,6 +28,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	bool ret = true;
 
+	//Get the path to the atlas file
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 	
 	return ret;
@@ -36,9 +37,11 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
-
+	//Load the atlas file
 	atlas = App->tex->Load(atlas_file_name.GetString());
+
 	FocusIt = 0;
+	//Turn debug off
 	debug = false;
 	return true;
 }
@@ -47,13 +50,16 @@ bool j1Gui::Start()
 bool j1Gui::PreUpdate(float dt)
 {
 	BROFILER_CATEGORY("Gui PreUpdate", Profiler::Color::LightGoldenRodYellow);
-
-	buttonPressed = false;
+	
 	bool ret = true;
+
+	//Check if a button is pressed
+	buttonPressed = false;
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) 
 	{
 		buttonPressed = true;
 	}
+
 	/*if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN) 
 	{
 		App->gui->IterateFocus();
@@ -63,30 +69,31 @@ bool j1Gui::PreUpdate(float dt)
 	{
 		App->input->text.Cut(App->input->text.Length() - 1, App->input->text.Length()-1);
 	}
-		p2List_item<GuiItem*>* gui_list = guiElements.end;
-		while (gui_list && ret) {
-			int x, y;
-			if (gui_list->data->follow)
-			{
-				x = -App->render->camera.x + gui_list->data->initposx;
-				y = -App->render->camera.y + gui_list->data->initposy;
-				gui_list->data->SetLocalPos(x, y);
-			}
-
-			
-			App->input->GetMousePosition(x, y);
-			if (gui_list->data->isDynamic)
-			{
-				if (gui_list->data->checkBoundaries(-App->render->camera.x + x, -App->render->camera.y + y)) {
-					gui_list->data->SetFocus();
-					
-					ret = false;
-				}
-			}
-		
-		
-			gui_list = gui_list->prev;
+	//Iterate all gui elements
+	p2List_item<GuiItem*>* gui_list = guiElements.end;
+	while (gui_list && ret) 
+	{
+		int x, y;
+		if (gui_list->data->follow)
+		{
+			x = -App->render->camera.x + gui_list->data->initposx;
+			y = -App->render->camera.y + gui_list->data->initposy;
+			gui_list->data->SetLocalPos(x, y);
 		}
+
+		//Get the mouse position
+		App->input->GetMousePosition(x, y);
+		if (gui_list->data->isDynamic)
+		{
+			//Check if mouse is over a ui element and set the focus
+			if (gui_list->data->checkBoundaries(-App->render->camera.x + x, -App->render->camera.y + y)) 
+			{
+				gui_list->data->SetFocus();
+				ret = false;
+			}
+		}
+		gui_list = gui_list->prev;
+	}
 	
 	return true;
 }
@@ -97,7 +104,8 @@ bool j1Gui::Update(float dt)
 	BROFILER_CATEGORY("Gui Update", Profiler::Color::LightGray);
 
 	p2List_item<GuiItem*>* gui_list = guiElements.start;
-	while (gui_list) {
+	while (gui_list) 
+	{
 		int x, y;
 		if (gui_list->data->focus)
 			gui_list->data->Input();
@@ -106,22 +114,21 @@ bool j1Gui::Update(float dt)
 		//	LOG("%d", gui_list->data->textureRect.h);
 		if (!gui_list->data->delayBlit) 
 		{
-
-		
-		if (gui_list->data->type == Types::text) 
-		{
-		App->render->Blit(gui_list->data->texture, x, y, &gui_list->data->textureRect);
-		}
-		else {
-			App->render->Blit(GetAtlas(), x, y, &gui_list->data->textureRect);
-			if (debug) 
+			if (gui_list->data->type == Types::text)
 			{
-				SDL_Rect* rect = gui_list->data->GetLocalRect();
-				rect->x = x;
-				rect->y = y;
-				App->render->DrawQuad(*rect, 0, 0, 255, 100);
+				App->render->Blit(gui_list->data->texture, x, y, &gui_list->data->textureRect);
 			}
-		}
+			else 
+			{
+				App->render->Blit(GetAtlas(), x, y, &gui_list->data->textureRect);
+				if (debug)
+				{
+					SDL_Rect* rect = gui_list->data->GetLocalRect();
+					rect->x = x;
+					rect->y = y;
+					App->render->DrawQuad(*rect, 0, 0, 255, 100);
+				}
+			}
 		}
 		gui_list = gui_list->next;
 	}
@@ -135,11 +142,13 @@ bool j1Gui::PostUpdate(float dt)
 	BROFILER_CATEGORY("Gui PostUpdate", Profiler::Color::GreenYellow);
 
 	p2List_item<GuiItem*>* gui_list = guiElements.start;
-	while (gui_list) {
+	while (gui_list) 
+	{
 		int x, y;
 		if (gui_list->data->focus)
+		{
 			gui_list->data->Input();
-
+		}
 		gui_list->data->GetScreenPos(x, y);
 		//	LOG("%d", gui_list->data->textureRect.h);
 		if (gui_list->data->delayBlit)
@@ -150,6 +159,7 @@ bool j1Gui::PostUpdate(float dt)
 			}
 			else {
 				App->render->Blit(GetAtlas(), x, y, &gui_list->data->textureRect);
+				//Check if debug mode is enabled
 				if (debug)
 				{
 					SDL_Rect* rect = gui_list->data->GetLocalRect();
@@ -161,12 +171,10 @@ bool j1Gui::PostUpdate(float dt)
 		}
 		gui_list = gui_list->next;
 	}
-
-
 	return true;
 }
 
-// Called before quitting
+// Called before quitting to clean all gui data and delete all elements
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
@@ -183,10 +191,12 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-void j1Gui::DeleteGuiElement() {
-
+//Delete a gui element
+void j1Gui::DeleteGuiElement() 
+{
 	p2List_item<GuiItem*>* gui_list = guiElements.end;
-	while (gui_list) {
+	while (gui_list) 
+	{
 		if (gui_list->data->to_delete == true) 
 		{
 			guiElements.del(gui_list);
@@ -206,7 +216,8 @@ SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-void j1Gui::IterateFocus() {
+void j1Gui::IterateFocus() 
+{
 	if (FocusIt == 0)
 	{
 		guiElements.At(guiElements.count()-1)->data->focus = false;
@@ -235,10 +246,11 @@ GuiItem::~GuiItem() {
 }
 
 
-GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiItem* parentnode, j1Module* callback, char* text) {
-
+GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiItem* parentnode, j1Module* callback, char* text) 
+{
 	GuiItem* ret;
-	switch (type) {
+	switch (type) 
+	{
 	case Types::image: ret = new GuiImage(x, y, rect, callback); ret->parent = parentnode; break;
 	case Types::text: ret = new GuiText(x, y, rect, text, callback); ret->parent = parentnode; break;
 	case Types::button: ret = new GuiButton(x, y, rect, callback); ret->parent = parentnode; break;
@@ -257,61 +269,54 @@ void j1Gui::sendInput(GuiItem* Item)
 	Item->CallBack->GuiInput(Item);
 }
 
-//Ui Classes
+//Check if something is inside the gui element
 bool GuiItem::checkBoundaries(int x, int y) 
 {
 	if (type == Types::button)
 		textureRect = idleRect; //idle Button
+
 	int posx, posy;
 	GetScreenPos(posx, posy);
 
-	if (x > posx && x < (posx + LocalRect.w))
-		if (y > posy && y < (posy + LocalRect.h)) {
+	if (x > posx && x < (posx + LocalRect.w)) 
+	{
+		if (y > posy && y < (posy + LocalRect.h)) 
+		{
 			if (type == Types::button)
-			textureRect = illuminatedRect; //Illuminated Button
+				textureRect = illuminatedRect; //Illuminated Button
 			return true;
 		}
+	}
 	return false;
 }
 
-void GuiItem::SetFocus() {
+//Set the focus to the gui element
+void GuiItem::SetFocus() 
+{
 	if (type != Types::text) 
 	{
 		if (App->gui->buttonPressed == true)
 		{
 			p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
-			while (gui_list) {
+			while (gui_list) 
+			{
 				gui_list->data->focus = false;
 				App->input->DisableTextInput();
 				gui_list = gui_list->prev;
 			}
 			focus = true;
 		}
-		else {
+		else 
+		{
 			focus = false;
 		}
 	}
 	else {
 		if (App->gui->buttonPressed == true)
 		{ 
-		p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
-		while (gui_list) {
-			gui_list->data->focus = false;
-			App->input->DisableTextInput();
-			gui_list = gui_list->prev;
-		}
-		App->input->EnableTextInput("");
-		focus = true;
-		}
-	}
-}
-
-void GuiItem::SetSingleFocus() {
-	
-		if (type == Types::text)
-		{
 			p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
-			while (gui_list) {
+			while (gui_list) 
+			{
 				gui_list->data->focus = false;
 				App->input->DisableTextInput();
 				gui_list = gui_list->prev;
@@ -319,12 +324,30 @@ void GuiItem::SetSingleFocus() {
 			App->input->EnableTextInput("");
 			focus = true;
 		}
+	}
+}
+
+void GuiItem::SetSingleFocus() 
+{
 	
+	if (type == Types::text)
+	{
+		p2List_item<GuiItem*>* gui_list = App->gui->guiElements.end;
+		while (gui_list) 
+		{
+			gui_list->data->focus = false;
+			App->input->DisableTextInput();
+			gui_list = gui_list->prev;
+		}
+		App->input->EnableTextInput("");
+		focus = true;
+	}
 }
 
 void GuiItem::Input() {
 
-	if (type == Types::button) {
+	if (type == Types::button) 
+	{
 		if (focus == true)
 		{
 			textureRect = pushedRect; //Pushed Button
@@ -332,36 +355,37 @@ void GuiItem::Input() {
 		}
 
 	}
-	if(parent!= nullptr){
-	if (parent->type == Types::slider) {
-		if (focus == true)
-		{
-			App->gui->sendInput(this);
-			parent->slide();
-		}
-
-	}
-
-	if (parent->type == Types::inputText) {
-
-		if (focus == true)
-		{
-			SDL_DestroyTexture(texture);
-			texture = App->font->Print(App->input->text.GetString());
-			App->font->CalcSize(App->input->text.GetString(), textureRect.w, textureRect.h);
-			
-			int x, y;
-			GetScreenPos(x, y);
-			App->render->DrawQuad({ x + textureRect.w, y, 1, textureRect.h }, 255, 255, 255);
-			if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN){
-				SetText(App->input->text.GetString());
+	if(parent!= nullptr)
+	{
+		if (parent->type == Types::slider) {
+			if (focus == true)
+			{
 				App->gui->sendInput(this);
-				focus = false;
-				App->input->DisableTextInput();
+				parent->slide();
 			}
 
 		}
-	}
+
+		if (parent->type == Types::inputText) {
+
+			if (focus == true)
+			{
+				SDL_DestroyTexture(texture);
+				texture = App->font->Print(App->input->text.GetString());
+				App->font->CalcSize(App->input->text.GetString(), textureRect.w, textureRect.h);
+
+				int x, y;
+				GetScreenPos(x, y);
+				App->render->DrawQuad({ x + textureRect.w, y, 1, textureRect.h }, 255, 255, 255);
+				if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+					SetText(App->input->text.GetString());
+					App->gui->sendInput(this);
+					focus = false;
+					App->input->DisableTextInput();
+				}
+
+			}
+		}
 	}
 }
 
@@ -538,13 +562,18 @@ GuiSlider::~GuiSlider() {
 
 }
 
-void GuiSlider::slide() {
+void GuiSlider::slide() 
+{
 	int x, y, LocalX, LocalY, ScreenX, ScreenY, parentx, parenty, difference, height;
 	App->input->GetMousePosition(x, y);
+
 	x -= 5 + App->render->camera.x;
 	y -= 5 + App->render->camera.y;
+
 	height = Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h + 1;
+
 	GetScreenPos(parentx, parenty);
+
 	ScrollThumb->GetScreenPos(ScreenX, ScreenY);
 	ScrollThumb->GetLocalPos(LocalX, LocalY);
 
@@ -556,18 +585,21 @@ void GuiSlider::slide() {
 			
 			ScrollThumb->SetLocalPos(LocalX, difference);
 		}
-		else {
+		else 
+		{
 			
 			ScrollThumb->SetLocalPos(LocalX, height);
 		}
 	}
-	else if (y < ScreenY){
+	else if (y < ScreenY)
+	{
 		difference = LocalY + y - ScreenY ;
 		if (ScreenY >= parenty) 
 		{
 			ScrollThumb->SetLocalPos(LocalX, difference);
 		}
-		else {
+		else 
+		{
 			int pos = -1;
 			ScrollThumb->SetLocalPos(LocalX, pos);
 		}
@@ -578,6 +610,7 @@ void GuiSlider::slide() {
 	}
 
 }
+
 float GuiSlider::returnSliderPos()
 {
 	float ratio;
@@ -597,8 +630,10 @@ void GuiSlider::returnChilds(GuiItem* imagepointer, GuiItem* ScrollPointer)
 	imagepointer = Image;
 	ScrollPointer = ScrollThumb;
 }
-const char* GuiText::GetText() const{
-	
+
+//--------------------------------------------------------------
+const char* GuiText::GetText() const
+{
 	return text;
 }
 
