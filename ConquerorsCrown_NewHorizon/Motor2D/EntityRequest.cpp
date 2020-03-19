@@ -50,6 +50,9 @@ bool EntityRequest::Update(float dt)
 				case SpawnTypes::SWORDMAN:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
+				case SpawnTypes::ARCHER:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_ARCHER, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
 				}
 			}
 			Queue.erase(Queue.begin() + i);
