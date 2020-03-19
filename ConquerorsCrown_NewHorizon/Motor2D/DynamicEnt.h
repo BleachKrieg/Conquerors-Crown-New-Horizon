@@ -18,6 +18,7 @@ public:
 	{
 		NO_TYPE,
 		TEST_1,
+		HUMAN_ARCHER,
 	};
 
 	// Constructor
@@ -39,6 +40,8 @@ public:
 
 
 protected:
+	uint life_points;
+
 	int followpath;
 	int collrange;
 	int vision;
