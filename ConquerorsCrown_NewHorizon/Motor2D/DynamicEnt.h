@@ -6,9 +6,9 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Entity.h"
+#include "SDL/include/SDL_render.h"
 
-
-
+struct SDL_Texture;
 
 class DynamicEnt : public j1Entity
 {
@@ -46,6 +46,7 @@ protected:
 	int collrange;
 	int vision;
 	bool move;
+	SDL_RendererFlip orientation;
 	iPoint origin, mouse, relative_target;
 	p2DynArray<iPoint> path;
 	list<j1Entity*> close_entity_list;

@@ -24,6 +24,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	collrange = 10;
 	position.x = posx;
 	position.y = posy;
+	orientation = SDL_FLIP_NONE;
 	to_delete = false;
 	isSelected = false;
 	selectable = true;
@@ -40,11 +41,19 @@ bool Test_1::Start()
 	
 	list<Animation*>::iterator animations_list;
 	animations_list = animations.begin();
-	test = **animations_list;
+	moving_up = **animations_list;
 	++animations_list;
-	test2 = **animations_list;
+	moving_diagonal_up = **animations_list;
+	++animations_list;
+	moving_right = **animations_list;
+	++animations_list;
+	moving_diagonal_down = **animations_list;
+	++animations_list;
+	moving_down = **animations_list;
+	++animations_list;
 
-	current_animation = &test2;
+	current_animation = &moving_up;
+
 	return true;
 }
 
@@ -151,21 +160,48 @@ bool Test_1::Update(float dt)
 				}
 			}
 		}
-			if (path.At(followpath)->x < origin.x) {
+			if (path.At(followpath)->x < origin.x && origin.y == path.At(followpath)->y) {
 				pathSpeed.x =- 1;
+				current_animation = &moving_right;
+				orientation = SDL_FLIP_HORIZONTAL;
 			}
 
-			if (path.At(followpath)->x > origin.x) {
+			if (path.At(followpath)->x > origin.x && origin.y == path.At(followpath)->y) {
 				pathSpeed.x =+ 1;
+				current_animation = &moving_right;
+				orientation = SDL_FLIP_NONE;
 			}
 
-			if (path.At(followpath)->y < origin.y) {
+			if (path.At(followpath)->y < origin.y && origin.x == path.At(followpath)->x) {
 				pathSpeed.y =- 1;
+				current_animation = &moving_up;
 			}
 
-			if (path.At(followpath)->y > origin.y) {
+			if (path.At(followpath)->y > origin.y && origin.x == path.At(followpath)->x) {
 				pathSpeed.y = 1;
+				current_animation = &moving_down;
 			}
+
+			if (path.At(followpath)->y < origin.y && path.At(followpath)->x < origin.x) {
+				pathSpeed.y = -1;
+				current_animation = &moving_diagonal_up;
+			}
+
+			if (path.At(followpath)->y > origin.y && path.At(followpath)->x < origin.x) {
+				pathSpeed.y = 1;
+				current_animation = &moving_diagonal_down;
+			}
+
+			if (path.At(followpath)->y < origin.y && path.At(followpath)->x > origin.x) {
+				pathSpeed.y = -1;
+				current_animation = &moving_diagonal_up;
+			}
+
+			if (path.At(followpath)->y > origin.y && path.At(followpath)->x > origin.x) {
+				pathSpeed.y = 1;
+				current_animation = &moving_diagonal_down;
+			}
+
 			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 			{
 				followpath++;
@@ -173,6 +209,8 @@ bool Test_1::Update(float dt)
 				
 		
 	}
+
+
 
 
 	list<j1Entity*>::iterator neighbours_it;
@@ -261,7 +299,7 @@ bool Test_1::Update(float dt)
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->foot_man_tex, (int)position.x-20, (int)position.y-20, r, 1.0f, 1.0f);
+	App->render->Blit(App->entity->foot_man_tex, (int)position.x-20, (int)position.y-20, r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
