@@ -45,10 +45,11 @@ public:
 
 
 	// Delete an entity
-	bool DeleteEntity(j1Entity* entity);
+	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
 
 public:
 	list<j1Entity*> entities;
+	SDL_Texture* foot_man_tex = nullptr;
 
 
 	// Load entities textures
