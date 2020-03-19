@@ -36,6 +36,10 @@ public:
 	//Animation idle;
 	int attackrange;
 	int collrange;
+	Animation inconstruction;
+	Animation finishedconst;
+	SDL_Rect Construction;
+	SDL_Rect Created;
 };
 
 #endif // __TEST_1_H__

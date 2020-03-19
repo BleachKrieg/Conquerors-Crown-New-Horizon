@@ -30,7 +30,7 @@ bool j1EntityManager::Start()
 {
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
-
+	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
 	return true;
 }
 
