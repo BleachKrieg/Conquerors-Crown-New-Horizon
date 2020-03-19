@@ -29,7 +29,7 @@ public:
 	// Clean
 	bool CleanUp();
 
-	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
+//	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
 private:
 	Animation moving_up;

@@ -36,6 +36,10 @@ public:
 
 	void CheckCollisions(fPoint* speed);
 
+	void Movement();
+
+	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
+
 public:
 
 

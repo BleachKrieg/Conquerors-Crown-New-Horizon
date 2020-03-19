@@ -21,9 +21,9 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 100;
-	vision = 20;
-	body = 7;
-	collrange = 10;
+	vision = 26;
+	body = 13;
+	collrange = 16;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -68,7 +68,7 @@ bool HumanFootman::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
 		to_delete = true;
 
-	j1Entity* it;
+	/*j1Entity* it;
 
 	list<j1Entity*>::iterator selected_it;
 
@@ -128,6 +128,7 @@ bool HumanFootman::Update(float dt)
 		}
 		followpath = 1;
 	}
+
 
 	fPoint pathSpeed{ 0,0 };
 	if (path.At(followpath) != NULL)
@@ -249,7 +250,9 @@ bool HumanFootman::Update(float dt)
 
 	position.y += speed.y;
 	position.x += speed.x;
+*/	
 
+	Movement();
 
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
@@ -276,30 +279,30 @@ bool HumanFootman::CleanUp()
 	return true;
 }
 
-void HumanFootman::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
-{
-	list<j1Entity*>::iterator entities_list;
-	j1Entity* it;
-	colliding_entity_list->clear();
-	close_entity_list->clear();
-
-	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-		it = *entities_list;
-		if (it != this && it->selectable)
-		{
-			int x = it->position.x;
-			int y = it->position.y;
-
-			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + it->body)
-			{
-				colliding_entity_list->push_back(it);
-
-			}
-			if (distance < vision + it->body)
-			{
-				close_entity_list->push_back(it);
-			}
-		}
-	}
-}
+//void HumanFootman::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
+//{
+//	list<j1Entity*>::iterator entities_list;
+//	j1Entity* it;
+//	colliding_entity_list->clear();
+//	close_entity_list->clear();
+//
+//	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
+//		it = *entities_list;
+//		if (it != this && it->selectable)
+//		{
+//			int x = it->position.x;
+//			int y = it->position.y;
+//
+//			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+//			if (distance < collrange + it->body)
+//			{
+//				colliding_entity_list->push_back(it);
+//
+//			}
+//			if (distance < vision + it->body)
+//			{
+//				close_entity_list->push_back(it);
+//			}
+//		}
+//	}
+//}
