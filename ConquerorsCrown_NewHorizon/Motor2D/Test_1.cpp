@@ -27,7 +27,7 @@ Test_1::Test_1(int posx, int posy) : DynamicEnt(DynamicEntityType::TEST_1)
 	to_delete = false;
 	isSelected = false;
 	selectable = true;
-	// Load all animations
+
 }
 
 Test_1::~Test_1()
@@ -35,7 +35,16 @@ Test_1::~Test_1()
 
 bool Test_1::Start()
 {
+	current_animation = NULL;
+	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx");
 	
+	list<Animation*>::iterator animations_list;
+	animations_list = animations.begin();
+	test = **animations_list;
+	++animations_list;
+	test2 = **animations_list;
+
+	current_animation = &test2;
 	return true;
 }
 
@@ -250,8 +259,9 @@ bool Test_1::Update(float dt)
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
-	App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
-
+	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
+	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
+	App->render->Blit(App->entity->foot_man_tex, (int)position.x-20, (int)position.y-20, r, 1.0f, 1.0f);
 	return true;
 }
 
