@@ -72,6 +72,9 @@
     <ClCompile Include="HumanArcher.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="HumanFootman.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -165,6 +168,9 @@
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
     <ClInclude Include="HumanArcher.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanFootman.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>
