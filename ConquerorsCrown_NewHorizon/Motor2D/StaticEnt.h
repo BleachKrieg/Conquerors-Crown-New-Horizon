@@ -38,6 +38,9 @@ public:
 	int vision;
 	int damage;
 	int armor;
+	bool finished;
+	int construction_time;
+	int timer;
 
 };
 
