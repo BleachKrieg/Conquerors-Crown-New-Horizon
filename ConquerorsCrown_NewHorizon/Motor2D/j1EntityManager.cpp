@@ -29,6 +29,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 bool j1EntityManager::Start()
 {
 
+	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 
 	return true;
 }
@@ -78,7 +79,7 @@ bool j1EntityManager::PostUpdate(float dt)
 		it = *entities_list;
 		if (it->to_delete == true)
 		{
-			DeleteEntity(it);
+			DeleteEntity(entities_list, it);
 		}
 		else
 		{
@@ -125,10 +126,10 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
-bool j1EntityManager::DeleteEntity(j1Entity* entity)
+bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity)
 {
-	/*entity->CleanUp();
-	entities.del(entities.At(entities.find(entity)));*/
+	entity->CleanUp();
+	entities.erase(entity_iterator);
 
 	return true;
 }
