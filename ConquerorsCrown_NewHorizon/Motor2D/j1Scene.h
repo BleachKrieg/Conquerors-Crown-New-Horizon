@@ -55,6 +55,7 @@ public:
 	SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
+	iPoint map_coordinates;
 };
 
 #endif // __j1SCENE_H__

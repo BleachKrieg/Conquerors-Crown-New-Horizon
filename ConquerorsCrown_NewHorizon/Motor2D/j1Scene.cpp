@@ -134,7 +134,10 @@ bool j1Scene::Update(float dt)
 	
 	App->map->Draw();
 
-
+	//This is to know the position of the mouse in tiles
+	int xmouse, ymouse;
+	App->input->GetMousePosition(xmouse, ymouse);
+	map_coordinates = App->map->WorldToMap(xmouse - App->render->camera.x, ymouse - App->render->camera.y);
 
 	return true;
 }
