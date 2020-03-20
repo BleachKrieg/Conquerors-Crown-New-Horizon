@@ -69,8 +69,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 	
-	Hello = App->tex->Load("textures/Hello-World.png");
-	debug_tex = App->tex->Load("textures/sprites/bullside.png");
+	debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	buttonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 444, 169, 244, 65 }, nullptr, this, NULL);
@@ -117,6 +116,10 @@ bool j1Scene::Update(float dt)
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
+	
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+	p = App->map->MapToWorld(p.x, p.y);
 
 	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -134,6 +137,7 @@ bool j1Scene::Update(float dt)
 	
 	App->map->Draw();
 
+	App->render->Blit(debug_tex, p.x, p.y);
 
 
 	return true;

@@ -51,7 +51,6 @@ private:
 
 public:
 	p2SString current_level;
-	SDL_Texture* Hello;
 	SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
