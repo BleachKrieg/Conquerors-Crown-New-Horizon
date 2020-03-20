@@ -22,8 +22,8 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	isSelected = false;
 	to_delete = false;
 	finished = false;
-	construction_time = 3000;
-	timer = 0;
+	construction_time = 3;
+
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
@@ -34,7 +34,7 @@ Test_3::~Test_3()
 
 bool Test_3::Start()
 {
-	timer = SDL_GetTicks();
+	timer.Start();
 
 	return true;
 }
@@ -65,7 +65,7 @@ bool Test_3::Update(float dt)
 		// Construction Animation
 		current_animation = &inconstruction;
 		
-		if (SDL_GetTicks() >= construction_time + timer)
+		if (timer.ReadSec() >= construction_time)
 		{
 			finished = true;
 		}
