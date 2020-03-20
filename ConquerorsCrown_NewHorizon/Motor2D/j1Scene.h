@@ -51,7 +51,7 @@ private:
 
 public:
 	p2SString current_level;
-	SDL_Texture* debug_tex;
+	//SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
 	iPoint map_coordinates;

@@ -69,7 +69,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 	
-	debug_tex = App->tex->Load("textures/maps/Tile_select.png");
+	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	buttonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 444, 169, 244, 65 }, nullptr, this, NULL);
@@ -132,7 +132,7 @@ bool j1Scene::Update(float dt)
 	}*/
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x, y);
+		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
 
 	
 	App->map->Draw();
@@ -143,7 +143,7 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(xmouse, ymouse);
 	map_coordinates = App->map->WorldToMap(xmouse - App->render->camera.x, ymouse - App->render->camera.y);
 
-	App->render->Blit(debug_tex, p.x, p.y);
+	//App->render->Blit(debug_tex, p.x, p.y);
 
 
 

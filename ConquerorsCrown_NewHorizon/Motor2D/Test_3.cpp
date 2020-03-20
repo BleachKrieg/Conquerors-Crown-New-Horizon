@@ -22,6 +22,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	isSelected = false;
 	to_delete = false;
 	finished = false;
+	preview = true;
 	construction_time = 3;
 
 	// Load all animations
@@ -34,7 +35,6 @@ Test_3::~Test_3()
 
 bool Test_3::Start()
 {
-	timer.Start();
 
 	return true;
 }
@@ -60,7 +60,7 @@ bool Test_3::Update(float dt)
 		// Finished Animation
 		current_animation = &finishedconst;
 	}
-	else
+	else if(!finished && !preview)
 	{
 		// Construction Animation
 		current_animation = &inconstruction;
@@ -70,6 +70,23 @@ bool Test_3::Update(float dt)
 			finished = true;
 		}
 	}
+	else if (preview)
+	{
+		current_animation = &finishedconst;
+
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			timer.Start();
+			GetTile();
+			position.x = p.x;
+			position.y = p.y;
+			preview = false;
+		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			to_delete = true;
+		}
+	}
 
 
 	if (App->scene->debug)
@@ -77,11 +94,24 @@ bool Test_3::Update(float dt)
 		App->render->DrawCircle(position.x , position.y + 5, vision, 0, 0, 200);
 		App->render->DrawCircle(position.x , position.y + 5, collrange, 200, 200, 0);
 		App->render->DrawCircle(position.x , position.y + 5, body, 0, 0, 200);
-		App->render->DrawQuad({ (int)position.x-50, (int)position.y-50, 100, 100 }, 200, 0, 0, 200, false);
+		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
 	}
 
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x-50, (int)position.y-50, r, 1.0f, 1.0f);
+
+	// This is for the preview option
+	if (!preview)
+	{
+		App->render->Blit(App->entity->building, p.x-50, p.y-50, r, 1.0f, 1.0f);
+	}
+	else
+	{
+		GetTile();
+
+		App->render->Blit(App->entity->building, p.x - 50, p.y - 50, r, 1.0f, 1.0f);
+		App->render->DrawQuad({ p.x - 50, p.y - 50, 96, 95 }, 0, 200, 0, 100);
+	}
+	
 	return true;
 }
 
