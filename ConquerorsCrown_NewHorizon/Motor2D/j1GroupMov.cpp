@@ -80,7 +80,7 @@ bool j1GroupMov::Update(float dt) {
 			if (it->selectable == false) 
 			{
 				int xstatic = it->position.x, ystatic = it->position.y;
-				if (mouse.x > xstatic && mouse.x < xstatic + 100 && mouse.y > ystatic && mouse.y < ystatic + 100)
+				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
 				{
 					it->isSelected = true;
 				}

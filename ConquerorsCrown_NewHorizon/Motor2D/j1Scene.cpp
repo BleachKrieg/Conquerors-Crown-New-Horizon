@@ -129,7 +129,7 @@ bool j1Scene::Update(float dt)
 	}*/
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x-50, y-40);
+		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x, y);
 
 	
 	App->map->Draw();

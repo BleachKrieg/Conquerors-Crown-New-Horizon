@@ -49,7 +49,7 @@ bool Test_3::Update(float dt)
 	{
 		if (isSelected == true)
 		{
-			App->render->DrawQuad({ (int)position.x - 3, (int)position.y - 3, 100, 100 }, 200, 0, 0, 200, false);
+			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
@@ -77,11 +77,11 @@ bool Test_3::Update(float dt)
 		App->render->DrawCircle(position.x , position.y + 5, vision, 0, 0, 200);
 		App->render->DrawCircle(position.x , position.y + 5, collrange, 200, 200, 0);
 		App->render->DrawCircle(position.x , position.y + 5, body, 0, 0, 200);
-		App->render->DrawQuad({ (int)position.x, (int)position.y, 100, 100 }, 200, 0, 0, 200, false);
+		App->render->DrawQuad({ (int)position.x-50, (int)position.y-50, 100, 100 }, 200, 0, 0, 200, false);
 	}
 
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x-32, (int)position.y-32, r, 1.0f, 1.0f);
+	App->render->Blit(App->entity->building, (int)position.x-50, (int)position.y-50, r, 1.0f, 1.0f);
 	return true;
 }
 
