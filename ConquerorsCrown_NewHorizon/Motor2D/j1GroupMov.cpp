@@ -59,7 +59,6 @@ bool j1GroupMov::Update(float dt) {
 	
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		LOG("KEYREPEAT");
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
@@ -73,7 +72,6 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		LOG("KEYRup");
 		list<j1Entity*>::iterator entities_list;
 		j1Entity* it;
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
@@ -178,7 +176,7 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-
+		LOG("%f", separationSpeed.x);
 	
 	return separationSpeed;
 }
