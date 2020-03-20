@@ -40,6 +40,7 @@ public:
 	Animation finishedconst;
 	SDL_Rect Construction;
 	SDL_Rect Created;
+
 };
 
 #endif // __TEST_1_H__

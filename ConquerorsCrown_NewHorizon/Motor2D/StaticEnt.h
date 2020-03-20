@@ -40,7 +40,7 @@ public:
 	int armor;
 	bool finished;
 	int construction_time;
-	int timer;
+	j1Timer timer;
 
 };
 
