@@ -188,7 +188,9 @@ public:
 
 private:
 	p2SString atlas_file_name;
+	p2SString icons_file_name;
 	SDL_Texture* atlas;
+	SDL_Texture* icons;
 
 	int xblit, yblit;
 public:

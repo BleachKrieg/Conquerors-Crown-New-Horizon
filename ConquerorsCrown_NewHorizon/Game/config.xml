@@ -19,7 +19,8 @@
   </window>
 
   <gui>
-      <atlas file="textures/UI/ui.png"/>
+      <atlas file="textures/gui/ui.png"/>
+      <icons file="textures/gui/icons.png"/>
   </gui>
 
   <audio>

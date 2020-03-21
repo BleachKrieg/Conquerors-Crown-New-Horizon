@@ -30,6 +30,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	//Get the path to the atlas file
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	icons_file_name = conf.child("icons").attribute("file").as_string("");
 	
 	return ret;
 }
@@ -39,6 +40,7 @@ bool j1Gui::Start()
 {
 	//Load the atlas file
 	atlas = App->tex->Load(atlas_file_name.GetString());
+	icons = App->tex->Load(icons_file_name.GetString());
 
 	FocusIt = 0;
 	//Turn debug off
@@ -258,7 +260,6 @@ GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiIte
 	case Types::slider: ret = new GuiSlider(x, y, rect, callback); ret->parent = parentnode; break;
 	}
 
-	
 	guiElements.add(ret);
 
 	return ret;
