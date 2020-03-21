@@ -80,6 +80,7 @@ bool Test_3::Update(float dt)
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
+			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
 			position.x = p.x;
@@ -103,12 +104,13 @@ bool Test_3::Update(float dt)
 		}
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			App->scene->Building_preview = false;
 			to_delete = true;
 		}
 	}
 
 
-	if (App->scene->debug)
+	if (App->scene->debug && !preview)
 	{
 		App->render->DrawCircle(position.x , position.y, vision, 0, 0, 200);
 		App->render->DrawCircle(position.x , position.y, collrange, 200, 200, 0);
@@ -129,8 +131,6 @@ bool Test_3::Update(float dt)
 				App->render->DrawQuad({ (int)(position.x + i * 32), (int)(position.y + j * 32), 32, 32 }, 200, 0, 0, 50);
 			}
 		}
-
-		
 
 	}
 

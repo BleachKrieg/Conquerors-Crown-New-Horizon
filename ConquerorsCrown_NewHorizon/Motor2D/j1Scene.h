@@ -54,6 +54,7 @@ public:
 	//SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
+	bool Building_preview;
 	iPoint map_coordinates;
 };
 

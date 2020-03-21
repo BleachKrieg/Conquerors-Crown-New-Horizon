@@ -19,7 +19,7 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-
+	Building_preview = false;
 }
 
 // Destructor
@@ -131,8 +131,11 @@ bool j1Scene::Update(float dt)
 		App->requests->AddRequest(Petition::SPAWN, 3.f, SpawnTypes::SWORDMAN, { x, y });
 	}*/
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !Building_preview) 
+	{
 		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
+		Building_preview = true;
+	}
 
 	
 	App->map->Draw();
