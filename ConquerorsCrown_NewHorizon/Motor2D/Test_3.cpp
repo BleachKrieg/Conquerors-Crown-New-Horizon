@@ -9,6 +9,7 @@
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
+#include "j1Pathfinding.h"
 
 Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 {
@@ -16,7 +17,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
-	body = 20;
+	body = 45;
 	collrange = 25;
 	selectable = false;
 	isSelected = false;
@@ -42,6 +43,9 @@ bool Test_3::Start()
 bool Test_3::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+		to_delete = true;
 
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	
@@ -80,6 +84,21 @@ bool Test_3::Update(float dt)
 			GetTile();
 			position.x = p.x;
 			position.y = p.y;
+
+			iPoint pos = { (int)position.x, (int)position.y };
+			pos = App->map->WorldToMap(pos.x, pos.y);
+			iPoint tempPos = pos;
+
+			for (int i = -1; i < 2; i++)
+			{
+				for (int j = -1; j < 2; j++)
+				{
+					tempPos.x = pos.x + i;
+					tempPos.y = pos.y + j;
+					App->pathfinding->ChangeWalkability(tempPos, false);
+				}
+			}
+		
 			preview = false;
 		}
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -91,10 +110,28 @@ bool Test_3::Update(float dt)
 
 	if (App->scene->debug)
 	{
-		App->render->DrawCircle(position.x , position.y + 5, vision, 0, 0, 200);
-		App->render->DrawCircle(position.x , position.y + 5, collrange, 200, 200, 0);
-		App->render->DrawCircle(position.x , position.y + 5, body, 0, 0, 200);
+		App->render->DrawCircle(position.x , position.y, vision, 0, 0, 200);
+		App->render->DrawCircle(position.x , position.y, collrange, 200, 200, 0);
+		App->render->DrawCircle(position.x , position.y, body, 0, 0, 200);
 		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
+		
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
+
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				tempPos = App->map->MapToWorld(tempPos.x, tempPos.y);
+				App->render->DrawQuad({ (int)(position.x + i * 32), (int)(position.y + j * 32), 32, 32 }, 200, 0, 0, 50);
+			}
+		}
+
+		
+
 	}
 
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
@@ -124,6 +161,18 @@ bool Test_3::PostUpdate(float dt)
 
 bool Test_3::CleanUp()
 {
+	iPoint pos = { (int)position.x, (int)position.y };
+	pos = App->map->WorldToMap(pos.x, pos.y);
+	iPoint tempPos = pos;
 
+	for (int i = -1; i < 2; i++)
+	{
+		for (int j = -1; j < 2; j++)
+		{
+			tempPos.x = pos.x + i;
+			tempPos.y = pos.y + j;
+			App->pathfinding->ChangeWalkability(tempPos, true);
+		}
+	}
 	return true;
 }

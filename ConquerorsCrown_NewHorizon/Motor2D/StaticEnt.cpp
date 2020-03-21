@@ -36,4 +36,6 @@ void  StaticEnt::GetTile()
 	p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 	p = App->map->MapToWorld(p.x, p.y);
+	p.x -= 16;
+	p.y -= 16;
 }

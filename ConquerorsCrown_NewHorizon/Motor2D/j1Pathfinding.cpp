@@ -49,6 +49,18 @@ bool j1PathFinding::IsWalkable(const iPoint& pos) const
 	return t != INVALID_WALK_CODE && t > 0;
 }
 
+void j1PathFinding::ChangeWalkability(const iPoint& pos, bool isWalkable)
+{
+	if (CheckBoundaries(pos))
+	{
+		if(isWalkable)
+			map[(pos.y * width) + pos.x] = 1;
+		else
+		{
+			map[(pos.y * width) + pos.x] = 0;
+		}
+	}
+}
 
 uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 {

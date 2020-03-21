@@ -38,7 +38,8 @@ public:
 
 	bool IsWalkable(const iPoint& pos) const;
 
-	
+	void ChangeWalkability(const iPoint& pos, bool isWalkable);
+
 	uchar GetTileAt(const iPoint& pos) const;
 
 	void SavePath(p2DynArray<iPoint>* path);

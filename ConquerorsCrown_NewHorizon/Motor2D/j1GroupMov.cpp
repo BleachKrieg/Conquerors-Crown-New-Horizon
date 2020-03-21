@@ -176,7 +176,6 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-		LOG("%f", separationSpeed.x);
 	
 	return separationSpeed;
 }
