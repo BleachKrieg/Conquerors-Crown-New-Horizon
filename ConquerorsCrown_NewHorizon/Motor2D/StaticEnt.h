@@ -44,7 +44,8 @@ public:
 	int armor;
 	bool finished;
 	bool preview;
-	iPoint p; // Preview mode
+	bool canbuild;
+	iPoint map, world; // Preview mode
 	int x, y; // Preview mode
 	int construction_time;
 	j1Timer timer;

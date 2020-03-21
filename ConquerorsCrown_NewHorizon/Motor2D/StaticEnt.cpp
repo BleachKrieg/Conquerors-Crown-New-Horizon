@@ -33,9 +33,7 @@ bool StaticEnt::CleanUp()
 void  StaticEnt::GetTile()
 {
 	App->input->GetMousePosition(x, y);
-	p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
-	p.x -= 16;
-	p.y -= 16;
+	world = App->render->ScreenToWorld(x, y);
+	map = App->map->WorldToMap(world.x, world.y);
+	world = App->map->MapToWorld(map.x, map.y);
 }

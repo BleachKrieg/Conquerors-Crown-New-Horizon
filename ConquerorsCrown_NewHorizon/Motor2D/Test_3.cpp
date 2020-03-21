@@ -24,6 +24,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	to_delete = false;
 	finished = false;
 	preview = true;
+	canbuild = false;
 	construction_time = 3;
 
 	// Load all animations
@@ -78,13 +79,13 @@ bool Test_3::Update(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
 			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
-			position.x = p.x;
-			position.y = p.y;
+			position.x = world.x;
+			position.y = world.y;
 
 			iPoint pos = { (int)position.x, (int)position.y };
 			pos = App->map->WorldToMap(pos.x, pos.y);
@@ -139,14 +140,27 @@ bool Test_3::Update(float dt)
 	// This is for the preview option
 	if (!preview)
 	{
-		App->render->Blit(App->entity->building, p.x-50, p.y-50, r, 1.0f, 1.0f);
+		App->render->Blit(App->entity->building, world.x-50, world.y-50, r, 1.0f, 1.0f);
 	}
 	else
 	{
 		GetTile();
 
-		App->render->Blit(App->entity->building, p.x - 50, p.y - 50, r, 1.0f, 1.0f);
-		App->render->DrawQuad({ p.x - 50, p.y - 50, 96, 95 }, 0, 200, 0, 100);
+		//LOG("%i, %i", map.x, map.y);
+		//LOG("%i, %i", world.x, world.y);
+
+		if (App->pathfinding->IsWalkable(map) == true)
+		{
+			canbuild = true;
+			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 0, 200, 0, 100);
+		}
+		else
+		{
+			canbuild = false;
+			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 200, 0, 0, 100);
+		}
 	}
 	
 	return true;
@@ -161,17 +175,21 @@ bool Test_3::PostUpdate(float dt)
 
 bool Test_3::CleanUp()
 {
-	iPoint pos = { (int)position.x, (int)position.y };
-	pos = App->map->WorldToMap(pos.x, pos.y);
-	iPoint tempPos = pos;
-
-	for (int i = -1; i < 2; i++)
+	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
+	if (finished)
 	{
-		for (int j = -1; j < 2; j++)
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
+
+		for (int i = -1; i < 2; i++)
 		{
-			tempPos.x = pos.x + i;
-			tempPos.y = pos.y + j;
-			App->pathfinding->ChangeWalkability(tempPos, true);
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				App->pathfinding->ChangeWalkability(tempPos, true);
+			}
 		}
 	}
 	return true;
