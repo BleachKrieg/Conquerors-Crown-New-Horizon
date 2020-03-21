@@ -28,6 +28,9 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
+	void CheckWalkable(iPoint map);
+
 	// Animation
 
 public:

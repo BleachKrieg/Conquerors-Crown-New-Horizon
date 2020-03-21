@@ -84,6 +84,8 @@ bool Test_3::Update(float dt)
 			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
+			world.x += 32;
+			world.y += 32;
 			position.x = world.x;
 			position.y = world.y;
 
@@ -145,19 +147,21 @@ bool Test_3::Update(float dt)
 	else
 	{
 		GetTile();
+		world.x += 32;
+		world.y += 32;
 
 		//LOG("%i, %i", map.x, map.y);
 		//LOG("%i, %i", world.x, world.y);
 
-		if (App->pathfinding->IsWalkable(map) == true)
+		CheckWalkable(map);
+
+		if (canbuild)
 		{
-			canbuild = true;
 			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
 			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 0, 200, 0, 100);
 		}
 		else
 		{
-			canbuild = false;
 			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
 			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 200, 0, 0, 100);
 		}
@@ -193,4 +197,36 @@ bool Test_3::CleanUp()
 		}
 	}
 	return true;
+}
+
+void Test_3::CheckWalkable(iPoint map)
+{
+	map.x -= 2;
+	map.y -= 2;
+
+	int tiles = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		map.y += 1;
+
+		for (int d = 0; d < 3; d++)
+		{
+			map.x += 1;
+			
+			if (App->pathfinding->IsWalkable(map) == true)
+			{
+				tiles++;
+			}
+		}
+		map.x -= 3;
+	}
+	if (tiles == 9)
+	{
+		canbuild = true;
+	}
+	else
+	{
+		canbuild = false;
+	}
 }
