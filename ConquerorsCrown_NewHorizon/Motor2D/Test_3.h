@@ -8,6 +8,8 @@
 #include "j1Entity.h"
 #include "StaticEnt.h"
 #include "EntityRequest.h"
+#include "j1Audio.h"
+#include "SDL_mixer\include\SDL_mixer.h"
 
 class Test_3 : public StaticEnt
 {
@@ -30,6 +32,9 @@ public:
 	bool CleanUp();
 	// Animation
 
+	//Spatial Audio
+	void SpatialAudio(int channel);
+
 public:
 	// Animations
 	Animation* current_animation = nullptr;
@@ -40,6 +45,9 @@ public:
 	Animation finishedconst;
 	SDL_Rect Construction;
 	SDL_Rect Created;
+
+	int d;
+	int counter = 0;
 };
 
 #endif // __TEST_1_H__

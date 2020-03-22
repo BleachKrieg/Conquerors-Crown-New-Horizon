@@ -46,9 +46,6 @@ public:
 	void musicvolume(float value);
 	float fxvolume(float value);
 
-	//Spatial Audio
-	void SpatialAudio(int channel);
-
 public:
 
 	//Player FX
@@ -66,7 +63,8 @@ public:
 	int coinpickupFx;
 	int extraLifeFx;*/
 
-	int troop_moving;
+	int construction;
+
 	//ButtonFX
 	int buttonFx;
 private:
@@ -77,8 +75,6 @@ private:
 	p2SString			fx_directory;
 	float volumemusic;
 	float volumefx;
-
-	int d;
 };
 
 #endif // __j1AUDIO_H__

@@ -231,8 +231,9 @@ void j1App::FinishUpdate()
 	
 	static char title[256];
 
-	sprintf_s(title, 256, "Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s ",
-		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString());
+	sprintf_s(title, 256, "Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Camera: %i %i",
+		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(), App->render->camera.x,
+		App->render->camera.y);
 	
 	App->win->SetTitle(title);
 

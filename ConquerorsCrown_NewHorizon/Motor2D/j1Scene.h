@@ -43,8 +43,6 @@ public:
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-
-
 	
 private:
 	bool changeEntities = false;
@@ -55,6 +53,7 @@ public:
 	SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
+
 };
 
 #endif // __j1SCENE_H__

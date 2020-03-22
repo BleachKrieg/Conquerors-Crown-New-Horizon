@@ -62,7 +62,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 		ret = true;
 	}
 
-	troop_moving = LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience.wav");
+	construction = App->audio->LoadFx("Audio/SFX/Buildings/Construction_Loop_2.wav");
 
 	/*moveFx = LoadFx("audio/fx/move.wav");
 	jumpFx = LoadFx("audio/fx/jump.wav");
@@ -241,33 +241,4 @@ void j1Audio::musicvolume(float value) {
 float j1Audio::fxvolume(float value) {
 	volumefx = value;
 	return volumefx;
-}
-
-void j1Audio::SpatialAudio(int channel){
-	Mix_HaltChannel(-1);
-
-	d = App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y;
-	d = d / 500;
-	int volume = (d * 255) / App->render->camera.w;
-	if (volume < 0) {
-		volume = 0;
-	}
-	if (volume > 255) {
-		volume = 255;
-	}
-
-	float angle = 0;
-
-	if (App->render->camera.y == 0) {
-		angle = atan(App->render->camera.x);
-	}
-	else if (App->render->camera.y <= 0) {
-		angle = atan(-App->render->camera.x / App->render->camera.y);
-	}
-	else {
-		angle = atan(App->render->camera.x / App->render->camera.y);
-	}
-	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
-
-	Mix_SetPosition(channel, angle, volume);
 }
