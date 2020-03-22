@@ -30,7 +30,7 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int repeat = 0);
+	bool PlayFx(int channel, unsigned int fx, int repeat = 0);
 
 	//Stop FX channel
 	void StopFx();
@@ -46,10 +46,13 @@ public:
 	void musicvolume(float value);
 	float fxvolume(float value);
 
+	//Spatial Audio
+	void SpatialAudio(int channel);
+
 public:
 
 	//Player FX
-	int moveFx;
+	/*int moveFx;
 	int jumpFx;
 	int dashFx;
 	int winFx;
@@ -61,7 +64,9 @@ public:
 	int wizarDeathFx;
 	int slimeDeathFx;
 	int coinpickupFx;
-	int extraLifeFx;
+	int extraLifeFx;*/
+
+	int troop_moving;
 	//ButtonFX
 	int buttonFx;
 private:
@@ -72,6 +77,8 @@ private:
 	p2SString			fx_directory;
 	float volumemusic;
 	float volumefx;
+
+	int d;
 };
 
 #endif // __j1AUDIO_H__

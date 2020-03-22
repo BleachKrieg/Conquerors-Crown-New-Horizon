@@ -2,6 +2,11 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
+#include "j1Render.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
+#include "DynamicEnt.h"
+#include "StaticEnt.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -57,7 +62,9 @@ bool j1Audio::Awake(pugi::xml_node & config)
 		ret = true;
 	}
 
-	moveFx = LoadFx("audio/fx/move.wav");
+	troop_moving = LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience.wav");
+
+	/*moveFx = LoadFx("audio/fx/move.wav");
 	jumpFx = LoadFx("audio/fx/jump.wav");
 	dashFx = LoadFx("audio/fx/dash.wav");
 	winFx = LoadFx("audio/fx/win.wav");
@@ -70,7 +77,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	slimeDeathFx = LoadFx("audio/fx/slime_death.wav");
 	coinpickupFx = LoadFx("audio/fx/coin.wav");
 	buttonFx = LoadFx("audio/fx/button.wav");
-	extraLifeFx = LoadFx("audio/fx/extralife.wav");
+	extraLifeFx = LoadFx("audio/fx/extralife.wav");*/
 	return ret;
 }
 
@@ -185,7 +192,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
 
@@ -234,4 +241,33 @@ void j1Audio::musicvolume(float value) {
 float j1Audio::fxvolume(float value) {
 	volumefx = value;
 	return volumefx;
+}
+
+void j1Audio::SpatialAudio(int channel){
+	Mix_HaltChannel(-1);
+
+	d = App->render->camera.x * App->render->camera.x + App->render->camera.y * App->render->camera.y;
+	d = d / 500;
+	int volume = (d * 255) / App->render->camera.w;
+	if (volume < 0) {
+		volume = 0;
+	}
+	if (volume > 255) {
+		volume = 255;
+	}
+
+	float angle = 0;
+
+	if (App->render->camera.y == 0) {
+		angle = atan(App->render->camera.x);
+	}
+	else if (App->render->camera.y <= 0) {
+		angle = atan(-App->render->camera.x / App->render->camera.y);
+	}
+	else {
+		angle = atan(App->render->camera.x / App->render->camera.y);
+	}
+	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
+
+	Mix_SetPosition(channel, angle, volume);
 }

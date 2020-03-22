@@ -131,10 +131,12 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, x-50, y-40);
 
-	
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		App->audio->SpatialAudio(1);
+		App->audio->PlayFx(1, App->audio->troop_moving, 10);
+	}
+
 	App->map->Draw();
-
-
 
 	return true;
 }
