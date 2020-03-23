@@ -37,9 +37,8 @@ Test_1::~Test_1()
 bool Test_1::Start()
 {
 	current_animation = NULL;
-	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx");
 	
-	list<Animation*>::iterator animations_list;
+	/*list<Animation*>::iterator animations_list;
 	animations_list = animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
@@ -52,7 +51,7 @@ bool Test_1::Start()
 	moving_down = **animations_list;
 	++animations_list;
 
-	current_animation = &moving_up;
+	current_animation = &moving_up;*/
 
 	return true;
 }

@@ -38,10 +38,9 @@ HumanArcher::~HumanArcher() {}
 bool HumanArcher::Start()
 {
 	current_animation = NULL;
-	LoadAnimations("textures/units/Human Units Animations/archer_animations.tmx");
 
 	list<Animation*>::iterator animations_list;
-	animations_list = animations.begin();
+	animations_list = App->entity->archer_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;
@@ -255,7 +254,7 @@ Movement();
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->foot_man_tex, (int)position.x - 20, (int)position.y - 20, r, 1.0f, 1.0f, orientation);
+	App->render->Blit(App->entity->arch_man, (int)position.x - 20, (int)position.y - 20, r, 1.0f, 1.0f, orientation);
 	return true;
 }
 

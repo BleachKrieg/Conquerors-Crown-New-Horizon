@@ -38,10 +38,9 @@ HumanFootman::~HumanFootman() {}
 bool HumanFootman::Start()
 {
 	current_animation = NULL;
-	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx");
 
 	list<Animation*>::iterator animations_list;
-	animations_list = animations.begin();
+	animations_list = App->entity->footman_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;

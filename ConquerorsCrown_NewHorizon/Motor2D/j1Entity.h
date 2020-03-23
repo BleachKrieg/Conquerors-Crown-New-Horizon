@@ -48,12 +48,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void LoadAnimations(const char* path);
-
 protected:
-	TileSetEntity TileSetData;
 	Animation* current_animation = nullptr;
-	list<Animation*> animations;
 
 public: 	
 	bool isSelected;
