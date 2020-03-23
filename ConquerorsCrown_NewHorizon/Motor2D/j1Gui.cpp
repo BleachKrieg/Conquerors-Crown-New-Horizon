@@ -10,8 +10,6 @@
 #include "Brofiler/Brofiler.h"
 
 
-
-
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");

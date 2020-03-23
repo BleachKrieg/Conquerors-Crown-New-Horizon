@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "SDL\include\SDL_pixels.h"
 
-#define DEFAULT_FONT "fonts/StackedPixel.ttf"
+#define DEFAULT_FONT "fonts/alagard.ttf"
 #define DEFAULT_FONT_SIZE 12
 
 struct SDL_Texture;
