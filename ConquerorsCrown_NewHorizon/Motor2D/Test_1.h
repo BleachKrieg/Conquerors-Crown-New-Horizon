@@ -32,8 +32,11 @@ public:
 	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
 	private:
-		Animation test;
-		Animation test2;
+		Animation moving_up;
+		Animation moving_diagonal_up;
+		Animation moving_right;
+		Animation moving_diagonal_down;
+		Animation moving_down;
 
 };
 

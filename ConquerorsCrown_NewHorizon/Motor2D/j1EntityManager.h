@@ -46,9 +46,20 @@ public:
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
 
+	void LoadAnimations(const char* path, list<Animation*>& animations);
+
+protected:
+	TileSetEntity TileSetData;
+
 public:
 	list<j1Entity*> entities;
 	SDL_Texture* foot_man_tex = nullptr;
+	SDL_Texture* arch_man = nullptr;
+
+	// Animations
+	list<Animation*> archer_animations;
+	list<Animation*> footman_animations;
+
 	SDL_Texture* building = nullptr;
 
 	// Load entities textures
