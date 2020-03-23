@@ -7,7 +7,7 @@
 #include "p2DynArray.h"
 #include "j1Entity.h"
 #include "StaticEnt.h"
-
+#include "EntityRequest.h"
 
 class Test_3 : public StaticEnt
 {
@@ -28,6 +28,9 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
+	void CheckWalkable(iPoint map);
+
 	// Animation
 
 public:
@@ -35,6 +38,13 @@ public:
 	Animation* current_animation = nullptr;
 	//Animation idle;
 	int attackrange;
+	int collrange;
+	Animation inconstruction;
+	Animation finishedconst;
+	SDL_Rect Construction;
+	SDL_Rect Created;
+
+
 
 };
 

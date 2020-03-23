@@ -50,7 +50,7 @@ public:
 public:
 	list<j1Entity*> entities;
 	SDL_Texture* foot_man_tex = nullptr;
-
+	SDL_Texture* building = nullptr;
 
 	// Load entities textures
 	p2SString test_1;
