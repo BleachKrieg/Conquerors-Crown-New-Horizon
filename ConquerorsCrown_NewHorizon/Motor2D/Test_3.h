@@ -30,6 +30,9 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
+	void CheckWalkable(iPoint map);
+
 	// Animation
 
 	//Spatial Audio
@@ -47,6 +50,7 @@ public:
 	SDL_Rect Created;
 
 	int counter = 0;
+
 };
 
 #endif // __TEST_1_H__

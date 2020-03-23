@@ -49,11 +49,11 @@ private:
 
 public:
 	p2SString current_level;
-	SDL_Texture* Hello;
-	SDL_Texture* debug_tex;
+	//SDL_Texture* debug_tex;
 	GuiItem* buttonNewGame;
 	bool debug;
-
+	bool Building_preview;
+	iPoint map_coordinates;
 };
 
 #endif // __j1SCENE_H__
