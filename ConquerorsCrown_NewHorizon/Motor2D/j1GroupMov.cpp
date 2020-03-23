@@ -207,8 +207,9 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		cohesionSpeed.y = position.y - MassCenter.y;
 
 		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
+		LOG("%f, %f", cohesionSpeed.x, cohesionSpeed.y);
 
-		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
+		if (cohesionSpeed.x < 14 && cohesionSpeed.x > -14)
 		{
 			cohesionSpeed.x = 0;
 		}
@@ -216,7 +217,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		{
 			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
 		}
-		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
+		if (cohesionSpeed.y < 14 && cohesionSpeed.y > -14)
 		{
 			cohesionSpeed.y = 0;
 		}

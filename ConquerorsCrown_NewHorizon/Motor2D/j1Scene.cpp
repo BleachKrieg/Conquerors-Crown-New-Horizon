@@ -121,15 +121,15 @@ bool j1Scene::Update(float dt)
 	p = App->map->WorldToMap(p.x, p.y);
 	p = App->map->MapToWorld(p.x, p.y);
 
-	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { x, y });
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		App->requests->AddRequest(Petition::SPAWN, 3.f, SpawnTypes::SWORDMAN, { x, y });
-	}*/
+		App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { x, y });
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !Building_preview) 
 	{
