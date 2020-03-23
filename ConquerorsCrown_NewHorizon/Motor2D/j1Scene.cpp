@@ -130,7 +130,6 @@ bool j1Scene::Update(float dt)
 	{
 		App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { x, y });
 	}
-		App->requests->AddRequest(Petition::SPAWN, 3.f, SpawnTypes::SWORDMAN, { x, y });
 
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN && !Building_preview) 
 	{

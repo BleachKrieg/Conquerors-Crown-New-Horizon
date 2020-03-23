@@ -57,6 +57,13 @@ protected:
 	list<j1Entity*> close_entity_list;
 	list<j1Entity*> colliding_entity_list;
 
+	// Animations ------------------------
+	Animation moving_up;
+	Animation moving_diagonal_up;
+	Animation moving_right;
+	Animation moving_diagonal_down;
+	Animation moving_down;
+	// -----------------------------------
 	
 };
 

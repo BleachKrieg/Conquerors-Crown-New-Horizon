@@ -248,7 +248,7 @@ bool HumanArcher::Update(float dt)
 	//position.y += speed.y;
 	//position.x += speed.x;
 
-Movement();
+	Movement();
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
