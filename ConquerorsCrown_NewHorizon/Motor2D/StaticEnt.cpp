@@ -29,3 +29,13 @@ bool StaticEnt::CleanUp()
 
 	return true;
 }
+
+void  StaticEnt::GetTile()
+{
+	App->input->GetMousePosition(x, y);
+	world = App->render->ScreenToWorld(x, y);
+	map = App->map->WorldToMap(world.x, world.y);
+	world = App->map->MapToWorld(map.x, map.y);
+	world.x-= 14;
+	world.y-= 14;
+}

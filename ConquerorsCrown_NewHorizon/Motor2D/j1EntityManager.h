@@ -60,6 +60,7 @@ public:
 	list<Animation*> archer_animations;
 	list<Animation*> footman_animations;
 
+	SDL_Texture* building = nullptr;
 
 	// Load entities textures
 	p2SString test_1;

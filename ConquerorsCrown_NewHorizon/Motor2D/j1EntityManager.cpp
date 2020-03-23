@@ -36,6 +36,7 @@ bool j1EntityManager::Start()
 	LoadAnimations("textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
 
+	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
 	return true;
 }
 

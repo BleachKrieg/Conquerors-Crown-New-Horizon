@@ -332,7 +332,7 @@ void Test_1::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>*
 
 	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 		it = *entities_list;
-		if (it != this && it->selectable)
+		if (it != this)
 		{
 			int x = it->position.x;
 			int y = it->position.y;
