@@ -46,7 +46,6 @@ public:
 	SDL_Rect Construction;
 	SDL_Rect Created;
 
-	int d;
 	int counter = 0;
 };
 

@@ -107,7 +107,8 @@ bool Test_3::CleanUp()
 void Test_3::SpatialAudio(int channel) {
 	
 	Mix_HaltChannel(-1);
-
+	
+	float d;
 	d = position.x * position.x + position.y * position.y;
 	d = d / 500;
 	int volume = (d * 255) / App->render->camera.w;
