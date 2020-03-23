@@ -19,7 +19,7 @@
   </window>
 
   <gui>
-      <atlas file="textures/gui/ui.png"/>
+      <atlas file="textures/gui/Ui_Atlas.png"/>
       <icons file="textures/gui/icons.png"/>
   </gui>
 

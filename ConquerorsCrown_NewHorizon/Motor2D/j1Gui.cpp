@@ -370,7 +370,10 @@ void GuiItem::Input() {
 			if (focus == true)
 			{
 				SDL_DestroyTexture(texture);
-				texture = App->font->Print(App->input->text.GetString());
+				if (App->input->text.GetString() != "") {
+					texture = App->font->Print(App->input->text.GetString());
+				}
+				else texture = nullptr;
 				App->font->CalcSize(App->input->text.GetString(), textureRect.w, textureRect.h);
 
 				int x, y;
@@ -489,7 +492,6 @@ GuiButton::GuiButton(int x, int y, SDL_Rect idle_rect, j1Module* callback) : Gui
 	focus = false;
 	CallBack = callback;
 	to_delete = false;
-
 }
 
 GuiButton::~GuiButton() {

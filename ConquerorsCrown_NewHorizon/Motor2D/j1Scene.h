@@ -44,7 +44,9 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	//Menu functions
 
+	bool CreateMenu();
 	
 private:
 	bool changeEntities = false;
@@ -52,10 +54,22 @@ private:
 public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
-	GuiItem* buttonNewGame;
+
 	bool debug;
 	bool Building_preview;
 	iPoint map_coordinates;
+
+
+	//MenuGui
+	GuiItem* menuButtonNewGame;
+	GuiItem* menuTextNewGame;
+	GuiItem* menuButtonLoadGame;
+	GuiItem* menuTextLoadGame;
+	GuiItem* menuButtonOptions;
+	GuiItem* menuTextOptions;
+	GuiItem* menuButtonExit;
+	GuiItem* menuTextExit;
+	GuiItem* menuBackground;
 };
 
 #endif // __j1SCENE_H__

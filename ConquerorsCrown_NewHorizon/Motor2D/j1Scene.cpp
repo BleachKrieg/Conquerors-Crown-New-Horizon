@@ -49,6 +49,8 @@ bool j1Scene::Start()
 
 	current_level = "test.tmx";
 	debug = false;
+
+	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
 	{
 		//App->audio->PlayMusic(App->map->data.music.GetString());
@@ -61,25 +63,35 @@ bool j1Scene::Start()
 			LOG("Setting map %d", data[1]);
 			App->pathfinding->SetMap(w, h, data);
 		}
-		else {
+		else 
+		{
 			LOG("Could not create walkability");
 		}
-
-
 		RELEASE_ARRAY(data);
 	}
 	
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
-
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	buttonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 444, 169, 244, 65 }, nullptr, this, NULL);
-	buttonNewGame->setRects({ 444, 413, 244, 66 }, { 444, 661, 244, 65 });
 
-	SDL_Rect rect = { 0, 0, 427, 218 };
+	SDL_Rect rect = { 0, 0, 303, 42 };
 
-	App->gui->CreateGuiElement(Types::text, 50, 14, rect, nullptr, this, "CONTINUE");
-	App->gui->CreateGuiElement(Types::slider, 100, 100, { 28, 257, 12, 189 }, nullptr, this);
-	App->gui->CreateGuiElement(Types::inputText, 400, 0, { 444, 661, 244, 65 }, nullptr, this);
+	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
+
+	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonNewGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, rect, menuButtonNewGame, nullptr, "New Game");
+
+	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 0, 50, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonLoadGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, rect, menuButtonLoadGame, nullptr, "Load Game");
+
+	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 0, 100, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, rect, menuButtonOptions, nullptr, "Options");
+
+	menuButtonExit = App->gui->CreateGuiElement(Types::button, 0, 150, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, rect, menuButtonExit, nullptr, "Exit");
 
 	return true;
 }
@@ -109,10 +121,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		App->render->camera.x -= 500*dt;
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-		if (debug)debug = false;
-		else {
-			debug = true;
-		}
+		debug = !debug;
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
