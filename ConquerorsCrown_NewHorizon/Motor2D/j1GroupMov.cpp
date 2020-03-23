@@ -31,30 +31,63 @@ bool j1GroupMov::Start() {
 bool j1GroupMov::Update(float dt) {
 
 	static iPoint origin, mouse;
-
+	iPoint start;
 	// TODO 0 ---------------------- Nothing to do here, just getting you in context
 	// Every time we press leftclick button, we create a rect. The we check all entities with
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		App->input->GetMousePosition(origin.x, origin.y);
+		list<j1Entity*>::iterator entities_list;
+		j1Entity* it;
+		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
+			it = *entities_list;
 
+			if (it->selectable == false)
+			{
+				int xstatic = it->position.x, ystatic = it->position.y;
+				if (mouse.x > xstatic && mouse.x < xstatic + 32 && mouse.y > ystatic && mouse.y < ystatic + 32)
+				{
+					it->isSelected = true;
+				}
+				else {
+					it->isSelected = false;
+				}
+			}
+		}
 	}
-
+	
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
 	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		App->input->GetMousePosition(origin.x, origin.y);
+
+	}
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		list<j1Entity*>::iterator entities_list;
 		j1Entity* it;
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 			it = *entities_list;
-
+			
+			if (it->selectable == false) 
+			{
+				int xstatic = it->position.x, ystatic = it->position.y;
+				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
+				{
+					it->isSelected = true;
+				}
+				else {
+					it->isSelected = false;
+				}
+			}
 			if (it->selectable)
 			{
 				it->isSelected = false;
@@ -143,7 +176,6 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-
 	
 	return separationSpeed;
 }
@@ -175,8 +207,9 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		cohesionSpeed.y = position.y - MassCenter.y;
 
 		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
+		LOG("%f, %f", cohesionSpeed.x, cohesionSpeed.y);
 
-		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
+		if (cohesionSpeed.x < 14 && cohesionSpeed.x > -14)
 		{
 			cohesionSpeed.x = 0;
 		}
@@ -184,7 +217,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		{
 			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
 		}
-		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
+		if (cohesionSpeed.y < 14 && cohesionSpeed.y > -14)
 		{
 			cohesionSpeed.y = 0;
 		}

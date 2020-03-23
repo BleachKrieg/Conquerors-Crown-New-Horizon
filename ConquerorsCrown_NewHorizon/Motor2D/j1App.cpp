@@ -231,8 +231,8 @@ void j1App::FinishUpdate()
 	
 	static char title[256];
 
-	sprintf_s(title, 256, "Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s ",
-		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString());
+	sprintf_s(title, 256, "Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Tile:%d,%d",
+		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),App->scene->map_coordinates.x,App->scene->map_coordinates.y);
 	
 	App->win->SetTitle(title);
 
