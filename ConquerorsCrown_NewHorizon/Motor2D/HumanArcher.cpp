@@ -64,6 +64,9 @@ bool HumanArcher::Update(float dt)
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+		to_delete = true;
+
 	if (life_points <= 0u)
 		to_delete = true;
 
