@@ -74,224 +74,225 @@ bool Test_1::Update(float dt)
 	// Luckily for you i already created a method in pathfinding module that can do the trick
 	// Just use SavePath() fucntion, and proceed to the next path
 
-	j1Entity* it;
+	//j1Entity* it;
 
-	list<j1Entity*>::iterator selected_it;
-
-
-	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-	{
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		mouse = App->map->WorldToMap(mouse.x, mouse.y);
-		relative_target = { 0,0 };
-
-		for (selected_it = App->movement->selected.begin(); selected_it != App->movement->selected.end(); ++selected_it) {
-			it = *selected_it;
-			relative_target.x += it->position.x;
-			relative_target.y += it->position.y;
-		}
-		relative_target.x = relative_target.x / App->movement->selected.size();
-		relative_target.y = relative_target.y / App->movement->selected.size();
-		fPoint distance_to_center{ position.x, position.y };
-
-		relative_target.x = position.x - relative_target.x;
-		relative_target.y = position.y - relative_target.y;
-		relative_target = App->map->WorldToMap(relative_target.x, relative_target.y);
-		relative_target += mouse;
-		if ((mouse.x - relative_target.x) > 1)
-		{
-			relative_target.x = mouse.x - 1;
-		}
-		if ((mouse.x - relative_target.x) < -1)
-		{
-			relative_target.x = mouse.x + 1;
-		}
-		if ((mouse.y - relative_target.y) > 1)
-		{
-			relative_target.y = mouse.y - 1;
-		}
-		if ((mouse.y - relative_target.y) < -1)
-		{
-			relative_target.y = mouse.y + 1;
-		}
-		if (App->movement->selected.size() > 10)
-		{
-			if (App->pathfinding->CreatePath(origin, relative_target) == -1)
-			{
-				App->pathfinding->CreatePath(origin, mouse);
-			}
-		}
-		else
-		{
-			App->pathfinding->CreatePath(origin, mouse);
-		}
-
-		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
-		path.Clear();
-		for (uint i = 0; i < last_path->Count(); ++i)
-		{
-			path.PushBack({ last_path->At(i)->x, last_path->At(i)->y });
-		}
-		followpath = 1;
-	}
+	//list<j1Entity*>::iterator selected_it;
 
 
-	// TODO 2 ----------------------------------------------------------------
-	// We need to give a speed to the entity to actually follow the path. All the logic is done,
-	// just use the fPoint  PathSpeed and give it positive or negative value dependig on witch tile
-	// is the next in the path. 
+	//if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	//{
+	//	App->input->GetMousePosition(mouse.x, mouse.y);
+	//	mouse = App->map->WorldToMap(mouse.x, mouse.y);
+	//	relative_target = { 0,0 };
 
-	fPoint pathSpeed{ 0,0 };
-	if (path.At(followpath) != NULL)
-	{
-		for (uint i = 0; i < path.Count(); ++i)
-		{
-			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
-			if (App->scene->debug)
-			{
-				if (i == followpath)
-			{
-				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
-			}
-			else {
-				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+	//	for (selected_it = App->movement->selected.begin(); selected_it != App->movement->selected.end(); ++selected_it) {
+	//		it = *selected_it;
+	//		relative_target.x += it->position.x;
+	//		relative_target.y += it->position.y;
+	//	}
+	//	relative_target.x = relative_target.x / App->movement->selected.size();
+	//	relative_target.y = relative_target.y / App->movement->selected.size();
+	//	fPoint distance_to_center{ position.x, position.y };
 
-				}
-			}
-		}
-			if (path.At(followpath)->x < origin.x && origin.y == path.At(followpath)->y) {
-				pathSpeed.x =- 1;
-				current_animation = &moving_right;
-				orientation = SDL_FLIP_HORIZONTAL;
-			}
+	//	relative_target.x = position.x - relative_target.x;
+	//	relative_target.y = position.y - relative_target.y;
+	//	relative_target = App->map->WorldToMap(relative_target.x, relative_target.y);
+	//	relative_target += mouse;
+	//	if ((mouse.x - relative_target.x) > 1)
+	//	{
+	//		relative_target.x = mouse.x - 1;
+	//	}
+	//	if ((mouse.x - relative_target.x) < -1)
+	//	{
+	//		relative_target.x = mouse.x + 1;
+	//	}
+	//	if ((mouse.y - relative_target.y) > 1)
+	//	{
+	//		relative_target.y = mouse.y - 1;
+	//	}
+	//	if ((mouse.y - relative_target.y) < -1)
+	//	{
+	//		relative_target.y = mouse.y + 1;
+	//	}
+	//	if (App->movement->selected.size() > 10)
+	//	{
+	//		if (App->pathfinding->CreatePath(origin, relative_target) == -1)
+	//		{
+	//			App->pathfinding->CreatePath(origin, mouse);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		App->pathfinding->CreatePath(origin, mouse);
+	//	}
 
-			if (path.At(followpath)->x > origin.x && origin.y == path.At(followpath)->y) {
-				pathSpeed.x =+ 1;
-				current_animation = &moving_right;
-				orientation = SDL_FLIP_NONE;
-			}
-
-			if (path.At(followpath)->y < origin.y && origin.x == path.At(followpath)->x) {
-				pathSpeed.y =- 1;
-				current_animation = &moving_up;
-			}
-
-			if (path.At(followpath)->y > origin.y && origin.x == path.At(followpath)->x) {
-				pathSpeed.y = 1;
-				current_animation = &moving_down;
-			}
-
-			if (path.At(followpath)->y < origin.y && path.At(followpath)->x < origin.x) {
-				pathSpeed.y = -1;
-				current_animation = &moving_diagonal_up;
-			}
-
-			if (path.At(followpath)->y > origin.y && path.At(followpath)->x < origin.x) {
-				pathSpeed.y = 1;
-				current_animation = &moving_diagonal_down;
-			}
-
-			if (path.At(followpath)->y < origin.y && path.At(followpath)->x > origin.x) {
-				pathSpeed.y = -1;
-				current_animation = &moving_diagonal_up;
-			}
-
-			if (path.At(followpath)->y > origin.y && path.At(followpath)->x > origin.x) {
-				pathSpeed.y = 1;
-				current_animation = &moving_diagonal_down;
-			}
-
-			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
-			{
-				followpath++;
-			}
-				
-		
-	}
+	//	const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
+	//	path.Clear();
+	//	for (uint i = 0; i < last_path->Count(); ++i)
+	//	{
+	//		path.PushBack({ last_path->At(i)->x, last_path->At(i)->y });
+	//	}
+	//	followpath = 1;
+	//}
 
 
+	//// TODO 2 ----------------------------------------------------------------
+	//// We need to give a speed to the entity to actually follow the path. All the logic is done,
+	//// just use the fPoint  PathSpeed and give it positive or negative value dependig on witch tile
+	//// is the next in the path. 
+
+	//fPoint pathSpeed{ 0,0 };
+	//if (path.At(followpath) != NULL)
+	//{
+	//	for (uint i = 0; i < path.Count(); ++i)
+	//	{
+	//		iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
+	//		if (App->scene->debug)
+	//		{
+	//			if (i == followpath)
+	//		{
+	//			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
+	//		}
+	//		else {
+	//			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+
+	//			}
+	//		}
+	//	}
+	//		if (path.At(followpath)->x < origin.x && origin.y == path.At(followpath)->y) {
+	//			pathSpeed.x =- 1;
+	//			current_animation = &moving_right;
+	//			orientation = SDL_FLIP_HORIZONTAL;
+	//		}
+
+	//		if (path.At(followpath)->x > origin.x && origin.y == path.At(followpath)->y) {
+	//			pathSpeed.x =+ 1;
+	//			current_animation = &moving_right;
+	//			orientation = SDL_FLIP_NONE;
+	//		}
+
+	//		if (path.At(followpath)->y < origin.y && origin.x == path.At(followpath)->x) {
+	//			pathSpeed.y =- 1;
+	//			current_animation = &moving_up;
+	//		}
+
+	//		if (path.At(followpath)->y > origin.y && origin.x == path.At(followpath)->x) {
+	//			pathSpeed.y = 1;
+	//			current_animation = &moving_down;
+	//		}
+
+	//		if (path.At(followpath)->y < origin.y && path.At(followpath)->x < origin.x) {
+	//			pathSpeed.y = -1;
+	//			current_animation = &moving_diagonal_up;
+	//		}
+
+	//		if (path.At(followpath)->y > origin.y && path.At(followpath)->x < origin.x) {
+	//			pathSpeed.y = 1;
+	//			current_animation = &moving_diagonal_down;
+	//		}
+
+	//		if (path.At(followpath)->y < origin.y && path.At(followpath)->x > origin.x) {
+	//			pathSpeed.y = -1;
+	//			current_animation = &moving_diagonal_up;
+	//		}
+
+	//		if (path.At(followpath)->y > origin.y && path.At(followpath)->x > origin.x) {
+	//			pathSpeed.y = 1;
+	//			current_animation = &moving_diagonal_down;
+	//		}
+
+	//		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+	//		{
+	//			followpath++;
+	//		}
+	//			
+	//	
+	//}
 
 
-	list<j1Entity*>::iterator neighbours_it;
-
-	// TODO 3 ----------------------------------------------------------------
-	// Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
-	// Close neighbours (those which are near this entity) and colliding, thos which are in contact with this entity
-	// To do that, we'll use three radius, vision, body and collrange;
-	// Use SaveNeighbours function, and pass the two lists as reference
-
-	SaveNeighbours(&close_entity_list, &colliding_entity_list);
-
-	//TODO 4 ---------------------------------------------------------------- 
-	// Now we should be are ready to get a new speed in the formula. The separation speed
-	// Create an fPoint, just like PathSpeed, to store this new values.
-	// Use GetSeparationSpeed method from movement module, and call it if there's at least one member in colliding list, if not, separationSpeed should be 0
-	fPoint separationSpeed;
-
-	if (!colliding_entity_list.empty())
-	{
-		separationSpeed = App->movement->GetSeparationSpeed(colliding_entity_list, position);
-	}
-	else
-	{
-		separationSpeed.x = 0;
-		separationSpeed.y = 0;
-	}
-	if (App->scene->debug)
-	{
-		App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
-		App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
-		App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
-	}
-
-	// TODO 5 ---------------------------------------------------------------- 
-	// Cohesion speed
-	// Just like before, but using GetCohesionSpeed method, close list and another fPoint
-	fPoint cohesionSpeed;
-	if (!close_entity_list.empty())
-	{
-		cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
-	}
-	else
-	{
-		cohesionSpeed.x = 0;
-		cohesionSpeed.y = 0;
-	}
-
-	// OPTIONAL TODO ---------------------------------------------------------------- 
-	// Alginment speed
-	// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
-	fPoint alignmentSpeed;
-	if (!close_entity_list.empty())
-	{
-		alignmentSpeed = App->movement->GetDirectionSpeed(close_entity_list);
-	}
-	else
-	{
-		alignmentSpeed.x = 0;
-		alignmentSpeed.y = 0;
-	}
 
 
-	//TODO 2 ---------------------------------------------------------------- 
-	// We need to add all new speed to the speed vector. Add pathSpeed, but everytime you calculate another speed
-	// add it here
-	// To obtain different results, try using some constants to multiply each speed
+	//list<j1Entity*>::iterator neighbours_it;
 
-	speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*alignmentSpeed.x;
-	speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*alignmentSpeed.y;
+	//// TODO 3 ----------------------------------------------------------------
+	//// Before we calculate the other speeds, we need to store this entity neighbours in two lists. 
+	//// Close neighbours (those which are near this entity) and colliding, thos which are in contact with this entity
+	//// To do that, we'll use three radius, vision, body and collrange;
+	//// Use SaveNeighbours function, and pass the two lists as reference
+
+	//SaveNeighbours(&close_entity_list, &colliding_entity_list);
+
+	////TODO 4 ---------------------------------------------------------------- 
+	//// Now we should be are ready to get a new speed in the formula. The separation speed
+	//// Create an fPoint, just like PathSpeed, to store this new values.
+	//// Use GetSeparationSpeed method from movement module, and call it if there's at least one member in colliding list, if not, separationSpeed should be 0
+	//fPoint separationSpeed;
+
+	//if (!colliding_entity_list.empty())
+	//{
+	//	separationSpeed = App->movement->GetSeparationSpeed(colliding_entity_list, position);
+	//}
+	//else
+	//{
+	//	separationSpeed.x = 0;
+	//	separationSpeed.y = 0;
+	//}
+	//if (App->scene->debug)
+	//{
+	//	App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
+	//	App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
+	//	App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
+	//}
+
+	//// TODO 5 ---------------------------------------------------------------- 
+	//// Cohesion speed
+	//// Just like before, but using GetCohesionSpeed method, close list and another fPoint
+	//fPoint cohesionSpeed;
+	//if (!close_entity_list.empty())
+	//{
+	//	cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
+	//}
+	//else
+	//{
+	//	cohesionSpeed.x = 0;
+	//	cohesionSpeed.y = 0;
+	//}
+
+	//// OPTIONAL TODO ---------------------------------------------------------------- 
+	//// Alginment speed
+	//// We'll use another fpoint, another method (GetDirectionSpeed()) and the close list
+	//fPoint alignmentSpeed;
+	//if (!close_entity_list.empty())
+	//{
+	//	alignmentSpeed = App->movement->GetDirectionSpeed(close_entity_list);
+	//}
+	//else
+	//{
+	//	alignmentSpeed.x = 0;
+	//	alignmentSpeed.y = 0;
+	//}
+
+
+	////TODO 2 ---------------------------------------------------------------- 
+	//// We need to add all new speed to the speed vector. Add pathSpeed, but everytime you calculate another speed
+	//// add it here
+	//// To obtain different results, try using some constants to multiply each speed
+
+	//speed.x += 1.5*pathSpeed.x + 1*separationSpeed.x + 0.5 *cohesionSpeed.x + 0*alignmentSpeed.x;
+	//speed.y += 1.5*pathSpeed.y + 1*separationSpeed.y + 0.5 *cohesionSpeed.y + 0*alignmentSpeed.y;
+	//
+	//// TODO 6 ------------------------------------------------------------------
+	//// If you got this far, congratulations, now your entities react between themselves
+	//// But don't forget about walls, use a preventive collision system, so in case it is needed
+	//// total speed value should be set to 0.
+	//// I provided you a simple collision detection method in DynamicEnt class, just call it with the speed fpoint
+
+	//CheckCollisions(&speed);
+
+	//position.y += speed.y;
+	//position.x += speed.x;
 	
-	// TODO 6 ------------------------------------------------------------------
-	// If you got this far, congratulations, now your entities react between themselves
-	// But don't forget about walls, use a preventive collision system, so in case it is needed
-	// total speed value should be set to 0.
-	// I provided you a simple collision detection method in DynamicEnt class, just call it with the speed fpoint
-
-	CheckCollisions(&speed);
-
-	position.y += speed.y;
-	position.x += speed.x;
-	
+	Movement();
 
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);

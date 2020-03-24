@@ -138,58 +138,71 @@ void DynamicEnt::Movement()
 				}
 			}
 		}
-		if (path.At(followpath)->x < origin.x && origin.y == path.At(followpath)->y) {
-					pathSpeed.x = -1;
-					current_animation = &moving_right;
-					orientation = SDL_FLIP_HORIZONTAL;
-				}
+		if (path.At(followpath)->x < origin.x) {
+			pathSpeed.x = -1;
+		}
 
-				if (path.At(followpath)->x > origin.x&& origin.y == path.At(followpath)->y) {
-					pathSpeed.x = +1;
-					current_animation = &moving_right;
-					orientation = SDL_FLIP_NONE;
-				}
+		if (path.At(followpath)->x > origin.x) {
+			pathSpeed.x = +1;
+		}
 
-				if (path.At(followpath)->y < origin.y && origin.x == path.At(followpath)->x) {
-					pathSpeed.y = -1;
-					current_animation = &moving_up;
-				}
+		if (path.At(followpath)->y < origin.y) {
+			pathSpeed.y = -1;
+		}
 
-				if (path.At(followpath)->y > origin.y&& origin.x == path.At(followpath)->x) {
-					pathSpeed.y = 1;
-					current_animation = &moving_down;
-				}
-
-				if (path.At(followpath)->y < origin.y && path.At(followpath)->x < origin.x) {
-					pathSpeed.y = -1;
-					current_animation = &moving_diagonal_up;
-				}
-
-				if (path.At(followpath)->y > origin.y&& path.At(followpath)->x < origin.x) {
-					pathSpeed.y = 1;
-					current_animation = &moving_diagonal_down;
-				}
-
-				if (path.At(followpath)->y < origin.y && path.At(followpath)->x > origin.x) {
-					pathSpeed.y = -1;
-					current_animation = &moving_diagonal_up;
-				}
-
-				if (path.At(followpath)->y > origin.y&& path.At(followpath)->x > origin.x) {
-					pathSpeed.y = 1;
-					current_animation = &moving_diagonal_down;
-				}
-
-				if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
-				{
-					followpath++;
-				}
+		if (path.At(followpath)->y > origin.y) {
+			pathSpeed.y = 1;
+		}
+		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+		{
+			followpath++;
+		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
 	}
+
+	if (pathSpeed.x != 0)
+	{
+		current_animation = &moving_right;
+		if (pathSpeed.y < 0)
+		{
+			current_animation = &moving_diagonal_up;
+		}
+
+		if (pathSpeed.y > 0)
+		{
+			current_animation = &moving_diagonal_down;
+		}
+	}
+	else if (pathSpeed.y != 0) {
+		if (pathSpeed.y < 0)
+		{
+			current_animation = &moving_up;
+		}
+
+		if (pathSpeed.y > 0)
+		{
+			current_animation = &moving_down;
+		}
+	}
+	else 
+	{
+		//idle anim
+	}
+	if (pathSpeed.x < 0)
+	{
+		orientation = SDL_FLIP_HORIZONTAL;
+	}
+	else
+	{
+		orientation = SDL_FLIP_NONE;
+	}
+
+	
+
 		list<j1Entity*>::iterator neighbours_it;
 
 		SaveNeighbours(&close_entity_list, &colliding_entity_list);
