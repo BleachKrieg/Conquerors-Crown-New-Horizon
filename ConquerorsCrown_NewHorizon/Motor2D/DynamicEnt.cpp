@@ -162,7 +162,6 @@ void DynamicEnt::Movement()
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
 	}
-	LOG("%f, %f", pathSpeed.x, pathSpeed.y);
 	if (pathSpeed.x != 0)
 	{
 		current_animation = &moving_right;
