@@ -42,17 +42,11 @@
     <ClCompile Include="j1Entity.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
-    <ClCompile Include="Test_1.cpp">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
     <ClCompile Include="StaticEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Test_3.cpp">
-      <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Modules</Filter>
@@ -68,6 +62,15 @@
     </ClCompile>
     <ClCompile Include="EntityRequest.cpp">
       <Filter>Modules\EntitySystem</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanArcher.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanFootman.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Test_3.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,17 +136,11 @@
     <ClInclude Include="j1Entity.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
-    <ClInclude Include="Test_1.h">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="DynamicEnt.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
     <ClInclude Include="StaticEnt.h">
       <Filter>Modules\EntitySystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Test_3.h">
-      <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Modules</Filter>
@@ -160,6 +157,15 @@
     </ClInclude>
     <ClInclude Include="EntityRequest.h">
       <Filter>Modules\EntitySystem</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanArcher.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanFootman.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Test_3.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

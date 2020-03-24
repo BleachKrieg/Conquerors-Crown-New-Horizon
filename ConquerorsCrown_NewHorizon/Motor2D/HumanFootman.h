@@ -1,5 +1,5 @@
-#ifndef __TEST_1_H__
-#define __TEST_1_H__
+#ifndef __HUMANFOOTMAN_H__
+#define __HUMANFOOTMAN_H__
 
 #include "j1Module.h"
 #include "Animation.h"
@@ -8,14 +8,14 @@
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 
-class Test_1 : public DynamicEnt
+class HumanFootman : public DynamicEnt
 {
 public:
 	// Constructor
-	Test_1(int posx, int posy);
+	HumanFootman(int posx, int posy);
 
 	// Destructor
-	~Test_1();
+	~HumanFootman();
 
 	// Called before the first frame
 	bool Start();
@@ -23,18 +23,13 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	// Called before all Updates
+	// Called after all Updates
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
-	// Animation
 
-	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
-
-	private:
-		Animation test;
-		Animation test2;
+//	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
 };
 
-#endif // __TEST_1_H__
+#endif // !__HUMANFOOTMAN_H__

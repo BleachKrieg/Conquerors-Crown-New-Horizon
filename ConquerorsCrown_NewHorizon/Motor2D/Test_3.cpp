@@ -9,19 +9,24 @@
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
+#include "j1Pathfinding.h"
 
 Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 {
 	name.create("test_1");
 	position.x = posx;
 	position.y = posy;
-	vision = 80;
+	vision = 10;
+	body = 50;
+	collrange = 25;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
 	finished = false;
-	construction_time = 3000;
-	timer = 0;
+	preview = true;
+	canbuild = false;
+	construction_time = 3;
+
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
@@ -32,7 +37,6 @@ Test_3::~Test_3()
 
 bool Test_3::Start()
 {
-	timer = SDL_GetTicks();
 
 	return true;
 }
@@ -41,13 +45,16 @@ bool Test_3::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+		to_delete = true;
+
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	
 	if (finished)
 	{
 		if (isSelected == true)
 		{
-			App->render->DrawQuad({ (int)position.x - 3, (int)position.y - 3, 100, 100 }, 200, 0, 0, 200, false);
+			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
@@ -58,26 +65,108 @@ bool Test_3::Update(float dt)
 		// Finished Animation
 		current_animation = &finishedconst;
 	}
-	else
+	else if(!finished && !preview)
 	{
 		// Construction Animation
 		current_animation = &inconstruction;
 		
-		if (SDL_GetTicks() >= construction_time + timer)
+		if (timer.ReadSec() >= construction_time)
 		{
 			finished = true;
 		}
 	}
-
-
-	if (App->scene->debug)
+	else if (preview)
 	{
-		App->render->DrawCircle(position.x + 45, position.y +50, vision, 0, 0, 200);
-		App->render->DrawQuad({ (int)position.x - 3, (int)position.y - 3, 100, 100 }, 200, 0, 0, 200, false);
+		current_animation = &finishedconst;
+
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
+		{
+			App->scene->Building_preview = false;
+			timer.Start();
+			GetTile();
+			world.x += 32;
+			world.y += 32;
+			position.x = world.x;
+			position.y = world.y;
+
+			iPoint pos = { (int)position.x, (int)position.y };
+			pos = App->map->WorldToMap(pos.x, pos.y);
+			iPoint tempPos = pos;
+
+			for (int i = -1; i < 2; i++)
+			{
+				for (int j = -1; j < 2; j++)
+				{
+					tempPos.x = pos.x + i;
+					tempPos.y = pos.y + j;
+					App->pathfinding->ChangeWalkability(tempPos, false);
+				}
+			}
+		
+			preview = false;
+		}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			App->scene->Building_preview = false;
+			to_delete = true;
+		}
+	}
+
+
+	if (App->scene->debug && !preview)
+	{
+		App->render->DrawCircle(position.x , position.y, vision, 0, 0, 200);
+		App->render->DrawCircle(position.x , position.y, collrange, 200, 200, 0);
+		App->render->DrawCircle(position.x , position.y, body, 0, 0, 200);
+		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
+		
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
+
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				tempPos = App->map->MapToWorld(tempPos.x, tempPos.y);
+				App->render->DrawQuad({ (int)(position.x + i * 32), (int)(position.y + j * 32), 32, 32 }, 200, 0, 0, 50);
+			}
+		}
+
 	}
 
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x, (int)position.y, r, 1.0f, 1.0f);
+
+	// This is for the preview option
+	if (!preview)
+	{
+		App->render->Blit(App->entity->building, world.x-50, world.y-50, r, 1.0f, 1.0f);
+	}
+	else
+	{
+		GetTile();
+		world.x += 32;
+		world.y += 32;
+
+		//LOG("%i, %i", map.x, map.y);
+		//LOG("%i, %i", world.x, world.y);
+
+		CheckWalkable(map);
+
+		if (canbuild)
+		{
+			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 0, 200, 0, 100);
+		}
+		else
+		{
+			App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 200, 0, 0, 100);
+		}
+	}
+	
 	return true;
 }
 
@@ -90,6 +179,54 @@ bool Test_3::PostUpdate(float dt)
 
 bool Test_3::CleanUp()
 {
+	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
+	if (finished)
+	{
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
 
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				App->pathfinding->ChangeWalkability(tempPos, true);
+			}
+		}
+	}
 	return true;
+}
+
+void Test_3::CheckWalkable(iPoint map)
+{
+	map.x -= 2;
+	map.y -= 2;
+
+	int tiles = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		map.y += 1;
+
+		for (int d = 0; d < 3; d++)
+		{
+			map.x += 1;
+			
+			if (App->pathfinding->IsWalkable(map) == true)
+			{
+				tiles++;
+			}
+		}
+		map.x -= 3;
+	}
+	if (tiles == 9)
+	{
+		canbuild = true;
+	}
+	else
+	{
+		canbuild = false;
+	}
 }

@@ -1,6 +1,5 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_1.h"
 #include "Test_3.h"
 
 #include "j1App.h"
@@ -48,7 +47,10 @@ bool EntityRequest::Update(float dt)
 				switch (Queue[i]->spawn)
 				{
 				case SpawnTypes::SWORDMAN:
-					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, Queue[i]->pos.x, Queue[i]->pos.y);
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				case SpawnTypes::ARCHER:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_ARCHER, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
 				}
 			}

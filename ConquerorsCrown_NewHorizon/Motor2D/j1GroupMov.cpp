@@ -59,7 +59,6 @@ bool j1GroupMov::Update(float dt) {
 	
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		LOG("KEYREPEAT");
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
@@ -73,7 +72,6 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		LOG("KEYRup");
 		list<j1Entity*>::iterator entities_list;
 		j1Entity* it;
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
@@ -82,7 +80,7 @@ bool j1GroupMov::Update(float dt) {
 			if (it->selectable == false) 
 			{
 				int xstatic = it->position.x, ystatic = it->position.y;
-				if (mouse.x > xstatic && mouse.x < xstatic + 100 && mouse.y > ystatic && mouse.y < ystatic + 100)
+				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
 				{
 					it->isSelected = true;
 				}
@@ -178,7 +176,6 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-
 	
 	return separationSpeed;
 }
@@ -211,7 +208,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 
 		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
 
-		if (cohesionSpeed.x < 11 && cohesionSpeed.x > -11)
+		if (cohesionSpeed.x < 14 && cohesionSpeed.x > -14)
 		{
 			cohesionSpeed.x = 0;
 		}
@@ -219,7 +216,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		{
 			cohesionSpeed.x = -1 * cohesionSpeed.x / norm;
 		}
-		if (cohesionSpeed.y < 11 && cohesionSpeed.y > -11)
+		if (cohesionSpeed.y < 14 && cohesionSpeed.y > -14)
 		{
 			cohesionSpeed.y = 0;
 		}
