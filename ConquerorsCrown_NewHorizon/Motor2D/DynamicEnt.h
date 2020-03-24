@@ -17,7 +17,6 @@ public:
 	enum class DynamicEntityType
 	{
 		NO_TYPE,
-		TEST_1,
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
 	};

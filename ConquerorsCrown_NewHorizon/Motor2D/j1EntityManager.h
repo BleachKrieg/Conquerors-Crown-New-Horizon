@@ -63,8 +63,7 @@ public:
 	SDL_Texture* building = nullptr;
 
 	// Load entities textures
-	p2SString test_1;
-	SDL_Texture* test_1_graphics;
+
 };
 
 #endif // __j1EntityManager_H__

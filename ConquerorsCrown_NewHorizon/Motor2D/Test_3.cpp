@@ -16,8 +16,8 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	name.create("test_1");
 	position.x = posx;
 	position.y = posy;
-	vision = 30;
-	body = 45;
+	vision = 10;
+	body = 50;
 	collrange = 25;
 	selectable = false;
 	isSelected = false;

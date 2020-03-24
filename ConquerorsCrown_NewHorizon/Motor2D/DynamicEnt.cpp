@@ -163,7 +163,7 @@ void DynamicEnt::Movement()
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
 	}
-
+	LOG("%f, %f", pathSpeed.x, pathSpeed.y);
 	if (pathSpeed.x != 0)
 	{
 		current_animation = &moving_right;
@@ -249,8 +249,8 @@ void DynamicEnt::Movement()
 
 	
 
-	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.2 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.2 * cohesionSpeed.y + 0 * alignmentSpeed.y;
+	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.1 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.1 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
 	CheckCollisions(&speed);
 
@@ -267,7 +267,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 
 	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 		it = *entities_list;
-		if (it != this && it->selectable)
+		if (it != this)
 		{
 			int x = it->position.x;
 			int y = it->position.y;
@@ -278,6 +278,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				colliding_entity_list->push_back(it);
 
 			}
+			if(it->selectable)
 			if (distance < vision + it->body)
 			{
 				close_entity_list->push_back(it);
