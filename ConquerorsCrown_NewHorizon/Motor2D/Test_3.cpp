@@ -180,7 +180,7 @@ bool Test_3::PostUpdate(float dt)
 bool Test_3::CleanUp()
 {
 	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
-	if (finished)
+	if (!preview)
 	{
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -195,6 +195,10 @@ bool Test_3::CleanUp()
 				App->pathfinding->ChangeWalkability(tempPos, true);
 			}
 		}
+	}
+	else
+	{
+		App->scene->Building_preview = false;
 	}
 	return true;
 }
