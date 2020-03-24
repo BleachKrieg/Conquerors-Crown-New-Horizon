@@ -37,7 +37,6 @@ HumanArcher::~HumanArcher() {}
 
 bool HumanArcher::Start()
 {
-	current_animation = NULL;
 
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->archer_animations.begin();
@@ -52,7 +51,8 @@ bool HumanArcher::Start()
 	moving_down = **animations_list;
 	++animations_list;
 
-	current_animation = &moving_up;
+	current_animation = &moving_down;
+
 	return true;
 }
 

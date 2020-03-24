@@ -37,8 +37,6 @@ HumanFootman::~HumanFootman() {}
 
 bool HumanFootman::Start()
 {
-	current_animation = NULL;
-
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->footman_animations.begin();
 	moving_up = **animations_list;
@@ -52,7 +50,7 @@ bool HumanFootman::Start()
 	moving_down = **animations_list;
 	++animations_list;
 
-	current_animation = &moving_up;
+	current_animation = &moving_down;
 	return true;
 }
 

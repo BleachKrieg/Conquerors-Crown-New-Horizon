@@ -25,7 +25,6 @@ DynamicEnt::~DynamicEnt()
 
 bool DynamicEnt::Awake(pugi::xml_node& config)
 {
-
 	return true;
 }
 
@@ -167,6 +166,7 @@ void DynamicEnt::Movement()
 	if (pathSpeed.x != 0)
 	{
 		current_animation = &moving_right;
+		
 		if (pathSpeed.y < 0)
 		{
 			current_animation = &moving_diagonal_up;
@@ -196,7 +196,7 @@ void DynamicEnt::Movement()
 	{
 		orientation = SDL_FLIP_HORIZONTAL;
 	}
-	else
+	if(pathSpeed.x > 0)
 	{
 		orientation = SDL_FLIP_NONE;
 	}
