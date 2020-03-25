@@ -8,6 +8,8 @@
 #include "j1App.h"
 #include <list>
 #include "Animation.h"
+#include "j1Audio.h"
+#include "SDL_mixer\include\SDL_mixer.h"
 
 using namespace std;
 
@@ -47,6 +49,9 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	//Spatial Audio
+	void SpatialAudio(int channel);
 
 protected:
 	Animation* current_animation = nullptr;

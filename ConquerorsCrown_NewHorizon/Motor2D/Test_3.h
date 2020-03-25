@@ -8,8 +8,6 @@
 #include "j1Entity.h"
 #include "StaticEnt.h"
 #include "EntityRequest.h"
-#include "j1Audio.h"
-#include "SDL_mixer\include\SDL_mixer.h"
 
 class Test_3 : public StaticEnt
 {
@@ -34,9 +32,6 @@ public:
 	void CheckWalkable(iPoint map);
 
 	// Animation
-
-	//Spatial Audio
-	void SpatialAudio(int channel);
 
 public:
 	// Animations
