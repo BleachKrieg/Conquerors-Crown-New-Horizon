@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Fonts.h"
 #include "j1EntityManager.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Pathfinding.h"
@@ -220,7 +221,7 @@ bool j1Scene::CreateInGame() {
 
 	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 5, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
-	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 20, 0, { 0, 0, 200, 200 }, ingameButtonMenu, nullptr, "Menu");
+	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
 
 	return true;
 }

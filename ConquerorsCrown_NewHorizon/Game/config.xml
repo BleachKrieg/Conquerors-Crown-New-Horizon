@@ -24,7 +24,7 @@
   </gui>
   <fonts>
     <default_font file="fonts/alagard.ttf"/>
-    <font_size default="38"/>
+    <font_size big="38" small="28"/>
   </fonts>
   <audio>
     <music>

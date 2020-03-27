@@ -255,13 +255,13 @@ GuiItem::~GuiItem() {
 }
 
 
-GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiItem* parentnode, j1Module* callback, char* text) 
+GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiItem* parentnode, j1Module* callback, char* text, _TTF_Font* font)
 {
 	GuiItem* ret;
 	switch (type) 
 	{
 	case Types::image: ret = new GuiImage(x, y, rect, callback); ret->parent = parentnode; break;
-	case Types::text: ret = new GuiText(x, y, rect, text, callback); ret->parent = parentnode; break;
+	case Types::text: ret = new GuiText(x, y, rect, text, font, callback); ret->parent = parentnode; break;
 	case Types::button: ret = new GuiButton(x, y, rect, callback); ret->parent = parentnode; break;
 	case Types::inputText: ret = new InputText(x, y, rect, callback); ret->parent = parentnode; break;
 	case Types::slider: ret = new GuiSlider(x, y, rect, callback); ret->parent = parentnode; break;
@@ -463,7 +463,7 @@ GuiImage::~GuiImage() {
 
 }
 //-------------------------------------------------------------
-GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, j1Module* callback) : GuiItem() {
+GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* font, j1Module* callback) : GuiItem() {
 	type = Types::text;
 	text = inputtext;
 	LocalX = initposx = x;
@@ -476,8 +476,8 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, j1Module* cal
 	textureRect = texrect;
 	color = SDL_Color{ 255,255,255 };
 	CallBack = callback;
-	texture = App->font->Print(text, color);
-	App->font->CalcSize(text, textureRect.w, textureRect.h);
+	texture = App->font->Print(text, color, font);
+	App->font->CalcSize(text, textureRect.w, textureRect.h, font);
 	to_delete = false;
 
 }
