@@ -47,7 +47,7 @@ bool j1Scene::Start()
 {
 	LOG("Start scene");
 
-	current_level = "test.tmx";
+	current_level = "First level design.tmx";
 	debug = false;
 	if (App->map->Load(current_level.GetString()) == true)
 	{
@@ -68,6 +68,7 @@ bool j1Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
+	
 	
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 
