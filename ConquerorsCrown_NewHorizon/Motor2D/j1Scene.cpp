@@ -194,19 +194,19 @@ bool j1Scene::CreateMenu() {
 
 	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 500, 300, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonNewGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, rect, menuButtonNewGame, nullptr, "New Game");
+	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, { 0, 0, 138, 30 }, menuButtonNewGame, nullptr, "New Game");
 
 	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 500, 350, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonLoadGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, rect, menuButtonLoadGame, nullptr, "Load Game");
+	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, { 0, 0, 138, 30 }, menuButtonLoadGame, nullptr, "Load Game");
 
 	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 500, 400, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, rect, menuButtonOptions, nullptr, "Options");
+	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, menuButtonOptions, nullptr, "Options");
 
 	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 450, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, rect, menuButtonExit, nullptr, "Exit");
+	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
 
 	return true;
 }
@@ -220,7 +220,7 @@ bool j1Scene::CreateInGame() {
 
 	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 5, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
-	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 20, 0, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu");
+	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 20, 0, { 0, 0, 200, 200 }, ingameButtonMenu, nullptr, "Menu");
 
 	return true;
 }

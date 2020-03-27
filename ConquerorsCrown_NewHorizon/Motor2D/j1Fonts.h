@@ -36,8 +36,7 @@ public:
 public:
 
 	p2List<_TTF_Font*>	fonts;
-	_TTF_Font*			bigSize;
-	_TTF_Font*			smallSize;
+	_TTF_Font*			defaultfont;
 };
 
 

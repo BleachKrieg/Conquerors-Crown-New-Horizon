@@ -473,8 +473,7 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, j1Module* cal
 	isDynamic = false;
 	focus = false;
 	follow = false;
-	textureRect.x = 0;
-	textureRect.y = 0;
+	textureRect = texrect;
 	color = SDL_Color{ 255,255,255 };
 	CallBack = callback;
 	texture = App->font->Print(text, color);
