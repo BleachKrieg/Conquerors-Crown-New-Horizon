@@ -256,7 +256,7 @@ bool HumanFootman::Update(float dt)
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->foot_man_tex, (int)position.x - 20, (int)position.y - 20, r, 1.0f, 1.0f, orientation);
+	App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w/2), (int)(position.y - (*r).h/2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
