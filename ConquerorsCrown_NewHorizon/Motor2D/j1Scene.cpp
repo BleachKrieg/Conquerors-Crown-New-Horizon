@@ -218,6 +218,10 @@ bool j1Scene::CreateInGame() {
 	ingameBackground = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, 0, topRect);
 
+	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 5, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
+	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
+	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 20, 0, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu");
+
 	return true;
 }
 

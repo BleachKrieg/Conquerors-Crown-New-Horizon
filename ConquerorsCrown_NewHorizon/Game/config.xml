@@ -22,7 +22,10 @@
       <atlas file="textures/gui/Ui_Atlas.png"/>
       <icons file="textures/gui/icons.png"/>
   </gui>
-
+  <fonts>
+    <default_font file="fonts/alagard.ttf"/>
+    <font_size big="38" small="28"/>
+  </fonts>
   <audio>
     <music>
       <folder>audio/music/</folder>

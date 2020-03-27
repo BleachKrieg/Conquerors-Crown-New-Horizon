@@ -76,6 +76,8 @@ public:
 	//InGameGui
 	GuiItem* ingameBackground;
 	GuiItem* ingameTopBar;
+	GuiItem* ingameButtonMenu;
+	GuiItem* ingameTextMenu;
 };
 
 #endif // __j1SCENE_H__
