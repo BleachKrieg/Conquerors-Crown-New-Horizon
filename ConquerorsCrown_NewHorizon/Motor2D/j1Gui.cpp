@@ -86,7 +86,7 @@ bool j1Gui::PreUpdate(float dt)
 		if (gui_list->data->isDynamic)
 		{
 			//Check if mouse is over a ui element and set the focus
-			if (gui_list->data->checkBoundaries(-App->render->camera.x + x, -App->render->camera.y + y)) 
+			if (gui_list->data->checkBoundaries(x, y)) 
 			{
 				gui_list->data->SetFocus();
 				ret = false;

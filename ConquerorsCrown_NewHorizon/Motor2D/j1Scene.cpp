@@ -114,15 +114,23 @@ bool j1Scene::Update(float dt)
 		break;
 	case ingame:
 		//Camera movement inputs
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			App->render->camera.y += 500 * dt;
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			App->render->camera.x += 500 * dt;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			App->render->camera.y -= 500 * dt;
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			App->render->camera.x -= 500 * dt;
 
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			App->render->camera.y += 500 * dt;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			App->render->camera.y -= 500 * dt;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			App->render->camera.x += 500 * dt;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			App->render->camera.x -= 500 * dt;
+		}
+
+		//UI Position update
+		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
 		//Debug input
@@ -202,6 +210,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 bool j1Scene::CreateMenu() {
 	DeleteUI();
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
 	SDL_Rect rect = { 0, 500, 1280, 720 };
 
 	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
@@ -230,9 +240,9 @@ bool j1Scene::CreateInGame() {
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 50 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
-	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -222, topRect, ingameUI);
+	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
 
-	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 5, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
+	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 4, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
 
@@ -254,4 +264,11 @@ bool j1Scene::DeleteUI() {
 	ingameTopBar = nullptr;
 	App->gui->DeleteAllGui();
 	return true;
+}
+
+void j1Scene::GuiInput(GuiItem* guiElement) {
+	if (guiElement == menuButtonNewGame) {
+		CreateInGame();
+		current_scene = ingame;
+	}
 }

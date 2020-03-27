@@ -54,6 +54,9 @@ public:
 	bool CreateMenu();
 	bool CreateInGame();
 	bool DeleteUI();
+
+	void GuiInput(GuiItem* guiElement);
+
 	
 private:
 	bool changeEntities = false;
