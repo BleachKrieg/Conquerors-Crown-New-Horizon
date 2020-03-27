@@ -11,6 +11,11 @@ class j1Entity;
 class DynamicEnt;
 class StaticEnt;;
 
+enum scenes {
+	menu,
+	ingame
+};
+
 
 class GuiItem;
 
@@ -52,6 +57,7 @@ public:
 	
 private:
 	bool changeEntities = false;
+	scenes current_scene = menu;
 
 public:
 	p2SString current_level;
@@ -74,7 +80,8 @@ public:
 	GuiItem* menuBackground;
 
 	//InGameGui
-	GuiItem* ingameBackground;
+	iPoint ingameUIPosition;
+	GuiItem* ingameUI;
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
