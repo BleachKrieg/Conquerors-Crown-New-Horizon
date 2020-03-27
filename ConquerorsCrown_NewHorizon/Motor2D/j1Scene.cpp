@@ -106,11 +106,7 @@ bool j1Scene::Update(float dt)
 	switch (current_scene) 
 	{
 	case menu:
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) 
-		{
-			CreateInGame();
-			current_scene = ingame;
-		}
+
 		break;
 	case ingame:
 		//Camera movement inputs
@@ -136,11 +132,6 @@ bool j1Scene::Update(float dt)
 		//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 			debug = !debug;
-
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-			CreateMenu();
-			current_scene = menu;
-		}
 
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -270,5 +261,12 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == menuButtonNewGame) {
 		CreateInGame();
 		current_scene = ingame;
+	}
+	else if (guiElement == menuButtonExit) {
+		App->quitGame = true;
+	}
+	else if (guiElement == ingameButtonMenu) {
+		CreateMenu();
+		current_scene = menu;
 	}
 }
