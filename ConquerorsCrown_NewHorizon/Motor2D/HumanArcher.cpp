@@ -37,7 +37,6 @@ HumanArcher::~HumanArcher() {}
 
 bool HumanArcher::Start()
 {
-	current_animation = NULL;
 
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->archer_animations.begin();
@@ -52,7 +51,8 @@ bool HumanArcher::Start()
 	moving_down = **animations_list;
 	++animations_list;
 
-	current_animation = &moving_up;
+	current_animation = &moving_down;
+
 	return true;
 }
 
@@ -63,6 +63,9 @@ bool HumanArcher::Update(float dt)
 	// Speed resetted to 0 each iteration
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+		to_delete = true;
 
 	if (life_points <= 0u)
 		to_delete = true;

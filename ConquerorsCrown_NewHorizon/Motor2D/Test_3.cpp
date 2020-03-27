@@ -16,8 +16,8 @@ Test_3::Test_3(int posx, int posy) : StaticEnt( StaticEntType::TEST_3)
 	name.create("test_1");
 	position.x = posx;
 	position.y = posy;
-	vision = 30;
-	body = 45;
+	vision = 10;
+	body = 50;
 	collrange = 25;
 	selectable = false;
 	isSelected = false;
@@ -180,7 +180,7 @@ bool Test_3::PostUpdate(float dt)
 bool Test_3::CleanUp()
 {
 	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
-	if (finished)
+	if (!preview)
 	{
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -195,6 +195,10 @@ bool Test_3::CleanUp()
 				App->pathfinding->ChangeWalkability(tempPos, true);
 			}
 		}
+	}
+	else
+	{
+		App->scene->Building_preview = false;
 	}
 	return true;
 }
