@@ -47,7 +47,6 @@ protected:
 	uint life_points;
 
 	int followpath;
-	int collrange;
 	int vision;
 	bool move;
 	SDL_RendererFlip orientation;

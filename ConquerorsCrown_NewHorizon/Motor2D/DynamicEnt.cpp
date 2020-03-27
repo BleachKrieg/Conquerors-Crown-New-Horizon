@@ -219,15 +219,14 @@ void DynamicEnt::Movement()
 		}
 		if (App->scene->debug)
 		{
-			App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
+			App->render->DrawCircle(position.x, position.y, vision, 200, 0, 0);
+			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 		}
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
 		{
-			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
+			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position, body);
 		}
 		else
 		{
@@ -248,8 +247,8 @@ void DynamicEnt::Movement()
 
 	
 
-	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.1 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.1 * cohesionSpeed.y + 0 * alignmentSpeed.y;
+	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
 	CheckCollisions(&speed);
 
@@ -272,7 +271,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 			int y = it->position.y;
 
 			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + it->body)
+			if (distance < body + it->body)
 			{
 				colliding_entity_list->push_back(it);
 

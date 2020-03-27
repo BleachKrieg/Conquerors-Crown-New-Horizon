@@ -23,7 +23,6 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	life_points = 100;
 	vision = 26;
 	body = 13;
-	collrange = 16;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
