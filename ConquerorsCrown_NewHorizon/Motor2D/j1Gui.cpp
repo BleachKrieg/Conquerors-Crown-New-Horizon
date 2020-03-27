@@ -191,6 +191,15 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
+//Delete all gui elements
+void j1Gui::DeleteAllGui() {
+	p2List_item<GuiItem*>* gui_list = guiElements.end;
+	while (gui_list) {
+		gui_list->data->to_delete = true;
+		gui_list = gui_list->prev;
+	}
+}
+
 //Delete a gui element
 void j1Gui::DeleteGuiElement() 
 {

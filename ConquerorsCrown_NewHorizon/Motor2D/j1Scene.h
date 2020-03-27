@@ -47,6 +47,7 @@ public:
 	//Menu functions
 
 	bool CreateMenu();
+	bool CreateInGame();
 	
 private:
 	bool changeEntities = false;
@@ -70,6 +71,10 @@ public:
 	GuiItem* menuButtonExit;
 	GuiItem* menuTextExit;
 	GuiItem* menuBackground;
+
+	//InGameGui
+	GuiItem* ingameBackground;
+	GuiItem* ingameTopBar;
 };
 
 #endif // __j1SCENE_H__

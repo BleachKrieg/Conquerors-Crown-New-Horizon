@@ -174,6 +174,7 @@ public:
 	void IterateFocus();
 
 	void DeleteGuiElement();
+	void DeleteAllGui();
 
 	void sendInput(GuiItem* item);
 

@@ -29,6 +29,8 @@ j1Scene::~j1Scene()
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
 {
+	bool ret = true;
+
 	LOG("Loading Scene");
 	pugi::xml_node map;
 
@@ -37,14 +39,14 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	
-	bool ret = true;
-
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
+	bool ret = false;
+
 	LOG("Start scene");
 
 	current_level = "test.tmx";
@@ -73,27 +75,9 @@ bool j1Scene::Start()
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
-	SDL_Rect rect = { 0, 0, 303, 42 };
+	if (CreateMenu())ret = true;
 
-	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
-
-	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 0, 0, { 0, 63, 303, 42 }, menuBackground, this, NULL);
-	menuButtonNewGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, rect, menuButtonNewGame, nullptr, "New Game");
-
-	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 0, 50, { 0, 63, 303, 42 }, menuBackground, this, NULL);
-	menuButtonLoadGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, rect, menuButtonLoadGame, nullptr, "Load Game");
-
-	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 0, 100, { 0, 63, 303, 42 }, menuBackground, this, NULL);
-	menuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, rect, menuButtonOptions, nullptr, "Options");
-
-	menuButtonExit = App->gui->CreateGuiElement(Types::button, 0, 150, { 0, 63, 303, 42 }, menuBackground, this, NULL);
-	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, rect, menuButtonExit, nullptr, "Exit");
-
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
@@ -122,6 +106,11 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 500*dt;
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 		debug = !debug;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		CreateMenu();
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		CreateInGame();
 
 	int x, y;
 	App->input->GetMousePosition(x, y);
@@ -197,4 +186,33 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
+bool j1Scene::CreateMenu() {
+	App->gui->DeleteAllGui();
+	SDL_Rect rect = { 0, 500, 1280, 720 };
 
+	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
+
+	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 500, 0, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonNewGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, rect, menuButtonNewGame, nullptr, "New Game");
+
+	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 500, 50, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonLoadGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, rect, menuButtonLoadGame, nullptr, "Load Game");
+
+	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 500, 100, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, rect, menuButtonOptions, nullptr, "Options");
+
+	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 150, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, rect, menuButtonExit, nullptr, "Exit");
+
+	return true;
+}
+
+bool j1Scene::CreateInGame() {
+	App->gui->DeleteAllGui();
+	
+
+}
