@@ -187,24 +187,24 @@ bool j1Scene::Save(pugi::xml_node& data) const
 }
 
 bool j1Scene::CreateMenu() {
-	App->gui->DeleteAllGui();
+	DeleteUI();
 	SDL_Rect rect = { 0, 500, 1280, 720 };
 
 	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
 
-	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 500, 0, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonNewGame = App->gui->CreateGuiElement(Types::button, 500, 300, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonNewGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextNewGame = App->gui->CreateGuiElement(Types::text, 65, 4, rect, menuButtonNewGame, nullptr, "New Game");
 
-	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 500, 50, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonLoadGame = App->gui->CreateGuiElement(Types::button, 500, 350, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonLoadGame->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextLoadGame = App->gui->CreateGuiElement(Types::text, 63, 4, rect, menuButtonLoadGame, nullptr, "Load Game");
 
-	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 500, 100, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonOptions = App->gui->CreateGuiElement(Types::button, 500, 400, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, rect, menuButtonOptions, nullptr, "Options");
 
-	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 150, { 0, 63, 303, 42 }, menuBackground, this, NULL);
+	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 450, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, rect, menuButtonExit, nullptr, "Exit");
 
@@ -212,7 +212,28 @@ bool j1Scene::CreateMenu() {
 }
 
 bool j1Scene::CreateInGame() {
-	App->gui->DeleteAllGui();
-	
+	DeleteUI();
+	SDL_Rect downRect = { 0, 222, 1280, 278 };
+	SDL_Rect topRect = { 0, 0, 1280, 50 };
+	ingameBackground = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
+	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, 0, topRect);
 
+	return true;
+}
+
+bool j1Scene::DeleteUI() {
+	
+	menuBackground = nullptr;
+	menuButtonNewGame = nullptr;
+	menuTextNewGame = nullptr;
+	menuButtonLoadGame = nullptr;
+	menuTextLoadGame = nullptr;
+	menuButtonOptions = nullptr;
+	menuTextOptions = nullptr;
+	menuButtonExit = nullptr;
+	menuTextExit = nullptr;
+	ingameBackground = nullptr;
+	ingameTopBar = nullptr;
+	App->gui->DeleteAllGui();
+	return true;
 }

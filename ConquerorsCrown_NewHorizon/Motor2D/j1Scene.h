@@ -48,6 +48,7 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
+	bool DeleteUI();
 	
 private:
 	bool changeEntities = false;
