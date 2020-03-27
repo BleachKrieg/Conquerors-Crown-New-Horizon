@@ -89,7 +89,7 @@ public:
 class GuiText : public GuiItem
 {
 public:
-	GuiText(int, int, SDL_Rect, char*, j1Module* callback = nullptr);
+	GuiText(int, int, SDL_Rect, char*, _TTF_Font* font, j1Module* callback = nullptr);
 	virtual ~GuiText();
 
 private:
@@ -174,12 +174,13 @@ public:
 	void IterateFocus();
 
 	void DeleteGuiElement();
+	void DeleteAllGui();
 
 	void sendInput(GuiItem* item);
 
 	SDL_Texture* GetAtlas() const;
 	
-	GuiItem* CreateGuiElement(Types type, int x, int y, SDL_Rect, GuiItem* parentnode = NULL, j1Module* callback = nullptr, char* text = "");
+	GuiItem* CreateGuiElement(Types type, int x, int y, SDL_Rect, GuiItem* parentnode = NULL, j1Module* callback = nullptr, char* text = "", _TTF_Font* font = nullptr);
 
 public:
 	bool buttonPressed;
@@ -188,7 +189,9 @@ public:
 
 private:
 	p2SString atlas_file_name;
+	p2SString icons_file_name;
 	SDL_Texture* atlas;
+	SDL_Texture* icons;
 
 	int xblit, yblit;
 public:
