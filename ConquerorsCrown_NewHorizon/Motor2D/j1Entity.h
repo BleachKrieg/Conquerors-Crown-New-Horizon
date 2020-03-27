@@ -51,7 +51,7 @@ public:
 	bool CleanUp();
 
 	//Spatial Audio
-	void SpatialAudio(int channel);
+	void SpatialAudio(int channel, int posx, int posy);
 
 protected:
 	Animation* current_animation = nullptr;
@@ -63,7 +63,7 @@ public:
 	bool to_delete;
 	int body;
 	fPoint speed;
-	
+	int volume;
 	
 };
 

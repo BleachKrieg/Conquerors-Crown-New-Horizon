@@ -44,7 +44,8 @@ public:
 	SDL_Rect Construction;
 	SDL_Rect Created;
 
-	int counter = 0;
+	int counter=0;
+	bool play_sound = false;
 
 };
 

@@ -30,7 +30,7 @@ public:
 	unsigned int LoadFx(const char* path);
 
 	// Play a previously loaded WAV
-	bool PlayFx(int channel, unsigned int fx, int repeat = 0);
+	bool PlayFx(int channel, unsigned int fx, int repeat);
 
 	//Stop FX channel
 	void StopFx();
@@ -45,6 +45,7 @@ public:
 	bool j1Audio::Load(pugi::xml_node& config);
 	void musicvolume(float value);
 	float fxvolume(float value);
+	void SetChannelVolume(int channel, int volume);
 
 public:
 
@@ -64,6 +65,8 @@ public:
 	int extraLifeFx;*/
 
 	int construction;
+	int walking;
+
 
 	//ButtonFX
 	int buttonFx;
