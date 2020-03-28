@@ -4,7 +4,6 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
-#include "j1Render.h"
 
 #define MAX_KEYS 300
 
@@ -188,8 +187,8 @@ bool j1Input::GetWindowEvent(j1EventWindow ev)
 
 void j1Input::GetMousePosition(int& x, int& y)
 {
-	x = mouse_x - App->render->camera.x;
-	y = mouse_y - App->render->camera.y;
+	x = mouse_x;
+	y = mouse_y;
 }
 
 void j1Input::GetMouseMotion(int& x, int& y)

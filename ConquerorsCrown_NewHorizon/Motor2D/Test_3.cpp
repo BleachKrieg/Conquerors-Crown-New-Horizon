@@ -48,7 +48,6 @@ bool Test_3::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
 		to_delete = true;
 
-	
 	//App->render->Blit(App->entity->test_1_graphics, position.x + current_animation->pivotx[current_animation->returnCurrentFrame()], position.y + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)), 1.0f);
 	
 	if (finished)
@@ -71,24 +70,10 @@ bool Test_3::Update(float dt)
 		// Construction Animation
 		current_animation = &inconstruction;
 		
-		// Audio reproduced only once
-		
-
-		counter++;
-		/*if (position.x > -App->render->camera.x + App->render->camera.w) {
-			volume = 0;
-		}*/
-		
-		
 		if (timer.ReadSec() >= construction_time)
 		{
 			finished = true;
-			Mix_HaltChannel(-1);
-			counter = 0;
 		}
-		
-		//When construction finishes, pass in finished state and stop SFX
-		
 	}
 	else if (preview)
 	{
@@ -117,8 +102,6 @@ bool Test_3::Update(float dt)
 					App->pathfinding->ChangeWalkability(tempPos, false);
 				}
 			}
-
-			SpatialAudio(1, position.x, position.y);
 		
 			preview = false;
 		}
@@ -129,7 +112,6 @@ bool Test_3::Update(float dt)
 		}
 	}
 
-	
 
 	if (App->scene->debug && !preview)
 	{

@@ -36,31 +36,29 @@ void j1Map::Draw()
 
 	if(map_loaded == false)
 		return;
-	int cameraX = App->render->camera.x, cameraY = App->render->camera.y, winWidth = App->win->width, winHeight = App->win->height;
 
+	
 	MapLayer* it;
 	for (list<MapLayer*>::const_iterator layer = data.layers.begin(); layer != data.layers.end(); ++layer) {
-		it = *layer;
+			it = *layer;
 		parallax = it->returnPropfValue("Parallax");
-		if (it->returnPropValue("Nodraw") == 0 || blitColliders)
+		for(int y = 0; y < data.height; ++y)
 		{
-			for (int y = 0; y < data.height; ++y)
+			for(int x = 0; x < data.width; ++x)
 			{
-				for (int x = 0; x < data.width; ++x)
+				int tile_id = it->Get(x, y);
+				if(tile_id > 0)
 				{
-					iPoint pos = MapToWorld(x, y);
-					if (pos.x >= -cameraX -32 && pos.y >= -cameraY-32 &&
-						pos.x <= -cameraX + winWidth && pos.y <= -cameraY + winHeight)
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
 					{
-						int tile_id = it->Get(x, y);
-						if (tile_id > 0)
-						{
-							TileSet* tileset = GetTilesetFromTileId(tile_id);
-							if (tileset != nullptr)
-							{
-								SDL_Rect r = tileset->GetTileRect(tile_id);
-								{
-									App->render->Blit(tileset->texture, pos.x, pos.y, &r, parallax);
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
+						if( it->returnPropValue("Nodraw")==0  || blitColliders ){
+						//Blit every tile inside camera limits and colliders if blitcolliders is active ----------------------------------------------
+							if (pos.x >= -1 * ((App->render->camera.x+64)) *parallax && pos.y >= -1 * (App->render->camera.y+32)) {
+								if (pos.x <= -1 * (App->render->camera.x)*parallax + App->win->width && pos.y <= -1 * (App->render->camera.y-32) + App->win->height) {
+									App->render->Blit(tileset->texture, pos.x, pos.y, &r,parallax); 
 								}
 							}
 						}

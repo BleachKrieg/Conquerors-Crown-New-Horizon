@@ -47,7 +47,7 @@ bool j1Scene::Start()
 {
 	LOG("Start scene");
 
-	current_level = "First level design.tmx";
+	current_level = "test.tmx";
 	debug = false;
 	if (App->map->Load(current_level.GetString()) == true)
 	{
@@ -68,7 +68,6 @@ bool j1Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
-	
 	
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 
@@ -137,7 +136,9 @@ bool j1Scene::Update(float dt)
 		App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
 	}
 
+	
 	App->map->Draw();
+
 
 	//This is to know the position of the mouse in tiles
 	int xmouse, ymouse;
@@ -145,6 +146,8 @@ bool j1Scene::Update(float dt)
 	map_coordinates = App->map->WorldToMap(xmouse - App->render->camera.x, ymouse - App->render->camera.y);
 
 	//App->render->Blit(debug_tex, p.x, p.y);
+
+
 
 	return true;
 }
@@ -184,3 +187,5 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	return true;
 }
+
+
