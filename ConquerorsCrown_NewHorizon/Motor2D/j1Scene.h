@@ -56,7 +56,6 @@ public:
 	bool DeleteUI();
 
 	void GuiInput(GuiItem* guiElement);
-
 	
 private:
 	bool changeEntities = false;

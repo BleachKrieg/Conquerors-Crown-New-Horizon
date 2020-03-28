@@ -118,6 +118,8 @@ bool j1Scene::Update(float dt)
 			App->render->camera.y -= 500 * dt;
 		}
 
+	App->map->Draw();
+
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			App->render->camera.x += 500 * dt;
 		}
