@@ -100,8 +100,7 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 
 	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
+	
 
 	switch (current_scene) 
 	{
@@ -138,11 +137,11 @@ bool j1Scene::Update(float dt)
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { x, y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { p.x, p.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { x, y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		{

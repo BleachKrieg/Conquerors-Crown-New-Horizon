@@ -66,7 +66,9 @@ void DynamicEnt::Movement()
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
+		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
+
 		relative_target = { 0,0 };
 
 		for (selected_it = App->movement->selected.begin(); selected_it != App->movement->selected.end(); ++selected_it) {

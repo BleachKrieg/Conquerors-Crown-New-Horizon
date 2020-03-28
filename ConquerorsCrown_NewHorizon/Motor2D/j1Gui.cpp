@@ -83,6 +83,9 @@ bool j1Gui::PreUpdate(float dt)
 
 		//Get the mouse position
 		App->input->GetMousePosition(x, y);
+		iPoint temp = App->render->ScreenToWorld(x, y);
+		x = temp.x;
+		y = temp.y;
 		if (gui_list->data->isDynamic)
 		{
 			//Check if mouse is over a ui element and set the focus
@@ -575,9 +578,10 @@ void GuiSlider::slide()
 {
 	int x, y, LocalX, LocalY, ScreenX, ScreenY, parentx, parenty, difference, height;
 	App->input->GetMousePosition(x, y);
-
-	x -= 5 + App->render->camera.x;
-	y -= 5 + App->render->camera.y;
+	iPoint temp = App->render->ScreenToWorld(x, y);
+	x = 5 + temp.x;
+	y = 5 + temp.y;
+	
 
 	height = Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h + 1;
 
