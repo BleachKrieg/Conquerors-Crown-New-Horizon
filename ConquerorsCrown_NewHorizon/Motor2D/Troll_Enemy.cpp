@@ -32,6 +32,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	selectable = false;
 	following_target = false;
 	team = TeamType::IA;
+	target_entity = NULL;
 
 	// TODO ------------------------------------------
 }

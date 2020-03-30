@@ -32,6 +32,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	selectable = true;
 	following_target = false;
 	team = TeamType::PLAYER;
+	target_entity = NULL;
 
 	// TODO ------------------------------------------
 }
@@ -72,8 +73,6 @@ bool HumanFootman::Update(float dt)
 		to_delete = true;
 	Movement();
 
-	if (isSelected)
-		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);

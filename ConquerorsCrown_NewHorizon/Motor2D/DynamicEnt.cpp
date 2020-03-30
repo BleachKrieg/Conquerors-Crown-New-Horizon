@@ -177,6 +177,9 @@ void DynamicEnt::Movement()
 			followpath++;
 		}
 	}
+	else {
+		following_target = false;
+	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
