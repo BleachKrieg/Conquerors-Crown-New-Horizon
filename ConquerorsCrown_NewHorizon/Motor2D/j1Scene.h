@@ -11,6 +11,11 @@ class j1Entity;
 class DynamicEnt;
 class StaticEnt;;
 
+enum scenes {
+	menu,
+	ingame
+};
+
 
 class GuiItem;
 
@@ -44,18 +49,44 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	//Menu functions
 
+	bool CreateMenu();
+	bool CreateInGame();
+	bool DeleteUI();
+
+	void GuiInput(GuiItem* guiElement);
 	
 private:
 	bool changeEntities = false;
+	scenes current_scene = menu;
 
 public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
-	GuiItem* buttonNewGame;
+
 	bool debug;
 	bool Building_preview;
 	iPoint map_coordinates;
+
+
+	//MenuGui
+	GuiItem* menuButtonNewGame;
+	GuiItem* menuTextNewGame;
+	GuiItem* menuButtonLoadGame;
+	GuiItem* menuTextLoadGame;
+	GuiItem* menuButtonOptions;
+	GuiItem* menuTextOptions;
+	GuiItem* menuButtonExit;
+	GuiItem* menuTextExit;
+	GuiItem* menuBackground;
+
+	//InGameGui
+	iPoint ingameUIPosition;
+	GuiItem* ingameUI;
+	GuiItem* ingameTopBar;
+	GuiItem* ingameButtonMenu;
+	GuiItem* ingameTextMenu;
 };
 
 #endif // __j1SCENE_H__

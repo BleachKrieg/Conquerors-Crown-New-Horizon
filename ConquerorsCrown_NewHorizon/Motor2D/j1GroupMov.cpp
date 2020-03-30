@@ -60,6 +60,7 @@ bool j1GroupMov::Update(float dt) {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
+		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
 	}
@@ -67,6 +68,7 @@ bool j1GroupMov::Update(float dt) {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(origin.x, origin.y);
+		origin = App->render->ScreenToWorld(origin.x, origin.y);
 
 	}
 
