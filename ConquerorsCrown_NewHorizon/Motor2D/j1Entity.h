@@ -36,6 +36,13 @@ public:
 		DYNAMIC
 	};
 
+	enum class TeamType
+	{
+		NO_TYPE,
+		PLAYER,
+		IA,
+	};
+
 	entityType type;
 
 	// Constructor
@@ -56,6 +63,7 @@ public:
 protected:
 	Animation* current_animation = nullptr;
 
+
 public: 	
 	bool isSelected;
 	bool selectable;
@@ -64,7 +72,10 @@ public:
 	int body;
 	fPoint speed;
 	int volume;
-	
+	TeamType	team;
+	uint		life_points;
+
+
 };
 
 #endif // __j1Entity_H__

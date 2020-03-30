@@ -21,6 +21,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 100;
+	attack_vision = 100;
 	vision = 26;
 	body = 13;
 	position.x = posx;
@@ -29,6 +30,9 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	to_delete = false;
 	isSelected = false;
 	selectable = true;
+	following_target = false;
+	team = TeamType::PLAYER;
+
 	// TODO ------------------------------------------
 }
 
@@ -63,8 +67,8 @@ bool HumanArcher::Update(float dt)
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
-		to_delete = true;
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
+		life_points = 0;
 
 	if (life_points <= 0u)
 		to_delete = true;

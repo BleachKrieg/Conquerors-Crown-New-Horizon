@@ -17,9 +17,11 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 {
 	name.create("enemy_troll");
 
+	
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 100;
+	attack_vision = 200;
 	vision = 26;
 	body = 13;
 	position.x = posx;
@@ -28,6 +30,9 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	to_delete = false;
 	isSelected = false;
 	selectable = false;
+	following_target = false;
+	team = TeamType::IA;
+
 	// TODO ------------------------------------------
 }
 
@@ -59,14 +64,15 @@ bool TrollEnemy::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
+		life_points = 0;
+
+	if (life_points <= 0u)
 		to_delete = true;
 
 	Movement();
 
-	if (isSelected)
-		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
-
+	
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);

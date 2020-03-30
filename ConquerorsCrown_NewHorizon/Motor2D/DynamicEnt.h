@@ -21,7 +21,7 @@ public:
 		HUMAN_FOOTMAN,
 		ENEMY_TROLL,
 	};
-
+	
 	// Constructor
 	DynamicEnt(DynamicEntityType type);
 
@@ -45,11 +45,10 @@ public:
 
 
 protected:
-	uint				life_points;
 
 	int					followpath;
-	int					vision;
-	bool				move;
+	uint				vision;
+	uint				move;
 	SDL_RendererFlip	orientation;
 	iPoint				origin, mouse, relative_target;
 	p2DynArray<iPoint>	path;
@@ -64,10 +63,11 @@ protected:
 	Animation moving_down;
 	// -----------------------------------
 	// Attack Variables ------------------
-	j1Entity*	entity_to_attack;
+	j1Entity*	target_entity;
 	uint		attack_vision;
 	uint		attack_range;
 	uint		attack_damage;
+	bool		following_target;
 	// -----------------------------------
 	
 };
