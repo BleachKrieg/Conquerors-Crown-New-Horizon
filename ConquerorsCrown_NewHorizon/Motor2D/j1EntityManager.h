@@ -54,11 +54,14 @@ protected:
 public:
 	list<j1Entity*> entities;
 	SDL_Texture* foot_man_tex = nullptr;
-	SDL_Texture* arch_man = nullptr;
+	SDL_Texture* arch_man_tex = nullptr;
+	SDL_Texture* troll_tex = nullptr;
 
-	// Animations
+	// Animations ----------------------
 	list<Animation*> archer_animations;
 	list<Animation*> footman_animations;
+	list<Animation*> troll_animations;
+	// ---------------------------------
 
 	SDL_Texture* building = nullptr;
 

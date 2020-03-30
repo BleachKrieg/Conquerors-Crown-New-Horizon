@@ -5,18 +5,17 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "HumanArcher.h"
+#include "Troll_Enemy.h"
 #include "DynamicEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
-#include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
 
-HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_ARCHER)
+TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_TROLL)
 {
-	name.create("human_archer");
+	name.create("enemy_troll");
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
@@ -28,17 +27,16 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	orientation = SDL_FLIP_NONE;
 	to_delete = false;
 	isSelected = false;
-	selectable = true;
+	selectable = false;
 	// TODO ------------------------------------------
 }
 
-HumanArcher::~HumanArcher() {}
+TrollEnemy::~TrollEnemy() {}
 
-bool HumanArcher::Start()
+bool TrollEnemy::Start()
 {
-
 	list<Animation*>::iterator animations_list;
-	animations_list = App->entity->archer_animations.begin();
+	animations_list = App->entity->troll_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;
@@ -51,42 +49,38 @@ bool HumanArcher::Start()
 	++animations_list;
 
 	current_animation = &moving_down;
-
 	return true;
 }
 
-bool HumanArcher::Update(float dt)
+bool TrollEnemy::Update(float dt)
 {
-	BROFILER_CATEGORY("ArcherUpdate", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_TrollEnemy", Profiler::Color::BlanchedAlmond);
 
-	// Speed resetted to 0 each iteration
-	speed = { NULL, NULL };
+	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
 		to_delete = true;
 
-	if (life_points <= 0u)
-		to_delete = true;
-
 	Movement();
+
 	if (isSelected)
 		App->render->DrawCircle((int)position.x + 5, (int)position.y + 5, 10, 0, 200, 0, 200);
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
-bool HumanArcher::PostUpdate(float dt)
+bool TrollEnemy::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("Archer_PostUpdate", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("PostUpdate_TrollEnemy", Profiler::Color::BurlyWood)
 
-	return true;
+		return true;
 }
 
-bool HumanArcher::CleanUp()
+bool TrollEnemy::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();

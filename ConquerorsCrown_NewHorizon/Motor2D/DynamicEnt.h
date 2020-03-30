@@ -19,6 +19,7 @@ public:
 		NO_TYPE,
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
+		ENEMY_TROLL,
 	};
 
 	// Constructor
@@ -44,16 +45,16 @@ public:
 
 
 protected:
-	uint life_points;
+	uint				life_points;
 
-	int followpath;
-	int vision;
-	bool move;
-	SDL_RendererFlip orientation;
-	iPoint origin, mouse, relative_target;
-	p2DynArray<iPoint> path;
-	list<j1Entity*> close_entity_list;
-	list<j1Entity*> colliding_entity_list;
+	int					followpath;
+	int					vision;
+	bool				move;
+	SDL_RendererFlip	orientation;
+	iPoint				origin, mouse, relative_target;
+	p2DynArray<iPoint>	path;
+	list<j1Entity*>		close_entity_list;
+	list<j1Entity*>		colliding_entity_list;
 
 	// Animations ------------------------
 	Animation moving_up;
@@ -61,6 +62,12 @@ protected:
 	Animation moving_right;
 	Animation moving_diagonal_down;
 	Animation moving_down;
+	// -----------------------------------
+	// Attack Variables ------------------
+	j1Entity*	entity_to_attack;
+	uint		attack_vision;
+	uint		attack_range;
+	uint		attack_damage;
 	// -----------------------------------
 	
 };

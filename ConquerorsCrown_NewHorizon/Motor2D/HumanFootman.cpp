@@ -77,7 +77,7 @@ bool HumanFootman::Update(float dt)
 
 bool HumanFootman::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("Archer_PostUpdate", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("PostUpdate_HumanFootman", Profiler::Color::BurlyWood)
 
 		return true;
 }
