@@ -120,13 +120,13 @@ void DynamicEnt::Movement()
 	if (target_entity == NULL)
 	{
 		following_target = false;
-		path.Clear();
 	}
 	if (target_entity != NULL)
 	{
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
+			path.Clear();
 		}
 	}
 		
