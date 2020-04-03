@@ -9,6 +9,14 @@
 #include "StaticEnt.h"
 #include "EntityRequest.h"
 
+enum Barrack_states
+{
+	ST_BARRACK_PREVIEW,
+	ST_BARRANCK_IN_CONSTRUCTION,
+	ST_BARRACK_FINISHED,
+	ST_BARRACK_DESTROYED
+};
+
 class Test_3 : public StaticEnt
 {
 public:
@@ -32,6 +40,7 @@ public:
 	void CheckWalkable(iPoint map);
 
 	// Animation
+	void checkAnimation(float dt);
 
 public:
 	// Animations
@@ -44,9 +53,8 @@ public:
 	SDL_Rect Construction;
 	SDL_Rect Created;
 
-	int counter=0;
-	bool play_sound = false;
+	// Animations
+	Barrack_states	actualState;
 
 };
-
 #endif // __TEST_1_H__
