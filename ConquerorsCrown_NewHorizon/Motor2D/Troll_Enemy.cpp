@@ -71,7 +71,7 @@ bool TrollEnemy::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 
-	if (life_points <= 0u)
+	if (life_points <= 0)
 		to_delete = true;
 
 	Movement();
