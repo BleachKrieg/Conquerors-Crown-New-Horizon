@@ -73,7 +73,7 @@ public:
 	fPoint speed;
 	int volume;
 	TeamType	team;
-	uint		life_points;
+	int		life_points;
 
 
 };
