@@ -49,24 +49,9 @@ public:
 
 public:
 
-	//Player FX
-	/*int moveFx;
-	int jumpFx;
-	int dashFx;
-	int winFx;
-	int deathFx;
-	int arrowFx;
-	int bowFx;
-	int swordFx;
-	int checkpointFx;
-	int wizarDeathFx;
-	int slimeDeathFx;
-	int coinpickupFx;
-	int extraLifeFx;*/
-
 	int construction;
 	int walking;
-
+	int cancel_building;
 
 	//ButtonFX
 	int buttonFx;

@@ -73,6 +73,15 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 	
+	switch (current_scene)
+	{
+	case menu:
+		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		break;
+	case ingame:
+		App->audio->PlayMusic("Audio/Music/Warcraft_II_Intro_Music.ogg", 2.0F);
+		break;
+	}
 	
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);

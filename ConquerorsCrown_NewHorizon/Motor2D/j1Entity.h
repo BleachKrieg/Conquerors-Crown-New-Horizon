@@ -51,7 +51,7 @@ public:
 	bool CleanUp();
 
 	//Spatial Audio
-	void SpatialAudio(int channel, int posx, int posy);
+	void SpatialAudio(int channel, int SFX, int posx, int posy);
 
 protected:
 	Animation* current_animation = nullptr;
@@ -64,6 +64,7 @@ public:
 	int body;
 	fPoint speed;
 	int volume;
+	int SFX;
 	
 	j1Timer timer2;
 };

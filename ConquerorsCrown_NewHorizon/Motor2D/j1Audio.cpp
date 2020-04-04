@@ -64,22 +64,8 @@ bool j1Audio::Awake(pugi::xml_node & config)
 
 	construction = App->audio->LoadFx("Audio/SFX/Buildings/Construction_Loop_2.wav");
 	walking = App->audio->LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience.wav");
+	cancel_building = App->audio->LoadFx("Audio/SFX/Buildings/Cancel_Building2.wav");
 
-
-	/*moveFx = LoadFx("audio/fx/move.wav");
-	jumpFx = LoadFx("audio/fx/jump.wav");
-	dashFx = LoadFx("audio/fx/dash.wav");
-	winFx = LoadFx("audio/fx/win.wav");
-	deathFx = LoadFx("audio/fx/death.wav");
-	arrowFx = LoadFx("audio/fx/arrow.wav");
-	bowFx = LoadFx("audio/fx/bow.wav");
-	swordFx = LoadFx("audio/fx/sword.wav");
-	checkpointFx = LoadFx("audio/fx/checkpoint.wav");
-	wizarDeathFx = LoadFx("audio/fx/wizard_death.wav");
-	slimeDeathFx = LoadFx("audio/fx/slime_death.wav");
-	coinpickupFx = LoadFx("audio/fx/coin.wav");
-	buttonFx = LoadFx("audio/fx/button.wav");
-	extraLifeFx = LoadFx("audio/fx/extralife.wav");*/
 	return ret;
 }
 

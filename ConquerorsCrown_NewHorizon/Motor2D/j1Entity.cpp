@@ -39,7 +39,7 @@ SDL_Rect TileSetEntity::GetAnimRect(int id) const
 	return rect;
 }
 
-void j1Entity::SpatialAudio(int channel, int posx, int posy) {
+void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 
 	Mix_Playing(channel);
 	Mix_HaltChannel(channel);
@@ -70,7 +70,7 @@ void j1Entity::SpatialAudio(int channel, int posx, int posy) {
 	
 	Mix_SetPosition(channel, angle, volume);
 
-	App->audio->PlayFx(channel, App->audio->construction, 0);
+	App->audio->PlayFx(channel, SFX, 0);
 
 	LOG("PositionX: %i	PositionY: %i	Angle: %i	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
 		center_camera.y, angle, volume, App->render->camera.w, provisional_distance);

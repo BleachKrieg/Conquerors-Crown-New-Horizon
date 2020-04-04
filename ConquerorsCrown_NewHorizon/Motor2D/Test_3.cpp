@@ -170,6 +170,7 @@ void Test_3::checkAnimation(float dt)
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
+			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
@@ -192,13 +193,15 @@ void Test_3::checkAnimation(float dt)
 				}
 			}
 
-			SpatialAudio(1, position.x, position.y);
+			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
 		}
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			Mix_HaltChannel(-1);
+			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			to_delete = true;
 		}
