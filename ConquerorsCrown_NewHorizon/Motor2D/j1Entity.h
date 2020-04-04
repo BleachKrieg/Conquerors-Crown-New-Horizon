@@ -65,6 +65,7 @@ public:
 	fPoint speed;
 	int volume;
 	
+	j1Timer timer2;
 };
 
 #endif // __j1Entity_H__
