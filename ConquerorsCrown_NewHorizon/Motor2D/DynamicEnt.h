@@ -68,7 +68,12 @@ protected:
 	uint		attack_range;
 	uint		attack_damage;
 	bool		following_target;
+	uint		time_attack;
 	// -----------------------------------
+
+	// Time counter ----------------------
+	j1PerfTimer	timer;
+	uint		current_time;
 	
 };
 

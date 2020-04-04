@@ -22,6 +22,9 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	speed = { NULL, NULL };
 	life_points = 100;
 	attack_vision = 200;
+	attack_range = 30;
+	time_attack = 1000;
+	attack_damage = 12;
 	vision = 26;
 	body = 13;
 	position.x = posx;

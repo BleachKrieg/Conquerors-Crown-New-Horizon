@@ -62,7 +62,6 @@ void DynamicEnt::Movement()
 
 	list<j1Entity*>::iterator selected_it;
 
-
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
@@ -123,20 +122,37 @@ void DynamicEnt::Movement()
 	}
 	if (target_entity != NULL)
 	{
+		uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));
+
+		if (!following_target && distance > (attack_range * attack_range))
+		{
+			current_time = timer.ReadMs();
+			following_target = true;
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->CreatePath(origin, targetPos);
+			App->pathfinding->SavePath(&path);
+			followpath = 1;
+		}
+
+		// Finish attack
+
+		if (distance <= (attack_range * attack_range))
+		{
+			path.Clear();
+			if ((timer.ReadMs() - current_time) >= time_attack)
+			{
+				target_entity->life_points -= attack_damage;
+				current_time = timer.ReadMs();
+			}
+		}
+
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
+			current_time = timer.ReadMs();
 			path.Clear();
 		}
-	}
-		
-	if (target_entity != NULL && !following_target)
-	{
-		following_target = true;
-		iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
-		App->pathfinding->CreatePath(origin, targetPos);
-		App->pathfinding->SavePath(&path);
-		followpath = 1;
 	}
 
 	fPoint pathSpeed{ 0,0 };
@@ -241,6 +257,7 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, vision, 0, 200, 0);
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
+			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
 		}
 		if (isSelected)
 			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
