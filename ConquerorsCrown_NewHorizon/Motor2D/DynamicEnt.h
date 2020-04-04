@@ -74,7 +74,9 @@ protected:
 	// Time counter ----------------------
 	j1PerfTimer	timer;
 	uint		current_time;
-	
+
+private:
+	bool		change_direction;
 };
 
 #endif // __j1Entity_H__
