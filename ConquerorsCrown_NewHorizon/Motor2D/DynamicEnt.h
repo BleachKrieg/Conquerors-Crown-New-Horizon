@@ -69,7 +69,8 @@ protected:
 	uint		attack_damage;
 	bool		following_target;
 	// -----------------------------------
-	
+private:
+	bool		change_direction;
 };
 
 #endif // __j1Entity_H__

@@ -113,6 +113,7 @@ void DynamicEnt::Movement()
 		
 		App->pathfinding->SavePath(&path);
 		followpath = 1;
+		change_direction = true;
 	}
 
 //attack close enemy entity
@@ -137,6 +138,7 @@ void DynamicEnt::Movement()
 		App->pathfinding->CreatePath(origin, targetPos);
 		App->pathfinding->SavePath(&path);
 		followpath = 1;
+		change_direction = true;
 	}
 
 	fPoint pathSpeed{ 0,0 };
@@ -157,24 +159,30 @@ void DynamicEnt::Movement()
 				}
 			}
 		}
-		if (path.At(followpath)->x < origin.x) {
-			pathSpeed.x = -1;
-		}
 
-		if (path.At(followpath)->x > origin.x) {
-			pathSpeed.x = +1;
-		}
-
-		if (path.At(followpath)->y < origin.y) {
-			pathSpeed.y = -1;
-		}
-
-		if (path.At(followpath)->y > origin.y) {
-			pathSpeed.y = 1;
-		}
 		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 		{
 			followpath++;
+			change_direction = true;
+		}
+		if (path.At(followpath) != NULL)
+		{
+
+			if (path.At(followpath)->x < origin.x) {
+				pathSpeed.x = -1;
+			}
+
+			if (path.At(followpath)->x > origin.x) {
+				pathSpeed.x = +1;
+			}
+
+			if (path.At(followpath)->y < origin.y) {
+				pathSpeed.y = -1;
+			}
+
+			if (path.At(followpath)->y > origin.y) {
+				pathSpeed.y = 1;
+			}
 		}
 	}
 	else {
@@ -185,43 +193,49 @@ void DynamicEnt::Movement()
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
 	}
-	if (pathSpeed.x != 0)
+	if (change_direction)
 	{
-		current_animation = &moving_right;
-		
-		if (pathSpeed.y < 0)
+		if (pathSpeed.x != 0)
 		{
-			current_animation = &moving_diagonal_up;
-		}
+			current_animation = &moving_right;
 
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_diagonal_down;
-		}
-	}
-	else if (pathSpeed.y != 0) {
-		if (pathSpeed.y < 0)
-		{
-			current_animation = &moving_up;
-		}
+			if (pathSpeed.y < 0)
+			{
+				current_animation = &moving_diagonal_up;
+			}
 
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_down;
+			if (pathSpeed.y > 0)
+			{
+				current_animation = &moving_diagonal_down;
+			}
 		}
+		else if (pathSpeed.y != 0) {
+			if (pathSpeed.y < 0)
+			{
+				current_animation = &moving_up;
+			}
+
+			if (pathSpeed.y > 0)
+			{
+				current_animation = &moving_down;
+			}
+		}
+		else
+		{
+			//idle anim
+		}
+		if (pathSpeed.x < 0)
+		{
+			orientation = SDL_FLIP_HORIZONTAL;
+		}
+		if (pathSpeed.x > 0)
+		{
+			orientation = SDL_FLIP_NONE;
+		}
+		change_direction = false;
+
 	}
-	else 
-	{
-		//idle anim
-	}
-	if (pathSpeed.x < 0)
-	{
-		orientation = SDL_FLIP_HORIZONTAL;
-	}
-	if(pathSpeed.x > 0)
-	{
-		orientation = SDL_FLIP_NONE;
-	}
+	
 
 		SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
