@@ -130,8 +130,12 @@ bool j1Scene::Update(float dt)
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
 		//Debug input
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
+		{
 			debug = !debug;
+			App->map->blitColliders = !App->map->blitColliders;
+		}
+			
 
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
