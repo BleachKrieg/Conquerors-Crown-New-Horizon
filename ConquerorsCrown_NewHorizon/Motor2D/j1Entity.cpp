@@ -6,6 +6,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Audio.h"
+#include "j1Timer.h"
 
 j1Entity::j1Entity(entityType type) : type(type)
 {
@@ -54,23 +55,23 @@ void j1Entity::SpatialAudio(int channel, int posx, int posy) {
 		volume = 255;
 	}
 
-	//float angle = 0;
+	float angle = 0;
 
-	//if (App->render->camera.y/2 == posy) {
-	//	angle = atan(App->render->camera.x);
-	//}
-	//else if (App->render->camera.y/2 < posy) {
-	//	angle = atan(-App->render->camera.x / App->render->camera.y);
-	//}
-	//else {
-	//	angle = atan(App->render->camera.x / App->render->camera.y);
-	//}
-	//angle = (angle * 57) + 360; //we add 360 cause of angle circumference
+	if (center_camera.y == posy) {
+		angle = atan(provisional_distance.x);
+	}
+	else if (center_camera.y < posy) {
+		angle = atan(provisional_distance.x / provisional_distance.y);
+	}
+	else {
+		angle = atan(provisional_distance.x / -provisional_distance.y);
+	}
+	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
 	
-	Mix_SetPosition(channel, 0, volume);
+	Mix_SetPosition(channel, angle, volume);
 
 	App->audio->PlayFx(channel, App->audio->construction, 0);
 
-	LOG("PositionX: %i	PositionY: %i	Angle: %i	Volume: %i	Camera width: %i	Provisional distance: %i %i", center_camera.x, 
-		center_camera.y, 0, volume, App->render->camera.w, provisional_distance);
+	LOG("PositionX: %i	PositionY: %i	Angle: %i	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
+		center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }

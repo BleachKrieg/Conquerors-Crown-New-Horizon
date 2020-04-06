@@ -130,8 +130,12 @@ bool j1Scene::Update(float dt)
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
 		//Debug input
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
+		{
 			debug = !debug;
+			App->map->blitColliders = !App->map->blitColliders;
+		}
+			
 
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -146,6 +150,14 @@ bool j1Scene::Update(float dt)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
 			Building_preview = true;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { p.x, p.y });
 		}
 
 		//Draw the map

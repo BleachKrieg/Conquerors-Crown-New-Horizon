@@ -193,6 +193,7 @@ void Test_3::checkAnimation(float dt)
 			}
 
 			SpatialAudio(1, position.x, position.y);
+
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
 		}
 
@@ -217,6 +218,7 @@ void Test_3::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
+			Mix_HaltChannel(-1);
 		}
 
 	}
