@@ -80,6 +80,7 @@
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
+    <ClCompile Include="HumanGatherer.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="HumanArcher.h" />
     <ClInclude Include="HumanFootman.h" />
+    <ClInclude Include="HumanGatherer.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1Fonts.h" />
