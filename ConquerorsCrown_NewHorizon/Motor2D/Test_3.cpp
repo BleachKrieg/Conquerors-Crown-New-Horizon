@@ -25,7 +25,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt(StaticEntType::TEST_3)
 	canbuild = false;
 	construction_time = 3;
 	time_FX = 1;
-
+	timer_queue = 0;
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
@@ -220,6 +220,7 @@ void Test_3::checkAnimation(float dt)
 
 		if (timer.ReadSec() >= construction_time)
 		{
+			Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
 			Mix_HaltChannel(-1);
 		}
@@ -236,6 +237,15 @@ void Test_3::checkAnimation(float dt)
 	{
 		// Finished Animation
 		current_animation = &finishedconst;
+		if (timer_queue < 0)
+		{
+			timer_queue = 0;
+		}
+		if (timer_queue > 0) 
+		{
+			timer_queue = timer_queue - 1*dt;
+		}
+		LOG("%f timer despues resta", timer_queue);
 
 		if (isSelected == true)
 		{
@@ -243,7 +253,8 @@ void Test_3::checkAnimation(float dt)
 
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+				timer_queue += 3;
+				App->requests->AddRequest(Petition::SPAWN, timer_queue, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
 			}
 		}
 	}

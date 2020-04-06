@@ -45,16 +45,18 @@ public:
 public:
 	// Animations
 	Animation* current_animation = nullptr;
-	//Animation idle;
-	int attackrange;
-	int collrange;
 	Animation inconstruction;
 	Animation finishedconst;
 	SDL_Rect Construction;
 	SDL_Rect Created;
+    Barrack_states	actualState;
+	
+	// Stats
+	int attackrange;
+	int collrange;
 
-	// Animations
-	Barrack_states	actualState;
-
+	// Queue
+	float timer_queue;
+	j1Timer start_queue;
 };
 #endif // __TEST_1_H__
