@@ -182,7 +182,7 @@ fPoint j1GroupMov::GetSeparationSpeed(list<j1Entity*>colliding_entity_list, fPoi
 	return separationSpeed;
 }
 
-fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint position)
+fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint position, float body)
 {
 	// TODO 5 Pretty much like before, we iterate all close neighbours
 	// But there's an addition. We need another fPoint, the MassCenter, which will initially use this 
@@ -210,7 +210,18 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 
 		float norm = sqrt(pow((cohesionSpeed.x), 2) + pow((cohesionSpeed.y), 2));
 
-		if (cohesionSpeed.x < 14 && cohesionSpeed.x > -14)
+		if (norm != 0	&& cohesionSpeed.x > body + 0.5 || cohesionSpeed.x < -body - 0.5
+						&& cohesionSpeed.y > body + 0.5 || cohesionSpeed.y < -body - 0.5)
+		{
+			cohesionSpeed.x = -1* cohesionSpeed.x / norm;
+			cohesionSpeed.y = -1* cohesionSpeed.y / norm;
+		}
+		else
+		{
+			cohesionSpeed.x = 0;
+			cohesionSpeed.y = 0;
+		}
+		/*if (cohesionSpeed.x < 14 && cohesionSpeed.x > -14)
 		{
 			cohesionSpeed.x = 0;
 		}
@@ -225,7 +236,7 @@ fPoint j1GroupMov::GetCohesionSpeed(list<j1Entity*>close_entity_list, fPoint pos
 		else
 		{
 			cohesionSpeed.y = -1 * cohesionSpeed.y / norm;
-		}
+		}*/
 	
 	return cohesionSpeed;
 }
