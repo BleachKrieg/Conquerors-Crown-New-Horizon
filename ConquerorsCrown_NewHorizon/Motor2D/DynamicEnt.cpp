@@ -123,10 +123,16 @@ void DynamicEnt::Movement()
 	}
 	if (target_entity != NULL)
 	{
-		uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
-			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));
+		/*uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));*/
 
-		if (!following_target && distance > (attack_range * attack_range))
+		int x = target_entity->position.x;
+		int y = target_entity->position.y;
+
+		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+
+		//if (!following_target && distance > (attack_range * attack_range))
+		if (!following_target && distance > attack_range + target_entity->body)
 		{
 			current_time = timer.ReadMs();
 			following_target = true;
@@ -138,7 +144,7 @@ void DynamicEnt::Movement()
 
 		// Finish attack
 
-		if (distance <= (attack_range * attack_range))
+		if (distance < attack_range + target_entity->body)
 		{
 			path.Clear();
 			if ((timer.ReadMs() - current_time) >= time_attack)
