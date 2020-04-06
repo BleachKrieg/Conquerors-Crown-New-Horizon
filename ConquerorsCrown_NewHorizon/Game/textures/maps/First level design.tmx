@@ -33946,7 +33946,7 @@
  </layer>
  <layer id="2" name="trees" width="130" height="130">
   <properties>
-   <property name="Navigation" type="int" value="1"/>
+   <property name="Navigation" type="int" value="0"/>
    <property name="Nodraw" type="int" value="0"/>
    <property name="Parallax" type="float" value="1"/>
   </properties>
