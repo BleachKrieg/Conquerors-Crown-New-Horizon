@@ -52,6 +52,9 @@ bool EntityRequest::Update(float dt)
 				case SpawnTypes::ARCHER:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_ARCHER, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
+				case SpawnTypes::GATHERER:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_GATHERER, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
 				case SpawnTypes::TROLL:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;

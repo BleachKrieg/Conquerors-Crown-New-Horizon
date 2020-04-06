@@ -19,6 +19,7 @@ public:
 		NO_TYPE,
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
+		HUMAN_GATHERER,
 		ENEMY_TROLL,
 	};
 	
@@ -68,6 +69,7 @@ protected:
 	uint		attack_range;
 	uint		attack_damage;
 	bool		following_target;
+	bool		can_attack;
 	uint		time_attack;
 	// -----------------------------------
 

@@ -21,6 +21,7 @@ enum class SpawnTypes
 	NONE,
 	SWORDMAN,
 	ARCHER,
+	GATHERER,
 	PEASANT,
 	TROLL,
 };

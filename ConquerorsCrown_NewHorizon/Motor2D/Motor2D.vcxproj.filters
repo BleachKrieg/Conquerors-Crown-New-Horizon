@@ -75,6 +75,9 @@
     <ClCompile Include="Troll_Enemy.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="HumanGatherer.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -171,6 +174,9 @@
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Troll_Enemy.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanGatherer.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>

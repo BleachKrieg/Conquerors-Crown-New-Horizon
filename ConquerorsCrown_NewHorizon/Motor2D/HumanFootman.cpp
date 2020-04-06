@@ -1,12 +1,9 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
-#include "Animation.h"
 #include "p2Log.h"
 #include "j1EntityManager.h"
-#include "j1Entity.h"
 #include "HumanFootman.h"
-#include "DynamicEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
@@ -34,6 +31,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	isSelected = false;
 	selectable = true;
 	following_target = false;
+	can_attack = true;
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 

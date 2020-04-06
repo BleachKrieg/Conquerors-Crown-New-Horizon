@@ -148,6 +148,10 @@ bool j1Scene::Update(float dt)
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { p.x, p.y });
 		}
 

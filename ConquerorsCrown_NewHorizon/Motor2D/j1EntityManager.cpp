@@ -3,6 +3,7 @@
 #include "Test_3.h"
 #include "HumanFootman.h"
 #include "HumanArcher.h"
+#include "HumanGatherer.h"
 #include "Troll_Enemy.h"
 #include "j1App.h"
 #include <stdio.h>
@@ -30,11 +31,13 @@ bool j1EntityManager::Start()
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
+	gather_man_tex = App->tex->Load("textures/units/Human Sprites/human_gatherer.png");
 	troll_tex = App->tex->Load("textures/units/Orc Sprites/orc_troll.png");
 
 	LOG("Loading Dynamic Entities Animations");
 	LoadAnimations("textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
+	LoadAnimations("textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
 	LoadAnimations("textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
@@ -105,6 +108,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	{
 	case DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN: ret = new HumanFootman(posx, posy); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_ARCHER: ret = new HumanArcher(posx, posy); break;
+	case DynamicEnt::DynamicEntityType::HUMAN_GATHERER: ret = new HumanGatherer(posx, posy); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); break;
 	}
 

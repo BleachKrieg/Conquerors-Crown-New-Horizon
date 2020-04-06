@@ -55,11 +55,13 @@ public:
 	list<j1Entity*> entities;
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;
+	SDL_Texture* gather_man_tex = nullptr;
 	SDL_Texture* troll_tex = nullptr;
 
 	// Animations ----------------------
 	list<Animation*> archer_animations;
 	list<Animation*> footman_animations;
+	list<Animation*> gatherer_animations;
 	list<Animation*> troll_animations;
 	// ---------------------------------
 
