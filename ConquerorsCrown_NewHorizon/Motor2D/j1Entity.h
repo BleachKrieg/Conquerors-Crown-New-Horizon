@@ -74,8 +74,8 @@ public:
 	int volume;
 	TeamType	team;
 	int		life_points;
-
-
+	
+	j1Timer timer2;
 };
 
 #endif // __j1Entity_H__
