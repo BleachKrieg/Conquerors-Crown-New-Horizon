@@ -17,7 +17,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
-	body = 45;
+	body = 13;
 	collrange = 25;
 	selectable = false;
 	isSelected = false;
@@ -29,8 +29,9 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
-
+	team = TeamType::PLAYER;
 	actualState = ST_BARRACK_PREVIEW;
+	life_points = 100;
 }
 
 HumanBarracks::~HumanBarracks()
@@ -47,10 +48,13 @@ bool HumanBarracks::Update(float dt)
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+	{
+		life_points = 0;
+	}
+	if (life_points <= 0)
 		to_delete = true;
-
 	checkAnimation(dt);
-
+	LOG("%d", life_points);
 	//Debug features
 	if (App->scene->debug && actualState != ST_BARRACK_PREVIEW)
 	{
@@ -190,7 +194,7 @@ void HumanBarracks::checkAnimation(float dt)
 				{
 					tempPos.x = pos.x + i;
 					tempPos.y = pos.y + j;
-					App->pathfinding->ChangeWalkability(tempPos, false);
+					App->pathfinding->ChangeWalkability(tempPos, true);
 				}
 			}
 
@@ -245,8 +249,6 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			timer_queue = timer_queue - 1*dt;
 		}
-		LOG("%f timer despues resta", timer_queue);
-
 		if (isSelected == true)
 		{
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
