@@ -24,6 +24,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt(StaticEntType::TEST_3)
 	to_delete = false;
 	canbuild = false;
 	construction_time = 3;
+	time_FX = 1;
 	timer_queue = 0;
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
@@ -170,6 +171,7 @@ void Test_3::checkAnimation(float dt)
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
+			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
@@ -192,13 +194,15 @@ void Test_3::checkAnimation(float dt)
 				}
 			}
 
-			SpatialAudio(1, position.x, position.y);
+			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
 		}
-
+		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
+			Mix_HaltChannel(-1);
+			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			to_delete = true;
 		}
@@ -219,6 +223,12 @@ void Test_3::checkAnimation(float dt)
 			Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
 			Mix_HaltChannel(-1);
+		}
+		else {
+			if (timer.ReadSec() >= time_FX) {
+				SpatialAudio(1, App->audio->construction, position.x, position.y);
+				time_FX++;
+			}
 		}
 
 	}
