@@ -17,7 +17,7 @@ public:
 	enum class StaticEntType
 	{
 		NO_TYPE,
-		TEST_3,
+		HumanBarracks,
 	};
 
 	// Constructor

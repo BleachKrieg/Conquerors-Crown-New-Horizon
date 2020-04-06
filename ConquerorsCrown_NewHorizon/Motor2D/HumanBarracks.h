@@ -1,5 +1,5 @@
-#ifndef __TEST_3_H__
-#define __TEST_3_H__
+#ifndef __HUMANBARRACKS_H__
+#define __HUMANBARRACKS_H__
 
 #include "j1Module.h"
 #include "Animation.h"
@@ -17,14 +17,14 @@ enum Barrack_states
 	ST_BARRACK_DESTROYED
 };
 
-class Test_3 : public StaticEnt
+class HumanBarracks : public StaticEnt
 {
 public:
 	// Constructor
-	Test_3(int posx, int posy);
+	HumanBarracks(int posx, int posy);
 
 	// Destructor
-	~Test_3();
+	~HumanBarracks();
 
 	// Called before the first frame
 	bool Start();

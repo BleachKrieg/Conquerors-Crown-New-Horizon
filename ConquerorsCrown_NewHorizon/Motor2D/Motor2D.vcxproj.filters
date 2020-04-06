@@ -69,13 +69,13 @@
     <ClCompile Include="HumanFootman.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Test_3.cpp">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Troll_Enemy.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
     <ClCompile Include="HumanGatherer.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanBarracks.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -170,13 +170,13 @@
     <ClInclude Include="HumanFootman.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Test_3.h">
-      <Filter>Modules\EntitySystem\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Troll_Enemy.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
     <ClInclude Include="HumanGatherer.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanBarracks.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>

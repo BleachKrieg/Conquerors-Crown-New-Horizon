@@ -157,7 +157,7 @@ bool j1Scene::Update(float dt)
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
 		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
 			Building_preview = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)

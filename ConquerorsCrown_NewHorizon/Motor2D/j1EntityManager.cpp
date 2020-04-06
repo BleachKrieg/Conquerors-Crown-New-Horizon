@@ -1,6 +1,6 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_3.h"
+#include "HumanBarracks.h"
 #include "HumanFootman.h"
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
@@ -126,7 +126,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 
 	switch (type)
 	{
-	case StaticEnt::StaticEntType::TEST_3: ret = new Test_3(posx, posy); break;
+	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); break;
 
 	}
 

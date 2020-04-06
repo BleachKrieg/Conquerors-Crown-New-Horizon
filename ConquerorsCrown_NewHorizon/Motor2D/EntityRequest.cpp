@@ -1,6 +1,6 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_3.h"
+#include "HumanBarracks.h"
 
 #include "j1App.h"
 #include<stdio.h>

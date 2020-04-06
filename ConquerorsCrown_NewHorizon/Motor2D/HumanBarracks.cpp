@@ -5,13 +5,13 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_3.h"
+#include "HumanBarracks.h"
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
 
-Test_3::Test_3(int posx, int posy) : StaticEnt(StaticEntType::TEST_3)
+HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
 	name.create("test_1");
 	position.x = posx;
@@ -33,16 +33,16 @@ Test_3::Test_3(int posx, int posy) : StaticEnt(StaticEntType::TEST_3)
 	actualState = ST_BARRACK_PREVIEW;
 }
 
-Test_3::~Test_3()
+HumanBarracks::~HumanBarracks()
 {}
 
-bool Test_3::Start()
+bool HumanBarracks::Start()
 {
 
 	return true;
 }
 
-bool Test_3::Update(float dt)
+bool HumanBarracks::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
@@ -97,14 +97,14 @@ bool Test_3::Update(float dt)
 	return true;
 }
 
-bool Test_3::PostUpdate(float dt)
+bool HumanBarracks::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateTest_1", Profiler::Color::BurlyWood)
 
 		return true;
 }
 
-bool Test_3::CleanUp()
+bool HumanBarracks::CleanUp()
 {
 	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
 	if (actualState != ST_BARRACK_PREVIEW)
@@ -130,7 +130,7 @@ bool Test_3::CleanUp()
 	return true;
 }
 
-void Test_3::CheckWalkable(iPoint map)
+void HumanBarracks::CheckWalkable(iPoint map)
 {
 	map.x -= 2;
 	map.y -= 2;
@@ -162,7 +162,7 @@ void Test_3::CheckWalkable(iPoint map)
 	}
 }
 
-void Test_3::checkAnimation(float dt)
+void HumanBarracks::checkAnimation(float dt)
 {
 
 	if (actualState == ST_BARRACK_PREVIEW)
