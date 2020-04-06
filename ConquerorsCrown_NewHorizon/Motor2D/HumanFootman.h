@@ -28,8 +28,6 @@ public:
 
 	bool CleanUp();
 
-//	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
-
 };
 
 #endif // !__HUMANFOOTMAN_H__

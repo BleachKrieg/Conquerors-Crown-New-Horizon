@@ -19,8 +19,10 @@ public:
 		NO_TYPE,
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
+		HUMAN_GATHERER,
+		ENEMY_TROLL,
 	};
-
+	
 	// Constructor
 	DynamicEnt(DynamicEntityType type);
 
@@ -44,17 +46,15 @@ public:
 
 
 protected:
-	uint life_points;
 
-	int followpath;
-	int collrange;
-	int vision;
-	bool move;
-	SDL_RendererFlip orientation;
-	iPoint origin, mouse, relative_target;
-	p2DynArray<iPoint> path;
-	list<j1Entity*> close_entity_list;
-	list<j1Entity*> colliding_entity_list;
+	int					followpath;
+	uint				vision;
+	uint				move;
+	SDL_RendererFlip	orientation;
+	iPoint				origin, mouse, relative_target;
+	p2DynArray<iPoint>	path;
+	list<j1Entity*>		close_entity_list;
+	list<j1Entity*>		colliding_entity_list;
 
 	// Animations ------------------------
 	Animation moving_up;
@@ -63,7 +63,22 @@ protected:
 	Animation moving_diagonal_down;
 	Animation moving_down;
 	// -----------------------------------
-	
+	// Attack Variables ------------------
+	j1Entity*	target_entity;
+	uint		attack_vision;
+	uint		attack_range;
+	uint		attack_damage;
+	bool		following_target;
+	bool		can_attack;
+	uint		time_attack;
+	// -----------------------------------
+
+	// Time counter ----------------------
+	j1PerfTimer	timer;
+	uint		current_time;
+
+private:
+	bool		change_direction;
 };
 
 #endif // __j1Entity_H__
