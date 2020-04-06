@@ -55,6 +55,7 @@ public:
 
 	//ButtonFX
 	int buttonFx;
+
 private:
 
 	_Mix_Music* music = NULL;

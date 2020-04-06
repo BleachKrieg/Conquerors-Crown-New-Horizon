@@ -72,6 +72,6 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 
 	App->audio->PlayFx(channel, SFX, 0);
 
-	LOG("PositionX: %i	PositionY: %i	Angle: %i	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
+	LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
 		center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }

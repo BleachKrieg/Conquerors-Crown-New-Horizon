@@ -24,6 +24,7 @@ Test_3::Test_3(int posx, int posy) : StaticEnt(StaticEntType::TEST_3)
 	to_delete = false;
 	canbuild = false;
 	construction_time = 3;
+	time_FX = 1;
 
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
@@ -197,7 +198,7 @@ void Test_3::checkAnimation(float dt)
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
 		}
-
+		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			Mix_HaltChannel(-1);
@@ -221,6 +222,12 @@ void Test_3::checkAnimation(float dt)
 		{
 			actualState = ST_BARRACK_FINISHED;
 			Mix_HaltChannel(-1);
+		}
+		else {
+			if (timer.ReadSec() >= time_FX) {
+				SpatialAudio(1, App->audio->construction, position.x, position.y);
+				time_FX++;
+			}
 		}
 
 	}
