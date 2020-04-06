@@ -336,7 +336,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				colliding_entity_list->push_back(it);
 
 			}
-			if (can_attack && distance < attack_vision + it->body && team != it->team)
+			if (can_attack && it->type==entityType::DYNAMIC && distance < attack_vision + it->body && team != it->team)
 			{
 				if (distance < closest_enemy)
 				{
