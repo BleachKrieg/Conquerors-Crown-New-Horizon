@@ -59,32 +59,23 @@ bool j1PathFinding::IsWalkable(const iPoint& pos) const
 	return t;
 }
 
-iPoint j1PathFinding::InminentNeighbour(const iPoint& pos) const
+iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& destination) const
 {
-	if (map[(pos.y * width) + pos.x + 1] == 1)
-		return iPoint{ pos.x + 1, pos.y };
-
-	if (map[(pos.y * width) + pos.x - 1] == 1)
-		return iPoint{ pos.x - 1, pos.y };
-
-	if (map[((pos.y + 1) * width) + pos.x] == 1)
-		return iPoint{ pos.x, pos.y + 1 };
-
-	if (map[((pos.y - 1) * width) + pos.x] == 1)
-		return iPoint{ pos.x, pos.y - 1 };
-
-
-	if (map[(pos.y * width) + pos.x + 2] == 1)
-		return iPoint{ pos.x + 2, pos.y };
-
-	if (map[(pos.y * width) + pos.x - 2] == 1)
-		return iPoint{ pos.x - 2, pos.y };
-
-	if (map[((pos.y + 2) * width) + pos.x] == 1)
-		return iPoint{ pos.x, pos.y + 2 };
-
-	if (map[((pos.y - 2) * width) + pos.x] == 1)
-		return iPoint{ pos.x, pos.y - 2 };
+	iPoint ret = destination;
+	for (int i = -1; i < 2; ++i)
+	{
+		for (int j = -1; j < 2; ++j)
+		{
+			if (map[((destination.y + j) * width) + destination.x + i] == 1)
+			{
+				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+				{
+					ret = iPoint(destination.x + i, destination.y + j);
+				}
+			}
+		}
+	}
+	return ret;
 }
 
 void j1PathFinding::ChangeWalkability(const iPoint& pos,const uchar& isWalkable)
@@ -237,7 +228,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	}
 	else if (GetWalkability(destination) == 2)
 	{
-		dest = InminentNeighbour(destination);
+		dest = InminentNeighbour(origin, destination);
 	}
 		open.list.add(PathNode(0, origin.DistanceTo(dest), origin, NULL));
 		// Iterate while we have tile in the open list

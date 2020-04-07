@@ -40,7 +40,7 @@ public:
 
 	bool IsWalkable(const iPoint& pos) const;
 
-	iPoint InminentNeighbour(const iPoint& pos) const;
+	iPoint InminentNeighbour(const iPoint& origin, const iPoint& destination) const;
 
 	void ChangeWalkability(const iPoint& pos, const uchar& isWalkable);
 
