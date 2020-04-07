@@ -42,23 +42,56 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 		pos.y >= 0 && pos.y <= (int)height);
 }
 
+uchar j1PathFinding::GetWalkability(const iPoint& pos) const
+{
+	uchar t = GetTileAt(pos);
+	return t;
+}
+
 
 bool j1PathFinding::IsWalkable(const iPoint& pos) const
 {
 	uchar t = GetTileAt(pos);
-	return t != INVALID_WALK_CODE && t > 0;
+	if (t == (uchar)2)
+	{
+		return false;
+	}
+	return t;
 }
 
-void j1PathFinding::ChangeWalkability(const iPoint& pos, bool isWalkable)
+iPoint j1PathFinding::InminentNeighbour(const iPoint& pos) const
+{
+	if (map[(pos.y * width) + pos.x + 1] == 1)
+		return iPoint{ pos.x + 1, pos.y };
+
+	if (map[(pos.y * width) + pos.x - 1] == 1)
+		return iPoint{ pos.x - 1, pos.y };
+
+	if (map[((pos.y + 1) * width) + pos.x] == 1)
+		return iPoint{ pos.x, pos.y + 1 };
+
+	if (map[((pos.y - 1) * width) + pos.x] == 1)
+		return iPoint{ pos.x, pos.y - 1 };
+
+
+	if (map[(pos.y * width) + pos.x + 2] == 1)
+		return iPoint{ pos.x + 2, pos.y };
+
+	if (map[(pos.y * width) + pos.x - 2] == 1)
+		return iPoint{ pos.x - 2, pos.y };
+
+	if (map[((pos.y + 2) * width) + pos.x] == 1)
+		return iPoint{ pos.x, pos.y + 2 };
+
+	if (map[((pos.y - 2) * width) + pos.x] == 1)
+		return iPoint{ pos.x, pos.y - 2 };
+}
+
+void j1PathFinding::ChangeWalkability(const iPoint& pos,const uchar& isWalkable)
 {
 	if (CheckBoundaries(pos))
 	{
-		if(isWalkable)
-			map[(pos.y * width) + pos.x] = 1;
-		else
-		{
-			map[(pos.y * width) + pos.x] = 0;
-		}
+		map[(pos.y * width) + pos.x] = isWalkable;
 	}
 }
 
@@ -188,21 +221,26 @@ float PathNode::CalculateF(const iPoint& destination)
 	return g + h;
 }
 
-
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	BROFILER_CATEGORY("Pathfinding", Profiler::Color::Gold);
 
-	if (IsWalkable(origin) == false || IsWalkable(destination) == false) {
-		return -1;
-	}
-
 	last_path.Clear();
+
+	iPoint dest = destination;
 
 	PathList open; PathList closed;
 	// Add the origin tile to open
-	open.list.add(PathNode(0, origin.DistanceTo(destination), origin, NULL));
-	// Iterate while we have tile in the open list
+
+	if (GetWalkability(origin) == 0 || GetWalkability(destination) == 0) {
+		return -1;
+	}
+	else if (GetWalkability(destination) == 2)
+	{
+		dest = InminentNeighbour(destination);
+	}
+		open.list.add(PathNode(0, origin.DistanceTo(dest), origin, NULL));
+		// Iterate while we have tile in the open list
 
 	
 
@@ -217,7 +255,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 		open.list.del(lowest);
 
-		if (node->data.pos == destination) {
+		if (node->data.pos == dest) {
 
 			PathNode* iterator = &node->data;
 
@@ -239,11 +277,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			if ((closed.Find(adjList.list[i].pos)) == NULL) {
 				
 				if ((open.Find(adjList.list[i].pos)) == NULL) {
-					adjList.list[i].CalculateF(destination);
+					adjList.list[i].CalculateF(dest);
 					open.list.add(adjList.list[i]);
 				}
 				else { 
-					adjList.list[i].CalculateF(destination);
+					adjList.list[i].CalculateF(dest);
 					if (adjList.list[i].g < open.Find(adjList.list[i].pos)->data.g) {
 						
 						open.list.del(open.Find(adjList.list[i].pos));

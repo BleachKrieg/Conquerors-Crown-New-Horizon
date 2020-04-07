@@ -36,9 +36,13 @@ public:
 	bool CheckBoundaries(const iPoint& pos) const;
 
 
+	uchar GetWalkability(const iPoint& pos) const;
+
 	bool IsWalkable(const iPoint& pos) const;
 
-	void ChangeWalkability(const iPoint& pos, bool isWalkable);
+	iPoint InminentNeighbour(const iPoint& pos) const;
+
+	void ChangeWalkability(const iPoint& pos, const uchar& isWalkable);
 
 	uchar GetTileAt(const iPoint& pos) const;
 
