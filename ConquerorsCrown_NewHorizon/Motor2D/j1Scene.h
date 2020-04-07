@@ -11,7 +11,7 @@ class j1Entity;
 class DynamicEnt;
 class StaticEnt;;
 
-enum scenes {
+enum class scenes {
 	menu,
 	ingame
 };
@@ -50,7 +50,7 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	//Menu functions
-
+	void ChangeScene(scenes);
 	bool CreateMenu();
 	bool CreateInGame();
 	bool DeleteUI();
@@ -59,7 +59,7 @@ public:
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene = menu;
+	scenes current_scene = scenes::menu;
 
 public:
 	p2SString current_level;

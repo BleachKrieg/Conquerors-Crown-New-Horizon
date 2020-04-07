@@ -54,31 +54,13 @@ bool j1Scene::Start()
 	debug = false;
 
 	//Loading the map
-	if (App->map->Load(current_level.GetString()) == true)
-	{
-		//App->audio->PlayMusic(App->map->data.music.GetString());
-
-		LOG("%s", current_level.GetString());
-		int w, h;
-		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
-		{
-			LOG("Setting map %d", data[1]);
-			App->pathfinding->SetMap(w, h, data);
-		}
-		else 
-		{
-			LOG("Could not create walkability");
-		}
-		RELEASE_ARRAY(data);
-	}
-	
+		
 	switch (current_scene)
 	{
-	case menu:
+	case scenes::menu:
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		break;
-	case ingame:
+	case scenes::ingame:
 		App->audio->PlayMusic("Audio/Music/Warcraft_II_Intro_Music.ogg", 2.0F);
 		break;
 	}
@@ -105,19 +87,20 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-
-	iPoint p = App->render->ScreenToWorld(x, y);
+	
 	
 
 	switch (current_scene) 
 	{
-	case menu:
+	case scenes::menu:
 
 		break;
-	case ingame:
+	case scenes::ingame:
 		//Camera movement inputs
+		int x, y;
+		App->input->GetMousePosition(x, y);
+
+		iPoint p = App->render->ScreenToWorld(x, y);
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			App->render->camera.y += 500 * dt;
@@ -125,7 +108,6 @@ bool j1Scene::Update(float dt)
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			App->render->camera.y -= 500 * dt;
 		}
-
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			App->render->camera.x += 500 * dt;
@@ -175,10 +157,6 @@ bool j1Scene::Update(float dt)
 		break;
 	}
 
-	//This is to know the position of the mouse in tiles
-	int xmouse, ymouse;
-	App->input->GetMousePosition(xmouse, ymouse);
-	map_coordinates = App->map->WorldToMap(xmouse - App->render->camera.x, ymouse - App->render->camera.y);
 
 	//App->render->Blit(debug_tex, p.x, p.y);
 
@@ -197,8 +175,7 @@ bool j1Scene::PostUpdate(float dt)
 bool j1Scene::CleanUp()
 {
 	App->map->CleanUp();
-	
-	
+		
 	LOG("Freeing scene");
 
 	return true;
@@ -221,8 +198,49 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
+void j1Scene::ChangeScene(scenes next_scene) {
+	LOG("LLamada a funcion");
+
+	switch (current_scene)
+	{
+	case scenes::menu:
+		DeleteUI();
+		break;
+	case scenes::ingame:
+		DeleteUI();
+		App->map->CleanUp();
+		break;
+	}
+
+	switch (next_scene)
+	{
+	case scenes::menu:
+		current_scene = scenes::menu;
+		CreateMenu();
+		break;
+	case scenes::ingame:
+		current_scene = scenes::ingame;
+		if (App->map->Load(current_level.GetString()) == true)
+		{
+			int w, h;
+			uchar* data = NULL;
+			if (App->map->CreateWalkabilityMap(w, h, &data))
+			{
+				LOG("Setting map %d", data[1]);
+				App->pathfinding->SetMap(w, h, data);
+			}
+			else
+			{
+				LOG("Could not create walkability");
+			}
+			RELEASE_ARRAY(data);
+		}
+		CreateInGame();
+		break;
+	}
+}
+
 bool j1Scene::CreateMenu() {
-	DeleteUI();
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 	SDL_Rect rect = { 0, 500, 1280, 720 };
@@ -249,7 +267,6 @@ bool j1Scene::CreateMenu() {
 }
 
 bool j1Scene::CreateInGame() {
-	DeleteUI();
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 50 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
@@ -281,14 +298,12 @@ bool j1Scene::DeleteUI() {
 
 void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == menuButtonNewGame) {
-		CreateInGame();
-		current_scene = ingame;
+		ChangeScene(scenes::ingame);
 	}
 	else if (guiElement == menuButtonExit) {
 		App->quitGame = true;
 	}
 	else if (guiElement == ingameButtonMenu) {
-		CreateMenu();
-		current_scene = menu;
+		ChangeScene(scenes::menu);
 	}
 }
