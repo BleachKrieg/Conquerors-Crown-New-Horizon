@@ -29,7 +29,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
-	team = TeamType::PLAYER;
+	team = TeamType::NO_TYPE;
 	actualState = ST_BARRACK_PREVIEW;
 	life_points = 100;
 }
@@ -221,6 +221,7 @@ void HumanBarracks::checkAnimation(float dt)
 	if (actualState == ST_BARRANCK_IN_CONSTRUCTION)
 	{
 		current_animation = &inconstruction;
+		team = TeamType::PLAYER;
 
 		if (timer.ReadSec() >= construction_time)
 		{
@@ -241,6 +242,9 @@ void HumanBarracks::checkAnimation(float dt)
 	{
 		// Finished Animation
 		current_animation = &finishedconst;
+
+		CheckQueue();
+
 		if (timer_queue < 0)
 		{
 			timer_queue = 0;
@@ -256,8 +260,24 @@ void HumanBarracks::checkAnimation(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				timer_queue += 3;
-				App->requests->AddRequest(Petition::SPAWN, timer_queue, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+				QueueTroop* item = new QueueTroop();
+				item->time = timer_queue;
+				Troop.push_back(item);
 			}
+		}
+	}
+}
+
+void HumanBarracks::CheckQueue()
+{
+	for (int i = 0; i < Troop.size(); i++)
+	{
+		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
+		{
+			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+			
+			Troop.erase(Troop.begin() + i);
+			i--;
 		}
 	}
 }

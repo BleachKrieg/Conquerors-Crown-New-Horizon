@@ -58,5 +58,19 @@ public:
 	// Queue
 	float timer_queue;
 	j1Timer start_queue;
+
+	// Queue_v2
+	struct QueueTroop
+	{
+		int			time;
+		j1Timer		timer;
+	};
+
+	vector<QueueTroop*>	Troop;
+
+	void CheckQueue();
+	
+
+	
 };
 #endif // __TEST_1_H__
