@@ -123,7 +123,7 @@ bool HumanBarracks::CleanUp()
 			{
 				tempPos.x = pos.x + i;
 				tempPos.y = pos.y + j;
-				App->pathfinding->ChangeWalkability(tempPos, true);
+				App->pathfinding->ChangeWalkability(tempPos, 2);
 			}
 		}
 	}
@@ -194,7 +194,7 @@ void HumanBarracks::checkAnimation(float dt)
 				{
 					tempPos.x = pos.x + i;
 					tempPos.y = pos.y + j;
-					App->pathfinding->ChangeWalkability(tempPos, true);
+					App->pathfinding->ChangeWalkability(tempPos, 2);
 				}
 			}
 
