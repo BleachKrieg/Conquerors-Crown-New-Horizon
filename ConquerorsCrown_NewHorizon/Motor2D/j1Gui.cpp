@@ -147,6 +147,9 @@ bool j1Gui::PostUpdate(float dt)
 	p2List_item<GuiItem*>* gui_list = guiElements.start;
 	while (gui_list) 
 	{
+		if (gui_list->data->type != Types::text && App->gui->buttonPressed == false) {
+			gui_list->data->focus = false;
+		}
 		int x, y;
 	/*	if (gui_list->data->focus)
 		{
@@ -317,10 +320,6 @@ void GuiItem::SetFocus()
 			}
 			focus = true;
 		}
-		else 
-		{
-		//	focus = false;
-		}
 	}
 	else {
 		if (App->gui->buttonPressed == true)
@@ -371,7 +370,6 @@ void GuiItem::Input() {
 				temp.y;
 				if (checkBoundaries(temp.x, temp.y))
 					App->gui->sendInput(this);
-				focus = false;
 			}
 		}
 

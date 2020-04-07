@@ -53,18 +53,9 @@ bool j1Scene::Start()
 	current_level = "First level design.tmx";
 	debug = false;
 
-	//Loading the map
-		
-	switch (current_scene)
-	{
-	case scenes::menu:
-		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
-		break;
-	case scenes::ingame:
-		App->audio->PlayMusic("Audio/Music/Warcraft_II_Intro_Music.ogg", 2.0F);
-		break;
-	}
-	
+	//Playing menu audio
+	App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
@@ -157,7 +148,6 @@ bool j1Scene::Update(float dt)
 		break;
 	}
 
-
 	//App->render->Blit(debug_tex, p.x, p.y);
 
 	return true;
@@ -199,8 +189,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 }
 
 void j1Scene::ChangeScene(scenes next_scene) {
-	LOG("LLamada a funcion");
-
+	//Deleting scene
 	switch (current_scene)
 	{
 	case scenes::menu:
@@ -211,7 +200,7 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		App->map->CleanUp();
 		break;
 	}
-
+	//Creating scene
 	switch (next_scene)
 	{
 	case scenes::menu:
@@ -220,29 +209,17 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
-		if (App->map->Load(current_level.GetString()) == true)
-		{
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-			{
-				LOG("Setting map %d", data[1]);
-				App->pathfinding->SetMap(w, h, data);
-			}
-			else
-			{
-				LOG("Could not create walkability");
-			}
-			RELEASE_ARRAY(data);
-		}
 		CreateInGame();
 		break;
 	}
 }
 
 bool j1Scene::CreateMenu() {
+	//Reseting camera to (0,0) position
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
+
+	//Loading UI
 	SDL_Rect rect = { 0, 500, 1280, 720 };
 
 	menuBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
@@ -267,6 +244,24 @@ bool j1Scene::CreateMenu() {
 }
 
 bool j1Scene::CreateInGame() {
+	//Loading the map
+	if (App->map->Load(current_level.GetString()) == true)
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+		{
+			LOG("Setting map %d", data[1]);
+			App->pathfinding->SetMap(w, h, data);
+		}
+		else
+		{
+			LOG("Could not create walkability");
+		}
+		RELEASE_ARRAY(data);
+	}
+
+	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 50 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
@@ -292,6 +287,8 @@ bool j1Scene::DeleteUI() {
 	menuTextExit = nullptr;
 	ingameUI = nullptr;
 	ingameTopBar = nullptr;
+	ingameButtonMenu = nullptr;
+	ingameTextMenu = nullptr;
 	App->gui->DeleteAllGui();
 	return true;
 }
