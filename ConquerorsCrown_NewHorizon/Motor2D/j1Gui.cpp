@@ -147,11 +147,14 @@ bool j1Gui::PostUpdate(float dt)
 	p2List_item<GuiItem*>* gui_list = guiElements.start;
 	while (gui_list) 
 	{
+		if (gui_list->data->type != Types::text && App->gui->buttonPressed == false) {
+			gui_list->data->focus = false;
+		}
 		int x, y;
-		if (gui_list->data->focus)
+	/*	if (gui_list->data->focus)
 		{
 			gui_list->data->Input();
-		}
+		}*/
 		gui_list->data->GetScreenPos(x, y);
 		//	LOG("%d", gui_list->data->textureRect.h);
 		if (gui_list->data->delayBlit)
@@ -317,10 +320,6 @@ void GuiItem::SetFocus()
 			}
 			focus = true;
 		}
-		else 
-		{
-			focus = false;
-		}
 	}
 	else {
 		if (App->gui->buttonPressed == true)
@@ -362,7 +361,16 @@ void GuiItem::Input() {
 		if (focus == true)
 		{
 			textureRect = pushedRect; //Pushed Button
-			App->gui->sendInput(this);
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+			{
+				iPoint temp;
+				App->input->GetMousePosition(temp.x, temp.y);
+				temp = App->render->ScreenToWorld(temp.x, temp.y);
+				temp.x;
+				temp.y;
+				if (checkBoundaries(temp.x, temp.y))
+					App->gui->sendInput(this);
+			}
 		}
 
 	}
