@@ -31,6 +31,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	isSelected = false;
 	selectable = true;
 	following_target = false;
+	player_order = false;
 	can_attack = true;
 	team = TeamType::PLAYER;
 	target_entity = NULL;

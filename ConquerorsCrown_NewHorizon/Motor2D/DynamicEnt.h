@@ -69,6 +69,7 @@ protected:
 	uint		attack_range;
 	uint		attack_damage;
 	bool		following_target;
+	bool		player_order;
 	bool		can_attack;
 	uint		time_attack;
 	// -----------------------------------

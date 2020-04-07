@@ -109,7 +109,7 @@ void DynamicEnt::Movement()
 		{
 			App->pathfinding->CreatePath(origin, mouse);
 		}
-		
+		player_order = true;
 		App->pathfinding->SavePath(&path);
 		followpath = 1;
 		change_direction = true;
@@ -132,7 +132,7 @@ void DynamicEnt::Movement()
 		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
 
 		//if (!following_target && distance > (attack_range * attack_range))
-		if (!following_target && distance > attack_range + target_entity->body)
+		if (!following_target && !player_order && distance > attack_range + target_entity->body)
 		{
 			current_time = timer.ReadMs();
 			following_target = true;
@@ -146,11 +146,14 @@ void DynamicEnt::Movement()
 
 		if (distance < attack_range + target_entity->body)
 		{
-			path.Clear();
-			if ((timer.ReadMs() - current_time) >= time_attack)
+			if (player_order == false)
 			{
-				target_entity->life_points -= attack_damage;
-				current_time = timer.ReadMs();
+				path.Clear();
+				if ((timer.ReadMs() - current_time) >= time_attack)
+				{
+					target_entity->life_points -= attack_damage;
+					current_time = timer.ReadMs();
+				}
 			}
 		}
 
@@ -208,6 +211,7 @@ void DynamicEnt::Movement()
 	}
 	else {
 		following_target = false;
+		player_order = false;
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{

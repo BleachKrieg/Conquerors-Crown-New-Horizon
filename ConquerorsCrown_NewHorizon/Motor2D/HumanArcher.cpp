@@ -35,6 +35,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	isSelected = false;
 	selectable = true;
 	following_target = false;
+	player_order = false;
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 
