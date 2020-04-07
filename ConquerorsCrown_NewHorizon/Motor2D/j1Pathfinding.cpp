@@ -61,10 +61,28 @@ bool j1PathFinding::IsWalkable(const iPoint& pos) const
 
 iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& destination) const
 {
+	// Check 8 closer tiles
 	iPoint ret = destination;
 	for (int i = -1; i < 2; ++i)
 	{
 		for (int j = -1; j < 2; ++j)
+		{
+			if (map[((destination.y + j) * width) + destination.x + i] == 1)
+			{
+				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+				{
+					ret = iPoint(destination.x + i, destination.y + j);
+				}
+			}
+		}
+	}
+
+	if (ret != destination)return ret;
+
+	// If they were not walkable check all 24 closer tiles
+	for (int i = -2; i < 3; ++i)
+	{
+		for (int j = -2; j < 3; ++j)
 		{
 			if (map[((destination.y + j) * width) + destination.x + i] == 1)
 			{
