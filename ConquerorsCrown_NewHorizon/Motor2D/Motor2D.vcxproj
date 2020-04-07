@@ -80,6 +80,7 @@
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
+    <ClCompile Include="HumanGatherer.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -100,13 +101,15 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="StaticEnt.cpp" />
-    <ClCompile Include="Test_3.cpp" />
+    <ClCompile Include="HumanBarracks.cpp" />
+    <ClCompile Include="Troll_Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="HumanArcher.h" />
     <ClInclude Include="HumanFootman.h" />
+    <ClInclude Include="HumanGatherer.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1Fonts.h" />
@@ -135,7 +138,8 @@
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="DynamicEnt.h" />
     <ClInclude Include="StaticEnt.h" />
-    <ClInclude Include="Test_3.h" />
+    <ClInclude Include="HumanBarracks.h" />
+    <ClInclude Include="Troll_Enemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

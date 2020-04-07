@@ -73,6 +73,15 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 	
+	switch (current_scene)
+	{
+	case menu:
+		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		break;
+	case ingame:
+		App->audio->PlayMusic("Audio/Music/Warcraft_II_Intro_Music.ogg", 2.0F);
+		break;
+	}
 	
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -100,8 +109,7 @@ bool j1Scene::Update(float dt)
 	App->input->GetMousePosition(x, y);
 
 	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
+	
 
 	switch (current_scene) 
 	{
@@ -118,6 +126,7 @@ bool j1Scene::Update(float dt)
 			App->render->camera.y -= 500 * dt;
 		}
 
+
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			App->render->camera.x += 500 * dt;
 		}
@@ -130,21 +139,34 @@ bool j1Scene::Update(float dt)
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
 		//Debug input
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
+		{
 			debug = !debug;
+			App->map->blitColliders = !App->map->blitColliders;
+		}
+			
 
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { x, y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { p.x, p.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { x, y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
 		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::TEST_3, p.x, p.y);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
+			Building_preview = true;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { p.x, p.y });
 		}
 
 		//Draw the map

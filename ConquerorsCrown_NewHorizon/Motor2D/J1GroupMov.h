@@ -21,7 +21,7 @@ public:
 	bool PostUpdate(float dt);
 	bool CleanUp();
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
-	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
+	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint, float);
 	fPoint GetDirectionSpeed(list<j1Entity*>);
 	list<j1Entity*>	selected;
 	bool NewGroup;

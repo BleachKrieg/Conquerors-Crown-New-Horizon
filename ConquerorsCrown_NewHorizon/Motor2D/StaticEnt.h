@@ -17,7 +17,7 @@ public:
 	enum class StaticEntType
 	{
 		NO_TYPE,
-		TEST_3,
+		HumanBarracks,
 	};
 
 	// Constructor
@@ -48,6 +48,7 @@ public:
 	iPoint map, world; // Preview mode
 	int x, y; // Preview mode
 	int construction_time;
+	int time_FX;
 	j1Timer timer;
 
 };

@@ -1,5 +1,5 @@
-#ifndef __HUMANARCHER_H__
-#define __HUMANARCHER_H__
+#ifndef __TROLL_ENEMY_H__
+#define __TROLL_ENEMY_H__
 
 #include "j1Module.h"
 #include "Animation.h"
@@ -8,14 +8,14 @@
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 
-class HumanArcher : public DynamicEnt
+class TrollEnemy : public DynamicEnt
 {
 public:
 	// Constructor
-	HumanArcher(int posx, int posy);
+	TrollEnemy(int posx, int posy);
 
-	// Destructor
-	~HumanArcher();
+	// Destrutor
+	~TrollEnemy();
 
 	// Called before the first frame
 	bool Start();
@@ -23,12 +23,11 @@ public:
 	// Called each loop iteration
 	bool Update(float dt);
 
-	// Called after all updates
+	// Called after all Updates
 	bool PostUpdate(float dt);
 
-	// Clean
 	bool CleanUp();
 
 };
 
-#endif // !__HUMANARCHER_H__
+#endif // !__TROLL_ENEMY_H__

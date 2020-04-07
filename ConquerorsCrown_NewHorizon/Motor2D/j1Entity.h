@@ -8,6 +8,8 @@
 #include "j1App.h"
 #include <list>
 #include "Animation.h"
+#include "j1Audio.h"
+#include "SDL_mixer\include\SDL_mixer.h"
 
 using namespace std;
 
@@ -34,6 +36,13 @@ public:
 		DYNAMIC
 	};
 
+	enum class TeamType
+	{
+		NO_TYPE,
+		PLAYER,
+		IA,
+	};
+
 	entityType type;
 
 	// Constructor
@@ -48,8 +57,12 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Spatial Audio
+	void SpatialAudio(int channel, int SFX, int posx, int posy);
+
 protected:
 	Animation* current_animation = nullptr;
+
 
 public: 	
 	bool isSelected;
@@ -58,7 +71,10 @@ public:
 	bool to_delete;
 	int body;
 	fPoint speed;
-	
+	int volume;
+	int SFX;
+	TeamType	team;
+	int		life_points;
 	
 };
 

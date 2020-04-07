@@ -1,6 +1,6 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Test_3.h"
+#include "HumanBarracks.h"
 
 #include "j1App.h"
 #include<stdio.h>
@@ -51,6 +51,12 @@ bool EntityRequest::Update(float dt)
 					break;
 				case SpawnTypes::ARCHER:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_ARCHER, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				case SpawnTypes::GATHERER:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_GATHERER, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				case SpawnTypes::TROLL:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
 				}
 			}

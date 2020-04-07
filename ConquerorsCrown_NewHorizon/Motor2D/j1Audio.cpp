@@ -2,6 +2,11 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Audio.h"
+#include "j1Render.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
+#include "DynamicEnt.h"
+#include "StaticEnt.h"
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
@@ -21,10 +26,10 @@ j1Audio::~j1Audio()
 bool j1Audio::Awake(pugi::xml_node & config)
 {
 	
-	music_directory = config.child("music").child_value("folder");
+	/*music_directory = config.child("music").child_value("folder");
 	fx_directory = config.child("fx").child_value("folder");
 	volumemusic = config.child("music").child("volumemusic").attribute("value").as_float();
-	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();
+	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();*/
 	
 
 	LOG("Loading Audio Mixer");
@@ -57,20 +62,10 @@ bool j1Audio::Awake(pugi::xml_node & config)
 		ret = true;
 	}
 
-	moveFx = LoadFx("audio/fx/move.wav");
-	jumpFx = LoadFx("audio/fx/jump.wav");
-	dashFx = LoadFx("audio/fx/dash.wav");
-	winFx = LoadFx("audio/fx/win.wav");
-	deathFx = LoadFx("audio/fx/death.wav");
-	arrowFx = LoadFx("audio/fx/arrow.wav");
-	bowFx = LoadFx("audio/fx/bow.wav");
-	swordFx = LoadFx("audio/fx/sword.wav");
-	checkpointFx = LoadFx("audio/fx/checkpoint.wav");
-	wizarDeathFx = LoadFx("audio/fx/wizard_death.wav");
-	slimeDeathFx = LoadFx("audio/fx/slime_death.wav");
-	coinpickupFx = LoadFx("audio/fx/coin.wav");
-	buttonFx = LoadFx("audio/fx/button.wav");
-	extraLifeFx = LoadFx("audio/fx/extralife.wav");
+	construction = App->audio->LoadFx("Audio/SFX/Buildings/Construction_Loop_2.wav");
+	walking = App->audio->LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience.wav");
+	cancel_building = App->audio->LoadFx("Audio/SFX/Buildings/Cancel_Building2.wav");
+
 	return ret;
 }
 
@@ -103,7 +98,7 @@ bool j1Audio::CleanUp()
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
-	Mix_VolumeMusic(128 * volumemusic);
+	//Mix_VolumeMusic(128 * volumemusic);
 	bool ret = true;
 
 	if(!active)
@@ -185,7 +180,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool j1Audio::PlayFx(unsigned int id, int repeat)
+bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 {
 	bool ret = false;
 
@@ -194,8 +189,8 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	if (id > 0 && id <= fx.count())
 	{
-		Mix_PlayChannel(-1, fx[id - 1], repeat);
-		Mix_VolumeChunk(fx[id - 1], (volumefx*128));
+		Mix_PlayChannel(channel, fx[id - 1], repeat);
+		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));
 	}
 
 	return ret;
@@ -235,3 +230,9 @@ float j1Audio::fxvolume(float value) {
 	volumefx = value;
 	return volumefx;
 }
+
+void j1Audio::SetChannelVolume(int channel, int volume)
+{
+	Mix_Volume(channel, volume);
+}
+

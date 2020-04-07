@@ -62,10 +62,10 @@ void DynamicEnt::Movement()
 
 	list<j1Entity*>::iterator selected_it;
 
-
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
+		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
 		relative_target = { 0,0 };
 
@@ -109,14 +109,57 @@ void DynamicEnt::Movement()
 		{
 			App->pathfinding->CreatePath(origin, mouse);
 		}
-
-		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
-		path.Clear();
-		for (uint i = 0; i < last_path->Count(); ++i)
-		{
-			path.PushBack({ last_path->At(i)->x, last_path->At(i)->y });
-		}
+		
+		App->pathfinding->SavePath(&path);
 		followpath = 1;
+		change_direction = true;
+	}
+
+//attack close enemy entity
+
+	if (target_entity == NULL)
+	{
+		following_target = false;
+	}
+	if (target_entity != NULL)
+	{
+		/*uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));*/
+
+		int x = target_entity->position.x;
+		int y = target_entity->position.y;
+
+		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+
+		//if (!following_target && distance > (attack_range * attack_range))
+		if (!following_target && distance > attack_range + target_entity->body)
+		{
+			current_time = timer.ReadMs();
+			following_target = true;
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->CreatePath(origin, targetPos);
+			App->pathfinding->SavePath(&path);
+			followpath = 1;
+		}
+
+		// Finish attack
+
+		if (distance < attack_range + target_entity->body)
+		{
+			path.Clear();
+			if ((timer.ReadMs() - current_time) >= time_attack)
+			{
+				target_entity->life_points -= attack_damage;
+				current_time = timer.ReadMs();
+			}
+		}
+
+		if (target_entity->life_points <= 0)
+		{
+			target_entity = NULL;
+			current_time = timer.ReadMs();
+			path.Clear();
+		}
 	}
 
 	fPoint pathSpeed{ 0,0 };
@@ -137,72 +180,83 @@ void DynamicEnt::Movement()
 				}
 			}
 		}
-		if (path.At(followpath)->x < origin.x) {
-			pathSpeed.x = -1;
-		}
 
-		if (path.At(followpath)->x > origin.x) {
-			pathSpeed.x = +1;
-		}
-
-		if (path.At(followpath)->y < origin.y) {
-			pathSpeed.y = -1;
-		}
-
-		if (path.At(followpath)->y > origin.y) {
-			pathSpeed.y = 1;
-		}
 		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
 		{
 			followpath++;
+			change_direction = true;
 		}
+		if (path.At(followpath) != NULL)
+		{
+
+			if (path.At(followpath)->x < origin.x) {
+				pathSpeed.x = -1;
+			}
+
+			if (path.At(followpath)->x > origin.x) {
+				pathSpeed.x = +1;
+			}
+
+			if (path.At(followpath)->y < origin.y) {
+				pathSpeed.y = -1;
+			}
+
+			if (path.At(followpath)->y > origin.y) {
+				pathSpeed.y = 1;
+			}
+		}
+	}
+	else {
+		following_target = false;
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
 	}
-	if (pathSpeed.x != 0)
+	if (change_direction)
 	{
-		current_animation = &moving_right;
-		
-		if (pathSpeed.y < 0)
+		if (pathSpeed.x != 0)
 		{
-			current_animation = &moving_diagonal_up;
-		}
+			current_animation = &moving_right;
 
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_diagonal_down;
-		}
-	}
-	else if (pathSpeed.y != 0) {
-		if (pathSpeed.y < 0)
-		{
-			current_animation = &moving_up;
-		}
+			if (pathSpeed.y < 0)
+			{
+				current_animation = &moving_diagonal_up;
+			}
 
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_down;
+			if (pathSpeed.y > 0)
+			{
+				current_animation = &moving_diagonal_down;
+			}
 		}
-	}
-	else 
-	{
-		//idle anim
-	}
-	if (pathSpeed.x < 0)
-	{
-		orientation = SDL_FLIP_HORIZONTAL;
-	}
-	if(pathSpeed.x > 0)
-	{
-		orientation = SDL_FLIP_NONE;
-	}
+		else if (pathSpeed.y != 0) {
+			if (pathSpeed.y < 0)
+			{
+				current_animation = &moving_up;
+			}
 
+			if (pathSpeed.y > 0)
+			{
+				current_animation = &moving_down;
+			}
+		}
+		else
+		{
+			//idle anim
+		}
+		if (pathSpeed.x < 0)
+		{
+			orientation = SDL_FLIP_HORIZONTAL;
+		}
+		if (pathSpeed.x > 0)
+		{
+			orientation = SDL_FLIP_NONE;
+		}
+		change_direction = false;
+
+	}
 	
-
-		list<j1Entity*>::iterator neighbours_it;
 
 		SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
@@ -219,15 +273,19 @@ void DynamicEnt::Movement()
 		}
 		if (App->scene->debug)
 		{
-			App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
+			App->render->DrawCircle(position.x, position.y, vision, 0, 200, 0);
+			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
+			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
+			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
 		}
+		if (isSelected)
+			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
 		{
-			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
+			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position, body);
 		}
 		else
 		{
@@ -247,9 +305,12 @@ void DynamicEnt::Movement()
 		}
 
 	
-
-	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.1 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.1 * cohesionSpeed.y + 0 * alignmentSpeed.y;
+		if(team == TeamType::PLAYER)
+			speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+		else
+	speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+	
+		speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
 	CheckCollisions(&speed);
 
@@ -264,6 +325,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 	colliding_entity_list->clear();
 	close_entity_list->clear();
 
+	uint closest_enemy = attack_vision;
+	if (target_entity != NULL)
+		closest_enemy = -1;
+
 	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 		it = *entities_list;
 		if (it != this)
@@ -272,12 +337,26 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 			int y = it->position.y;
 
 			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + it->body)
+			if (distance < body + it->body)
 			{
 				colliding_entity_list->push_back(it);
 
 			}
-			if(it->selectable)
+			if (can_attack && distance < attack_vision + it->body && team != it->team)
+			{
+				if (distance < closest_enemy)
+				{
+					closest_enemy = distance;
+					target_entity = it;
+				}
+			}
+			else {
+				if (target_entity == it)
+				{
+					target_entity = NULL;
+				}
+			}
+			if(it->type == entityType::DYNAMIC)
 			if (distance < vision + it->body)
 			{
 				close_entity_list->push_back(it);
