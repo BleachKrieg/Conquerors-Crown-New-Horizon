@@ -241,7 +241,6 @@ bool j1Scene::CreateInGame() {
 }
 
 bool j1Scene::DeleteUI() {
-	
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
 	menuTextNewGame = nullptr;
@@ -253,6 +252,8 @@ bool j1Scene::DeleteUI() {
 	menuTextExit = nullptr;
 	ingameUI = nullptr;
 	ingameTopBar = nullptr;
+	ingameButtonMenu = nullptr;
+	ingameTextMenu = nullptr;
 	App->gui->DeleteAllGui();
 	return true;
 }
