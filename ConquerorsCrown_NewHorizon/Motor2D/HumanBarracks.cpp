@@ -54,7 +54,6 @@ bool HumanBarracks::Update(float dt)
 	if (life_points <= 0)
 		to_delete = true;
 	checkAnimation(dt);
-	LOG("%d", life_points);
 	//Debug features
 	if (App->scene->debug && actualState != ST_BARRACK_PREVIEW)
 	{
