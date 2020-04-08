@@ -5,13 +5,13 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "HumanBarracks.h"
+#include "HumanTownHall.h"
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
 
-HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
+HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
 	name.create("test_1");
 	position.x = posx;
@@ -27,23 +27,24 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	time_FX = 1;
 	timer_queue = 0;
 	// Load all animations
-	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
-	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
+	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
+	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
+
 	team = TeamType::NO_TYPE;
-	actualState = ST_BARRACK_PREVIEW;
+	actualState = ST_TOWNHALL_PREVIEW;
 	life_points = 100;
 }
 
-HumanBarracks::~HumanBarracks()
+HumanTownHall::~HumanTownHall()
 {}
 
-bool HumanBarracks::Start()
+bool HumanTownHall::Start()
 {
 
 	return true;
 }
 
-bool HumanBarracks::Update(float dt)
+bool HumanTownHall::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
@@ -56,7 +57,7 @@ bool HumanBarracks::Update(float dt)
 	checkAnimation(dt);
 	LOG("%d", life_points);
 	//Debug features
-	if (App->scene->debug && actualState != ST_BARRACK_PREVIEW)
+	if (App->scene->debug && actualState != ST_TOWNHALL_PREVIEW)
 	{
 		App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
 		App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
@@ -82,10 +83,10 @@ bool HumanBarracks::Update(float dt)
 
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+	App->render->Blit(App->entity->building, world.x - 55, world.y - 55, r, 1.0f, 1.0f);
 
 	//This render is placed behind the general blit for art purposes
-	if (actualState == ST_BARRACK_PREVIEW) {
+	if (actualState == ST_TOWNHALL_PREVIEW) {
 
 		if (canbuild)
 		{
@@ -101,17 +102,17 @@ bool HumanBarracks::Update(float dt)
 	return true;
 }
 
-bool HumanBarracks::PostUpdate(float dt)
+bool HumanTownHall::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateTest_1", Profiler::Color::BurlyWood)
 
 		return true;
 }
 
-bool HumanBarracks::CleanUp()
+bool HumanTownHall::CleanUp()
 {
 	// Now it only clear the path when the building is finished (before it could delete non walkable walls with preview mode)
-	if (actualState != ST_BARRACK_PREVIEW)
+	if (actualState != ST_TOWNHALL_PREVIEW)
 	{
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -129,12 +130,12 @@ bool HumanBarracks::CleanUp()
 	}
 	else
 	{
-		App->scene->Building_preview_barrack = false;
+		App->scene->Building_preview_TownHall = false;
 	}
 	return true;
 }
 
-void HumanBarracks::CheckWalkable(iPoint map)
+void HumanTownHall::CheckWalkable(iPoint map)
 {
 	map.x -= 2;
 	map.y -= 2;
@@ -166,17 +167,17 @@ void HumanBarracks::CheckWalkable(iPoint map)
 	}
 }
 
-void HumanBarracks::checkAnimation(float dt)
+void HumanTownHall::checkAnimation(float dt)
 {
 
-	if (actualState == ST_BARRACK_PREVIEW)
+	if (actualState == ST_TOWNHALL_PREVIEW)
 	{
-		current_animation = &finishedconst;
+		current_animation = &finishedconst2;
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
 			Mix_HaltChannel(-1);
-			App->scene->Building_preview_barrack = false;
+			App->scene->Building_preview_TownHall = false;
 			timer.Start();
 			GetTile();
 			world.x += 32;
@@ -200,14 +201,14 @@ void HumanBarracks::checkAnimation(float dt)
 
 			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
-			actualState = ST_BARRANCK_IN_CONSTRUCTION;
+			actualState = ST_TOWNHALL_IN_CONSTRUCTION;
 		}
-		
+
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
-			App->scene->Building_preview_barrack = false;
+			App->scene->Building_preview_TownHall = false;
 			to_delete = true;
 		}
 
@@ -218,7 +219,7 @@ void HumanBarracks::checkAnimation(float dt)
 		CheckWalkable(map);
 	}
 
-	if (actualState == ST_BARRANCK_IN_CONSTRUCTION)
+	if (actualState == ST_TOWNHALL_IN_CONSTRUCTION)
 	{
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
@@ -226,7 +227,7 @@ void HumanBarracks::checkAnimation(float dt)
 		if (timer.ReadSec() >= construction_time)
 		{
 			Mix_HaltChannel(-1);
-			actualState = ST_BARRACK_FINISHED;
+			actualState = ST_TOWNHALL_FINISHED;
 			Mix_HaltChannel(-1);
 		}
 		else {
@@ -238,10 +239,10 @@ void HumanBarracks::checkAnimation(float dt)
 
 	}
 
-	if (actualState == ST_BARRACK_FINISHED)
+	if (actualState == ST_TOWNHALL_FINISHED)
 	{
 		// Finished Animation
-		current_animation = &finishedconst;
+		current_animation = &finishedconst2;
 
 		CheckQueue();
 
@@ -249,9 +250,9 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			timer_queue = 0;
 		}
-		if (timer_queue > 0) 
+		if (timer_queue > 0)
 		{
-			timer_queue = timer_queue - 1*dt;
+			timer_queue = timer_queue - 1 * dt;
 		}
 		if (isSelected == true)
 		{
@@ -268,14 +269,14 @@ void HumanBarracks::checkAnimation(float dt)
 	}
 }
 
-void HumanBarracks::CheckQueue()
+void HumanTownHall::CheckQueue()
 {
 	for (int i = 0; i < Troop.size(); i++)
 	{
 		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
-			
+			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::GATHERER, { (int)position.x + 7, (int)position.y + 30 });
+
 			Troop.erase(Troop.begin() + i);
 			i--;
 		}

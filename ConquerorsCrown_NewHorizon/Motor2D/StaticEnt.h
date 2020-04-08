@@ -18,6 +18,7 @@ public:
 	{
 		NO_TYPE,
 		HumanBarracks,
+		HumanTownHall,
 	};
 
 	// Constructor
