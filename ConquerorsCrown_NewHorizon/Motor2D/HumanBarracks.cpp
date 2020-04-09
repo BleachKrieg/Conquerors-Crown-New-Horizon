@@ -27,12 +27,15 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	construction_time = 3;
 	time_FX = 1;
 	timer_queue = 0;
+	troop_type = 0;
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
 	team = TeamType::NO_TYPE;
 	actualState = ST_BARRACK_PREVIEW;
 	life_points = 100;
+	createUI = false;
+	Barrack_Upgraded = false;
 }
 
 HumanBarracks::~HumanBarracks()
@@ -264,12 +267,28 @@ void HumanBarracks::checkAnimation(float dt)
 				//CreateBarrackUI();
 				createUI = false;
 			}
+
+			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			{
+				Barrack_Upgraded = true;
+			}
 			
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				timer_queue += 3;
+				troop_type = 1;
 				QueueTroop* item = new QueueTroop();
 				item->time = timer_queue;
+				item->type = troop_type;
+				Troop.push_back(item);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true)
+			{
+				timer_queue += 3;
+				troop_type = 2;
+				QueueTroop* item = new QueueTroop();
+				item->time = timer_queue;
+				item->type = troop_type;
 				Troop.push_back(item);
 			}
 		}
@@ -289,7 +308,15 @@ void HumanBarracks::CheckQueue()
 	{
 		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+			switch (Troop[i]->type)
+			{
+			case 1:
+				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+				break;
+			case 2:
+				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::ARCHER, { (int)position.x + 7, (int)position.y + 30 });
+				break;
+			}
 			
 			Troop.erase(Troop.begin() + i);
 			i--;

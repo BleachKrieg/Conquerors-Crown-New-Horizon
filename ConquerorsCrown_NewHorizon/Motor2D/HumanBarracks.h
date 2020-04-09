@@ -59,13 +59,18 @@ public:
 	int attackrange;
 	int collrange;
 
+	// Upgrade
+	bool Barrack_Upgraded;
+
 	// Queue
 	float timer_queue;
+	int troop_type;
 	j1Timer start_queue;
 
 	struct QueueTroop
 	{
 		int			time;
+		int			type;
 		j1Timer		timer;
 	};
 
