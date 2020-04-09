@@ -24,7 +24,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	to_delete = false;
 	canbuild = false;
 	construction_time = 3;
-	time_FX = 1;
+	time_FX_barracks = 1;
 	timer_queue = 0;
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
@@ -226,12 +226,11 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
-			Mix_HaltChannel(-1);
 		}
 		else {
-			if (timer.ReadSec() >= time_FX) {
+			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
-				time_FX++;
+				time_FX_barracks++;
 			}
 		}
 

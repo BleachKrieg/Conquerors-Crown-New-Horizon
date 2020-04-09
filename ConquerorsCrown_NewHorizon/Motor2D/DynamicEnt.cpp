@@ -15,7 +15,7 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
-
+	time_FX_troops = 0.5f;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -113,7 +113,14 @@ void DynamicEnt::Movement()
 		App->pathfinding->SavePath(&path);
 		followpath = 1;
 		change_direction = true;
+
+		SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
+
+	/*if (timer2.ReadSec() >= time_FX_troops) {
+				SpatialAudio(3, App->audio->walking, position.x, position.y);
+				time_FX_troops += 0.5;
+			}*/
 
 //attack close enemy entity
 
@@ -140,6 +147,7 @@ void DynamicEnt::Movement()
 			App->pathfinding->CreatePath(origin, targetPos);
 			App->pathfinding->SavePath(&path);
 			followpath = 1;
+			
 		}
 
 		// Finish attack
@@ -213,6 +221,7 @@ void DynamicEnt::Movement()
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
+		
 	}
 	if (change_direction)
 	{
@@ -243,6 +252,7 @@ void DynamicEnt::Movement()
 		}
 		else
 		{
+			Mix_HaltChannel(-1);
 			//idle anim
 		}
 		if (pathSpeed.x < 0)
