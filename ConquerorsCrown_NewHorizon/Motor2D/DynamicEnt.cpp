@@ -100,17 +100,16 @@ void DynamicEnt::Movement()
 		}
 		if (App->movement->selected.size() > 10)
 		{
-			if (App->pathfinding->CreatePath(origin, relative_target) == -1)
+			if (App->pathfinding->RequestPath(origin, relative_target, this) == -1)
 			{
-				App->pathfinding->CreatePath(origin, mouse);
+				App->pathfinding->RequestPath(origin, mouse, this);
 			}
 		}
 		else
 		{
-			App->pathfinding->CreatePath(origin, mouse);
+			App->pathfinding->RequestPath(origin, mouse, this);
 		}
 		player_order = true;
-		App->pathfinding->SavePath(&path);
 		followpath = 1;
 		change_direction = true;
 	}
@@ -137,8 +136,7 @@ void DynamicEnt::Movement()
 			current_time = timer.ReadMs();
 			following_target = true;
 			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
-			App->pathfinding->CreatePath(origin, targetPos);
-			App->pathfinding->SavePath(&path);
+			App->pathfinding->RequestPath(origin, targetPos, this);
 			followpath = 1;
 		}
 

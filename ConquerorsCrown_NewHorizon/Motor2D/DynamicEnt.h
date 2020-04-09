@@ -52,7 +52,6 @@ protected:
 	uint				move;
 	SDL_RendererFlip	orientation;
 	iPoint				origin, mouse, relative_target;
-	p2DynArray<iPoint>	path;
 	list<j1Entity*>		close_entity_list;
 	list<j1Entity*>		colliding_entity_list;
 
