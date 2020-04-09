@@ -14,6 +14,7 @@ enum Barrack_states
 	ST_BARRACK_PREVIEW,
 	ST_BARRANCK_IN_CONSTRUCTION,
 	ST_BARRACK_FINISHED,
+	ST_BARRACK_UPGRADING,
 	ST_BARRACK_DESTROYED
 };
 
@@ -81,5 +82,9 @@ public:
 	// UI
 	GuiItem* Button_Create_Footman;
 	GuiItem* Icons;
+
+	//Upgrades
+	float first_upgrade_time;
+	j1Timer upgrade_timer;
 };
 #endif // __TEST_1_H__

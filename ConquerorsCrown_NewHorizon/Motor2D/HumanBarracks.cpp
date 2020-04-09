@@ -25,6 +25,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	to_delete = false;
 	canbuild = false;
 	construction_time = 3;
+	first_upgrade_time = 10;
 	time_FX = 1;
 	timer_queue = 0;
 	troop_type = 0;
@@ -270,7 +271,8 @@ void HumanBarracks::checkAnimation(float dt)
 
 			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 			{
-				Barrack_Upgraded = true;
+				upgrade_timer.Start();
+				actualState = ST_BARRACK_UPGRADING;
 			}
 			
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -299,6 +301,22 @@ void HumanBarracks::checkAnimation(float dt)
 				DeleteBarracksUI();
 			}*/
 		}
+
+	}
+	
+	if (actualState == ST_BARRACK_UPGRADING)
+	{
+		if (isSelected == true)
+		{
+			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
+		}
+		//Timer for the upgrade
+		if (upgrade_timer.ReadSec() >= first_upgrade_time )
+		{
+			Barrack_Upgraded = true;
+			actualState = ST_BARRACK_FINISHED;
+		}
+
 	}
 }
 
