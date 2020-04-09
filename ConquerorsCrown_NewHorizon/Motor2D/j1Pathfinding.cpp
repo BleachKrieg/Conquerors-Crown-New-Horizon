@@ -78,15 +78,12 @@ int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, 
 		return -1;
 	}
 	requestPath = true;
-
-	for (int i = 0; i < pathfinderList.size(); i++)
-	{
-		if (pathfinderList[i]->available) {
-			pathfinderList[i]->PreparePath(origin, destination, requester);		
-			LOG("Requested succeed");
-			return 0;
-		}
-	}
+	PathRequests* NewRequest = new PathRequests;
+	NewRequest->origin = origin;
+	NewRequest->destination = destination;
+	NewRequest->requester = requester;
+	requestList.push_back(NewRequest);
+	return 0;
 
 //	return -1;
 }
@@ -99,6 +96,10 @@ bool j1PathFinding::Start()
 	PathFinder* pathfinder02 = new PathFinder;
 	pathfinderList.push_back(pathfinder01);
 	pathfinderList.push_back(pathfinder02);
+	PathFinder* pathfinder03= new PathFinder;
+	PathFinder* pathfinder04 = new PathFinder;
+	pathfinderList.push_back(pathfinder03);
+	pathfinderList.push_back(pathfinder04);
 	return true;
 }
 
@@ -106,13 +107,18 @@ bool j1PathFinding::Start()
 
 bool j1PathFinding::Update(float dt)
 {
-	if (!requestPath)
-		return true;
+	
 
 	for (int i = 0; i < pathfinderList.size(); i++)
 	{
+		if (pathfinderList[i]->available && !requestList.empty()) {
+			pathfinderList[i]->PreparePath(requestList[0]->origin, requestList[0]->destination, requestList[0]->requester);
+			requestList.erase(requestList.begin());
+			LOG("Requested succeed");
+		}
+
 		if (!pathfinderList[i]->available)
-			requestPath = pathfinderList[i]->Update();
+			 pathfinderList[i]->Update();
 	}
 		
 

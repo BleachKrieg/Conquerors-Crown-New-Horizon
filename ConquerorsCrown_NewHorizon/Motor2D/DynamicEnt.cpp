@@ -144,6 +144,7 @@ void DynamicEnt::Movement()
 
 		if (distance < attack_range + target_entity->body)
 		{
+			following_target = false;
 			if (player_order == false)
 			{
 				path.Clear();

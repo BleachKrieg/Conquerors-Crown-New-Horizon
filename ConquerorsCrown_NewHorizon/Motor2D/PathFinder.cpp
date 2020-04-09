@@ -163,6 +163,7 @@ void PathFinder::SavePath(p2DynArray<iPoint>* path)
 	{
 		path->PushBack({ last_path->At(i)->x, last_path->At(i)->y });
 	}
+	LOG("saving path");
 }
 #pragma endregion
 

@@ -19,6 +19,14 @@ using namespace std;
 // --------------------------------------------------
 
 struct PathList;
+
+struct PathRequests
+{
+	iPoint origin;
+	iPoint destination;
+	j1Entity* requester;
+};
+
 class j1PathFinding : public j1Module
 {
 public:
@@ -53,6 +61,7 @@ public:
 
 	// TODO 3: Create a vector of PathFinders to distribute the new paths. Make sure to iterate from all vector.
 	vector<PathFinder*> pathfinderList;
+	vector <PathRequests*> requestList;
 private:
 
 	// size of the map
