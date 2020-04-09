@@ -245,6 +245,8 @@ bool j1Scene::CreateMenu() {
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
 
+	barTest = App->gui->CreateGuiElement(Types::bar, 500, 250, { 305, 107, 129, 9 }, menuBackground, this, NULL);
+
 	return true;
 }
 

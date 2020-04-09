@@ -271,6 +271,7 @@ GuiItem* j1Gui::CreateGuiElement(Types type, int x, int y, SDL_Rect rect, GuiIte
 	case Types::button: ret = new GuiButton(x, y, rect, callback); ret->parent = parentnode; break;
 	case Types::inputText: ret = new InputText(x, y, rect, callback); ret->parent = parentnode; break;
 	case Types::slider: ret = new GuiSlider(x, y, rect, callback); ret->parent = parentnode; break;
+	case Types::bar: ret = new GuiBar(x, y, rect, callback); ret->parent = parentnode; break;
 	}
 
 	guiElements.add(ret);
@@ -453,6 +454,12 @@ void GuiItem::SetLocalPos(int& x, int& y) {
 	LocalY = y;
 }
 
+void GuiItem::SetLocalSize(int& w, int& h) {
+	LocalRect.w = w;
+	LocalRect.h = h;
+	textureRect.w = w;
+	textureRect.h = h;
+}
 
 //-------------------------------------------------------------
 GuiImage::GuiImage(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
@@ -473,6 +480,7 @@ GuiImage::GuiImage(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem
 GuiImage::~GuiImage() {
 
 }
+
 //-------------------------------------------------------------
 GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* font, j1Module* callback) : GuiItem() {
 	type = Types::text;
@@ -496,6 +504,17 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 GuiText::~GuiText() {
 
 }
+
+const char* GuiText::GetText() const
+{
+	return text;
+}
+
+void GuiText::SetText(const char* newtext)
+{
+	text = newtext;
+}
+
 //-------------------------------------------------------------
 GuiButton::GuiButton(int x, int y, SDL_Rect idle_rect, j1Module* callback) : GuiItem() {
 	type = Types::button;
@@ -553,6 +572,7 @@ InputText::~InputText() {
 GuiItem* InputText::GetInputText() const {
 	return text;
 }
+
 //--------------------------------------------------------------
 GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem()
 {
@@ -574,8 +594,6 @@ GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	ScrollThumb->delayBlit = false;
 	to_delete = false;
 	delayBlit = false;
-
-
 }
 
 GuiSlider::~GuiSlider() {
@@ -653,12 +671,39 @@ void GuiSlider::returnChilds(GuiItem* imagepointer, GuiItem* ScrollPointer)
 }
 
 //--------------------------------------------------------------
-const char* GuiText::GetText() const
-{
-	return text;
+GuiBar::GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
+	type = Types::bar;
+	LocalX = initposx = x;
+	LocalY = initposy = y;
+	textureRect = { 0, 0, 0, 0 };
+	LocalRect = textureRect;
+	isDynamic = false;
+	follow = false;
+	texture = App->gui->GetAtlas();
+	focus = false;
+	CallBack = callback;
+	originalSize = { texrect.x + 2, texrect.y + 2, texrect.w - 4, texrect.h - 4 };
+	background = App->gui->CreateGuiElement(Types::image, 0, 0, texrect, this);
+	background->delayBlit = false;
+	fill = App->gui->CreateGuiElement(Types::image, 2, 2, { originalSize.x, originalSize.y + 9, originalSize.w, originalSize.h }, this);
+	fill->delayBlit = false;
+	to_delete = false;
+	delayBlit = false;
+	value = 100.0f;
+}
+GuiBar::~GuiBar() {
+
 }
 
-void GuiText::SetText(const char* newtext)
+void GuiBar::updateBar(float newValue) {
+	value = newValue;
+	int newWidth = (originalSize.w / 100.0f) * newValue;
+	fill->SetLocalSize(newWidth, originalSize.h);
+
+}
+
+void GuiBar::returnChilds(GuiItem * bgPointer, GuiItem * fillPointer)
 {
-	text = newtext;
+	bgPointer = background;
+	fillPointer = fill;
 }

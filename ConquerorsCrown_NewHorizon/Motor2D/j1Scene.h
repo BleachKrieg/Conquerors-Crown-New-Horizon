@@ -81,6 +81,7 @@ public:
 	GuiItem* menuButtonExit;
 	GuiItem* menuTextExit;
 	GuiItem* menuBackground;
+	GuiItem* barTest;
 
 	//InGameGui
 	iPoint ingameUIPosition;
