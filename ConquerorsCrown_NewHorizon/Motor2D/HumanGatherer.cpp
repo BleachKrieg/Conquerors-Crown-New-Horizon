@@ -34,6 +34,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	can_attack = false;
 	team = TeamType::PLAYER;
 	target_entity = NULL;
+	player_order = false;
 
 	// TODO ------------------------------------------
 }

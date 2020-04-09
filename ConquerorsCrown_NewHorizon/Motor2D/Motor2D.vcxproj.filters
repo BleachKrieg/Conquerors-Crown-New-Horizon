@@ -78,6 +78,9 @@
     <ClCompile Include="HumanBarracks.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="HumanTownHall.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -177,6 +180,9 @@
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
     <ClInclude Include="HumanBarracks.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanTownHall.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
   </ItemGroup>

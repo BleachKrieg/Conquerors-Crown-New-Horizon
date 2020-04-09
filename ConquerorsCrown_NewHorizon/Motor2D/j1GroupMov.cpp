@@ -36,27 +36,7 @@ bool j1GroupMov::Update(float dt) {
 	// Every time we press leftclick button, we create a rect. The we check all entities with
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		list<j1Entity*>::iterator entities_list;
-		j1Entity* it;
-		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-			it = *entities_list;
 
-			if (it->selectable == false)
-			{
-				int xstatic = it->position.x, ystatic = it->position.y;
-				if (mouse.x > xstatic && mouse.x < xstatic + 32 && mouse.y > ystatic && mouse.y < ystatic + 32)
-				{
-					it->isSelected = true;
-				}
-				else {
-					it->isSelected = false;
-				}
-			}
-		}
-	}
-	
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
@@ -78,8 +58,8 @@ bool j1GroupMov::Update(float dt) {
 		j1Entity* it;
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 			it = *entities_list;
-			
-			if (it->selectable == false) 
+
+			if (it->selectable == false && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
 			{
 				int xstatic = it->position.x, ystatic = it->position.y;
 				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
@@ -89,6 +69,10 @@ bool j1GroupMov::Update(float dt) {
 				else {
 					it->isSelected = false;
 				}
+			}
+			else
+			{
+				it->isSelected = false;
 			}
 			if (it->selectable)
 			{

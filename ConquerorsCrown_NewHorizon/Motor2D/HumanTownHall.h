@@ -1,5 +1,5 @@
-#ifndef __HUMANBARRACKS_H__
-#define __HUMANBARRACKS_H__
+#ifndef __HUMANTOWNHALL_H__
+#define __HUMANTOWNHALL_H__
 
 #include "j1Module.h"
 #include "Animation.h"
@@ -9,22 +9,22 @@
 #include "StaticEnt.h"
 #include "EntityRequest.h"
 
-enum Barrack_states
+enum TownHall_states
 {
-	ST_BARRACK_PREVIEW,
-	ST_BARRANCK_IN_CONSTRUCTION,
-	ST_BARRACK_FINISHED,
-	ST_BARRACK_DESTROYED
+	ST_TOWNHALL_PREVIEW,
+	ST_TOWNHALL_IN_CONSTRUCTION,
+	ST_TOWNHALL_FINISHED,
+	ST_TOWNHALL_DESTROYED
 };
 
-class HumanBarracks : public StaticEnt
+class HumanTownHall : public StaticEnt
 {
 public:
 	// Constructor
-	HumanBarracks(int posx, int posy);
+	HumanTownHall(int posx, int posy);
 
 	// Destructor
-	~HumanBarracks();
+	~HumanTownHall();
 
 	// Called before the first frame
 	bool Start();
@@ -46,11 +46,11 @@ public:
 	// Animations
 	Animation* current_animation = nullptr;
 	Animation inconstruction;
-	Animation finishedconst;
+	Animation finishedconst2;
 	SDL_Rect Construction;
 	SDL_Rect Created;
-    Barrack_states	actualState;
-	
+	TownHall_states	actualState;
+
 	// Stats
 	int attackrange;
 	int collrange;
@@ -69,8 +69,8 @@ public:
 	vector<QueueTroop*>	Troop;
 
 	void CheckQueue();
-	
 
-	
+
+
 };
 #endif // __TEST_1_H__

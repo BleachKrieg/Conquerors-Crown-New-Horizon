@@ -20,7 +20,8 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-	Building_preview = false;
+	Building_preview_barrack = false;
+	Building_preview_TownHall = false;
 }
 
 // Destructor
@@ -128,20 +129,24 @@ bool j1Scene::Update(float dt)
 		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview_barrack)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
-			Building_preview = true;
+			Building_preview_barrack = true;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview_TownHall)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, p.x, p.y);
+			Building_preview_TownHall = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { p.x, p.y });
 		}
-
 		//Draw the map
 		App->map->Draw();
 

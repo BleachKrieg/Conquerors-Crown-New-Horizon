@@ -1,6 +1,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "HumanBarracks.h"
+#include "HumanTownHall.h"
 #include "HumanFootman.h"
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
@@ -127,7 +128,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	switch (type)
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); break;
-
+	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); break;
 	}
 
 	if (ret != nullptr)
