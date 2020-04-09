@@ -71,37 +71,28 @@ iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& dest
 {
 	// Check 8 closer tiles
 	iPoint ret = destination;
-	for (int i = -1; i < 2; ++i)
+	for (int max = 0; max < 1000; ++max)
 	{
-		for (int j = -1; j < 2; ++j)
+		for (int i = (-1 - max); i < (2 + max); ++i)
 		{
-			if (map[((destination.y + j) * width) + destination.x + i] == 1)
+			for (int j = (-1 - max); j < (2 + max); ++j)
 			{
-				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+				if (map[((destination.y + j) * width) + destination.x + i] == 1)
 				{
-					ret = iPoint(destination.x + i, destination.y + j);
+					if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+					{
+						ret = iPoint(destination.x + i, destination.y + j);
+					}
 				}
 			}
 		}
-	}
-
-	if (ret != destination)return ret;
-
-	// If they were not walkable check all 24 closer tiles
-	for (int i = -2; i < 3; ++i)
-	{
-		for (int j = -2; j < 3; ++j)
+		if (ret != destination)
 		{
-			if (map[((destination.y + j) * width) + destination.x + i] == 1)
-			{
-				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
-				{
-					ret = iPoint(destination.x + i, destination.y + j);
-				}
-			}
+			return ret;
 		}
 	}
-	return ret;
+
+	return origin;
 }
 
 void j1PathFinding::ChangeWalkability(const iPoint& pos, const uchar& isWalkable)
@@ -139,7 +130,7 @@ int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, 
 	requestPath = true;
 	PathRequests* NewRequest = new PathRequests;
 	NewRequest->origin = origin;
-	NewRequest->destination = destination;
+	NewRequest->destination = dest;
 	NewRequest->requester = requester;
 	requestList.push_back(NewRequest);
 	return 0;
