@@ -8,25 +8,20 @@
 #pragma region Structs
 
 struct PathList;
+
 struct PathNode
 {
-	// Convenient constructors
 	PathNode();
-	PathNode(int g, int h, const iPoint& pos, const PathNode* parent);
+	PathNode(float g, float h, const iPoint& pos, PathNode* parent, bool isdiagonal = false);
 	PathNode(const PathNode& node);
-
-	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
-	// Calculates this tile score
-	int Score() const;
-	// Calculate the F for a specific destination tile
-	int CalculateF(const iPoint& destination);
-
-	// -----------
-	int g;
-	int h;
+	uint FindWalkableAdjacents(PathList& list_to_fill);
+	float Score() const;
+	float CalculateF(const iPoint& destination);
+	float g;
+	float h;
+	bool is_Diagonal;
 	iPoint pos;
-	const PathNode* parent; // needed to reconstruct the path in the end
+	PathNode* parent;
 };
 
 // ---------------------------------------------------------------------
