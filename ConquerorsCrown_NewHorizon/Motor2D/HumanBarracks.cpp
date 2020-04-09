@@ -10,6 +10,7 @@
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
+#include "j1Gui.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
@@ -257,6 +258,14 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
+			createUI = true;
+
+			if (createUI)
+			{
+				//CreateBarrackUI();
+				createUI = false;
+			}
+			
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				timer_queue += 3;
@@ -264,6 +273,13 @@ void HumanBarracks::checkAnimation(float dt)
 				item->time = timer_queue;
 				Troop.push_back(item);
 			}
+		}
+		else
+		{
+			/*if (Icons != nullptr)
+			{
+				DeleteBarracksUI();
+			}*/
 		}
 	}
 }
@@ -280,4 +296,20 @@ void HumanBarracks::CheckQueue()
 			i--;
 		}
 	}
+}
+
+void HumanBarracks::CreateBarrackUI()
+{
+	/*SDL_Rect rect = { 0, 500, 1280, 720 };
+	Icons = App->gui->CreateGuiElement(Types::image, 100, 100, rect);
+
+	Button_Create_Footman = App->gui->CreateGuiElement(Types::button, 500, 300, { 0, 63, 50, 50 }, Icons, this, NULL);
+	Button_Create_Footman->setRects({ 0, 0, 50, 50 }, { 0, 0, 50, 52 });*/
+}
+
+void HumanBarracks::DeleteBarracksUI()
+{
+	/*Icons = nullptr;
+	Button_Create_Footman = nullptr;
+	App->gui->DeleteGuiElement();*/
 }

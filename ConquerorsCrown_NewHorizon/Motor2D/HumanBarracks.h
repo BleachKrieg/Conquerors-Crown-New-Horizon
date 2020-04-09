@@ -42,6 +42,10 @@ public:
 	// Animation
 	void checkAnimation(float dt);
 
+	// UI
+	void CreateBarrackUI();
+	void DeleteBarracksUI();
+
 public:
 	// Animations
 	Animation* current_animation = nullptr;
@@ -59,7 +63,6 @@ public:
 	float timer_queue;
 	j1Timer start_queue;
 
-	// Queue_v2
 	struct QueueTroop
 	{
 		int			time;
@@ -70,7 +73,8 @@ public:
 
 	void CheckQueue();
 	
-
-	
+	// UI
+	GuiItem* Button_Create_Footman;
+	GuiItem* Icons;
 };
 #endif // __TEST_1_H__
