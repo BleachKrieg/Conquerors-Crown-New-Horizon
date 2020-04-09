@@ -45,8 +45,14 @@ public:
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
 
+	uchar GetWalkability(const iPoint& pos) const;
+
 	// Utility: returns true is the tile is walkable
 	bool IsWalkable(const iPoint& pos) const;
+
+	iPoint InminentNeighbour(const iPoint& origin, const iPoint& destination) const;
+
+	void ChangeWalkability(const iPoint& pos, const uchar& isWalkable);
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;

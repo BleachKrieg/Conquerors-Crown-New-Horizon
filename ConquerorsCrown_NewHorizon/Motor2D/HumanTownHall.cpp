@@ -55,7 +55,6 @@ bool HumanTownHall::Update(float dt)
 	if (life_points <= 0)
 		to_delete = true;
 	checkAnimation(dt);
-	LOG("%d", life_points);
 	//Debug features
 	if (App->scene->debug && actualState != ST_TOWNHALL_PREVIEW)
 	{
@@ -124,7 +123,7 @@ bool HumanTownHall::CleanUp()
 			{
 				tempPos.x = pos.x + i;
 				tempPos.y = pos.y + j;
-			//	App->pathfinding->ChangeWalkability(tempPos, 1);
+				App->pathfinding->ChangeWalkability(tempPos, 1);
 			}
 		}
 	}
@@ -195,7 +194,7 @@ void HumanTownHall::checkAnimation(float dt)
 				{
 					tempPos.x = pos.x + i;
 					tempPos.y = pos.y + j;
-				//	App->pathfinding->ChangeWalkability(tempPos, 2);
+					App->pathfinding->ChangeWalkability(tempPos, 2);
 				}
 			}
 

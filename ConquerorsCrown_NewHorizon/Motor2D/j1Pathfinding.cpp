@@ -50,11 +50,66 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 			pos.y >= 0 && pos.y <= (int)height);
 }
 
+uchar j1PathFinding::GetWalkability(const iPoint& pos) const
+{
+	uchar t = GetTileAt(pos);
+	return t;
+}
+
 // Utility: returns true is the tile is walkable
 bool j1PathFinding::IsWalkable(const iPoint& pos) const
 {
 	uchar t = GetTileAt(pos);
-	return t != INVALID_WALK_CODE && t > 0;
+	if (t == (uchar)2)
+	{
+		return false;
+	}
+	return t;
+}
+
+iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& destination) const
+{
+	// Check 8 closer tiles
+	iPoint ret = destination;
+	for (int i = -1; i < 2; ++i)
+	{
+		for (int j = -1; j < 2; ++j)
+		{
+			if (map[((destination.y + j) * width) + destination.x + i] == 1)
+			{
+				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+				{
+					ret = iPoint(destination.x + i, destination.y + j);
+				}
+			}
+		}
+	}
+
+	if (ret != destination)return ret;
+
+	// If they were not walkable check all 24 closer tiles
+	for (int i = -2; i < 3; ++i)
+	{
+		for (int j = -2; j < 3; ++j)
+		{
+			if (map[((destination.y + j) * width) + destination.x + i] == 1)
+			{
+				if (origin.DistanceTo(iPoint(destination.x + i, destination.y + j)) < origin.DistanceTo(ret))
+				{
+					ret = iPoint(destination.x + i, destination.y + j);
+				}
+			}
+		}
+	}
+	return ret;
+}
+
+void j1PathFinding::ChangeWalkability(const iPoint& pos, const uchar& isWalkable)
+{
+	if (CheckBoundaries(pos))
+	{
+		map[(pos.y * width) + pos.x] = isWalkable;
+	}
 }
 
 // Utility: return the walkability value of a tile
@@ -72,10 +127,14 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
 {
 	LOG("Requesting a path...");
-	if (!IsWalkable(origin) || !IsWalkable(destination))
-	{
-		LOG("Origin or destination are not walkable");
+	iPoint dest = destination;
+
+	if (GetWalkability(origin) == 0 || GetWalkability(destination) == 0) {
 		return -1;
+	}
+	else if (GetWalkability(destination) == 2)
+	{
+		dest = InminentNeighbour(origin, destination);
 	}
 	requestPath = true;
 	PathRequests* NewRequest = new PathRequests;
