@@ -19,12 +19,14 @@ public:
 
 	bool Start();
 	bool Awake(pugi::xml_node& config);
-
-	bool PostUpdate(float dt);
+	bool PreUpdate(float dt);
+	bool Update(float dt);
 
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);
 	iPoint ScreenToMinimapToWorld(int x, int y);
+	bool CleanUp();
+
 
 public:
 	iPoint position;

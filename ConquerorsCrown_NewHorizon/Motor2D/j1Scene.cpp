@@ -61,10 +61,8 @@ bool j1Scene::Start()
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
-	/*if (CreateMenu())ret = true;*/
-	current_scene = scenes::ingame;
-	CreateInGame();
-	ret = true;
+	if (CreateMenu())ret = true;
+
 	return ret;
 }
 
@@ -206,6 +204,7 @@ void j1Scene::ChangeScene(scenes next_scene) {
 	case scenes::ingame:
 		DeleteUI();
 		App->map->CleanUp();
+		App->minimap->CleanUp();
 		break;
 	}
 	//Creating scene
@@ -268,6 +267,7 @@ bool j1Scene::CreateInGame() {
 		}
 		RELEASE_ARRAY(data);
 	}
+	App->minimap->Start();
 	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
 	App->minimap->CreateMinimap();
 	SDL_SetRenderTarget(App->render->renderer, NULL);*/

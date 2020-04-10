@@ -6,6 +6,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "p2Log.h"
+#include "j1Input.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -62,7 +63,7 @@ bool j1Minimap::Start() {
 	height = (map_height) * scale;
 
 	//TODO 2: Create a texture for the minimap
-	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET,1.05f * width, 1.05f *height);
+	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET,1.f * width, 1.f *height);
 	
 	//TODO 3: Set this texture as a rendering target and create the minimap
 	LOG("%d",(SDL_SetRenderTarget(App->render->renderer, texture)));
@@ -92,10 +93,33 @@ bool j1Minimap::Start() {
 
 	return ret;
 }
+bool j1Minimap::PreUpdate(float dt) {
+	bool ret = true;
+	int mouse_x, mouse_y;
 
-bool j1Minimap::PostUpdate(float dt) {
+	//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
+	if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+	{
+		App->input->GetMousePosition(mouse_x, mouse_y);
+		SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
+
+		if ((mouse_x > minimap.x) && (mouse_x < minimap.x + minimap.w) && (mouse_y > minimap.y) && (mouse_y < minimap.y + minimap.h))
+		{
+			//TODO 6: Use the function created in the previous TODO to transform the position of the mouse into Minimap coordinates and then to the world
+			iPoint minimap_mouse_position;
+			minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
+			//LOG("Minimap position: x: %i y: %i", minimap_mouse_position.x, minimap_mouse_position.y);
+			App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
+			App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
+		}
+	}
+
+	return ret;
+}
+bool j1Minimap::Update(float dt) {
 
 	//TODO 3: When you have the texture try blitting it on screen
+	if(texture != NULL)
 	App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
 	//TODO 4.1: Fill the function WorldToMinimap to make the representation of the rect in the minimap be in the position it should 
 	/*iPoint minimap_test_rect_position = App->minimap->WorldToMinimap(App->scene->test_rect.x, App->scene->test_rect.y);
@@ -111,6 +135,11 @@ bool j1Minimap::PostUpdate(float dt) {
 	return true;
 }
 
+bool j1Minimap::CleanUp() {
+	App->tex->UnLoad(texture);
+//	texture = nullptr;
+	return true;
+}
 bool j1Minimap::CreateMinimap() {
 
 	PERF_START(ptimer);
@@ -150,7 +179,7 @@ bool j1Minimap::CreateMinimap() {
 iPoint j1Minimap::WorldToMinimap(int x, int y) {
 	//TODO 4.1: Fill this function
 	iPoint minimap_position;
-	minimap_position.x = position.x + width * 0.5f + x * scale;
+	minimap_position.x = position.x + x * scale;
 	minimap_position.y = position.y + y * scale;
 
 	return minimap_position;
@@ -159,7 +188,7 @@ iPoint j1Minimap::WorldToMinimap(int x, int y) {
 iPoint j1Minimap::ScreenToMinimapToWorld(int x, int y) {
 	//TODO 5: Fill this function to convert a position from screen to the Minimap and directly to world
 	iPoint minimap_position;
-	minimap_position.x = (x - position.x - width * 0.5f)/scale;
+	minimap_position.x = (x - position.x)/scale;
 	minimap_position.y = (y - position.y)/scale;
 	return minimap_position;
 }
