@@ -84,6 +84,9 @@
     <ClCompile Include="PathFinder.cpp">
       <Filter>Modules\Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="j1Minimap.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="PathFinder.h">
       <Filter>Modules\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Minimap.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

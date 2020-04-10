@@ -19,6 +19,7 @@
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "EntityRequest.h"
+#include "j1Minimap.h"
 
 
 
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	minimap = new j1Minimap();
 	entity = new j1EntityManager();
 	requests = new EntityRequest();
 	gui = new  j1Gui();
@@ -58,13 +60,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(entity);
 	AddModule(movement);
-	AddModule(render);
+	AddModule(minimap);
 	AddModule(gui);
 	AddModule(font);
-	
 
 	// render last to swap buffer
-
+	AddModule(render);
 
 	PERF_PEEK(ptimer);
 }

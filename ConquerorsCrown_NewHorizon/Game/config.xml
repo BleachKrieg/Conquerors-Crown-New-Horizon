@@ -44,6 +44,7 @@
   <map>
     <folder>textures/maps/</folder>
   </map>
+  <minimap width="250" corner="bottom_left" margin="20"/>
 
   <entity_manager>
     <spritesheet test_1="textures/sprites/human_footman.png"/>

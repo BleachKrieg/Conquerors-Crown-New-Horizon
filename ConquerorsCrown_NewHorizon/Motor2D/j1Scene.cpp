@@ -14,6 +14,7 @@
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
 #include "EntityRequest.h"
+#include "j1Minimap.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -60,8 +61,10 @@ bool j1Scene::Start()
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
-	if (CreateMenu())ret = true;
-
+	/*if (CreateMenu())ret = true;*/
+	current_scene = scenes::ingame;
+	CreateInGame();
+	ret = true;
 	return ret;
 }
 
@@ -265,6 +268,9 @@ bool j1Scene::CreateInGame() {
 		}
 		RELEASE_ARRAY(data);
 	}
+	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
+	App->minimap->CreateMinimap();
+	SDL_SetRenderTarget(App->render->renderer, NULL);*/
 
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
