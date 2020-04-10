@@ -218,7 +218,7 @@ void DynamicEnt::Movement()
 				if (timer2.ReadSec() >= time_FX_troops) {
 				SpatialAudio(3, App->audio->walking, position.x, position.y);
 				time_FX_troops += 0.5;
-				LOG("Troop time: %.2f", time_FX_troops);
+				LOG("Troops FX: %.1f", time_FX_troops);
 				}
 			}
 		}

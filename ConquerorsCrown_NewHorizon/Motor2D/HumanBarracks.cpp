@@ -197,7 +197,7 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 			}
 
-			SpatialAudio(1, App->audio->construction, position.x, position.y);
+			//SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
 		}
@@ -228,7 +228,7 @@ void HumanBarracks::checkAnimation(float dt)
 			actualState = ST_BARRACK_FINISHED;
 		}
 		else {
-			if (timer.ReadSec() >= time_FX_barracks) {
+			if (timer.ReadSec()==0 || timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
 				time_FX_barracks++;
 			}
