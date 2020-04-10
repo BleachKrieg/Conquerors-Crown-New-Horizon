@@ -120,7 +120,7 @@ bool j1Minimap::Update(float dt) {
 
 	//TODO 3: When you have the texture try blitting it on screen
 	if(texture != NULL)
-	App->render->Blit(texture, position.x, position.y, NULL, 1.0, 0);
+	App->render->Blit(texture, position.x, position.y, NULL);
 	//TODO 4.1: Fill the function WorldToMinimap to make the representation of the rect in the minimap be in the position it should 
 	/*iPoint minimap_test_rect_position = App->minimap->WorldToMinimap(App->scene->test_rect.x, App->scene->test_rect.y);
 	minimap_test_rect.x = minimap_test_rect_position.x;
@@ -165,7 +165,7 @@ bool j1Minimap::CreateMinimap() {
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = App->map->MapToWorld(x, y);
 				//	pos = App->render->WorldToScreen(pos.x, pos.y);
-					App->render->Blit(tileset->texture, pos.x, pos.y, &r, scale);
+					App->render->Blit(tileset->texture, pos.x, pos.y, &r, 1, 1, SDL_FLIP_NONE, scale);
 				}
 			}
 		}

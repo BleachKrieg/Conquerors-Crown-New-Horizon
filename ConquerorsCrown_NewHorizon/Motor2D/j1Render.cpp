@@ -138,7 +138,7 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speedX, float speedY, SDL_RendererFlip flip, float scale, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	//float scale = App->win->GetScale();
@@ -146,8 +146,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	//scale *= user_scale;
 
 	SDL_Rect rect;
-	rect.x = round((int)(camera.x * speed) + x * scale);
-	rect.y = round((int)(camera.y * speed) + y * scale);
+	rect.x = round((int)(camera.x * speedX) + x * scale);
+	rect.y = round((int)(camera.y * speedY) + y * scale);
 
 	if (section != NULL)
 	{
@@ -172,7 +172,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
-	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
