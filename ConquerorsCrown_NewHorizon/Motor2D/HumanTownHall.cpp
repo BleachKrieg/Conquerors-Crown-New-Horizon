@@ -28,7 +28,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	create_gatherer = false;
 	selectable_buildings = true;
 	construction_time = 3;
-	time_FX = 1;
+	time_FX_barracks = 1;
 	timer_queue = 0;
 	// Load all animations
 	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
@@ -241,9 +241,9 @@ void HumanTownHall::checkAnimation(float dt)
 			Mix_HaltChannel(-1);
 		}
 		else {
-			if (timer.ReadSec() >= time_FX) {
+			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
-				time_FX++;
+				time_FX_barracks++;
 			}
 		}
 

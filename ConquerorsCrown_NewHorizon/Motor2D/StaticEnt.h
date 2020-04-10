@@ -49,7 +49,7 @@ public:
 	iPoint map, world; // Preview mode
 	int x, y; // Preview mode
 	int construction_time;
-	int time_FX;
+	int time_FX_barracks;
 	j1Timer timer;
 
 	// UI

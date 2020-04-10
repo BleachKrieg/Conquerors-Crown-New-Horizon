@@ -56,7 +56,7 @@ bool j1Scene::Start()
 	debug = false;
 
 	//Playing menu audio
-	App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+	App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 1.0F);
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -213,10 +213,12 @@ void j1Scene::ChangeScene(scenes next_scene) {
 	case scenes::menu:
 		current_scene = scenes::menu;
 		CreateMenu();
+		App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
+		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		break;
 	}
 }
@@ -306,12 +308,21 @@ bool j1Scene::DeleteUI() {
 
 void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == menuButtonNewGame) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		ChangeScene(scenes::ingame);
 	}
 	else if (guiElement == menuButtonExit) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		App->quitGame = true;
 	}
+	else if (guiElement == menuButtonLoadGame) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+	}
+	else if (guiElement == menuButtonOptions) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+	}
 	else if (guiElement == ingameButtonMenu) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		ChangeScene(scenes::menu);
 	}
 }

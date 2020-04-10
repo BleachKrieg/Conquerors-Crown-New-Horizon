@@ -15,7 +15,7 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
-
+	time_FX_troops = 0.5;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -64,6 +64,7 @@ void DynamicEnt::Movement()
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
+		timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
@@ -112,7 +113,11 @@ void DynamicEnt::Movement()
 		player_order = true;
 		followpath = 1;
 		change_direction = true;
+
+		SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
+
+	
 
 //attack close enemy entity
 
@@ -138,6 +143,7 @@ void DynamicEnt::Movement()
 			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
 			App->pathfinding->RequestPath(origin, targetPos, this);
 			followpath = 1;
+			
 		}
 
 		// Finish attack
@@ -208,18 +214,26 @@ void DynamicEnt::Movement()
 				if (path.At(followpath)->y > origin.y) {
 					pathSpeed.y = 1;
 				}
+
+				if (timer2.ReadSec() >= time_FX_troops) {
+				SpatialAudio(3, App->audio->walking, position.x, position.y);
+				time_FX_troops += 0.5;
+				LOG("Troops FX: %.1f", time_FX_troops);
+				}
 			}
 		}
 		else {
 			following_target = false;
 			player_order = false;
 			path.Clear();
+			time_FX_troops = 0.5;
 		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
+		
 	}
 	if (change_direction)
 	{
@@ -250,6 +264,7 @@ void DynamicEnt::Movement()
 		}
 		else
 		{
+			Mix_HaltChannel(-1);
 			//idle anim
 		}
 		if (pathSpeed.x < 0)
