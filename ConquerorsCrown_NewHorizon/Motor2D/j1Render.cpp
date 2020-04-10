@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "Brofiler/Brofiler.h"
 
+#include <math.h> 
+
 #define VSYNC true
 
 j1Render::j1Render() : j1Module()
@@ -136,16 +138,18 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speedX, float speedY, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	//float scale = App->win->GetScale();
+
+	//scale *= user_scale;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speedX + camera_offset.x) + x * scale;
-	rect.y = (int)(camera.y * speedY + camera_offset.y) + y * scale;
+	rect.x = round((int)(camera.x * speed) + x * scale);
+	rect.y = round((int)(camera.y * speed) + y * scale);
 
-	if(section != NULL)
+	if (section != NULL)
 	{
 		rect.w = section->w;
 		rect.h = section->h;
@@ -155,24 +159,22 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w *= scale;
-	rect.h *= scale;
+	rect.w = round(rect.w * scale);
+	rect.h = round(rect.h * scale);
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
 	{
 		pivot.x = pivot_x;
 		pivot.y = pivot_y;
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-	//	App->console->write("Cannot blit to screen. SDL_RenderCopy error ");
-
 		ret = false;
 	}
 
@@ -351,6 +353,7 @@ void j1Render::UpdateCameraShake()
 	}
 
 }
+
 iPoint j1Render::ScreenToWorld(int x, int y) const
 {
 	iPoint ret;
@@ -359,5 +362,14 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 	ret.x = (x - camera.x / scale);
 	ret.y = (y - camera.y / scale);
 
+	return ret;
+}
+
+iPoint j1Render::WorldToScreen(int x, int y) const
+{
+	iPoint ret;
+	int scale = App->win->GetScale();
+	ret.x = x + camera.x;
+	ret.y = y + camera.y;
 	return ret;
 }

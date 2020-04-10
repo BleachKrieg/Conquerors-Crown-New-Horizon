@@ -14,6 +14,7 @@
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
 #include "EntityRequest.h"
+#include "j1Minimap.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -203,6 +204,7 @@ void j1Scene::ChangeScene(scenes next_scene) {
 	case scenes::ingame:
 		DeleteUI();
 		App->map->CleanUp();
+		App->minimap->CleanUp();
 		break;
 	}
 	//Creating scene
@@ -265,6 +267,10 @@ bool j1Scene::CreateInGame() {
 		}
 		RELEASE_ARRAY(data);
 	}
+	App->minimap->Start();
+	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
+	App->minimap->CreateMinimap();
+	SDL_SetRenderTarget(App->render->renderer, NULL);*/
 
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
