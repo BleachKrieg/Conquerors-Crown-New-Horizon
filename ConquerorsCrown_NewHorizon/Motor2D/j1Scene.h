@@ -66,8 +66,7 @@ public:
 	//SDL_Texture* debug_tex;
 
 	bool debug;
-	bool Building_preview_barrack;
-	bool Building_preview_TownHall;
+	bool Building_preview;
 	iPoint map_coordinates;
 
 

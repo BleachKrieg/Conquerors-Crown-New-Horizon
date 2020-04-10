@@ -67,6 +67,7 @@ protected:
 public: 	
 	bool isSelected;
 	bool selectable;
+	bool selectable_buildings;
 	fPoint position;
 	bool to_delete;
 	int body;

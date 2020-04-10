@@ -14,6 +14,7 @@ enum Barrack_states
 	ST_BARRACK_PREVIEW,
 	ST_BARRANCK_IN_CONSTRUCTION,
 	ST_BARRACK_FINISHED,
+	ST_BARRACK_UPGRADING,
 	ST_BARRACK_DESTROYED
 };
 
@@ -42,6 +43,11 @@ public:
 	// Animation
 	void checkAnimation(float dt);
 
+	// UI
+	void CreateBarrackUI();
+	void DeleteBarracksUI();
+	void GuiInput(GuiItem*);
+
 public:
 	// Animations
 	Animation* current_animation = nullptr;
@@ -55,14 +61,18 @@ public:
 	int attackrange;
 	int collrange;
 
+	// Upgrade
+	bool Barrack_Upgraded;
+
 	// Queue
 	float timer_queue;
+	int troop_type;
 	j1Timer start_queue;
 
-	// Queue_v2
 	struct QueueTroop
 	{
 		int			time;
+		int			type;
 		j1Timer		timer;
 	};
 
@@ -70,7 +80,17 @@ public:
 
 	void CheckQueue();
 	
+	// UI
+	GuiItem* Button_Create_Footman;
+	GuiItem* Button_Create_Archer;
+	GuiItem* Archer_image;
+	GuiItem* Swordman_image;
+	//Upgrades
+	float first_upgrade_time;
+	j1Timer upgrade_timer;
 
-	
+	bool create_swordman;
+	bool create_archer;
+
 };
 #endif // __TEST_1_H__

@@ -14,14 +14,15 @@
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
 #include "EntityRequest.h"
+#include "j1Minimap.h"
 
 
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-	Building_preview_barrack = false;
-	Building_preview_TownHall = false;
+	Building_preview = false;
+	Building_preview = false;
 }
 
 // Destructor
@@ -129,15 +130,15 @@ bool j1Scene::Update(float dt)
 		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview_barrack)
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
-			Building_preview_barrack = true;
+			Building_preview = true;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview_TownHall)
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, p.x, p.y);
-			Building_preview_TownHall = true;
+			Building_preview = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
@@ -203,6 +204,7 @@ void j1Scene::ChangeScene(scenes next_scene) {
 	case scenes::ingame:
 		DeleteUI();
 		App->map->CleanUp();
+		App->minimap->CleanUp();
 		break;
 	}
 	//Creating scene
@@ -265,6 +267,10 @@ bool j1Scene::CreateInGame() {
 		}
 		RELEASE_ARRAY(data);
 	}
+	App->minimap->Start();
+	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
+	App->minimap->CreateMinimap();
+	SDL_SetRenderTarget(App->render->renderer, NULL);*/
 
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };

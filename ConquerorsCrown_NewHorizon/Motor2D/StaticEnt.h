@@ -52,6 +52,9 @@ public:
 	int time_FX_barracks;
 	j1Timer timer;
 
+	// UI
+	bool createUI;
+
 };
 
 #endif // __j1Entity_H__
