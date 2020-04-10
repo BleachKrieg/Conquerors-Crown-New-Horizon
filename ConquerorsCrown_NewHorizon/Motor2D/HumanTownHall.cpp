@@ -10,6 +10,7 @@
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
+#include "j1Gui.h"
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
@@ -23,6 +24,9 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	createUI = false;
+	create_gatherer = false;
+	selectable_buildings = true;
 	construction_time = 3;
 	time_FX = 1;
 	timer_queue = 0;
@@ -40,7 +44,7 @@ HumanTownHall::~HumanTownHall()
 
 bool HumanTownHall::Start()
 {
-
+	createUI = true;
 	return true;
 }
 
@@ -48,12 +52,19 @@ bool HumanTownHall::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		life_points = 0;
 	}
-	if (life_points <= 0)
+	if (life_points <= 0) 
+	{
+		if (Button_Create_Gatherer != nullptr)
+		{
+			DeleteTownHallUI();
+		}
 		to_delete = true;
+	}
+		
 	checkAnimation(dt);
 	LOG("%d", life_points);
 	//Debug features
@@ -130,7 +141,7 @@ bool HumanTownHall::CleanUp()
 	}
 	else
 	{
-		App->scene->Building_preview_TownHall = false;
+		App->scene->Building_preview = false;
 	}
 	return true;
 }
@@ -177,7 +188,7 @@ void HumanTownHall::checkAnimation(float dt)
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
 			Mix_HaltChannel(-1);
-			App->scene->Building_preview_TownHall = false;
+			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
 			world.x += 32;
@@ -208,7 +219,7 @@ void HumanTownHall::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
-			App->scene->Building_preview_TownHall = false;
+			App->scene->Building_preview = false;
 			to_delete = true;
 		}
 
@@ -256,14 +267,29 @@ void HumanTownHall::checkAnimation(float dt)
 		}
 		if (isSelected == true)
 		{
+			if (createUI)
+			{
+				createUI = false;
+				CreateTownHallUI();
+			}
+
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_gatherer==true)
 			{
 				timer_queue += 3;
 				QueueTroop* item = new QueueTroop();
 				item->time = timer_queue;
 				Troop.push_back(item);
+				create_gatherer = false;
+			}
+		}
+		else 
+		{
+			if (Button_Create_Gatherer != nullptr && createUI == false)
+			{
+				DeleteTownHallUI();
+				createUI = true;
 			}
 		}
 	}
@@ -281,4 +307,30 @@ void HumanTownHall::CheckQueue()
 			i--;
 		}
 	}
+}
+
+void HumanTownHall::CreateTownHallUI()
+{
+	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 50, 45, 37 }, Button_Create_Gatherer, nullptr, NULL);
+}
+
+void HumanTownHall::DeleteTownHallUI()
+{
+	Button_Create_Gatherer->to_delete = true;
+	Button_Create_Gatherer = nullptr;
+}
+
+
+void HumanTownHall::GuiInput(GuiItem* guiElement) {
+	if (guiElement == Button_Create_Gatherer) {
+		create_gatherer = true;
+		isSelected = true;
+	}
+	/*else if (guiElement == Button_Create_Archer) {
+		create_archer = true;
+		isSelected = true;
+	}*/
+
 }

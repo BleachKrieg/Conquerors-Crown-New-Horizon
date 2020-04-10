@@ -59,7 +59,7 @@ bool j1GroupMov::Update(float dt) {
 		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
 			it = *entities_list;
 
-			if (it->selectable == false && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
+			if (it->selectable_buildings == true && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
 			{
 				int xstatic = it->position.x, ystatic = it->position.y;
 				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)

@@ -24,6 +24,8 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	create_swordman = false;
+	selectable_buildings = true;
 	construction_time = 3;
 	first_upgrade_time = 10;
 	time_FX = 1;
@@ -44,7 +46,7 @@ HumanBarracks::~HumanBarracks()
 
 bool HumanBarracks::Start()
 {
-
+	createUI = true;
 	return true;
 }
 
@@ -52,12 +54,19 @@ bool HumanBarracks::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		life_points = 0;
 	}
 	if (life_points <= 0)
+	{
+		if (Button_Create_Footman != nullptr)
+		{
+			DeleteBarracksUI();
+		}
 		to_delete = true;
+	}
+
 	checkAnimation(dt);
 	//Debug features
 	if (App->scene->debug && actualState != ST_BARRACK_PREVIEW)
@@ -133,7 +142,7 @@ bool HumanBarracks::CleanUp()
 	}
 	else
 	{
-		App->scene->Building_preview_barrack = false;
+		App->scene->Building_preview = false;
 	}
 	return true;
 }
@@ -180,7 +189,7 @@ void HumanBarracks::checkAnimation(float dt)
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
 			Mix_HaltChannel(-1);
-			App->scene->Building_preview_barrack = false;
+			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
 			world.x += 32;
@@ -211,7 +220,7 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
-			App->scene->Building_preview_barrack = false;
+			App->scene->Building_preview = false;
 			to_delete = true;
 		}
 
@@ -261,12 +270,10 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			createUI = true;
-
 			if (createUI)
 			{
-				//CreateBarrackUI();
 				createUI = false;
+				CreateBarrackUI();
 			}
 
 			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
@@ -275,7 +282,7 @@ void HumanBarracks::checkAnimation(float dt)
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_swordman == true)
 			{
 				timer_queue += 3;
 				troop_type = 1;
@@ -283,8 +290,9 @@ void HumanBarracks::checkAnimation(float dt)
 				item->time = timer_queue;
 				item->type = troop_type;
 				Troop.push_back(item);
+				create_swordman = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true)
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true || create_archer == true)
 			{
 				timer_queue += 3;
 				troop_type = 2;
@@ -292,20 +300,27 @@ void HumanBarracks::checkAnimation(float dt)
 				item->time = timer_queue;
 				item->type = troop_type;
 				Troop.push_back(item);
+				create_archer = false;
 			}
 		}
 		else
 		{
-			/*if (Icons != nullptr)
+			if (Button_Create_Footman != nullptr && createUI == false)
 			{
 				DeleteBarracksUI();
-			}*/
+				createUI = true;
+			}
 		}
 
 	}
 	
 	if (actualState == ST_BARRACK_UPGRADING)
 	{
+		if (Button_Create_Footman != nullptr) 
+		{
+			DeleteBarracksUI();
+		}
+
 		if (isSelected == true)
 		{
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
@@ -315,6 +330,7 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			Barrack_Upgraded = true;
 			actualState = ST_BARRACK_FINISHED;
+			createUI = true;
 		}
 
 	}
@@ -344,16 +360,40 @@ void HumanBarracks::CheckQueue()
 
 void HumanBarracks::CreateBarrackUI()
 {
-	/*SDL_Rect rect = { 0, 500, 1280, 720 };
-	Icons = App->gui->CreateGuiElement(Types::image, 100, 100, rect);
-
-	Button_Create_Footman = App->gui->CreateGuiElement(Types::button, 500, 300, { 0, 63, 50, 50 }, Icons, this, NULL);
-	Button_Create_Footman->setRects({ 0, 0, 50, 50 }, { 0, 0, 50, 52 });*/
+	Button_Create_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 50, 45, 37 }, Button_Create_Footman, nullptr, NULL);
+	
+	if (Barrack_Upgraded == true) 
+	{
+		Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 50, 45, 37 }, Button_Create_Archer, nullptr, NULL);
+	}
 }
 
 void HumanBarracks::DeleteBarracksUI()
 {
-	/*Icons = nullptr;
+	
+	Button_Create_Footman->to_delete = true;
 	Button_Create_Footman = nullptr;
-	App->gui->DeleteGuiElement();*/
+
+	if (Barrack_Upgraded && Button_Create_Archer != nullptr)
+	{
+		Button_Create_Archer->to_delete = true;
+		Button_Create_Archer = nullptr;
+	}
+}
+
+
+void HumanBarracks::GuiInput(GuiItem* guiElement) {
+	if (guiElement == Button_Create_Footman) {
+		create_swordman = true;
+		isSelected = true;
+	}
+	else if (guiElement == Button_Create_Archer) {
+		create_archer = true;
+		isSelected = true;
+	}
+	
 }

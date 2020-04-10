@@ -42,6 +42,14 @@ public:
 	// Animation
 	void checkAnimation(float dt);
 
+	// UI
+	void CreateTownHallUI();
+	void DeleteTownHallUI();
+	void GuiInput(GuiItem*);
+	
+	//Queue
+	void CheckQueue();
+
 public:
 	// Animations
 	Animation* current_animation = nullptr;
@@ -68,9 +76,9 @@ public:
 
 	vector<QueueTroop*>	Troop;
 
-	void CheckQueue();
-
-
-
+	// UI
+	GuiItem* Button_Create_Gatherer;
+	bool create_gatherer;
+	GuiItem* Gatherer_image;
 };
 #endif // __TEST_1_H__

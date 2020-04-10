@@ -46,6 +46,7 @@ public:
 	// UI
 	void CreateBarrackUI();
 	void DeleteBarracksUI();
+	void GuiInput(GuiItem*);
 
 public:
 	// Animations
@@ -81,10 +82,15 @@ public:
 	
 	// UI
 	GuiItem* Button_Create_Footman;
-	GuiItem* Icons;
-
+	GuiItem* Button_Create_Archer;
+	GuiItem* Archer_image;
+	GuiItem* Swordman_image;
 	//Upgrades
 	float first_upgrade_time;
 	j1Timer upgrade_timer;
+
+	bool create_swordman;
+	bool create_archer;
+
 };
 #endif // __TEST_1_H__

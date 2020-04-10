@@ -20,8 +20,8 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-	Building_preview_barrack = false;
-	Building_preview_TownHall = false;
+	Building_preview = false;
+	Building_preview = false;
 }
 
 // Destructor
@@ -129,15 +129,15 @@ bool j1Scene::Update(float dt)
 		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview_barrack)
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
-			Building_preview_barrack = true;
+			Building_preview = true;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview_TownHall)
+		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, p.x, p.y);
-			Building_preview_TownHall = true;
+			Building_preview = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
@@ -244,8 +244,6 @@ bool j1Scene::CreateMenu() {
 	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 450, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
-
-	barTest = App->gui->CreateGuiElement(Types::bar, 500, 250, { 305, 107, 129, 9 }, menuBackground, this, NULL);
 
 	return true;
 }

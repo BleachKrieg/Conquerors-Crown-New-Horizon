@@ -66,8 +66,7 @@ public:
 	//SDL_Texture* debug_tex;
 
 	bool debug;
-	bool Building_preview_barrack;
-	bool Building_preview_TownHall;
+	bool Building_preview;
 	iPoint map_coordinates;
 
 
@@ -81,7 +80,6 @@ public:
 	GuiItem* menuButtonExit;
 	GuiItem* menuTextExit;
 	GuiItem* menuBackground;
-	GuiItem* barTest;
 
 	//InGameGui
 	iPoint ingameUIPosition;
