@@ -27,8 +27,8 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	create_swordman = false;
 	selectable_buildings = true;
 	construction_time = 3;
+	time_FX_barracks = 1;
 	first_upgrade_time = 10;
-	time_FX = 1;
 	timer_queue = 0;
 	troop_type = 0;
 	// Load all animations
@@ -240,12 +240,11 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
-			Mix_HaltChannel(-1);
 		}
 		else {
-			if (timer.ReadSec() >= time_FX) {
+			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
-				time_FX++;
+				time_FX_barracks++;
 			}
 		}
 
