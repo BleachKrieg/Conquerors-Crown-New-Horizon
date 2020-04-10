@@ -120,7 +120,7 @@ bool j1Minimap::Update(float dt) {
 
 	//TODO 3: When you have the texture try blitting it on screen
 	if(texture != NULL)
-	App->render->Blit(texture, position.x, position.y, NULL);
+	App->render->Blit(texture, position.x, position.y, NULL, 0, 0);
 	//TODO 4.1: Fill the function WorldToMinimap to make the representation of the rect in the minimap be in the position it should 
 	/*iPoint minimap_test_rect_position = App->minimap->WorldToMinimap(App->scene->test_rect.x, App->scene->test_rect.y);
 	minimap_test_rect.x = minimap_test_rect_position.x;
