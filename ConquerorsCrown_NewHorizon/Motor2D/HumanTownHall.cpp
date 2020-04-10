@@ -66,7 +66,6 @@ bool HumanTownHall::Update(float dt)
 	}
 		
 	checkAnimation(dt);
-	LOG("%d", life_points);
 	//Debug features
 	if (App->scene->debug && actualState != ST_TOWNHALL_PREVIEW)
 	{
