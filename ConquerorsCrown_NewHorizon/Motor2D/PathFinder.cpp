@@ -35,7 +35,10 @@ bool PathFinder::IteratePath()
 {
 	//TODO 2: This function won't need a loop inside anymore, we are controlling this loop outside
 	bool ret = true;
+	if (open.GetNodeLowestScore() != NULL)
+	{
 
+	
 	PathNode* node = new PathNode(open.GetNodeLowestScore()->data);
 	close.list.add(*node);
 	open.list.del(open.Find(node->pos));
@@ -90,6 +93,7 @@ bool PathFinder::IteratePath()
 				}
 			}
 		}
+	}
 	}
 	return ret;
 }
