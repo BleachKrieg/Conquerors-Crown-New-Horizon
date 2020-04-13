@@ -161,11 +161,11 @@ void DynamicEnt::Movement()
 				}
 			}
 		}
-		else if(path.At(1) == NULL){
+	/*	else if(path.At(1) == NULL){
 
 			target_entity = NULL;
 			following_target = false;
-		}
+		}*/
 
 		if (target_entity != NULL)
 		if (target_entity->life_points <= 0)

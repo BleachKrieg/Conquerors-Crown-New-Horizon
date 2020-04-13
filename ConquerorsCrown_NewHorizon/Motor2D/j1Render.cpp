@@ -310,7 +310,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 		points[i].y = (int)(camera.y + y + radius * sin(i * factor));
 	}
 
-	result = SDL_RenderDrawPoints(renderer, points, 360);
+//	result = SDL_RenderDrawPoints(renderer, points, 360);
 
 	if(result != 0)
 	{
