@@ -148,7 +148,7 @@ void DynamicEnt::Movement()
 
 		// Finish attack
 
-		if (distance < attack_range + target_entity->body)
+		if (distance <= attack_range + target_entity->body)
 		{
 			following_target = false;
 			if (player_order == false)
@@ -161,6 +161,12 @@ void DynamicEnt::Movement()
 				}
 			}
 		}
+		else if (path.At(0) == NULL)
+		{
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->RequestPath(origin, targetPos, this);
+		}
+		
 
 		if (target_entity->life_points <= 0)
 		{
@@ -171,7 +177,7 @@ void DynamicEnt::Movement()
 	}
 
 	fPoint pathSpeed{ 0,0 };
-	if (path.At(1) != NULL)
+	if (path.At(0) != NULL)
 	{
 		if (path.At(followpath) != NULL)
 		{
@@ -218,7 +224,7 @@ void DynamicEnt::Movement()
 				if (timer2.ReadSec() >= time_FX_troops) {
 				SpatialAudio(3, App->audio->walking, position.x, position.y);
 				time_FX_troops += 0.5;
-				LOG("Troops FX: %.1f", time_FX_troops);
+			//	LOG("Troops FX: %.1f", time_FX_troops);
 				}
 			}
 		}

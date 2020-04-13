@@ -117,7 +117,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 
 int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
 {
-	LOG("Requesting a path...");
+//	LOG("Requesting a path...");
 	iPoint dest = destination;
 
 	if (GetWalkability(origin) == 0 || GetWalkability(destination) == 0) {
@@ -150,6 +150,7 @@ bool j1PathFinding::Start()
 	PathFinder* pathfinder04 = new PathFinder;
 	pathfinderList.push_back(pathfinder03);
 	pathfinderList.push_back(pathfinder04);
+
 	return true;
 }
 
@@ -164,7 +165,7 @@ bool j1PathFinding::Update(float dt)
 		if (pathfinderList[i]->available && !requestList.empty()) {
 			pathfinderList[i]->PreparePath(requestList[0]->origin, requestList[0]->destination, requestList[0]->requester);
 			requestList.erase(requestList.begin());
-			LOG("Requested succeed");
+	//		LOG("Requested succeed");
 		}
 
 		if (!pathfinderList[i]->available)
