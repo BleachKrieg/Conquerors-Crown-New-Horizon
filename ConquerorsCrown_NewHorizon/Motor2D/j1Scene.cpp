@@ -61,9 +61,6 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	logoSheet = App->tex->Load(logoSheet_file_name.GetString());
-
-	LogoPushbacks();
 
 	if (CreateLogo())ret = true;
 
@@ -199,8 +196,7 @@ bool j1Scene::PostUpdate(float dt)
 bool j1Scene::CleanUp()
 {
 	App->map->CleanUp();
-	App->tex->UnLoad(logoSheet);
-
+		
 	LOG("Freeing scene");
 
 	return true;
@@ -330,7 +326,9 @@ bool j1Scene::CreateLogo() {
 
 	logoTextTimer = 0;
 
-
+	logoSheet = App->tex->Load(logoSheet_file_name.GetString());
+	
+	LogoPushbacks();
 
 	//Loading UI
 	SDL_Rect rect = { 1280, 0, 1280, 720 };
@@ -359,6 +357,7 @@ bool j1Scene::DeleteUI() {
 	ingameTextMenu = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
+	App->tex->UnLoad(logoSheet);
 	App->gui->DeleteAllGui();
 	return true;
 }
