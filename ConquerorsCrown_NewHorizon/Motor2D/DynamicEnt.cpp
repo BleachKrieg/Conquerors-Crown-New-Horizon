@@ -136,7 +136,7 @@ void DynamicEnt::Movement()
 		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
 
 		//if (!following_target && distance > (attack_range * attack_range))
-		if (!following_target && !player_order && distance > attack_range + target_entity->body)
+		if (!following_target && !player_order && distance >= attack_range + target_entity->body)
 		{
 			current_time = timer.ReadMs();
 			following_target = true;
@@ -167,12 +167,13 @@ void DynamicEnt::Movement()
 			following_target = false;
 		}*/
 
-		if (target_entity != NULL)
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
 			current_time = timer.ReadMs();
 			path.Clear();
+			following_target = false;
+
 		}
 	}
 

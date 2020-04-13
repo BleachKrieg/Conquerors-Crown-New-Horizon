@@ -139,6 +139,20 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
+
+bool j1EntityManager::DeleteAllEntities()
+{
+
+	list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
+
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+		it = *entities_list;
+		it->to_delete = true;
+	}
+	return true;
+}
+
 bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity)
 {
 	entity->CleanUp();
@@ -146,6 +160,7 @@ bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1
 
 	return true;
 }
+
 
 void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animations) {
 	pugi::xml_document	entity_file;

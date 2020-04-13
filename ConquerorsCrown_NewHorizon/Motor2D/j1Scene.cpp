@@ -230,6 +230,7 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		DeleteUI();
 		App->map->CleanUp();
 		App->minimap->CleanUp();
+		App->entity->DeleteAllEntities();
 		break;
 	case scenes::logo:
 		DeleteUI();

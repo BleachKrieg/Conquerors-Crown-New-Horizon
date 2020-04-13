@@ -45,6 +45,7 @@ public:
 
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
+	bool DeleteAllEntities();
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
 
