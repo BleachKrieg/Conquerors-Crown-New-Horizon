@@ -114,7 +114,7 @@ void DynamicEnt::Movement()
 		followpath = 1;
 		change_direction = true;
 
-		SpatialAudio(3, App->audio->walking, position.x, position.y);
+		//SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
 
 	
@@ -222,18 +222,18 @@ void DynamicEnt::Movement()
 					pathSpeed.y = 1;
 				}
 
-				if (timer2.ReadSec() >= time_FX_troops) {
-				SpatialAudio(3, App->audio->walking, position.x, position.y);
-				time_FX_troops += 0.5;
-		//		LOG("Troops FX: %.1f", time_FX_troops);
-				}
+		//		if (timer2.ReadSec() >= time_FX_troops) {
+		//		SpatialAudio(3, App->audio->walking, position.x, position.y);
+		//		time_FX_troops += 0.5;
+		////		LOG("Troops FX: %.1f", time_FX_troops);
+		//		}
 			}
 		}
 		else {
 			following_target = false;
 			player_order = false;
 			path.Clear();
-			time_FX_troops = 0.5;
+			//time_FX_troops = 0.5;
 		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
