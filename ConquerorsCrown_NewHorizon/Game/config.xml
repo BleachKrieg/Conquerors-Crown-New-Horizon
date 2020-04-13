@@ -52,5 +52,6 @@
   
    <scene>
      <map name="maplevel1.tmx"/>
+     <logo file="textures/gui/LogoSheet.png"/>
    </scene>
 </config>
