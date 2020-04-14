@@ -58,6 +58,9 @@ bool HumanTownHall::Update(float dt)
 	}
 	if (life_points <= 0) 
 	{
+		if (creation_TownHall_bar != nullptr) {
+			creation_TownHall_bar->to_delete = true;
+		}
 		if (Button_Create_Gatherer != nullptr)
 		{
 			DeleteTownHallUI();
@@ -211,6 +214,7 @@ void HumanTownHall::checkAnimation(float dt)
 
 			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
+			creation_TownHall_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 			actualState = ST_TOWNHALL_IN_CONSTRUCTION;
 		}
 
@@ -231,11 +235,16 @@ void HumanTownHall::checkAnimation(float dt)
 
 	if (actualState == ST_TOWNHALL_IN_CONSTRUCTION)
 	{
+		float bar_prog = (timer.ReadSec() * 100) / 3;
+		creation_TownHall_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
 
 		if (timer.ReadSec() >= construction_time)
 		{
+			if (creation_TownHall_bar != nullptr) {
+				creation_TownHall_bar->to_delete = true;
+			}
 			Mix_HaltChannel(-1);
 			actualState = ST_TOWNHALL_FINISHED;
 			Mix_HaltChannel(-1);

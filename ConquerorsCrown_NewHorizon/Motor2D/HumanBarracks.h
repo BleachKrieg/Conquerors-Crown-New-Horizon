@@ -85,6 +85,10 @@ public:
 	GuiItem* Button_Create_Archer;
 	GuiItem* Archer_image;
 	GuiItem* Swordman_image;
+	
+	//Progress Bar
+	GuiItem* creation_barrack_bar;
+
 	//Upgrades
 	float first_upgrade_time;
 	j1Timer upgrade_timer;

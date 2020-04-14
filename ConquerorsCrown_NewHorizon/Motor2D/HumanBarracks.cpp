@@ -64,6 +64,10 @@ bool HumanBarracks::Update(float dt)
 		{
 			DeleteBarracksUI();
 		}
+		if (creation_barrack_bar != nullptr) 
+		{
+			creation_barrack_bar->to_delete = true;
+		}
 		to_delete = true;
 	}
 
@@ -214,6 +218,7 @@ void HumanBarracks::checkAnimation(float dt)
 			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
+			creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x-65, position.y-80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 		}
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -233,6 +238,8 @@ void HumanBarracks::checkAnimation(float dt)
 
 	if (actualState == ST_BARRANCK_IN_CONSTRUCTION)
 	{
+		float bar_prog = (timer.ReadSec() * 100) / 3;
+		creation_barrack_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
 
@@ -240,6 +247,9 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			//Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
+			if (creation_barrack_bar != nullptr) {
+				creation_barrack_bar->to_delete = true;
+			}
 		}
 		else {
 			if (timer.ReadSec() >= time_FX_barracks) {
@@ -275,8 +285,9 @@ void HumanBarracks::checkAnimation(float dt)
 				CreateBarrackUI();
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING)
 			{
+				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
 				actualState = ST_BARRACK_UPGRADING;
 			}
@@ -315,6 +326,8 @@ void HumanBarracks::checkAnimation(float dt)
 	
 	if (actualState == ST_BARRACK_UPGRADING)
 	{
+		float upgrade_bar = (upgrade_timer.ReadSec() * 100) / 10;
+		creation_barrack_bar->updateBar(upgrade_bar);
 		if (Button_Create_Footman != nullptr) 
 		{
 			DeleteBarracksUI();
@@ -327,12 +340,17 @@ void HumanBarracks::checkAnimation(float dt)
 		//Timer for the upgrade
 		if (upgrade_timer.ReadSec() >= first_upgrade_time )
 		{
+			if (creation_barrack_bar!= nullptr)
+			{
+				creation_barrack_bar->to_delete = true;
+			}
 			Barrack_Upgraded = true;
 			actualState = ST_BARRACK_FINISHED;
 			createUI = true;
 		}
 
 	}
+
 }
 
 void HumanBarracks::CheckQueue()
