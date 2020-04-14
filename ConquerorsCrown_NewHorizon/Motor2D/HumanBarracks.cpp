@@ -188,7 +188,7 @@ void HumanBarracks::checkAnimation(float dt)
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
 		{
-			Mix_HaltChannel(-1);
+			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
 			GetTile();
@@ -218,7 +218,7 @@ void HumanBarracks::checkAnimation(float dt)
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
-			Mix_HaltChannel(-1);
+		//	Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			to_delete = true;
@@ -238,7 +238,7 @@ void HumanBarracks::checkAnimation(float dt)
 
 		if (timer.ReadSec() >= construction_time)
 		{
-			Mix_HaltChannel(-1);
+			//Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
 		}
 		else {

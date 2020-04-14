@@ -42,7 +42,7 @@ SDL_Rect TileSetEntity::GetAnimRect(int id) const
 void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 
 	Mix_Playing(channel);
-	Mix_HaltChannel(channel);
+	//Mix_HaltChannel(channel);
 	iPoint center_camera = { -App->render->camera.x + App->render->camera.w / 2, -App->render->camera.y + App->render->camera.h / 2 };
 	App->render->DrawQuad(SDL_Rect{ center_camera.x, center_camera.y, 2,2 }, 255, 255, 255, 255);
 	iPoint provisional_distance = { posx - center_camera.x, posy - center_camera.y };

@@ -114,7 +114,7 @@ void DynamicEnt::Movement()
 		followpath = 1;
 		change_direction = true;
 
-		//SpatialAudio(3, App->audio->walking, position.x, position.y);
+	//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
 
 	
@@ -158,6 +158,8 @@ void DynamicEnt::Movement()
 				{
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
+					SpatialAudio(3, App->audio->human_attack, position.x, position.y);
+
 				}
 			}
 		}
@@ -222,11 +224,11 @@ void DynamicEnt::Movement()
 					pathSpeed.y = 1;
 				}
 
-		//		if (timer2.ReadSec() >= time_FX_troops) {
+				if (timer2.ReadSec() >= time_FX_troops) {
 		//		SpatialAudio(3, App->audio->walking, position.x, position.y);
 		//		time_FX_troops += 0.5;
-		////		LOG("Troops FX: %.1f", time_FX_troops);
-		//		}
+		//		LOG("Troops FX: %.1f", time_FX_troops);
+				}
 			}
 		}
 		else {
@@ -271,7 +273,7 @@ void DynamicEnt::Movement()
 		}
 		else
 		{
-			Mix_HaltChannel(-1);
+		//	Mix_HaltChannel(-1);
 			//idle anim
 		}
 		if (pathSpeed.x < 0)
@@ -300,7 +302,7 @@ void DynamicEnt::Movement()
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-		if (App->scene->debug)
+	/*	if (App->scene->debug)
 		{
 			App->render->DrawCircle(position.x, position.y, vision, 0, 200, 0);
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
@@ -308,7 +310,7 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
 		}
 		if (isSelected)
-			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);*/
 
 
 		fPoint cohesionSpeed;
