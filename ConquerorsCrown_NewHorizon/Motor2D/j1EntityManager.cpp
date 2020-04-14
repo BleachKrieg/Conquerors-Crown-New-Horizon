@@ -42,6 +42,8 @@ bool j1EntityManager::Start()
 	LoadAnimations("textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
+	max_audio_attacks = 0;
+	timer.Start();
 	return true;
 }
 
@@ -65,10 +67,13 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
-
+	if(timer.ReadMs() > 200)
+	{
+		max_audio_attacks = 0;
+		timer.Start();
+	}
 	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
-
 	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
 		it = *entities_list;
 		it->Update(dt);

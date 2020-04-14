@@ -158,7 +158,10 @@ void DynamicEnt::Movement()
 				{
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
-					SpatialAudio(3, App->audio->human_attack, position.x, position.y);
+					if(App->entity->max_audio_attacks < 1)
+					//SpatialAudio(3, App->audio->human_attack, position.x, position.y);
+						App->audio->PlayFx(3, App->audio->human_attack, 0);
+					App->entity->max_audio_attacks++;
 
 				}
 			}

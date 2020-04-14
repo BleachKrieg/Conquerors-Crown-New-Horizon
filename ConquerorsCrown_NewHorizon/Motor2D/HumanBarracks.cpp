@@ -373,9 +373,12 @@ void HumanBarracks::CreateBarrackUI()
 
 void HumanBarracks::DeleteBarracksUI()
 {
+	if (Button_Create_Footman != nullptr)
+	{
+		Button_Create_Footman->to_delete = true;
+		Button_Create_Footman = nullptr;
+	}
 	
-	Button_Create_Footman->to_delete = true;
-	Button_Create_Footman = nullptr;
 
 	if (Barrack_Upgraded && Button_Create_Archer != nullptr)
 	{
