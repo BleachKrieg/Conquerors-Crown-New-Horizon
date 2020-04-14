@@ -67,6 +67,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	walking = App->audio->LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience2.wav");
 	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
+	human_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	return ret;
 }
 
