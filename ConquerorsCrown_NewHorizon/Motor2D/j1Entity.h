@@ -43,7 +43,6 @@ public:
 		IA,
 	};
 
-	entityType type;
 
 	// Constructor
 	j1Entity(entityType type);
@@ -74,6 +73,7 @@ public:
 	fPoint speed;
 	int volume;
 	int SFX;
+	entityType type;
 	TeamType	team;
 	int		life_points;
 	p2DynArray<iPoint>	path;

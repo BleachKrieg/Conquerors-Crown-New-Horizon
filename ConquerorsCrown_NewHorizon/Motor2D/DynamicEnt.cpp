@@ -354,8 +354,8 @@ void DynamicEnt::Movement()
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
 {
-	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
+
 	colliding_entity_list->clear();
 	close_entity_list->clear();
 
@@ -363,8 +363,8 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 	if (target_entity != NULL)
 		closest_enemy = -1;
 
-	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-		it = *entities_list;
+	for (int i = 0; i < App->entity->entities.size(); i++) {
+		it = App->entity->entities[i];
 		if (it != this)
 		{
 			int x = it->position.x;
