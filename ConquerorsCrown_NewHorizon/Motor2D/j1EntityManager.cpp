@@ -75,9 +75,7 @@ bool j1EntityManager::Update(float dt)
 		
 		entities[i]->Update(dt);
 	}
-	LOG("player dynamic: %d", player_dyn_ent.size());
-	LOG("player static: %d", player_stat_ent.size());
-	LOG("ia dynamic: %d", ia_dyn_ent.size());
+	
 
 	return true;
 }

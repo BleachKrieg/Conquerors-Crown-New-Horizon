@@ -22,6 +22,17 @@ public:
 		HUMAN_GATHERER,
 		ENEMY_TROLL,
 	};
+	enum class DynamicState
+	{
+		IDLE,
+		UP,
+		DOWN,
+		HORIZONTAL,
+		DIAGONAL_UP,
+		DIAGONAL_DOWN,
+		INTERACTING,
+		DYING
+	};
 	
 	// Constructor
 	DynamicEnt(DynamicEntityType type);
@@ -55,7 +66,8 @@ protected:
 	iPoint				origin, mouse, relative_target;
 	list<j1Entity*>		close_entity_list;
 	list<j1Entity*>		colliding_entity_list;
-
+	// States ------------------------
+	DynamicState		state;
 	// Animations ------------------------
 	Animation moving_up;
 	Animation moving_diagonal_up;

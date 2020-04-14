@@ -34,7 +34,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
-	team = TeamType::PLAYER;
+	team = TeamType::NO_TYPE;
 	actualState = ST_BARRACK_PREVIEW;
 	life_points = 100;
 	createUI = false;
@@ -221,6 +221,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//	Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
+			team = TeamType::PLAYER;
 			to_delete = true;
 		}
 

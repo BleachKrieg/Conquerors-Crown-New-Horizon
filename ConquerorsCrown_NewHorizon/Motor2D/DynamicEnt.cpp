@@ -64,7 +64,7 @@ void DynamicEnt::Movement()
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		timer2.Start();
+		//timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
@@ -99,20 +99,25 @@ void DynamicEnt::Movement()
 		{
 			relative_target.y = mouse.y + 1;
 		}
+
 		if (App->movement->selected.size() > 10)
 		{
 			if (App->pathfinding->RequestPath(origin, relative_target, this) == -1)
 			{
-				App->pathfinding->RequestPath(origin, mouse, this);
+				 App->pathfinding->RequestPath(origin, mouse, this);
 			}
 		}
 		else
 		{
 			App->pathfinding->RequestPath(origin, mouse, this);
 		}
-		player_order = true;
-		followpath = 1;
-		change_direction = true;
+		
+			player_order = true;
+			followpath = 1;
+			change_direction = true;
+	
+	
+		
 
 	//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
@@ -150,6 +155,8 @@ void DynamicEnt::Movement()
 
 		if (distance < attack_range + target_entity->body)
 		{
+			state = DynamicState::INTERACTING;
+
 			following_target = false;
 			if (player_order == false)
 			{
@@ -227,17 +234,18 @@ void DynamicEnt::Movement()
 					pathSpeed.y = 1;
 				}
 
-				if (timer2.ReadSec() >= time_FX_troops) {
-		//		SpatialAudio(3, App->audio->walking, position.x, position.y);
-		//		time_FX_troops += 0.5;
-		//		LOG("Troops FX: %.1f", time_FX_troops);
-				}
+		//		if (timer2.ReadSec() >= time_FX_troops) {
+		////		SpatialAudio(3, App->audio->walking, position.x, position.y);
+		////		time_FX_troops += 0.5;
+		////		LOG("Troops FX: %.1f", time_FX_troops);
+		//		}
 			}
 		}
 		else {
 			following_target = false;
 			player_order = false;
 			path.Clear();
+			change_direction = true;
 			//time_FX_troops = 0.5;
 		}
 	}
@@ -251,33 +259,37 @@ void DynamicEnt::Movement()
 	{
 		if (pathSpeed.x != 0)
 		{
+			state = DynamicState::HORIZONTAL;
 			current_animation = &moving_right;
 
 			if (pathSpeed.y < 0)
 			{
+				state = DynamicState::DIAGONAL_UP;
 				current_animation = &moving_diagonal_up;
 			}
 
 			if (pathSpeed.y > 0)
 			{
+				state = DynamicState::DIAGONAL_DOWN;
 				current_animation = &moving_diagonal_down;
 			}
 		}
 		else if (pathSpeed.y != 0) {
 			if (pathSpeed.y < 0)
 			{
+				state = DynamicState::UP;
 				current_animation = &moving_up;
 			}
 
 			if (pathSpeed.y > 0)
 			{
+				state = DynamicState::DOWN;
 				current_animation = &moving_down;
 			}
 		}
 		else
 		{
-		//	Mix_HaltChannel(-1);
-			//idle anim
+			state = DynamicState::IDLE;
 		}
 		if (pathSpeed.x < 0)
 		{
