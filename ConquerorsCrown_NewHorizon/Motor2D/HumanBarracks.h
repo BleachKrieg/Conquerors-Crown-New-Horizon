@@ -47,6 +47,7 @@ public:
 	void CreateBarrackUI();
 	void DeleteBarracksUI();
 	void GuiInput(GuiItem*);
+	void QueueSwap();
 
 public:
 	// Animations
@@ -73,12 +74,15 @@ public:
 	{
 		int			time;
 		int			type;
+		GuiItem*	image;
+		GuiItem*	bar;
 		j1Timer		timer;
 	};
 
 	vector<QueueTroop*>	Troop;
 
 	void CheckQueue();
+	void ImageSelected();
 	
 	// UI
 	GuiItem* Button_Create_Footman;
@@ -95,6 +99,14 @@ public:
 
 	bool create_swordman;
 	bool create_archer;
+
+	// Queue positions
+	iPoint pos0;
+	iPoint pos1;
+	iPoint pos2;
+	iPoint pos3;
+	iPoint pos4;
+	iPoint pos5;
 
 };
 #endif // __TEST_1_H__
