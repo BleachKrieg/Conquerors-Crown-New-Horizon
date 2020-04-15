@@ -38,6 +38,8 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	can_attack = true;
 	team = TeamType::IA;
 	target_entity = NULL;
+	state = DynamicState::IDLE;
+
 
 
 	// TODO ------------------------------------------
@@ -73,11 +75,38 @@ bool TrollEnemy::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
+	
+	AttackTarget();
+	Movement();
 
 	if (life_points <= 0)
-		to_delete = true;
+		state = DynamicState::DYING;
 
-	Movement();
+	switch (state)
+	{
+	case DynamicState::IDLE:
+		break;
+	case DynamicState::UP:
+		current_animation = &moving_up;
+		break;
+	case DynamicState::DOWN:
+		current_animation = &moving_down;
+		break;
+	case DynamicState::HORIZONTAL:
+		current_animation = &moving_right;
+		break;
+	case DynamicState::DIAGONAL_UP:
+		current_animation = &moving_diagonal_up;
+		break;
+	case DynamicState::DIAGONAL_DOWN:
+		current_animation = &moving_diagonal_down;
+		break;
+	case DynamicState::INTERACTING:
+		break;
+	case DynamicState::DYING:
+		to_delete = true;
+		break;
+	}
 
 	
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);

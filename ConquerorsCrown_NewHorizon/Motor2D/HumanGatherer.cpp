@@ -35,6 +35,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 	player_order = false;
+	state = DynamicState::IDLE;
 
 	// TODO ------------------------------------------
 }
@@ -71,10 +72,37 @@ bool HumanGatherer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 
-	if (life_points <= 0)
-		to_delete = true;
+	OrderPath();
 	Movement();
 
+	if (life_points <= 0)
+		state = DynamicState::DYING;
+
+	switch (state)
+	{
+	case DynamicState::IDLE:
+		break;
+	case DynamicState::UP:
+		current_animation = &moving_up;
+		break;
+	case DynamicState::DOWN:
+		current_animation = &moving_down;
+		break;
+	case DynamicState::HORIZONTAL:
+		current_animation = &moving_right;
+		break;
+	case DynamicState::DIAGONAL_UP:
+		current_animation = &moving_diagonal_up;
+		break;
+	case DynamicState::DIAGONAL_DOWN:
+		current_animation = &moving_diagonal_down;
+		break;
+	case DynamicState::INTERACTING:
+		break;
+	case DynamicState::DYING:
+		to_delete = true;
+		break;
+	}
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);

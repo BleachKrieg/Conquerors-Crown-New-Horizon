@@ -222,6 +222,7 @@ void HumanTownHall::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
+			team = TeamType::PLAYER;
 			App->scene->Building_preview = false;
 			to_delete = true;
 		}

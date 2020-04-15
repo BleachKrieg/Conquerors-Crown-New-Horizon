@@ -239,6 +239,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//	Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
+			team = TeamType::PLAYER;
 			to_delete = true;
 		}
 
