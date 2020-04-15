@@ -252,12 +252,12 @@ void HumanTownHall::checkAnimation(float dt)
 			actualState = ST_TOWNHALL_FINISHED;
 			Mix_HaltChannel(-1);
 		}
-		else {
+		/*else {
 			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
 				time_FX_barracks++;
 			}
-		}
+		}*/
 
 	}
 
