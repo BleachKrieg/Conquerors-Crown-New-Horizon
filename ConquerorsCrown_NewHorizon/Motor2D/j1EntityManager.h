@@ -44,7 +44,7 @@ public:
 	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0);
 
 	// Delete an entity
-	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
+	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
 	bool DeleteAllEntities();
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
@@ -53,7 +53,12 @@ protected:
 	TileSetEntity TileSetData;
 
 public:
-	list<j1Entity*> entities;
+	vector<j1Entity*> entities;
+	vector<j1Entity*> player_dyn_ent;
+	vector<j1Entity*> ia_dyn_ent;
+	vector<j1Entity*> player_stat_ent;
+
+
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
