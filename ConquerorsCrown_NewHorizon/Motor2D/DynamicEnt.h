@@ -52,6 +52,9 @@ public:
 
 	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
+	void OrderPath();
+
+	void AttackTarget();
 public:
 	float time_FX_troops;
 	j1Timer timer2;

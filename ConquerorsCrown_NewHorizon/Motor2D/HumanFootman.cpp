@@ -72,7 +72,9 @@ bool HumanFootman::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
-
+	
+	OrderPath();
+	AttackTarget();
 	Movement();
 
 	if (life_points <= 0)
