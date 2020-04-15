@@ -219,6 +219,42 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
+void j1Scene::LoadTiledEntities() {
+
+	list<MapLayer*>::iterator Layer_list;
+	MapLayer* layer;
+
+	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
+	{
+		layer = *Layer_list;
+		LOG("%s, %d", layer->name.GetString(), layer->returnPropValue("Navigation"));
+		if (layer->returnPropValue("Navigation") == 2)
+		{
+			for (int y = 0; y < App->map->data.height; ++y)
+			{
+				for (int x = 0; x < App->map->data.width; ++x)
+				{
+					int tile_id = layer->Get(x, y);
+
+					if (tile_id != 0)
+					{
+						iPoint pos;
+						pos = App->map->MapToWorld(x, y);
+						switch (tile_id) {
+						case 401:
+						//	App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
+							break;
+						case 418:
+						//	App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void j1Scene::ChangeScene(scenes next_scene) {
 	//Deleting scene
 	switch (current_scene)
@@ -248,6 +284,8 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		current_scene = scenes::ingame;
 		CreateInGame();
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		App->render->camera.x = -2830;
+		App->render->camera.y = -967;
 		break;
 	case scenes::logo:
 		current_scene = scenes::logo;
@@ -317,6 +355,7 @@ bool j1Scene::CreateInGame() {
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
 
+	LoadTiledEntities();
 	return true;
 }
 

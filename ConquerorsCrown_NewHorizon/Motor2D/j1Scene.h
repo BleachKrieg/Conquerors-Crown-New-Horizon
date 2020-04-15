@@ -58,7 +58,7 @@ public:
 	bool DeleteUI();
 
 	void LogoPushbacks();
-
+	void LoadTiledEntities();
 	void GuiInput(GuiItem* guiElement);
 	
 private:

@@ -39391,7 +39391,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="403"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -50855,8 +50855,8 @@
  </layer>
  <layer id="3" name="buildings" width="130" height="130">
   <properties>
-   <property name="Navigation" type="int" value="0"/>
-   <property name="Nodraw" type="int" value="0"/>
+   <property name="Navigation" type="int" value="2"/>
+   <property name="Nodraw" type="int" value="1"/>
    <property name="Parallax" type="float" value="1"/>
   </properties>
   <data>
@@ -54870,7 +54870,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2147484029"/>
    <tile/>
    <tile/>
    <tile/>
@@ -55253,6 +55252,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="418"/>
    <tile/>
    <tile/>
    <tile/>
@@ -55524,7 +55524,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="431"/>
    <tile/>
    <tile/>
    <tile/>
@@ -55909,8 +55908,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="401"/>
    <tile/>
-   <tile gid="407"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56164,6 +56163,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="418"/>
    <tile/>
    <tile/>
    <tile/>
@@ -57589,7 +57589,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2147484029"/>
    <tile/>
    <tile/>
    <tile/>
@@ -59391,7 +59390,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2147484029"/>
    <tile/>
    <tile/>
    <tile/>
@@ -59932,7 +59930,9 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="2147484029"/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
