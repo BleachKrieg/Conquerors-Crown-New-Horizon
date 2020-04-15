@@ -184,10 +184,10 @@ void DynamicEnt::AttackTarget()
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
+			state = DynamicState::IDLE;
 			current_time = timer.ReadMs();
 			path.Clear();
 			following_target = false;
-
 		}
 	}
 }
@@ -417,4 +417,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 			}
 		}
 	}
+}
+
+void DynamicEnt::Death()
+{
+	current_animation = &death_down;
+	if (current_animation->Finished() == true) { to_delete = true; }
 }

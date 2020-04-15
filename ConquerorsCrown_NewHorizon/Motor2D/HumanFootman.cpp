@@ -57,6 +57,20 @@ bool HumanFootman::Start()
 	++animations_list;
 	moving_down = **animations_list;
 	++animations_list;
+	attacking_up = **animations_list;
+	++animations_list;
+	attacking_diagonal_up = **animations_list;
+	++animations_list;
+	attacking_right = **animations_list;
+	++animations_list;
+	attacking_diagonal_down = **animations_list;
+	++animations_list;
+	attacking_down = **animations_list;
+	++animations_list;
+	death_up = **animations_list;
+	++animations_list;
+	death_down = **animations_list;
+	++animations_list;
 
 	current_animation = &moving_down;
 	return true;
@@ -100,9 +114,10 @@ bool HumanFootman::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
+		current_animation = &attacking_diagonal_down;
 		break;
 	case DynamicState::DYING:
-		to_delete = true;
+		Death();
 		break;
 	}
 
