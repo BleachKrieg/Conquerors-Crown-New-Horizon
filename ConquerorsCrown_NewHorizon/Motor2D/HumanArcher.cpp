@@ -118,7 +118,7 @@ bool HumanArcher::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
-		current_animation = &attacking_diagonal_down;
+		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
 		Death();
