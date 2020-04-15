@@ -80,5 +80,9 @@ public:
 	GuiItem* Button_Create_Gatherer;
 	bool create_gatherer;
 	GuiItem* Gatherer_image;
+
+	//Progress Bar
+	GuiItem* creation_TownHall_bar;
+
 };
 #endif // __TEST_1_H__

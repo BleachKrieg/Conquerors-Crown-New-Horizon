@@ -31,6 +31,12 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	first_upgrade_time = 10;
 	timer_queue = 0;
 	troop_type = 0;
+	pos0 = { 827, 103 };
+	pos1 = { 890, 103 };
+	pos2 = { 827, 168 };
+	pos3 = { 890, 168 };
+	pos4 = { 827, 230 };
+	pos5 = { 890, 230 };
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
@@ -63,6 +69,17 @@ bool HumanBarracks::Update(float dt)
 		if (Button_Create_Footman != nullptr)
 		{
 			DeleteBarracksUI();
+		}
+		for (int i = 0; i < Troop.size(); i++)
+		{
+			if (Troop[i]->image != nullptr)
+			{
+				Troop[i]->image->to_delete = true;
+			}
+		}
+		if (creation_barrack_bar != nullptr) 
+		{
+			creation_barrack_bar->to_delete = true;
 		}
 		to_delete = true;
 	}
@@ -214,6 +231,7 @@ void HumanBarracks::checkAnimation(float dt)
 			SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 			actualState = ST_BARRANCK_IN_CONSTRUCTION;
+			creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x-65, position.y-80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 		}
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
@@ -233,6 +251,8 @@ void HumanBarracks::checkAnimation(float dt)
 
 	if (actualState == ST_BARRANCK_IN_CONSTRUCTION)
 	{
+		float bar_prog = (timer.ReadSec() * 100) / 3;
+		creation_barrack_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
 
@@ -240,6 +260,9 @@ void HumanBarracks::checkAnimation(float dt)
 		{
 			//Mix_HaltChannel(-1);
 			actualState = ST_BARRACK_FINISHED;
+			if (creation_barrack_bar != nullptr) {
+				creation_barrack_bar->to_delete = true;
+			}
 		}
 		else {
 			if (timer.ReadSec() >= time_FX_barracks) {
@@ -252,6 +275,7 @@ void HumanBarracks::checkAnimation(float dt)
 
 	if (actualState == ST_BARRACK_FINISHED)
 	{
+		//LOG("%d", Troop.size());
 		// Finished Animation
 		current_animation = &finishedconst;
 
@@ -273,32 +297,84 @@ void HumanBarracks::checkAnimation(float dt)
 			{
 				createUI = false;
 				CreateBarrackUI();
+				ImageSelected();
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false)
 			{
+				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_swordman == true)
 			{
-				timer_queue += 3;
-				troop_type = 1;
-				QueueTroop* item = new QueueTroop();
-				item->time = timer_queue;
-				item->type = troop_type;
-				Troop.push_back(item);
+				if (Troop.size() < 6)
+				{
+					timer_queue += 3;
+					troop_type = 1;
+					QueueTroop* item = new QueueTroop();
+					item->time = timer_queue;
+					item->type = troop_type;
+					switch (Troop.size())
+					{
+					case 0:
+						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 1:
+						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 2:
+						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 3:
+						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 4:
+						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 5:
+						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					}
+					//item->bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, item->image, nullptr, NULL);
+					Troop.push_back(item);
+				}
 				create_swordman = false;
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true || create_archer == true)
 			{
-				timer_queue += 3;
-				troop_type = 2;
-				QueueTroop* item = new QueueTroop();
-				item->time = timer_queue;
-				item->type = troop_type;
-				Troop.push_back(item);
+				if (Troop.size() < 6)
+				{
+					timer_queue += 3;
+					troop_type = 2;
+					QueueTroop* item = new QueueTroop();
+					item->time = timer_queue;
+					item->type = troop_type;
+					switch (Troop.size())
+					{
+					case 0:
+						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 1:
+						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 2:
+						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 3:
+						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 4:
+						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 5:
+						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					}
+					//item->bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, item->image, nullptr, NULL);
+					Troop.push_back(item);
+				}
 				create_archer = false;
 			}
 		}
@@ -309,15 +385,33 @@ void HumanBarracks::checkAnimation(float dt)
 				DeleteBarracksUI();
 				createUI = true;
 			}
+
+			for (int i = 0; i < Troop.size(); i++)
+			{
+				if (Troop[i]->image != nullptr)
+				{
+					Troop[i]->image->to_delete = true;
+				}
+			}
 		}
 
 	}
 	
 	if (actualState == ST_BARRACK_UPGRADING)
 	{
+		float upgrade_bar = (upgrade_timer.ReadSec() * 100) / 10;
+		creation_barrack_bar->updateBar(upgrade_bar);
 		if (Button_Create_Footman != nullptr) 
 		{
 			DeleteBarracksUI();
+		}
+
+		for (int i = 0; i < Troop.size(); i++)
+		{
+			if (Troop[i]->image != nullptr)
+			{
+				Troop[i]->image->to_delete = true;
+			}
 		}
 
 		if (isSelected == true)
@@ -327,12 +421,21 @@ void HumanBarracks::checkAnimation(float dt)
 		//Timer for the upgrade
 		if (upgrade_timer.ReadSec() >= first_upgrade_time )
 		{
+			if (creation_barrack_bar != nullptr)
+			{
+				creation_barrack_bar->to_delete = true;
+			}
 			Barrack_Upgraded = true;
+			
+			Troop.clear();
+			timer_queue = 0;
+
 			actualState = ST_BARRACK_FINISHED;
 			createUI = true;
 		}
 
 	}
+
 }
 
 void HumanBarracks::CheckQueue()
@@ -341,18 +444,134 @@ void HumanBarracks::CheckQueue()
 	{
 		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
 		{
+			QueueSwap();
+
 			switch (Troop[i]->type)
 			{
 			case 1:
 				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { (int)position.x + 7, (int)position.y + 30 });
+				if (Troop[i]->image != nullptr)
+				{
+					Troop[i]->image->to_delete = true;
+					Troop[i]->image = nullptr;
+				}
 				break;
 			case 2:
 				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::ARCHER, { (int)position.x + 7, (int)position.y + 30 });
+				if (Troop[i]->image != nullptr)
+				{
+					Troop[i]->image->to_delete = true;
+					Troop[i]->image = nullptr;
+				}
 				break;
 			}
 			
 			Troop.erase(Troop.begin() + i);
 			i--;
+		}
+	}
+}
+
+void HumanBarracks::QueueSwap()
+{
+	if (Troop.size() == 6)
+	{
+		iPoint position0;
+		Troop[4]->image->GetLocalPos(position0.x, position0.y);
+		Troop[5]->image->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 5)
+	{
+		iPoint position0;
+		Troop[3]->image->GetLocalPos(position0.x, position0.y);
+		Troop[4]->image->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 4)
+	{
+		iPoint position0;
+		Troop[2]->image->GetLocalPos(position0.x, position0.y);
+		Troop[3]->image->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 3)
+	{
+		iPoint position0;
+		Troop[1]->image->GetLocalPos(position0.x, position0.y);
+		Troop[2]->image->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 2)
+	{
+		iPoint position0;
+		Troop[0]->image->GetLocalPos(position0.x,position0.y);
+		Troop[1]->image->SetLocalPos(position0.x, position0.y);
+	}
+}
+
+void HumanBarracks::ImageSelected()
+{
+	if (Troop.size() == 6)
+	{
+		if (Troop[5]->type == 1)
+		{
+			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[5]->type == 2)
+		{
+			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+	}
+	if (Troop.size() >= 5)
+	{
+		if (Troop[4]->type == 1)
+		{
+			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[4]->type == 2)
+		{
+			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+	}
+	if (Troop.size() >= 4)
+	{
+		if (Troop[3]->type == 1)
+		{
+			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[3]->type == 2)
+		{
+			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+	}
+	if (Troop.size() >= 3)
+	{
+		if (Troop[2]->type == 1)
+		{
+			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[2]->type == 2)
+		{
+			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+	}
+	if (Troop.size() >= 2)
+	{
+		if (Troop[1]->type == 1)
+		{
+			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[1]->type == 2)
+		{
+			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+	}
+	if (Troop.size() >= 1)
+	{
+		if (Troop[0]->type == 1)
+		{
+			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+		}
+		else if (Troop[0]->type == 2)
+		{
+			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 }
@@ -389,11 +608,13 @@ void HumanBarracks::DeleteBarracksUI()
 
 
 void HumanBarracks::GuiInput(GuiItem* guiElement) {
-	if (guiElement == Button_Create_Footman) {
+	if (guiElement == Button_Create_Footman) 
+	{
 		create_swordman = true;
 		isSelected = true;
 	}
-	else if (guiElement == Button_Create_Archer) {
+	else if (guiElement == Button_Create_Archer) 
+	{
 		create_archer = true;
 		isSelected = true;
 	}
