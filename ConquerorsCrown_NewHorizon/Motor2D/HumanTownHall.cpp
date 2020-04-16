@@ -187,8 +187,9 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
 		{
+
 			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
@@ -197,6 +198,7 @@ void HumanTownHall::checkAnimation(float dt)
 			world.y += 32;
 			position.x = world.x;
 			position.y = world.y;
+			
 
 			iPoint pos = { (int)position.x, (int)position.y };
 			pos = App->map->WorldToMap(pos.x, pos.y);
@@ -222,6 +224,7 @@ void HumanTownHall::checkAnimation(float dt)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
+			team = TeamType::PLAYER;
 			App->scene->Building_preview = false;
 			to_delete = true;
 		}
@@ -249,12 +252,12 @@ void HumanTownHall::checkAnimation(float dt)
 			actualState = ST_TOWNHALL_FINISHED;
 			Mix_HaltChannel(-1);
 		}
-		else {
+		/*else {
 			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
 				time_FX_barracks++;
 			}
-		}
+		}*/
 
 	}
 

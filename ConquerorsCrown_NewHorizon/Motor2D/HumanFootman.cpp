@@ -35,6 +35,8 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	can_attack = true;
 	team = TeamType::PLAYER;
 	target_entity = NULL;
+	state = DynamicState::IDLE;
+
 
 	// TODO ------------------------------------------
 }
@@ -55,6 +57,20 @@ bool HumanFootman::Start()
 	++animations_list;
 	moving_down = **animations_list;
 	++animations_list;
+	attacking_up = **animations_list;
+	++animations_list;
+	attacking_diagonal_up = **animations_list;
+	++animations_list;
+	attacking_right = **animations_list;
+	++animations_list;
+	attacking_diagonal_down = **animations_list;
+	++animations_list;
+	attacking_down = **animations_list;
+	++animations_list;
+	death_up = **animations_list;
+	++animations_list;
+	death_down = **animations_list;
+	++animations_list;
 
 	current_animation = &moving_down;
 	return true;
@@ -70,11 +86,40 @@ bool HumanFootman::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
-
-	if (life_points <= 0)
-		to_delete = true;
+	
+	OrderPath();
+	AttackTarget();
 	Movement();
 
+	if (life_points <= 0)
+		state = DynamicState::DYING;
+
+	switch (state)
+	{
+	case DynamicState::IDLE:
+		break;
+	case DynamicState::UP:
+		current_animation = &moving_up;
+		break;
+	case DynamicState::DOWN:
+		current_animation = &moving_down;
+		break;
+	case DynamicState::HORIZONTAL:
+		current_animation = &moving_right;
+		break;
+	case DynamicState::DIAGONAL_UP:
+		current_animation = &moving_diagonal_up;
+		break;
+	case DynamicState::DIAGONAL_DOWN:
+		current_animation = &moving_diagonal_down;
+		break;
+	case DynamicState::INTERACTING:
+		current_animation = &attacking_right;
+		break;
+	case DynamicState::DYING:
+		Death();
+		break;
+	}
 
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);

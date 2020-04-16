@@ -56,7 +56,7 @@ void DynamicEnt::CheckCollisions(fPoint* speed)
 	}
 }
 
-void DynamicEnt::Movement()
+void DynamicEnt::OrderPath()
 {
 	j1Entity* it;
 
@@ -64,7 +64,7 @@ void DynamicEnt::Movement()
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		timer2.Start();
+		//timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
@@ -99,6 +99,7 @@ void DynamicEnt::Movement()
 		{
 			relative_target.y = mouse.y + 1;
 		}
+
 		if (App->movement->selected.size() > 10)
 		{
 			if (App->pathfinding->RequestPath(origin, relative_target, this) == -1)
@@ -110,16 +111,22 @@ void DynamicEnt::Movement()
 		{
 			App->pathfinding->RequestPath(origin, mouse, this);
 		}
+
 		player_order = true;
 		followpath = 1;
 		change_direction = true;
 
-	//	SpatialAudio(3, App->audio->walking, position.x, position.y);
+
+
+
+		//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
+}
 
-	
+void DynamicEnt::AttackTarget()
+{
 
-//attack close enemy entity
+	//attack close enemy entity
 
 	if (target_entity == NULL)
 	{
@@ -143,13 +150,15 @@ void DynamicEnt::Movement()
 			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
 			App->pathfinding->RequestPath(origin, targetPos, this);
 			followpath = 1;
-			
+
 		}
 
 		// Finish attack
 
 		if (distance < attack_range + target_entity->body)
 		{
+			state = DynamicState::INTERACTING;
+
 			following_target = false;
 			if (player_order == false)
 			{
@@ -158,29 +167,34 @@ void DynamicEnt::Movement()
 				{
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
-					if(App->entity->max_audio_attacks < 1)
-					//SpatialAudio(3, App->audio->human_attack, position.x, position.y);
-						App->audio->PlayFx(3, App->audio->human_attack, 0);
+					if (App->entity->max_audio_attacks < 1)
+						SpatialAudio(3, App->audio->human_attack, position.x, position.y);
+					//	App->audio->PlayFx(3, App->audio->human_attack, 0);
 					App->entity->max_audio_attacks++;
 
 				}
 			}
 		}
-	/*	else if(path.At(1) == NULL){
+		/*	else if(path.At(1) == NULL){
 
-			target_entity = NULL;
-			following_target = false;
-		}*/
+				target_entity = NULL;
+				following_target = false;
+			}*/
 
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
+			state = DynamicState::IDLE;
 			current_time = timer.ReadMs();
 			path.Clear();
 			following_target = false;
-
 		}
 	}
+}
+void DynamicEnt::Movement()
+{
+	
+
 
 	fPoint pathSpeed{ 0,0 };
 	if (path.At(1) != NULL)
@@ -227,17 +241,18 @@ void DynamicEnt::Movement()
 					pathSpeed.y = 1;
 				}
 
-				if (timer2.ReadSec() >= time_FX_troops) {
-		//		SpatialAudio(3, App->audio->walking, position.x, position.y);
-		//		time_FX_troops += 0.5;
-		//		LOG("Troops FX: %.1f", time_FX_troops);
-				}
+		//		if (timer2.ReadSec() >= time_FX_troops) {
+		////		SpatialAudio(3, App->audio->walking, position.x, position.y);
+		////		time_FX_troops += 0.5;
+		////		LOG("Troops FX: %.1f", time_FX_troops);
+		//		}
 			}
 		}
 		else {
 			following_target = false;
 			player_order = false;
 			path.Clear();
+			change_direction = true;
 			//time_FX_troops = 0.5;
 		}
 	}
@@ -251,33 +266,37 @@ void DynamicEnt::Movement()
 	{
 		if (pathSpeed.x != 0)
 		{
+			state = DynamicState::HORIZONTAL;
 			current_animation = &moving_right;
 
 			if (pathSpeed.y < 0)
 			{
+				state = DynamicState::DIAGONAL_UP;
 				current_animation = &moving_diagonal_up;
 			}
 
 			if (pathSpeed.y > 0)
 			{
+				state = DynamicState::DIAGONAL_DOWN;
 				current_animation = &moving_diagonal_down;
 			}
 		}
 		else if (pathSpeed.y != 0) {
 			if (pathSpeed.y < 0)
 			{
+				state = DynamicState::UP;
 				current_animation = &moving_up;
 			}
 
 			if (pathSpeed.y > 0)
 			{
+				state = DynamicState::DOWN;
 				current_animation = &moving_down;
 			}
 		}
 		else
 		{
-		//	Mix_HaltChannel(-1);
-			//idle anim
+			state = DynamicState::IDLE;
 		}
 		if (pathSpeed.x < 0)
 		{
@@ -312,9 +331,10 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
 		}
+	
 		if (isSelected)
-			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);*/
-
+			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+		*/
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
@@ -354,8 +374,8 @@ void DynamicEnt::Movement()
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
 {
-	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
+
 	colliding_entity_list->clear();
 	close_entity_list->clear();
 
@@ -363,8 +383,8 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 	if (target_entity != NULL)
 		closest_enemy = -1;
 
-	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-		it = *entities_list;
+	for (int i = 0; i < App->entity->entities.size(); i++) {
+		it = App->entity->entities[i];
 		if (it != this)
 		{
 			int x = it->position.x;
@@ -376,7 +396,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				colliding_entity_list->push_back(it);
 
 			}
-			if (can_attack && distance < attack_vision + it->body && team != it->team && it->team != TeamType::NO_TYPE)
+			if (can_attack && distance < attack_vision + it->body && team != it->team && it->team != TeamType::NO_TYPE && it->life_points > 0)
 			{
 				if (distance < closest_enemy)
 				{
@@ -397,4 +417,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 			}
 		}
 	}
+}
+
+void DynamicEnt::Death()
+{
+	current_animation = &death_down;
+	if (current_animation->Finished() == true) { to_delete = true; }
 }

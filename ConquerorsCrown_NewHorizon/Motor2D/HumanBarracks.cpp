@@ -203,8 +203,9 @@ void HumanBarracks::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
 		{
+
 			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
@@ -213,6 +214,7 @@ void HumanBarracks::checkAnimation(float dt)
 			world.y += 32;
 			position.x = world.x;
 			position.y = world.y;
+			
 
 			iPoint pos = { (int)position.x, (int)position.y };
 			pos = App->map->WorldToMap(pos.x, pos.y);
@@ -239,6 +241,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//	Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
+			team = TeamType::PLAYER;
 			to_delete = true;
 		}
 
@@ -264,12 +267,12 @@ void HumanBarracks::checkAnimation(float dt)
 				creation_barrack_bar->to_delete = true;
 			}
 		}
-		else {
+		/*else {
 			if (timer.ReadSec() >= time_FX_barracks) {
 				SpatialAudio(1, App->audio->construction, position.x, position.y);
 				time_FX_barracks++;
 			}
-		}
+		}*/
 
 	}
 

@@ -62,7 +62,7 @@ public:
 	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
-
+	void LoadTiledEntities();
 	void GuiInput(GuiItem* guiElement);
 	
 private:

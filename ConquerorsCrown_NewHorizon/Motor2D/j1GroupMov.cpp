@@ -54,10 +54,10 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		list<j1Entity*>::iterator entities_list;
+		
 		j1Entity* it;
-		for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-			it = *entities_list;
+		for (int i = 0; i < App->entity->entities.size(); i++) {
+			it = App->entity->entities[i];
 
 			if (it->selectable_buildings == true && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
 			{
