@@ -12,7 +12,8 @@ public:
 
 	bool Start();
 	bool Update(float dt);
-	bool FadeToBlackVisualEffect(float time = 2.0f);
+	bool PostUpdate(float dt);
+	bool FadeToBlack(scenes, float time = 2.0f);
 
 private:
 
@@ -27,7 +28,7 @@ private:
 	Uint32 total_time = 0;
 	SDL_Rect screen;
 	int level = 0;
-
+	scenes next_scene;
 	SDL_Texture* screen_;
 };
 

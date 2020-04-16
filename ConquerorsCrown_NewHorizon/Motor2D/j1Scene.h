@@ -53,10 +53,8 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	//Menu functions
-	void ChangeScene(scenes);
-
 	void DeleteScene();
-	void CreateScene();
+	void CreateScene(scenes);
 
 	bool CreateMenu();
 	bool CreateInGame();

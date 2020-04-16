@@ -23,7 +23,6 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 
 	Building_preview = false;
-	Building_preview = false;
 }
 
 // Destructor
@@ -90,7 +89,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-			ChangeScene(scenes::menu);
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
 		break;
@@ -186,7 +185,7 @@ bool j1Scene::PostUpdate(float dt)
 		break;
 	case scenes::ingame:
 
-		//Mouse input
+		//Mouse input for UI buttons
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())
 			{
@@ -200,13 +199,14 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::logo:
+		/*
 		if (logoTextTimer == 35) {
 			logoTextClick->delayBlit = !logoTextClick->delayBlit;
 		}
 		if (logoTextTimer == 60) {
 			logoTextClick->delayBlit = !logoTextClick->delayBlit;
 			logoTextTimer = 0;
-		}
+		}*/
 		App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 		break;
 	}
@@ -277,7 +277,7 @@ void j1Scene::LoadTiledEntities() {
 	}
 }
 
-void j1Scene::ChangeScene(scenes next_scene) {
+void j1Scene::DeleteScene() {
 	//Deleting scene
 	switch (current_scene)
 	{
@@ -294,8 +294,8 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		DeleteUI();
 		break;
 	}
-	App->fade->FadeToBlackVisualEffect(2.0f);
-
+}
+void j1Scene::CreateScene(scenes next_scene) {
 	//Creating scene
 	switch (next_scene)
 	{
@@ -456,7 +456,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//Menu buttons
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		ChangeScene(scenes::ingame);
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
@@ -473,7 +473,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		ChangeScene(scenes::menu);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 	else if (guiElement == townHallButton) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);

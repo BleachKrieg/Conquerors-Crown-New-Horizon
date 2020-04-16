@@ -40,12 +40,8 @@ bool j1FadeToBlack::Update(float dt)
 	{
 		if (now >= total_time)
 		{
-			if (level == 1) {
-				//App->scene->ChargeFirstLevel();
-			}
-			else if (level == 2) {
-				//App->scene->ChargeSecondLevel(); 
-			}
+			App->scene->DeleteScene();
+			App->scene->CreateScene(next_scene);
 			total_time += total_time;
 			start_time = SDL_GetTicks();
 			current_step = fade_step::fade_from_black;
@@ -61,22 +57,29 @@ bool j1FadeToBlack::Update(float dt)
 	} break;
 	}
 
-	// Finally render the black square with alpha on the screen
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
-	SDL_RenderFillRect(App->render->renderer, &screen);
 	//App->render->Blit(screen_, 0, 0);
 
 	return true;
 }
+bool j1FadeToBlack::PostUpdate(float dt) {
 
-bool j1FadeToBlack::FadeToBlackVisualEffect(float time)
+	// Finally render the black square with alpha on the screen
+	if(current_step != fade_step::none)
+		SDL_RenderFillRect(App->render->renderer, &screen);
+	
+	return true;
+}
+
+bool j1FadeToBlack::FadeToBlack(scenes scene, float time)
 {
 	bool ret = false;
 
 	if (current_step == fade_step::none)
 	{
-		screen = { App->render->camera.x, App->render->camera.y, App->render->camera.w, App->render->camera.h };
+		screen = {0, 0, App->render->camera.w, App->render->camera.h };
 		current_step = fade_step::fade_to_black;
+		next_scene = scene;
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
