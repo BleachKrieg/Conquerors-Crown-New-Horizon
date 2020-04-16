@@ -369,7 +369,7 @@ iPoint j1Render::WorldToScreen(int x, int y) const
 {
 	iPoint ret;
 	int scale = App->win->GetScale();
-	ret.x = x + camera.x;
-	ret.y = y + camera.y;
+	ret.x = x + camera.x / scale;
+	ret.y = y + camera.y / scale;
 	return ret;
 }
