@@ -319,22 +319,22 @@ void HumanBarracks::checkAnimation(float dt)
 					switch (Troop.size())
 					{
 					case 0:
-						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 1:
-						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 2:
-						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 3:
-						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 4:
-						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 5:
-						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					}
 					//item->bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, item->image, nullptr, NULL);
@@ -354,22 +354,22 @@ void HumanBarracks::checkAnimation(float dt)
 					switch (Troop.size())
 					{
 					case 0:
-						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 1:
-						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 2:
-						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 3:
-						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 4:
-						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 5:
-						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					}
 					//item->bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, item->image, nullptr, NULL);
@@ -512,66 +512,66 @@ void HumanBarracks::ImageSelected()
 	{
 		if (Troop[5]->type == 1)
 		{
-			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[5]->type == 2)
 		{
-			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 	if (Troop.size() >= 5)
 	{
 		if (Troop[4]->type == 1)
 		{
-			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[4]->type == 2)
 		{
-			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 	if (Troop.size() >= 4)
 	{
 		if (Troop[3]->type == 1)
 		{
-			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[3]->type == 2)
 		{
-			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 	if (Troop.size() >= 3)
 	{
 		if (Troop[2]->type == 1)
 		{
-			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[2]->type == 2)
 		{
-			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 	if (Troop.size() >= 2)
 	{
 		if (Troop[1]->type == 1)
 		{
-			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[1]->type == 2)
 		{
-			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 	if (Troop.size() >= 1)
 	{
 		if (Troop[0]->type == 1)
 		{
-			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1186, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 		else if (Troop[0]->type == 2)
 		{
-			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 50, 45, 37 }, App->scene->ingameUI, nullptr, NULL);
+			Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1233, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
 		}
 	}
 }
@@ -580,13 +580,13 @@ void HumanBarracks::CreateBarrackUI()
 {
 	Button_Create_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 50, 45, 37 }, Button_Create_Footman, nullptr, NULL);
+	Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 49, 46, 38 }, Button_Create_Footman, nullptr, NULL);
 	
 	if (Barrack_Upgraded == true) 
 	{
 		Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 		Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-		Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 50, 45, 37 }, Button_Create_Archer, nullptr, NULL);
+		Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 49, 46, 38 }, Button_Create_Archer, nullptr, NULL);
 	}
 }
 
@@ -598,7 +598,6 @@ void HumanBarracks::DeleteBarracksUI()
 		Button_Create_Footman = nullptr;
 	}
 	
-
 	if (Barrack_Upgraded && Button_Create_Archer != nullptr)
 	{
 		Button_Create_Archer->to_delete = true;

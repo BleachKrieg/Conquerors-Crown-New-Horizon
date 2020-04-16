@@ -57,6 +57,10 @@ public:
 	bool CreateLogo();
 	bool DeleteUI();
 
+	//InGameUI functions
+	bool CreateButtonsUI();
+	bool DeleteButtonsUI();
+
 	void LogoPushbacks();
 
 	void GuiInput(GuiItem* guiElement);
@@ -77,7 +81,7 @@ public:
 	bool debug;
 	bool Building_preview;
 	iPoint map_coordinates;
-
+	iPoint mouse_position;
 
 	//MenuGui
 	GuiItem* menuButtonNewGame;
@@ -91,11 +95,14 @@ public:
 	GuiItem* menuBackground;
 
 	//InGameGui
-	iPoint ingameUIPosition;
+	iPoint	 ingameUIPosition;
 	GuiItem* ingameUI;
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
+
+	GuiItem* townHallButton;
+	GuiItem* townHallImage;
 
 	//LogoGui
 	GuiItem* logoTextClick;

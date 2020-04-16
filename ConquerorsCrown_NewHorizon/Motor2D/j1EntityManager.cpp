@@ -44,6 +44,7 @@ bool j1EntityManager::Start()
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
 	max_audio_attacks = 0;
 	timer.Start();
+
 	return true;
 }
 
@@ -74,12 +75,11 @@ bool j1EntityManager::Update(float dt)
 	}
 	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
-	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) 
+	{
 		it = *entities_list;
 		it->Update(dt);
 	}
-
-	
 
 	return true;
 }
@@ -88,7 +88,7 @@ bool j1EntityManager::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateEntity", Profiler::Color::Azure)
 
-		list<j1Entity*>::iterator entities_list;
+	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
 
 	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
@@ -198,4 +198,16 @@ void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animati
 		}
 		animations.push_back(set);
 	}
+}
+
+bool j1EntityManager::IsSomethingSelected() 
+{
+	list<j1Entity*>::iterator entities_list;
+	j1Entity* it;
+
+	for (entities_list = entities.begin(); entities_list != entities.end(); ++entities_list) {
+		it = *entities_list;
+		if (it->isSelected) return true;
+	}
+	return false;
 }
