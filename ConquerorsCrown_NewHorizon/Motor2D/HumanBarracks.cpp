@@ -20,12 +20,12 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	vision = 30;
 	body = 40;
 	collrange = 25;
-	selectable = false;
+	selectable = true;
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
 	create_swordman = false;
-	selectable_buildings = true;
+	//selectable_buildings = true;
 	construction_time = 3;
 	time_FX_barracks = 1;
 	first_upgrade_time = 10;

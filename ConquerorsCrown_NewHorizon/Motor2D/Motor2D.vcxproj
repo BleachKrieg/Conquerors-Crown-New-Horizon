@@ -103,6 +103,7 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="ResourceEntities.cpp" />
     <ClCompile Include="StaticEnt.cpp" />
     <ClCompile Include="HumanBarracks.cpp" />
     <ClCompile Include="Troll_Enemy.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="DynamicEnt.h" />
+    <ClInclude Include="ResourceEntities.h" />
     <ClInclude Include="StaticEnt.h" />
     <ClInclude Include="HumanBarracks.h" />
     <ClInclude Include="Troll_Enemy.h" />

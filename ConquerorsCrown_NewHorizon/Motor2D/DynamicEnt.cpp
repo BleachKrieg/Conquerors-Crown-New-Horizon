@@ -330,11 +330,11 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
-		}
+		}*/
 	
 		if (isSelected)
 			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-		*/
+		
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())

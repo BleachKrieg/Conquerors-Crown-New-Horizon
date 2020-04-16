@@ -87,6 +87,9 @@
     <ClCompile Include="j1Minimap.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceEntities.cpp">
+      <Filter>Modules\EntitySystem\Entities\ResourceEntities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -197,6 +200,9 @@
     <ClInclude Include="j1Minimap.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceEntities.h">
+      <Filter>Modules\EntitySystem\Entities\ResourceEntities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -222,6 +228,9 @@
     </Filter>
     <Filter Include="Modules\Pathfinding">
       <UniqueIdentifier>{e00143da-8323-4136-95d6-cc524fb23de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\EntitySystem\Entities\ResourceEntities">
+      <UniqueIdentifier>{60d5cb05-e4f4-40ce-a273-c67d39582d0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

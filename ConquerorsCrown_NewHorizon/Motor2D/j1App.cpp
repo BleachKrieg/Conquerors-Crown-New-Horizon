@@ -57,9 +57,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(requests);
-	AddModule(pathfinding);
-	AddModule(entity);
 	AddModule(movement);
+	AddModule(entity);
+	AddModule(pathfinding);
 	AddModule(minimap);
 	AddModule(gui);
 	AddModule(font);
