@@ -2,6 +2,7 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "p2Point.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -80,10 +81,12 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+	iPoint		mouse;
 public:
 	p2SString text;
 	bool ScrollUp;
 	bool ScrollDown;
+	bool screen_click;
 };
 
 #endif // __j1INPUT_H__

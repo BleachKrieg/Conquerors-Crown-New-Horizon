@@ -41,13 +41,13 @@ bool j1GroupMov::Update(float dt) {
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->screen_click)
 	{
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->screen_click)
 	{
 		player_selected = nullptr;
 		App->input->GetMousePosition(origin.x, origin.y);
@@ -88,7 +88,7 @@ bool j1GroupMov::Update(float dt) {
 			}
 		}
 	}
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
 		if (ai_selected != NULL)
 		{
@@ -118,7 +118,7 @@ bool j1GroupMov::Update(float dt) {
 		}
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && App->input->screen_click)
 	{
 		
 		for (int i = 0; i < App->entity->entities.size(); i++) {

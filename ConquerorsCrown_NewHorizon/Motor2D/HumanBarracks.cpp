@@ -203,7 +203,7 @@ void HumanBarracks::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click)
 		{
 
 			//Mix_HaltChannel(-1);
@@ -236,7 +236,7 @@ void HumanBarracks::checkAnimation(float dt)
 			creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x-65, position.y-80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 		}
 		
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
 		//	Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
