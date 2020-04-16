@@ -3,6 +3,8 @@
 
 #include "j1Module.h"
 #include "Animation.h"
+#include "p2Point.h"
+
 
 #define COORDS(a) a+3000 
 
@@ -52,6 +54,10 @@ public:
 
 	//Menu functions
 	void ChangeScene(scenes);
+
+	void DeleteScene();
+	void CreateScene();
+
 	bool CreateMenu();
 	bool CreateInGame();
 	bool CreateLogo();
@@ -80,8 +86,8 @@ public:
 
 	bool debug;
 	bool Building_preview;
-	iPoint map_coordinates;
 	iPoint mouse_position;
+	iPoint map_coordinates;
 
 	//MenuGui
 	GuiItem* menuButtonNewGame;

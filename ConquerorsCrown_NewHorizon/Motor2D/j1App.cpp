@@ -20,6 +20,7 @@
 #include "j1Fonts.h"
 #include "EntityRequest.h"
 #include "j1Minimap.h"
+#include "j1FadeToBlack.h"
 
 
 
@@ -45,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	font = new j1Fonts();
 	pathfinding = new j1PathFinding();
 	movement = new j1GroupMov();
+	fade = new j1FadeToBlack();
 	
 
 
@@ -62,6 +64,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(movement);
 	AddModule(minimap);
 	AddModule(gui);
+	AddModule(fade);
 	AddModule(font);
 
 	// render last to swap buffer

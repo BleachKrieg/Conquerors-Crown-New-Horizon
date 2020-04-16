@@ -29,6 +29,7 @@ class j1Gui;
 class j1Fonts;
 class j1Minimap;
 class EntityRequest;
+class j1FadeToBlack;
 
 
 class j1App
@@ -112,6 +113,7 @@ public:
 	j1Fonts*			font = NULL;
 	j1Minimap*			minimap;
 	EntityRequest*		requests;
+	j1FadeToBlack*		fade;
 
 	uint32				framerate = 0u;
 	pugi::xml_document	config_file;

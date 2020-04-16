@@ -15,6 +15,7 @@
 #include "j1Gui.h"
 #include "EntityRequest.h"
 #include "j1Minimap.h"
+#include "j1FadeToBlack.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -293,6 +294,8 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		DeleteUI();
 		break;
 	}
+	App->fade->FadeToBlackVisualEffect(2.0f);
+
 	//Creating scene
 	switch (next_scene)
 	{

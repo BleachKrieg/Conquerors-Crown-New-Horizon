@@ -87,6 +87,9 @@
     <ClCompile Include="j1Minimap.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1FadeToBlack.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="j1Minimap.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1FadeToBlack.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

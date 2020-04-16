@@ -84,6 +84,7 @@
     <ClCompile Include="HumanTownHall.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
+    <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1GroupMov.cpp" />
     <ClCompile Include="j1Gui.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="HumanTownHall.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
+    <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="J1GroupMov.h" />
     <ClInclude Include="j1Gui.h" />
