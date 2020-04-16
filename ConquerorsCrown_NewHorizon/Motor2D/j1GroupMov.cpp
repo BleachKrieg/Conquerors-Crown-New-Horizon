@@ -59,7 +59,7 @@ bool j1GroupMov::Update(float dt) {
 			it = App->entity->player_dyn_ent[i];
 			it->isSelected = false;
 			rect = it->GetAnimation()->GetCurrentSize();
-			if (origin.x > it->position.x && origin.x < (it->position.x + rect.w) && origin.y > it->position.y && origin.y < (it->position.y + rect.h))
+			if (origin.x > (it->position.x - rect.w/2) && origin.x < (it->position.x + rect.w/2) && origin.y > (it->position.y - rect.h/2) && origin.y < (it->position.y + rect.h/2))
 			{
 				it->isSelected = true;
 				player_selected = it;
