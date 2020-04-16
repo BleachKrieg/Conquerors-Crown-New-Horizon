@@ -59,7 +59,29 @@ bool j1GroupMov::Update(float dt) {
 			it = App->entity->player_dyn_ent[i];
 			it->isSelected = false;
 			rect = it->GetAnimation()->GetCurrentSize();
-			if (origin.x > (it->position.x - rect.w/2) && origin.x < (it->position.x + rect.w/2) && origin.y > (it->position.y - rect.h/2) && origin.y < (it->position.y + rect.h/2))
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			if (origin.x > (it->position.x - rect.w ) && origin.x < (it->position.x + rect.w ) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			{
+				it->isSelected = true;
+				player_selected = it;
+				loop = false;
+			}
+		}
+		for (int i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
+		{
+			it = App->entity->player_stat_ent[i];
+			it->isSelected = false;
+			rect = it->GetAnimation()->GetCurrentSize();
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
 			{
 				it->isSelected = true;
 				player_selected = it;
