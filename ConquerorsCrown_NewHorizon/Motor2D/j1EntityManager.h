@@ -55,7 +55,7 @@ protected:
 public:
 	vector<j1Entity*> entities;
 	vector<j1Entity*> player_dyn_ent;
-	vector<j1Entity*> ia_dyn_ent;
+	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 
 

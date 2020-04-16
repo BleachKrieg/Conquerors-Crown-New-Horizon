@@ -80,11 +80,39 @@ bool j1GroupMov::Update(float dt) {
 			rect.y = it->position.y;
 			rect.w /= 3;
 			rect.h /= 3;
-			App->render->DrawQuad(rect, 255, 0, 0, 100);
 			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
 			{
 				it->isSelected = true;
 				player_selected = it;
+				loop = false;
+			}
+		}
+	}
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		if (ai_selected != NULL)
+		{
+			ai_selected->isSelected = false;
+			ai_selected = nullptr;
+		}
+		
+		App->input->GetMousePosition(origin.x, origin.y);
+		origin = App->render->ScreenToWorld(origin.x, origin.y);
+		bool loop = true;
+		SDL_Rect rect;
+		for (int i = 0; i < App->entity->ai_dyn_ent.size() && loop; ++i)
+		{
+			it = App->entity->ai_dyn_ent[i];
+			rect = it->GetAnimation()->GetCurrentSize();
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			{
+				it->isSelected = true;
+				ai_selected = it;
 				loop = false;
 			}
 		}
