@@ -52,15 +52,18 @@ bool j1GroupMov::Update(float dt) {
 		player_selected = nullptr;
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
-		for (int i = 0; i < App->entity->player_dyn_ent.size(); ++i)
+		bool loop = true;
+		SDL_Rect rect;
+		for (int i = 0; i < App->entity->player_dyn_ent.size() && loop; ++i)
 		{
 			it = App->entity->player_dyn_ent[i];
 			it->isSelected = false;
-			SDL_Rect rect = it->GetAnimation()->GetCurrentSize();
-			if (mouse.x > it->position.x&& mouse.x < (it->position.x + rect.w) && mouse.y > it->position.y&& mouse.y < (mouse.y + rect.h))
+			rect = it->GetAnimation()->GetCurrentSize();
+			if (origin.x > it->position.x && origin.x < (it->position.x + rect.w) && origin.y > it->position.y && origin.y < (it->position.y + rect.h))
 			{
 				it->isSelected = true;
 				player_selected = it;
+				loop = false;
 			}
 		}
 	}
