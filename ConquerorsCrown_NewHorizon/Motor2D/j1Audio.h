@@ -52,6 +52,9 @@ public:
 	int construction;
 	int walking;
 	int cancel_building;
+	int click_to_play;
+	int normal_click;
+	int human_attack;
 
 	//ButtonFX
 	int buttonFx;

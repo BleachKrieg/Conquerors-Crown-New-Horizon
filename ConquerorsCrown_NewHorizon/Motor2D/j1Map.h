@@ -120,6 +120,9 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer);
+
+	TileSet* GetTilesetFromTileId(int id) const;
+
 private:
 
 	bool LoadMap();
@@ -129,7 +132,6 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties* properties);
 	
 
-	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 	bool blitColliders = false;

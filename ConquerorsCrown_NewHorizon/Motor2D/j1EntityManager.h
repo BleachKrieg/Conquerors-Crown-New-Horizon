@@ -45,6 +45,7 @@ public:
 
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
+	bool DeleteAllEntities();
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
 
@@ -57,6 +58,8 @@ public:
 	SDL_Texture* arch_man_tex = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
 	SDL_Texture* troll_tex = nullptr;
+	int			max_audio_attacks;
+	j1PerfTimer	timer;
 
 	// Animations ----------------------
 	list<Animation*> archer_animations;

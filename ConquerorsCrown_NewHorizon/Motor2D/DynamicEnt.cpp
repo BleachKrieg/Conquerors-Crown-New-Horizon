@@ -15,7 +15,7 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
-
+	time_FX_troops = 0.5;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -64,6 +64,7 @@ void DynamicEnt::Movement()
 
 	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
+		timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
@@ -100,20 +101,23 @@ void DynamicEnt::Movement()
 		}
 		if (App->movement->selected.size() > 10)
 		{
-			if (App->pathfinding->CreatePath(origin, relative_target) == -1)
+			if (App->pathfinding->RequestPath(origin, relative_target, this) == -1)
 			{
-				App->pathfinding->CreatePath(origin, mouse);
+				App->pathfinding->RequestPath(origin, mouse, this);
 			}
 		}
 		else
 		{
-			App->pathfinding->CreatePath(origin, mouse);
+			App->pathfinding->RequestPath(origin, mouse, this);
 		}
 		player_order = true;
-		App->pathfinding->SavePath(&path);
 		followpath = 1;
 		change_direction = true;
+
+	//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
+
+	
 
 //attack close enemy entity
 
@@ -132,20 +136,21 @@ void DynamicEnt::Movement()
 		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
 
 		//if (!following_target && distance > (attack_range * attack_range))
-		if (!following_target && !player_order && distance > attack_range + target_entity->body)
+		if (!following_target && !player_order && distance >= attack_range + target_entity->body)
 		{
 			current_time = timer.ReadMs();
 			following_target = true;
 			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
-			App->pathfinding->CreatePath(origin, targetPos);
-			App->pathfinding->SavePath(&path);
+			App->pathfinding->RequestPath(origin, targetPos, this);
 			followpath = 1;
+			
 		}
 
 		// Finish attack
 
 		if (distance < attack_range + target_entity->body)
 		{
+			following_target = false;
 			if (player_order == false)
 			{
 				path.Clear();
@@ -153,70 +158,94 @@ void DynamicEnt::Movement()
 				{
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
+					if(App->entity->max_audio_attacks < 1)
+					//SpatialAudio(3, App->audio->human_attack, position.x, position.y);
+						App->audio->PlayFx(3, App->audio->human_attack, 0);
+					App->entity->max_audio_attacks++;
+
 				}
 			}
 		}
+	/*	else if(path.At(1) == NULL){
+
+			target_entity = NULL;
+			following_target = false;
+		}*/
 
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
 			current_time = timer.ReadMs();
 			path.Clear();
+			following_target = false;
+
 		}
 	}
 
 	fPoint pathSpeed{ 0,0 };
-	if (path.At(followpath) != NULL)
+	if (path.At(1) != NULL)
 	{
-		for (uint i = 0; i < path.Count(); ++i)
-		{
-			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
-			if (App->scene->debug)
-			{
-				if (i == followpath)
-				{
-					App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
-				}
-				else {
-					App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
-
-				}
-			}
-		}
-
-		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
-		{
-			followpath++;
-			change_direction = true;
-		}
 		if (path.At(followpath) != NULL)
 		{
+			for (uint i = 0; i < path.Count(); ++i)
+			{
+				iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
+				if (App->scene->debug)
+				{
+					if (i == followpath)
+					{
+						App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
+					}
+					else {
+						App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
 
-			if (path.At(followpath)->x < origin.x) {
-				pathSpeed.x = -1;
+					}
+				}
 			}
 
-			if (path.At(followpath)->x > origin.x) {
-				pathSpeed.x = +1;
+			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+			{
+				followpath++;
+				change_direction = true;
 			}
+			if (path.At(followpath) != NULL)
+			{
 
-			if (path.At(followpath)->y < origin.y) {
-				pathSpeed.y = -1;
-			}
+				if (path.At(followpath)->x < origin.x) {
+					pathSpeed.x = -1;
+				}
 
-			if (path.At(followpath)->y > origin.y) {
-				pathSpeed.y = 1;
+				if (path.At(followpath)->x > origin.x) {
+					pathSpeed.x = +1;
+				}
+
+				if (path.At(followpath)->y < origin.y) {
+					pathSpeed.y = -1;
+				}
+
+				if (path.At(followpath)->y > origin.y) {
+					pathSpeed.y = 1;
+				}
+
+				if (timer2.ReadSec() >= time_FX_troops) {
+		//		SpatialAudio(3, App->audio->walking, position.x, position.y);
+		//		time_FX_troops += 0.5;
+		//		LOG("Troops FX: %.1f", time_FX_troops);
+				}
 			}
 		}
-	}
-	else {
-		following_target = false;
-		player_order = false;
+		else {
+			following_target = false;
+			player_order = false;
+			path.Clear();
+			//time_FX_troops = 0.5;
+		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
+		
 	}
 	if (change_direction)
 	{
@@ -247,6 +276,7 @@ void DynamicEnt::Movement()
 		}
 		else
 		{
+		//	Mix_HaltChannel(-1);
 			//idle anim
 		}
 		if (pathSpeed.x < 0)
@@ -275,7 +305,7 @@ void DynamicEnt::Movement()
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-		if (App->scene->debug)
+	/*	if (App->scene->debug)
 		{
 			App->render->DrawCircle(position.x, position.y, vision, 0, 200, 0);
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
@@ -283,7 +313,7 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
 		}
 		if (isSelected)
-			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);*/
 
 
 		fPoint cohesionSpeed;

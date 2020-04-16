@@ -42,7 +42,8 @@ public:
 	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
 public:
-
+	float time_FX_troops;
+	j1Timer timer2;
 
 
 protected:
@@ -52,7 +53,6 @@ protected:
 	uint				move;
 	SDL_RendererFlip	orientation;
 	iPoint				origin, mouse, relative_target;
-	p2DynArray<iPoint>	path;
 	list<j1Entity*>		close_entity_list;
 	list<j1Entity*>		colliding_entity_list;
 

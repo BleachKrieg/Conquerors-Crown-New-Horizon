@@ -48,9 +48,6 @@
     <ClCompile Include="StaticEnt.cpp">
       <Filter>Modules\EntitySystem</Filter>
     </ClCompile>
-    <ClCompile Include="j1Pathfinding.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1GroupMov.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -80,6 +77,15 @@
     </ClCompile>
     <ClCompile Include="HumanTownHall.cpp">
       <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Modules\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>Modules\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Minimap.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +157,6 @@
     <ClInclude Include="StaticEnt.h">
       <Filter>Modules\EntitySystem</Filter>
     </ClInclude>
-    <ClInclude Include="j1Pathfinding.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="J1GroupMov.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -185,6 +188,15 @@
     <ClInclude Include="HumanTownHall.h">
       <Filter>Modules\EntitySystem\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Modules\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>Modules\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Minimap.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -207,6 +219,9 @@
     </Filter>
     <Filter Include="Modules\EntitySystem\Entities">
       <UniqueIdentifier>{4d15984d-efbd-40d7-8a32-60084243cd7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Pathfinding">
+      <UniqueIdentifier>{e00143da-8323-4136-95d6-cc524fb23de4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

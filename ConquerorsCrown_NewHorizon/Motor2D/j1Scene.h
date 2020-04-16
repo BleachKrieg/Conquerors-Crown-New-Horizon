@@ -13,7 +13,8 @@ class StaticEnt;;
 
 enum class scenes {
 	menu,
-	ingame
+	ingame,
+	logo
 };
 
 
@@ -53,21 +54,28 @@ public:
 	void ChangeScene(scenes);
 	bool CreateMenu();
 	bool CreateInGame();
+	bool CreateLogo();
 	bool DeleteUI();
+
+	void LogoPushbacks();
 
 	void GuiInput(GuiItem* guiElement);
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene = scenes::menu;
+	scenes current_scene = scenes::logo;
+	p2SString logoSheet_file_name;
+	SDL_Texture* logoSheet;
+	Animation* current_animation = nullptr;
+	Animation logo;
+	int logoTextTimer;
 
 public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
 
 	bool debug;
-	bool Building_preview_barrack;
-	bool Building_preview_TownHall;
+	bool Building_preview;
 	iPoint map_coordinates;
 
 
@@ -81,7 +89,6 @@ public:
 	GuiItem* menuButtonExit;
 	GuiItem* menuTextExit;
 	GuiItem* menuBackground;
-	GuiItem* barTest;
 
 	//InGameGui
 	iPoint ingameUIPosition;
@@ -89,6 +96,10 @@ public:
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
+
+	//LogoGui
+	GuiItem* logoTextClick;
+	GuiItem* logoBackground;
 };
 
 #endif // __j1SCENE_H__

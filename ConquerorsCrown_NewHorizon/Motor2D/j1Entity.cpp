@@ -42,12 +42,12 @@ SDL_Rect TileSetEntity::GetAnimRect(int id) const
 void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 
 	Mix_Playing(channel);
-	Mix_HaltChannel(channel);
+	//Mix_HaltChannel(channel);
 	iPoint center_camera = { -App->render->camera.x + App->render->camera.w / 2, -App->render->camera.y + App->render->camera.h / 2 };
 	App->render->DrawQuad(SDL_Rect{ center_camera.x, center_camera.y, 2,2 }, 255, 255, 255, 255);
 	iPoint provisional_distance = { posx - center_camera.x, posy - center_camera.y };
-	int normalize = (provisional_distance.x * provisional_distance.x + provisional_distance.y * provisional_distance.y) / 500;
-	volume = (normalize * 255) / App->render->camera.w;
+	int normalize = (provisional_distance.x * provisional_distance.x + provisional_distance.y * provisional_distance.y) / 400;
+	volume = (normalize * 255) / (App->render->camera.w);
 	if (volume < 0) {
 		volume = 0;
 	}
@@ -64,7 +64,7 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 		angle = atan(provisional_distance.x / provisional_distance.y);
 	}
 	else {
-		angle = atan(provisional_distance.x / -provisional_distance.y);
+		angle = atan(-provisional_distance.x / provisional_distance.y);
 	}
 	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
 	
@@ -72,6 +72,6 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 
 	App->audio->PlayFx(channel, SFX, 0);
 
-	LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
-		center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
+	//LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
+	//	center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }

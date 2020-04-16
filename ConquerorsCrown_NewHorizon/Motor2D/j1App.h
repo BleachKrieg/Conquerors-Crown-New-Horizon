@@ -27,6 +27,7 @@ class j1PathFinding;
 class j1GroupMov;
 class j1Gui;
 class j1Fonts;
+class j1Minimap;
 class EntityRequest;
 
 
@@ -109,6 +110,7 @@ public:
 	j1GroupMov*			movement;
 	j1Gui*				gui;
 	j1Fonts*			font = NULL;
+	j1Minimap*			minimap;
 	EntityRequest*		requests;
 
 	uint32				framerate = 0u;
