@@ -64,10 +64,17 @@ bool j1Audio::Awake(pugi::xml_node & config)
 
 	construction = App->audio->LoadFx("Audio/SFX/Buildings/Construction_Loop_2.wav");
 	cancel_building = App->audio->LoadFx("Audio/SFX/Buildings/Cancel_Building2.wav");
-	walking = App->audio->LoadFx("Audio/SFX/Humans/Medieval_Army_Marching_Ambience2.wav");
+	select_footman = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	select_archer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	select_gatherer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	go_footman = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	go_archer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	go_gatherer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	footman_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	archer_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	troll_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
-	human_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	return ret;
 }
 

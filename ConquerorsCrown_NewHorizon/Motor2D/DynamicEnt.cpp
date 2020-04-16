@@ -116,10 +116,6 @@ void DynamicEnt::OrderPath()
 		followpath = 1;
 		change_direction = true;
 
-
-
-
-		//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
 }
 
@@ -168,8 +164,7 @@ void DynamicEnt::AttackTarget()
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
 					if (App->entity->max_audio_attacks < 1)
-						SpatialAudio(3, App->audio->human_attack, position.x, position.y);
-					//	App->audio->PlayFx(3, App->audio->human_attack, 0);
+						SpatialAudio(3, App->audio->footman_attack, position.x, position.y);
 					App->entity->max_audio_attacks++;
 
 				}
@@ -240,12 +235,6 @@ void DynamicEnt::Movement()
 				if (path.At(followpath)->y > origin.y) {
 					pathSpeed.y = 1;
 				}
-
-		//		if (timer2.ReadSec() >= time_FX_troops) {
-		////		SpatialAudio(3, App->audio->walking, position.x, position.y);
-		////		time_FX_troops += 0.5;
-		////		LOG("Troops FX: %.1f", time_FX_troops);
-		//		}
 			}
 		}
 		else {

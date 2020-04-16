@@ -56,9 +56,6 @@ bool j1Scene::Start()
 	current_level = "First level design.tmx";
 	debug = false;
 
-	//Playing menu audio
-	App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 1.0F);
-
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
