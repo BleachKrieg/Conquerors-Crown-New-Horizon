@@ -431,6 +431,8 @@ bool j1Scene::CreateLogo() {
 
 	logoTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, logoBackground, nullptr, "Press X to continue..");
 
+	App->audio->PlayFx(1, App->audio->Logo_FX, 0);
+
 	return true;
 }
 
