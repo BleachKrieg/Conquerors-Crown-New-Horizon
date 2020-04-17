@@ -36,7 +36,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 	state = DynamicState::IDLE;
-
+	entity_type = DynamicEntityType::HUMAN_FOOTMAN;
 
 	// TODO ------------------------------------------
 }
@@ -87,8 +87,8 @@ bool HumanFootman::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 	
-	OrderPath();
-	AttackTarget();
+	OrderPath(entity_type);
+	AttackTarget(entity_type);
 	Movement();
 
 	if (life_points <= 0)
