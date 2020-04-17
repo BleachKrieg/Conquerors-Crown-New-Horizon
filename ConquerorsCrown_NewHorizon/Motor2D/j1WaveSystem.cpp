@@ -69,7 +69,7 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 
-	if (wave_ended.ReadSec() > 5 && wave_ongoing == false) { 
+	if (wave_ended.ReadSec() > 10 && wave_ongoing == false) { 
 		StartWave(current_wave);
 	}
 
@@ -107,7 +107,7 @@ void j1WaveSystem::StartWave(int wave)
 {
 	int spawns = 9 + 6 * wave;
 	wave_ongoing = true;
-	for (int i = 1; i >= spawns; i++) {
+	for (int i = 1; i <= spawns; i++) {
 		if (i % 3 == 1) { App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { spawn_point1.x, spawn_point1.y }); }
 		else if (i % 3 == 2) { App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { spawn_point2.x, spawn_point2.y }); }
 		else if (i % 3 == 0) { App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { spawn_point3.x, spawn_point3.y }); }
