@@ -100,6 +100,8 @@ public:
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
+
+	bool active;
 };
 
 #endif // __j1SCENE_H__

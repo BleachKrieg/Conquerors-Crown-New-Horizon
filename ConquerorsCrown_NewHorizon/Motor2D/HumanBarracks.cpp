@@ -52,6 +52,9 @@ HumanBarracks::~HumanBarracks()
 
 bool HumanBarracks::Start()
 {
+	if (App->scene->active == true) {
+		actualState = ST_BARRACK_AUTOMATIC;
+	}
 	createUI = true;
 	return true;
 }
@@ -198,6 +201,30 @@ void HumanBarracks::CheckWalkable(iPoint map)
 
 void HumanBarracks::checkAnimation(float dt)
 {
+	if (actualState == ST_BARRACK_AUTOMATIC) {
+		App->scene->Building_preview = false;
+		timer.Start();
+		world.x = position.x;
+		world.y = position.y;  
+	
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
+
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				App->pathfinding->ChangeWalkability(tempPos, 2);
+			}
+		}
+
+		SpatialAudio(1, App->audio->construction, position.x, position.y);
+
+		actualState = ST_BARRACK_FINISHED;
+	}
 
 	if (actualState == ST_BARRACK_PREVIEW)
 	{

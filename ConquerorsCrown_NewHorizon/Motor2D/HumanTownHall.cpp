@@ -44,6 +44,9 @@ HumanTownHall::~HumanTownHall()
 
 bool HumanTownHall::Start()
 {
+	if (App->scene->active == true) {
+		actualState = ST_TOWNHALL_AUTOMATIC;
+	}
 	createUI = true;
 	return true;
 }
@@ -182,6 +185,34 @@ void HumanTownHall::CheckWalkable(iPoint map)
 
 void HumanTownHall::checkAnimation(float dt)
 {
+	if (actualState == ST_TOWNHALL_AUTOMATIC)
+	{
+		Mix_HaltChannel(-1);
+		App->scene->Building_preview = false;
+		timer.Start();
+		////////////////////// we are not sure of this part
+		world.x = position.x;
+		world.y = position.y;
+		//////////////////////////
+
+		iPoint pos = { (int)position.x, (int)position.y };
+		pos = App->map->WorldToMap(pos.x, pos.y);
+		iPoint tempPos = pos;
+
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				tempPos.x = pos.x + i;
+				tempPos.y = pos.y + j;
+				App->pathfinding->ChangeWalkability(tempPos, 2);
+			}
+		}
+
+		SpatialAudio(1, App->audio->construction, position.x, position.y);
+
+		actualState = ST_TOWNHALL_FINISHED;
+	}
 
 	if (actualState == ST_TOWNHALL_PREVIEW)
 	{

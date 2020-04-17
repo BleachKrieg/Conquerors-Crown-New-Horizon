@@ -23,6 +23,7 @@ j1Scene::j1Scene() : j1Module()
 
 	Building_preview = false;
 	Building_preview = false;
+	active = false;
 }
 
 // Destructor
@@ -242,10 +243,12 @@ void j1Scene::LoadTiledEntities() {
 						pos = App->map->MapToWorld(x, y);
 						switch (tile_id) {
 						case 401:
-						//	App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
+							active = true;
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
 							break;
 						case 418:
-						//	App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
+							active = true;
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
 						}
 					}
@@ -253,6 +256,7 @@ void j1Scene::LoadTiledEntities() {
 			}
 		}
 	}
+	active = false;
 }
 
 void j1Scene::ChangeScene(scenes next_scene) {
