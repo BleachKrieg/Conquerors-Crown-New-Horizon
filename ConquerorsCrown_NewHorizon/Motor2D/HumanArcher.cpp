@@ -39,6 +39,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 	state = DynamicState::IDLE;
+	entity_type = DynamicEntityType::HUMAN_ARCHER;
 
 	// TODO ------------------------------------------
 }
@@ -91,8 +92,8 @@ bool HumanArcher::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 	
-	OrderPath();
-	AttackTarget();
+	OrderPath(entity_type);
+	AttackTarget(entity_type);
 	Movement();
 
 	if (life_points <= 0)

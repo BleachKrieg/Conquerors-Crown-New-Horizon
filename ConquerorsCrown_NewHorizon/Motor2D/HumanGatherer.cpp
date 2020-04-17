@@ -11,7 +11,7 @@
 #include "J1GroupMov.h"
 #include <math.h>
 
-HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_FOOTMAN)
+HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_GATHERER)
 {
 	name.create("human_gatherer");
 
@@ -36,6 +36,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	target_entity = NULL;
 	player_order = false;
 	state = DynamicState::IDLE;
+	entity_type = DynamicEntityType::HUMAN_GATHERER;
 
 	// TODO ------------------------------------------
 }
@@ -82,7 +83,7 @@ bool HumanGatherer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 
-	OrderPath();
+	OrderPath(entity_type);
 	Movement();
 
 	if (life_points <= 0)
