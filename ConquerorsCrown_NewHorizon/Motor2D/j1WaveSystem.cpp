@@ -16,6 +16,7 @@
 #include "j1Gui.h"
 #include "EntityRequest.h"
 #include "j1FadeToBlack.h"
+#include "j1Pathfinding.h"
 #include <math.h>
 
 j1WaveSystem::j1WaveSystem() : j1Module()
@@ -80,10 +81,13 @@ bool j1WaveSystem::PreUpdate(float dt)
 bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
-
+	//wave_ongoing = true;
 	if (wave_ended.ReadSec() > 5 && wave_ongoing == false) { 
-		StartWave(current_wave);
-		wave_ended.Start();
+		if (spawn1->path.At(0) != nullptr && spawn2->path.At(0) != nullptr && spawn3->path.At(0) != nullptr)
+		{
+			StartWave(current_wave);
+			wave_ended.Start();
+		}
 	}
 
 
@@ -115,7 +119,6 @@ bool j1WaveSystem::Update(float dt)
 					dis_to_1 = norm1;
 					spawn1->target = App->entity->player_stat_ent[i];
 					spawn1->targetpos = spawn1->target->position;
-
 				}
 				if (dis_to_2 == 0 || dis_to_2 > norm2)
 				{
@@ -131,6 +134,25 @@ bool j1WaveSystem::Update(float dt)
 
 				}
 
+			}
+			
+			if (dis_to_1 > 0)
+			{
+				iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
+				iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
+				App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+			}
+			if (dis_to_2 > 0)
+			{
+				iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
+				iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
+				App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
+			}
+			if (dis_to_3 > 0)
+			{
+				iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
+				iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
+				App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
 			}
 		}
 		
@@ -148,6 +170,36 @@ bool j1WaveSystem::Update(float dt)
 	App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
 
 
+	/*for (uint i = 0; i < spawn1->path.Count(); ++i)
+	{
+		iPoint nextPoint = App->map->MapToWorld(spawn1->path.At(i)->x, spawn1->path.At(i)->y);
+		if (App->scene->debug)
+		{
+			
+			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+		}
+	}
+
+	for (uint i = 0; i < spawn2->path.Count(); ++i)
+	{
+		iPoint nextPoint = App->map->MapToWorld(spawn2->path.At(i)->x, spawn2->path.At(i)->y);
+		if (App->scene->debug)
+		{
+
+			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+		}
+	}
+
+	for (uint i = 0; i < spawn3->path.Count(); ++i)
+	{
+		iPoint nextPoint = App->map->MapToWorld(spawn3->path.At(i)->x, spawn3->path.At(i)->y);
+		if (App->scene->debug)
+		{
+
+			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+		}
+	}
+*/
 	return ret;
 }
 
@@ -181,7 +233,6 @@ bool j1WaveSystem::Save(pugi::xml_node& data) const
 void j1WaveSystem::StartWave(int wave)
 {
 	
-	TrollEnemy* temp;
 	int spawns = 9 + 6 * wave;
 
 	wave_ongoing = false;
@@ -189,16 +240,30 @@ void j1WaveSystem::StartWave(int wave)
 	for (int i = 1; i <= spawns; i++) {
 		if (i % 3 == 1)
 		{
-			temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn1->position.x, spawn1->position.y);
+			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn1->position.x, spawn1->position.y);
 			temp->spawn = spawn1;
+			
+			for (uint i = 0; i < spawn1->path.Count(); ++i)
+			{
+				temp->path.PushBack({ spawn1->path.At(i)->x, spawn1->path.At(i)->y });
+			}
 		}
 		else if (i % 3 == 2) {
-			temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn2->position.x, spawn2->position.y); 
-			temp->spawn = spawn2;																							
+			TrollEnemy* temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn2->position.x, spawn2->position.y);
+			temp->spawn = spawn2;	
+			for (uint i = 0; i < spawn2->path.Count(); ++i)
+			{
+				temp->path.PushBack({ spawn2->path.At(i)->x, spawn2->path.At(i)->y });
+			}
 		}																													
 		else if (i % 3 == 0) {																								
-			temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn2->position.x, spawn2->position.y);
+			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn3->position.x, spawn3->position.y);
 			temp->spawn = spawn3;
+			for (uint i = 0; i < spawn3->path.Count(); ++i)
+			{
+				temp->path.PushBack({ spawn3->path.At(i)->x, spawn3->path.At(i)->y });
+
+			}
 		}
 	}
 }

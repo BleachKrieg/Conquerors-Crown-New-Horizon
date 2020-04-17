@@ -115,7 +115,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 
 // TODO 3: Remember, now we want to iterate from all PathFinders and check if it's available.
 
-int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
+int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester, SpawnPoint* callback)
 {
 	LOG("Requesting a path...");
 	iPoint dest = destination;
@@ -132,6 +132,7 @@ int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, 
 	NewRequest->origin = origin;
 	NewRequest->destination = dest;
 	NewRequest->requester = requester;
+	NewRequest->callback = callback;
 	requestList.push_back(NewRequest);
 	return 0;
 
@@ -161,7 +162,7 @@ bool j1PathFinding::Update(float dt)
 	for (int i = 0; i < pathfinderList.size(); i++)
 	{
 		if (pathfinderList[i]->available && !requestList.empty()) {
-			pathfinderList[i]->PreparePath(requestList[0]->origin, requestList[0]->destination, requestList[0]->requester);
+			pathfinderList[i]->PreparePath(requestList[0]->origin, requestList[0]->destination, requestList[0]->requester, requestList[0]->callback);
 			requestList.erase(requestList.begin());
 			LOG("Requested succeed");
 		}

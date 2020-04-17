@@ -16,7 +16,7 @@ PathFinder::~PathFinder()
 
 
 
-void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
+void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester, SpawnPoint* callback)
 {
 	// Add the origin tile to open
 	if (open.GetNodeLowestScore() == NULL)
@@ -26,6 +26,7 @@ void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1
 	this->entity = requester;
 	this->origin = origin;
 	this->destination = destination;
+	this->callback = callback;
 	initSuccessful = true;
 	available = false;
 	
@@ -63,7 +64,10 @@ bool PathFinder::IteratePath()
 		available = true;
 		open.list.clear();
 		close.list.clear();
+		if(entity != nullptr)
 		SavePath(&entity->path);
+		if (callback != nullptr)
+			SavePath(&callback->path);
 		RELEASE(node);
 
 		return false;
