@@ -75,6 +75,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	troll_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
+	Logo_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_SFX.wav");
 	return ret;
 }
 

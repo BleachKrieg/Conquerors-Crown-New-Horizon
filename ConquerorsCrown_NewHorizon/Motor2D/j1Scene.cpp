@@ -58,7 +58,7 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-
+	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
 	if (CreateLogo())ret = true;
 
 	return ret;

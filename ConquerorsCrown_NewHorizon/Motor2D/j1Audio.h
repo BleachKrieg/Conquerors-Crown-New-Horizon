@@ -63,8 +63,8 @@ public:
 
 	int click_to_play;
 	int normal_click;
-	//ButtonFX
-	int buttonFx;
+
+	int Logo_FX;
 
 private:
 
