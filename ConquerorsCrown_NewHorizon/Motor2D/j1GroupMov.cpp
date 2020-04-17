@@ -34,6 +34,11 @@ bool j1GroupMov::Update(float dt) {
 	static iPoint origin, mouse;
 	iPoint start;
 	j1Entity* it;
+	if (ai_selected != nullptr)
+	{
+		ai_selected->isSelected = false;
+		ai_selected = nullptr;
+	}
 	App->input->GetMousePosition(mouse.x, mouse.y);
 	mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 	// TODO 0 ---------------------- Nothing to do here, just getting you in context
@@ -90,11 +95,6 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
-		if (ai_selected != NULL)
-		{
-			ai_selected->isSelected = false;
-			ai_selected = nullptr;
-		}
 		
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
