@@ -15,13 +15,13 @@
 #include "j1Gui.h"
 #include "EntityRequest.h"
 #include "j1Minimap.h"
+#include "j1FadeToBlack.h"
 
 
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 
-	Building_preview = false;
 	Building_preview = false;
 }
 
@@ -60,9 +60,8 @@ bool j1Scene::Start()
 	App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 1.0F);
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
-	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 
-	if (CreateLogo())ret = true;
+	if (CreateLogo()) ret = true;
 
 	return ret;
 }
@@ -90,7 +89,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-			ChangeScene(scenes::menu);
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
 		break;
@@ -99,7 +98,7 @@ bool j1Scene::Update(float dt)
 		int x, y;
 		App->input->GetMousePosition(x, y);
 
-		iPoint p = App->render->ScreenToWorld(x, y);
+		mouse_position = App->render->ScreenToWorld(x, y);
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			App->render->camera.y += 500 * dt;
@@ -140,29 +139,29 @@ bool j1Scene::Update(float dt)
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { p.x, p.y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { p.x, p.y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
 		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, p.x, p.y);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
 			Building_preview = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview)
 		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, p.x, p.y);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { p.x, p.y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { mouse_position.x, mouse_position.y });
 		}
 		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { p.x, p.y });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
 		}
 		//Draw the map
 		App->map->Draw();
@@ -186,15 +185,28 @@ bool j1Scene::PostUpdate(float dt)
 		break;
 	case scenes::ingame:
 
+		//Mouse input for UI buttons
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+			if (App->entity->IsSomethingSelected())
+			{
+				if (townHallButton != nullptr) DeleteButtonsUI();
+			}
+			else
+			{
+				if (townHallButton == nullptr) CreateButtonsUI();
+			}
+		}
+
 		break;
 	case scenes::logo:
+		/*
 		if (logoTextTimer == 35) {
 			logoTextClick->delayBlit = !logoTextClick->delayBlit;
 		}
 		if (logoTextTimer == 60) {
 			logoTextClick->delayBlit = !logoTextClick->delayBlit;
 			logoTextTimer = 0;
-		}
+		}*/
 		App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 		break;
 	}
@@ -265,7 +277,7 @@ void j1Scene::LoadTiledEntities() {
 	}
 }
 
-void j1Scene::ChangeScene(scenes next_scene) {
+void j1Scene::DeleteScene() {
 	//Deleting scene
 	switch (current_scene)
 	{
@@ -274,14 +286,16 @@ void j1Scene::ChangeScene(scenes next_scene) {
 		break;
 	case scenes::ingame:
 		DeleteUI();
-		App->map->CleanUp();
-		App->minimap->CleanUp();
 		App->entity->DeleteAllEntities();
+		App->minimap->CleanUp();
+		App->map->CleanUp();
 		break;
 	case scenes::logo:
 		DeleteUI();
 		break;
 	}
+}
+void j1Scene::CreateScene(scenes next_scene) {
 	//Creating scene
 	switch (next_scene)
 	{
@@ -333,7 +347,10 @@ bool j1Scene::CreateMenu() {
 	return true;
 }
 
-bool j1Scene::CreateInGame() {
+bool j1Scene::CreateInGame() 
+{
+	bool ret = true;
+
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
 	{
@@ -347,17 +364,20 @@ bool j1Scene::CreateInGame() {
 		else
 		{
 			LOG("Could not create walkability");
+			ret = false;
 		}
 		RELEASE_ARRAY(data);
 	}
-	App->minimap->Start();
+	//Creating minimap
+	if (ret) ret = App->minimap->Start();
+
 	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
 	App->minimap->CreateMinimap();
 	SDL_SetRenderTarget(App->render->renderer, NULL);*/
 
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
-	SDL_Rect topRect = { 0, 0, 1280, 50 };
+	SDL_Rect topRect = { 0, 0, 1280, 49 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
 
@@ -366,6 +386,26 @@ bool j1Scene::CreateInGame() {
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
 
 	LoadTiledEntities();
+
+	if(ret) ret = CreateButtonsUI();
+
+	return ret;
+}
+
+bool j1Scene::CreateButtonsUI()
+{
+	townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
+	townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
+
+	return true;
+}
+
+bool j1Scene::DeleteButtonsUI()
+{
+	townHallButton->to_delete = true;
+	townHallButton = nullptr;
+
 	return true;
 }
 
@@ -390,8 +430,8 @@ bool j1Scene::CreateLogo() {
 	return true;
 }
 
-bool j1Scene::DeleteUI() {
-	
+bool j1Scene::DeleteUI() 
+{
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
 	menuTextNewGame = nullptr;
@@ -413,9 +453,10 @@ bool j1Scene::DeleteUI() {
 }
 
 void j1Scene::GuiInput(GuiItem* guiElement) {
+	//Menu buttons
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		ChangeScene(scenes::ingame);
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
@@ -427,11 +468,25 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	else if (guiElement == menuButtonOptions) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 	}
-	else if (guiElement == ingameButtonMenu) {
+
+
+	//InGame Buttons
+	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		ChangeScene(scenes::menu);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+	else if (guiElement == townHallButton) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		if (!Building_preview && !App->entity->IsSomethingSelected())
+		{
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
+			Building_preview = true;
+		}
 	}
 }
+
+
+//Animations
 
 void j1Scene::LogoPushbacks() {
 

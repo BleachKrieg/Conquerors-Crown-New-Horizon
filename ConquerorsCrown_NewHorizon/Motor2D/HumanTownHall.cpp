@@ -324,13 +324,16 @@ void HumanTownHall::CreateTownHallUI()
 {
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 50, 45, 37 }, Button_Create_Gatherer, nullptr, NULL);
+	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
 }
 
 void HumanTownHall::DeleteTownHallUI()
 {
-	Button_Create_Gatherer->to_delete = true;
-	Button_Create_Gatherer = nullptr;
+	if (Button_Create_Gatherer != nullptr) 
+	{
+		Button_Create_Gatherer->to_delete = true;
+		Button_Create_Gatherer = nullptr;
+	}
 }
 
 

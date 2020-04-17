@@ -49,6 +49,9 @@ public:
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
 
+	//Check if any entity is selected
+	bool IsSomethingSelected();
+
 protected:
 	TileSetEntity TileSetData;
 
@@ -76,7 +79,6 @@ public:
 	SDL_Texture* building = nullptr;
 
 	// Load entities textures
-
 };
 
 #endif // __j1EntityManager_H__
