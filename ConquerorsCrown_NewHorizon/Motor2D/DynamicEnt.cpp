@@ -61,8 +61,11 @@ void DynamicEnt::OrderPath()
 	j1Entity* it;
 
 	list<j1Entity*>::iterator selected_it;
-
-	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (isSelected && App->movement->ai_selected != nullptr)
+	{
+		target_entity = App->movement->ai_selected;
+	}
+	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		//timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
@@ -184,10 +187,10 @@ void DynamicEnt::AttackTarget()
 		if (target_entity->life_points <= 0)
 		{
 			target_entity = NULL;
+			state = DynamicState::IDLE;
 			current_time = timer.ReadMs();
 			path.Clear();
 			following_target = false;
-
 		}
 	}
 }
@@ -330,11 +333,9 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
-		}
+		}*/
 	
-		if (isSelected)
-			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-		*/
+		
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
@@ -396,7 +397,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				colliding_entity_list->push_back(it);
 
 			}
-			if (can_attack && distance < attack_vision + it->body && team != it->team && it->team != TeamType::NO_TYPE)
+			if (can_attack && distance < attack_vision + it->body && team != it->team && it->team != TeamType::NO_TYPE && it->life_points > 0)
 			{
 				if (distance < closest_enemy)
 				{
@@ -405,7 +406,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				}
 			}
 			else {
-				if (target_entity == it)
+				if (target_entity == it && !player_order)
 				{
 					target_entity = NULL;
 				}
@@ -417,4 +418,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 			}
 		}
 	}
+}
+
+void DynamicEnt::Death()
+{
+	current_animation = &death_down;
+	if (current_animation->Finished() == true) { to_delete = true; }
 }

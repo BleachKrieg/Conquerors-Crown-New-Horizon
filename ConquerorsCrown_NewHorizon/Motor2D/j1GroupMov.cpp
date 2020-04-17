@@ -8,6 +8,7 @@
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
 #include "j1Entity.h"
+#include <vector>
 
 j1GroupMov::j1GroupMov() {
 	name.create("entity");
@@ -32,34 +33,98 @@ bool j1GroupMov::Update(float dt) {
 
 	static iPoint origin, mouse;
 	iPoint start;
+	j1Entity* it;
+	if (ai_selected != nullptr)
+	{
+		ai_selected->isSelected = false;
+		ai_selected = nullptr;
+	}
+	App->input->GetMousePosition(mouse.x, mouse.y);
+	mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 	// TODO 0 ---------------------- Nothing to do here, just getting you in context
 	// Every time we press leftclick button, we create a rect. The we check all entities with
 	// selectable bool activated. If selectable entity is inside the rectangle, we turn their
 	// isSelected bool to true
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->screen_click)
 	{
-		App->input->GetMousePosition(mouse.x, mouse.y);
-		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 100, false);
 		App->render->DrawQuad({ origin.x, origin.y, mouse.x - origin.x, mouse.y - origin.y }, 0, 200, 0, 50);
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->screen_click)
 	{
+		player_selected = nullptr;
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
-
+		bool loop = true;
+		SDL_Rect rect;
+		for (int i = 0; i < App->entity->player_dyn_ent.size() && loop; ++i)
+		{
+			it = App->entity->player_dyn_ent[i];
+			it->isSelected = false;
+			rect = it->GetAnimation()->GetCurrentSize();
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			if (origin.x > (it->position.x - rect.w ) && origin.x < (it->position.x + rect.w ) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			{
+				it->isSelected = true;
+				player_selected = it;
+				loop = false;
+			}
+		}
+		for (int i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
+		{
+			it = App->entity->player_stat_ent[i];
+			it->isSelected = false;
+			rect = it->GetAnimation()->GetCurrentSize();
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			{
+				it->isSelected = true;
+				player_selected = it;
+				loop = false;
+			}
+		}
 	}
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
 		
-		j1Entity* it;
+		App->input->GetMousePosition(origin.x, origin.y);
+		origin = App->render->ScreenToWorld(origin.x, origin.y);
+		bool loop = true;
+		SDL_Rect rect;
+		for (int i = 0; i < App->entity->ai_dyn_ent.size() && loop; ++i)
+		{
+			it = App->entity->ai_dyn_ent[i];
+			rect = it->GetAnimation()->GetCurrentSize();
+			rect.x = it->position.x;
+			rect.y = it->position.y;
+			rect.w /= 3;
+			rect.h /= 3;
+			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			{
+				it->isSelected = true;
+				ai_selected = it;
+				loop = false;
+			}
+		}
+	}
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && App->input->screen_click)
+	{
+		
 		for (int i = 0; i < App->entity->entities.size(); i++) {
 			it = App->entity->entities[i];
 
-			if (it->selectable_buildings == true && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
+			/*if (it->selectable_buildings == true && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
 			{
 				int xstatic = it->position.x, ystatic = it->position.y;
 				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
@@ -69,14 +134,11 @@ bool j1GroupMov::Update(float dt) {
 				else {
 					it->isSelected = false;
 				}
-			}
-			else
+			}*/
+			if (it->selectable && it->type == j1Entity::entityType::DYNAMIC)
 			{
-				it->isSelected = false;
-			}
-			if (it->selectable)
-			{
-				it->isSelected = false;
+				if(it != player_selected)
+					it->isSelected = false;
 				int x = it->position.x, y = it->position.y;
 				// We store x and y positions
 				// Now we check if it's inside the rect, so we can "select this entity"

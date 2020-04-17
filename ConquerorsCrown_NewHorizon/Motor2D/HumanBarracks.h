@@ -52,7 +52,6 @@ public:
 
 public:
 	// Animations
-	Animation* current_animation = nullptr;
 	Animation inconstruction;
 	Animation finishedconst;
 	SDL_Rect Construction;

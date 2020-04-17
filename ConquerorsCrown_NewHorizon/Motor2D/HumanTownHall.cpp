@@ -218,7 +218,7 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click)
 		{
 
 			Mix_HaltChannel(-1);
@@ -251,7 +251,7 @@ void HumanTownHall::checkAnimation(float dt)
 			actualState = ST_TOWNHALL_IN_CONSTRUCTION;
 		}
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
@@ -355,13 +355,16 @@ void HumanTownHall::CreateTownHallUI()
 {
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 50, 45, 37 }, Button_Create_Gatherer, nullptr, NULL);
+	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
 }
 
 void HumanTownHall::DeleteTownHallUI()
 {
-	Button_Create_Gatherer->to_delete = true;
-	Button_Create_Gatherer = nullptr;
+	if (Button_Create_Gatherer != nullptr) 
+	{
+		Button_Create_Gatherer->to_delete = true;
+		Button_Create_Gatherer = nullptr;
+	}
 }
 
 

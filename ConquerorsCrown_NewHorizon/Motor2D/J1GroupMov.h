@@ -25,7 +25,8 @@ public:
 	fPoint GetDirectionSpeed(list<j1Entity*>);
 	list<j1Entity*>	selected;
 	bool NewGroup;
-
+	j1Entity* player_selected = nullptr;
+	j1Entity* ai_selected = nullptr;
 };
 
 #endif

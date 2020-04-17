@@ -97,7 +97,7 @@ iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& dest
 
 void j1PathFinding::ChangeWalkability(const iPoint& pos, const uchar& isWalkable)
 {
-	if (CheckBoundaries(pos))
+	if (CheckBoundaries(pos) && map != NULL)
 	{
 		map[(pos.y * width) + pos.x] = isWalkable;
 	}
