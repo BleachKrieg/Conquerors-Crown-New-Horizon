@@ -77,13 +77,14 @@ bool j1FadeToBlack::FadeToBlack(scenes scene, float time)
 
 	if (current_step == fade_step::none)
 	{
-		screen = {0, 0, App->render->camera.w, App->render->camera.h };
-		current_step = fade_step::fade_to_black;
-		next_scene = scene;
-		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time * 0.5f * 1000.0f);
-		ret = true;
+
 	}
+	screen = { 0, 0, App->render->camera.w, App->render->camera.h };
+	current_step = fade_step::fade_to_black;
+	next_scene = scene;
+	start_time = SDL_GetTicks();
+	total_time = (Uint32)(time * 0.5f * 1000.0f);
+	ret = true;
 
 	return ret;
 }
