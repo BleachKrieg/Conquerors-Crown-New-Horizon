@@ -16,6 +16,7 @@
 #include "EntityRequest.h"
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
+#include "j1WaveSystem.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -53,6 +54,7 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
+	current_scene = scenes::logo;
 	current_level = "First level design.tmx";
 	debug = false;
 
@@ -343,6 +345,8 @@ bool j1Scene::CreateMenu() {
 	menuButtonExit = App->gui->CreateGuiElement(Types::button, 500, 450, { 0, 63, 303, 42 }, menuBackground, this, NULL);
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
+
+	App->wave->wave_ended.Start();
 
 	return true;
 }

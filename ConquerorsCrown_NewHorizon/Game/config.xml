@@ -54,4 +54,12 @@
      <map name="maplevel1.tmx"/>
      <logo file="textures/gui/LogoSheet.png"/>
    </scene>
+
+  <wave>
+    <spawnpoints>
+      <spawnpoint1 x="0" y="0"/>
+      <spawnpoint2 x="100" y="100"/>
+      <spawnpoint3 x="200" y="200"/>
+    </spawnpoints>
+  </wave>
 </config>
