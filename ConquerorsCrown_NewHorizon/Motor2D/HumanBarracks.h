@@ -15,6 +15,7 @@ enum Barrack_states
 	ST_BARRANCK_IN_CONSTRUCTION,
 	ST_BARRACK_FINISHED,
 	ST_BARRACK_UPGRADING,
+	ST_BARRACK_AUTOMATIC,
 	ST_BARRACK_DESTROYED
 };
 
@@ -68,6 +69,8 @@ public:
 	float timer_queue;
 	int troop_type;
 	j1Timer start_queue;
+	j1Timer timer_bar;
+	bool time_bar_start;
 
 	struct QueueTroop
 	{

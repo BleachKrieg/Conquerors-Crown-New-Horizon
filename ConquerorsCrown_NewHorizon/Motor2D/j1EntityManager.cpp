@@ -44,6 +44,7 @@ bool j1EntityManager::Start()
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
 	max_audio_attacks = 0;
 	timer.Start();
+
 	return true;
 }
 
@@ -76,13 +77,13 @@ bool j1EntityManager::Update(float dt)
 		entities[i]->Update(dt);
 	}
 	
-
 	return true;
 }
 
 bool j1EntityManager::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostupdateEntity", Profiler::Color::Azure)
+
 
 	for (int i = 0; i < entities.size(); i++) {
 		if (entities[i]->to_delete == true)
@@ -225,4 +226,14 @@ void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animati
 		}
 		animations.push_back(set);
 	}
+}
+
+bool j1EntityManager::IsSomethingSelected() 
+{
+
+	for (int i = 0; i < entities.size(); i++) {
+
+		if (entities[i]->isSelected) return true;
+	}
+	return false;
 }

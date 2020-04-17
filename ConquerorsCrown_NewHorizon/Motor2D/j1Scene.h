@@ -3,6 +3,8 @@
 
 #include "j1Module.h"
 #include "Animation.h"
+#include "p2Point.h"
+
 
 #define COORDS(a) a+3000 
 
@@ -51,11 +53,17 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	//Menu functions
-	void ChangeScene(scenes);
+	void DeleteScene();
+	void CreateScene(scenes);
+
 	bool CreateMenu();
 	bool CreateInGame();
 	bool CreateLogo();
 	bool DeleteUI();
+
+	//InGameUI functions
+	bool CreateButtonsUI();
+	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
 	void LoadTiledEntities();
@@ -76,8 +84,8 @@ public:
 
 	bool debug;
 	bool Building_preview;
+	iPoint mouse_position;
 	iPoint map_coordinates;
-
 
 	//MenuGui
 	GuiItem* menuButtonNewGame;
@@ -91,15 +99,20 @@ public:
 	GuiItem* menuBackground;
 
 	//InGameGui
-	iPoint ingameUIPosition;
+	iPoint	 ingameUIPosition;
 	GuiItem* ingameUI;
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
 
+	GuiItem* townHallButton;
+	GuiItem* townHallImage;
+
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
+
+	bool active;
 };
 
 #endif // __j1SCENE_H__
