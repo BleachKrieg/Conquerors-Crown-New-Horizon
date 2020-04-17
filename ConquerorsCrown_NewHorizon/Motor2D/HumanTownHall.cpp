@@ -27,9 +27,16 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	createUI = false;
 	create_gatherer = false;
 	selectable_buildings = true;
+	time_bar_start = false;
 	construction_time = 3;
 	time_FX_barracks = 1;
 	timer_queue = 0;
+	pos0 = { 827, 103 };
+	pos1 = { 890, 103 };
+	pos2 = { 827, 168 };
+	pos3 = { 890, 168 };
+	pos4 = { 827, 230 };
+	pos5 = { 890, 230 };
 	// Load all animations
 	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
 	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
@@ -63,6 +70,17 @@ bool HumanTownHall::Update(float dt)
 	{
 		if (creation_TownHall_bar != nullptr) {
 			creation_TownHall_bar->to_delete = true;
+		}
+		for (int i = 0; i < Troop.size(); i++)
+		{
+			if (Troop[i]->image != nullptr)
+			{
+				Troop[i]->image->to_delete = true;
+			}
+			if (Troop[i]->bar != nullptr)
+			{
+				Troop[i]->bar->to_delete = true;
+			}
 		}
 		if (Button_Create_Gatherer != nullptr)
 		{
@@ -190,10 +208,10 @@ void HumanTownHall::checkAnimation(float dt)
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
 		timer.Start();
-		////////////////////// we are not sure of this part
+		
 		world.x = position.x;
 		world.y = position.y;
-		//////////////////////////
+		
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -313,41 +331,186 @@ void HumanTownHall::checkAnimation(float dt)
 			{
 				createUI = false;
 				CreateTownHallUI();
+				ImageSelected();
 			}
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_gatherer==true)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_gatherer == true)
 			{
-				timer_queue += 3;
-				QueueTroop* item = new QueueTroop();
-				item->time = timer_queue;
-				Troop.push_back(item);
+				if (Troop.size() < 6)
+				{
+					timer_queue += 3;
+					QueueTroop* item = new QueueTroop();
+					item->time = timer_queue;
+
+					switch (Troop.size())
+					{
+					case 0:
+						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 1:
+						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 2:
+						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 3:
+						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 4:
+						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					case 5:
+						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						break;
+					}
+					Troop.push_back(item);
+				}
 				create_gatherer = false;
 			}
 		}
-		else 
+		else
 		{
 			if (Button_Create_Gatherer != nullptr && createUI == false)
 			{
 				DeleteTownHallUI();
 				createUI = true;
 			}
+			for (int i = 0; i < Troop.size(); i++)
+			{
+				if (Troop[i]->image != nullptr)
+				{
+					Troop[i]->image->to_delete = true;
+				}
+				if (Troop[i]->bar != nullptr)
+				{
+					Troop[i]->bar->to_delete = true;
+				}
+			}
 		}
-	}
+	}	
 }
 
 void HumanTownHall::CheckQueue()
 {
 	for (int i = 0; i < Troop.size(); i++)
 	{
+		if (Troop[i] == Troop[0] && Troop[0] != nullptr && time_bar_start == false)
+		{
+			timer_bar.Start();
+			time_bar_start = true;
+		}
+
+		if (Troop[0] != nullptr)
+		{
+			float upgrade_bar = (timer_bar.ReadSec() * 100) / 3;
+			Troop[0]->bar->updateBar(upgrade_bar);
+		}
+
 		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
 		{
+			QueueSwap();
+
 			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::GATHERER, { (int)position.x + 7, (int)position.y + 30 });
+			if (Troop[i]->image != nullptr)
+			{
+				Troop[i]->image->to_delete = true;
+				Troop[i]->image = nullptr;
+			}
+			if (Troop[i]->bar != nullptr)
+			{
+				Troop[i]->bar->to_delete = true;
+			}
+			time_bar_start = false;
 
 			Troop.erase(Troop.begin() + i);
 			i--;
 		}
+	}
+}
+
+void HumanTownHall::QueueSwap()
+{
+	if (Troop.size() == 6)
+	{
+		iPoint position0;
+		Troop[4]->image->GetLocalPos(position0.x, position0.y);
+		Troop[5]->image->SetLocalPos(position0.x, position0.y);
+		Troop[4]->bar->GetLocalPos(position0.x, position0.y);
+		Troop[5]->bar->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 5)
+	{
+		iPoint position0;
+		Troop[3]->image->GetLocalPos(position0.x, position0.y);
+		Troop[4]->image->SetLocalPos(position0.x, position0.y);
+		Troop[3]->bar->GetLocalPos(position0.x, position0.y);
+		Troop[4]->bar->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 4)
+	{
+		iPoint position0;
+		Troop[2]->image->GetLocalPos(position0.x, position0.y);
+		Troop[3]->image->SetLocalPos(position0.x, position0.y);
+		Troop[2]->bar->GetLocalPos(position0.x, position0.y);
+		Troop[3]->bar->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 3)
+	{
+		iPoint position0;
+		Troop[1]->image->GetLocalPos(position0.x, position0.y);
+		Troop[2]->image->SetLocalPos(position0.x, position0.y);
+		Troop[1]->bar->GetLocalPos(position0.x, position0.y);
+		Troop[2]->bar->SetLocalPos(position0.x, position0.y);
+	}
+	if (Troop.size() >= 2)
+	{
+		iPoint position0;
+		Troop[0]->image->GetLocalPos(position0.x, position0.y);
+		Troop[1]->image->SetLocalPos(position0.x, position0.y);
+		Troop[0]->bar->GetLocalPos(position0.x, position0.y);
+		Troop[1]->bar->SetLocalPos(position0.x, position0.y);
+	}
+}
+
+void HumanTownHall::ImageSelected()
+{
+	if (Troop.size() == 6)
+	{
+		Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[5]->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+	}
+	if (Troop.size() >= 5)
+	{
+		Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[4]->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+	}
+	if (Troop.size() >= 4)
+	{
+		Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[3]->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+	}
+	if (Troop.size() >= 3)
+	{
+		Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[2]->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+	}
+	if (Troop.size() >= 2)
+	{
+		Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[1]->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+	}
+	if (Troop.size() >= 1)
+	{
+		Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[0]->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 }
 
@@ -373,9 +536,4 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 		create_gatherer = true;
 		isSelected = true;
 	}
-	/*else if (guiElement == Button_Create_Archer) {
-		create_archer = true;
-		isSelected = true;
-	}*/
-
 }

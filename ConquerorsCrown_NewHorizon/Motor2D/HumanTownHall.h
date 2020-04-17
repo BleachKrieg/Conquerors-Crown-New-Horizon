@@ -47,9 +47,11 @@ public:
 	void CreateTownHallUI();
 	void DeleteTownHallUI();
 	void GuiInput(GuiItem*);
+	void QueueSwap();
 	
 	//Queue
 	void CheckQueue();
+	void ImageSelected();
 
 public:
 	// Animations
@@ -66,11 +68,15 @@ public:
 	// Queue
 	float timer_queue;
 	j1Timer start_queue;
+	j1Timer timer_bar;
+	bool time_bar_start;
 
 	// Queue_v2
 	struct QueueTroop
 	{
 		int			time;
+		GuiItem*	image;
+		GuiItem*	bar;
 		j1Timer		timer;
 	};
 
@@ -83,6 +89,14 @@ public:
 
 	//Progress Bar
 	GuiItem* creation_TownHall_bar;
+
+	// Queue positions
+	iPoint pos0;
+	iPoint pos1;
+	iPoint pos2;
+	iPoint pos3;
+	iPoint pos4;
+	iPoint pos5;
 
 };
 #endif // __TEST_1_H__
