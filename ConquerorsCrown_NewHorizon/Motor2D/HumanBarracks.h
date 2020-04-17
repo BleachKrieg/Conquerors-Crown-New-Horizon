@@ -69,6 +69,8 @@ public:
 	float timer_queue;
 	int troop_type;
 	j1Timer start_queue;
+	j1Timer timer_bar;
+	bool time_bar_start;
 
 	struct QueueTroop
 	{
