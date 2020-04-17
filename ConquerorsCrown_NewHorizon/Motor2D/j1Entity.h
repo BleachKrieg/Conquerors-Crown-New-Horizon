@@ -8,6 +8,7 @@
 #include "j1App.h"
 #include <list>
 #include "Animation.h"
+#include "p2DynArray.h"
 #include "j1Audio.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -58,6 +59,8 @@ public:
 
 	//Spatial Audio
 	void SpatialAudio(int channel, int SFX, int posx, int posy);
+
+	Animation* GetAnimation();
 
 protected:
 	Animation* current_animation = nullptr;

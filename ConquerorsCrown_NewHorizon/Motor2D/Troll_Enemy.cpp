@@ -119,6 +119,8 @@ bool TrollEnemy::Update(float dt)
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
+		if (App->movement->ai_selected == this)
+			App->movement->ai_selected = nullptr;
 		Death();
 		break;
 	}
@@ -126,6 +128,9 @@ bool TrollEnemy::Update(float dt)
 	
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
+	if (isSelected)
+		App->render->DrawCircle((int)position.x, (int)position.y, 20, 200, 0, 0, 200);
+
 	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }

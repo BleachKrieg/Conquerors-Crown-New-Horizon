@@ -187,7 +187,7 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click)
 		{
 
 			Mix_HaltChannel(-1);
@@ -220,7 +220,7 @@ void HumanTownHall::checkAnimation(float dt)
 			actualState = ST_TOWNHALL_IN_CONSTRUCTION;
 		}
 
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
 			Mix_HaltChannel(-1);
 			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);

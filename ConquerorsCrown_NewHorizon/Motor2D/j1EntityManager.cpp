@@ -109,7 +109,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	case DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN: ret = new HumanFootman(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_ARCHER: ret = new HumanArcher(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_GATHERER: ret = new HumanGatherer(posx, posy); player_dyn_ent.push_back(ret); break;
-	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); ia_dyn_ent.push_back(ret); break;
+	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	}
 
 	if (ret != nullptr)
@@ -164,8 +164,8 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 				player_dyn_ent.erase(std::find(player_dyn_ent.begin(), player_dyn_ent.end() + 1, entity));
 			break;
 		case j1Entity::TeamType::IA:
-			if (!ia_dyn_ent.empty())
-				ia_dyn_ent.erase(std::find(ia_dyn_ent.begin(), ia_dyn_ent.end() + 1, entity));
+			if (!ai_dyn_ent.empty())
+				ai_dyn_ent.erase(std::find(ai_dyn_ent.begin(), ai_dyn_ent.end() + 1, entity));
 			break;
 		}
 		break;

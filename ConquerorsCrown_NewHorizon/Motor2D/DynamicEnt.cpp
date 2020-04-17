@@ -61,8 +61,11 @@ void DynamicEnt::OrderPath()
 	j1Entity* it;
 
 	list<j1Entity*>::iterator selected_it;
-
-	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (isSelected && App->movement->ai_selected != nullptr)
+	{
+		target_entity = App->movement->ai_selected;
+	}
+	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		//timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
@@ -330,11 +333,9 @@ void DynamicEnt::Movement()
 			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
 			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
-		}
+		}*/
 	
-		if (isSelected)
-			App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-		*/
+		
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
@@ -405,7 +406,7 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				}
 			}
 			else {
-				if (target_entity == it)
+				if (target_entity == it && !player_order)
 				{
 					target_entity = NULL;
 				}
