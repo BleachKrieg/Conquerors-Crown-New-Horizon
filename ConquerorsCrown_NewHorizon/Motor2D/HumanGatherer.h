@@ -28,6 +28,10 @@ public:
 
 	bool CleanUp();
 
+private:
+	j1Entity* town_hall;
+	j1Entity* work_space;
+
 };
 
 

@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "StaticEnt.h"
-#include "p2DynArray.h"
+#include "j1PerfTimer.h"
 
 class ResourceEntity : public StaticEnt
 {
@@ -39,7 +39,9 @@ public:
 	uint& GetResourceType();
 
 private:
-	RESOURCE_ENTITY_TYPE type;
+	RESOURCE_ENTITY_TYPE	type;
+	j1PerfTimer				timer;
+	float					task_time;
 };
 
 #endif // !__RESOURCEENTITIES_H__

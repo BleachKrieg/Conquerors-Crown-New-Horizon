@@ -8,6 +8,12 @@ ResourceEntity::ResourceEntity(int posx, int posy, uint enter_type) : StaticEnt(
 {
 	name.create("resource");
 	type = (RESOURCE_ENTITY_TYPE)enter_type;
+	if (type == RESOURCE_ENTITY_TYPE::MINE)
+		task_time = 30000.0F;
+	if (type == RESOURCE_ENTITY_TYPE::QUARRY)
+		task_time = 25000.0F;
+	if (type == RESOURCE_ENTITY_TYPE::TREE)
+		task_time = 20000.0F;
 	position.x = posx;
 	position.y = posy;
 }
