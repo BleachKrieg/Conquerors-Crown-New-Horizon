@@ -62,6 +62,9 @@ bool HumanTownHall::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
 
+	if (isSelected && App->movement->player_selected != this)
+		isSelected = false;
+
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		life_points = 0;
