@@ -37,7 +37,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	player_order = false;
 	can_attack = true;
 	team = TeamType::IA;
-	target_entity = NULL;
+	target_entity = nullptr;
 	state = DynamicState::IDLE;
 
 
@@ -77,6 +77,9 @@ bool TrollEnemy::Start()
 	++animations_list;
 
 	current_animation = &moving_down;
+
+	spawn = nullptr;
+	oldspawntarget = nullptr;
 	return true;
 }
 
@@ -91,7 +94,22 @@ bool TrollEnemy::Update(float dt)
 		life_points = 0;
 	
 	AttackTarget();
+
+
 	Movement();
+	if (target_entity == nullptr)
+	{
+		if (spawn != nullptr)
+		{
+			if (spawn->target != oldspawntarget)
+			{
+				oldspawntarget = spawn->target;
+				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
+				App->pathfinding->RequestPath(origin, target, this);
+			}
+		}
+	
+	}
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;

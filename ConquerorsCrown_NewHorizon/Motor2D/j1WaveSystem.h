@@ -3,8 +3,17 @@
 
 #include "j1Module.h"
 #include "Animation.h"
+#include "j1Entity.h"
 #include "p2Point.h"
 #include "j1Timer.h"
+#include "Troll_Enemy.h"
+
+struct SpawnPoint
+{
+	iPoint		position;
+	j1Entity*	target;
+	fPoint		targetpos;
+};
 
 class j1WaveSystem : public j1Module {
 public:
@@ -41,10 +50,10 @@ public:
 	int current_wave;
 	bool wave_ongoing;
 	j1Timer wave_ended;
-	iPoint spawn_point1;
-	iPoint spawn_point2;
-	iPoint spawn_point3;
 
+	SpawnPoint* spawn1;
+	SpawnPoint* spawn2;
+	SpawnPoint* spawn3;
 };
 
 #endif //__j1WAVESYSTEM_H__

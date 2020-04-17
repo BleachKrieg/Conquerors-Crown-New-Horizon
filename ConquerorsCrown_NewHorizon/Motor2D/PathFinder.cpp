@@ -144,7 +144,7 @@ p2List_item<PathNode>* PathList::Find(const iPoint& point) const
 p2List_item<PathNode>* PathList::GetNodeLowestScore() const
 {
 	p2List_item<PathNode>* ret = NULL;
-	int min = 65535;
+	int min = 1000000;
 
 	p2List_item<PathNode>* item = list.end;
 	while (item)

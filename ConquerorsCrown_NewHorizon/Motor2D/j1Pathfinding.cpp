@@ -120,7 +120,7 @@ int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, 
 	LOG("Requesting a path...");
 	iPoint dest = destination;
 
-	if (GetWalkability(origin) == 0 || GetWalkability(destination) == 0) {
+	if (GetWalkability(origin) == 0 || GetWalkability(origin) == 2 || GetWalkability(destination) == 0) {
 		return -1;
 	}
 	else if (GetWalkability(destination) == 2)
@@ -147,9 +147,8 @@ bool j1PathFinding::Start()
 	pathfinderList.push_back(pathfinder01);
 	pathfinderList.push_back(pathfinder02);
 	PathFinder* pathfinder03= new PathFinder;
-	PathFinder* pathfinder04 = new PathFinder;
 	pathfinderList.push_back(pathfinder03);
-	pathfinderList.push_back(pathfinder04);
+
 	return true;
 }
 

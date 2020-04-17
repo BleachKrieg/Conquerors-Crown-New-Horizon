@@ -7,7 +7,9 @@
 #include "p2DynArray.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
+#include "j1WaveSystem.h"
 
+struct SpawnPoint;
 class TrollEnemy : public DynamicEnt
 {
 public:
@@ -27,7 +29,9 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
-
+	public:
+	SpawnPoint* spawn;
+	j1Entity*	oldspawntarget;
 };
 
 #endif // !__TROLL_ENEMY_H__

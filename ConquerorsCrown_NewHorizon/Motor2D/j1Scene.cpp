@@ -291,6 +291,7 @@ void j1Scene::DeleteScene() {
 		App->entity->DeleteAllEntities();
 		App->minimap->CleanUp();
 		App->map->CleanUp();
+		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
 		DeleteUI();
@@ -346,7 +347,6 @@ bool j1Scene::CreateMenu() {
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
 
-	App->wave->wave_ended.Start();
 
 	return true;
 }
@@ -392,6 +392,9 @@ bool j1Scene::CreateInGame()
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
+
+	App->wave->wave_ended.Start();
+	App->wave->wave_ongoing = false;
 
 	return ret;
 }

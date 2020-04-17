@@ -60,6 +60,7 @@ public:
 public:
 	float time_FX_troops;
 	j1Timer timer2;
+	DynamicState		state;
 
 
 protected:
@@ -72,7 +73,6 @@ protected:
 	list<j1Entity*>		close_entity_list;
 	list<j1Entity*>		colliding_entity_list;
 	// States ------------------------
-	DynamicState		state;
 	// Animations ------------------------
 	Animation moving_up;
 	Animation moving_diagonal_up;

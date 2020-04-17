@@ -45,6 +45,7 @@ HumanTownHall::~HumanTownHall()
 bool HumanTownHall::Start()
 {
 	createUI = true;
+	deployed = false;
 	return true;
 }
 
@@ -238,6 +239,7 @@ void HumanTownHall::checkAnimation(float dt)
 
 	if (actualState == ST_TOWNHALL_IN_CONSTRUCTION)
 	{
+		deployed = true;
 		float bar_prog = (timer.ReadSec() * 100) / 3;
 		creation_TownHall_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
