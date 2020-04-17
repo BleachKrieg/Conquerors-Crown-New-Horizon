@@ -45,9 +45,11 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	void StartWave(int wave);
+	void FinishWave();
 
 public:
 	int current_wave;
+	int next_wave;
 	bool wave_ongoing;
 	j1Timer wave_ended;
 

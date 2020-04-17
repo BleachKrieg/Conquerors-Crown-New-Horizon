@@ -57,9 +57,10 @@
 
   <wave>
     <spawnpoints>
-      <spawnpoint1 x="100" y="100"/>
-      <spawnpoint2 x="100" y="200"/>
-      <spawnpoint3 x="200" y="1300"/>
+      <spawnpoint1 x="1050" y="850"/>
+      <spawnpoint2 x="850" y="2800"/>
+      <spawnpoint3 x="3150" y="3700"/>
+
     </spawnpoints>
   </wave>
 </config>

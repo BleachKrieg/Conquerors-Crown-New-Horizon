@@ -58,10 +58,15 @@ bool j1WaveSystem::Start()
 	LOG("Start Wave System");
 
 	current_wave = 1;
+
 	wave_ongoing = true;
 	spawn1->target = nullptr;
 	spawn2->target = nullptr;
 	spawn3->target = nullptr;
+
+	next_wave = 10;
+	wave_ongoing = false;
+
 	return ret;
 }
 
@@ -75,8 +80,8 @@ bool j1WaveSystem::PreUpdate(float dt)
 bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
-	if (wave_ended.ReadSec() > 5 && wave_ongoing == false) { 
-		LOG("%f", wave_ended.ReadSec());
+
+	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false) { 
 		StartWave(current_wave);
 		wave_ended.Start();
 	}
@@ -178,6 +183,7 @@ void j1WaveSystem::StartWave(int wave)
 	
 	TrollEnemy* temp;
 	int spawns = 9 + 6 * wave;
+
 	wave_ongoing = false;
 	spawns = 3;
 	for (int i = 1; i <= spawns; i++) {
@@ -197,3 +203,11 @@ void j1WaveSystem::StartWave(int wave)
 	}
 }
 
+
+void j1WaveSystem::FinishWave()
+{
+	current_wave++;
+	wave_ongoing = false;
+	wave_ended.Start();
+	next_wave = 20;
+}

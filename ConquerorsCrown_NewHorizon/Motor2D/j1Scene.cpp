@@ -54,7 +54,7 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	current_scene = scenes::logo;
+	current_scene = scenes::ingame;
 	current_level = "First level design.tmx";
 	debug = false;
 
@@ -63,7 +63,7 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 
-	if (CreateLogo()) ret = true;
+	if (CreateInGame()) ret = true;
 
 	return ret;
 }
