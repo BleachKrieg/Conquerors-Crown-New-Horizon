@@ -26,10 +26,13 @@ private:
 
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
+	float normalized;
 	SDL_Rect screen;
 	int level = 0;
 	scenes next_scene;
 	SDL_Texture* screen_;
+	int position;
+	SDL_Texture* loadingIcon;
 };
 
 #endif //__J1FADETOBLACK_H__
