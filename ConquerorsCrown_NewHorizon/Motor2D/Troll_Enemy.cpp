@@ -79,7 +79,7 @@ bool TrollEnemy::Start()
 	current_animation = &moving_down;
 
 	spawn = nullptr;
-	oldspawntarget = nullptr;
+	time = 10;
 	return true;
 }
 
@@ -95,22 +95,22 @@ bool TrollEnemy::Update(float dt)
 	
 	AttackTarget();
 
-
+	
 	Movement();
 	if (target_entity == nullptr)
 	{
 		if (spawn != nullptr)
 		{
-			if (spawn->target != oldspawntarget)
+			if (path.At(1) == NULL && time >= 10)
 			{
-				oldspawntarget = spawn->target;
 				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
-				App->pathfinding->RequestPath(origin, target, this);
+				App->pathfinding->RequestPath(origin, { 50, 26 }, this);
+				idletime.Start();
 			}
 		}
 	
 	}
-
+	time = idletime.ReadSec();
 	if (life_points <= 0)
 		state = DynamicState::DYING;
 

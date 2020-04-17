@@ -31,7 +31,8 @@ public:
 	bool CleanUp();
 	public:
 	SpawnPoint* spawn;
-	j1Entity*	oldspawntarget;
+	j1Timer idletime;
+	int time;
 };
 
 #endif // !__TROLL_ENEMY_H__

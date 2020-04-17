@@ -81,7 +81,7 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false) { 
+	if (wave_ended.ReadSec() > 5 && wave_ongoing == false) { 
 		StartWave(current_wave);
 		wave_ended.Start();
 	}
