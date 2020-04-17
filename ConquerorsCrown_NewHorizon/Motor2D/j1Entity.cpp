@@ -76,3 +76,8 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 	//LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
 	//	center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }
+
+Animation* j1Entity::GetAnimation()
+{
+	return current_animation;
+}

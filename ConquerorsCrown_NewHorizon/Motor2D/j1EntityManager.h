@@ -49,13 +49,16 @@ public:
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
 
+	//Check if any entity is selected
+	bool IsSomethingSelected();
+
 protected:
 	TileSetEntity TileSetData;
 
 public:
 	vector<j1Entity*> entities;
 	vector<j1Entity*> player_dyn_ent;
-	vector<j1Entity*> ia_dyn_ent;
+	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 
 
@@ -76,7 +79,6 @@ public:
 	SDL_Texture* building = nullptr;
 
 	// Load entities textures
-
 };
 
 #endif // __j1EntityManager_H__
