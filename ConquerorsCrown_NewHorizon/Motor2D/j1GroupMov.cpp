@@ -36,7 +36,6 @@ bool j1GroupMov::Update(float dt) {
 	j1Entity* it;
 	if (ai_selected != nullptr)
 	{
-		ai_selected->isSelected = false;
 		ai_selected = nullptr;
 	}
 	App->input->GetMousePosition(mouse.x, mouse.y);
@@ -95,7 +94,6 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
-		
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
 		bool loop = true;
