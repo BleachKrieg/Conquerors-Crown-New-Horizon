@@ -56,6 +56,16 @@ bool HumanGatherer::Start()
 	++animations_list;
 	moving_down = **animations_list;
 	++animations_list;
+	attacking_up = **animations_list;
+	++animations_list;
+	attacking_diagonal_up = **animations_list;
+	++animations_list;
+	attacking_right = **animations_list;
+	++animations_list;
+	attacking_diagonal_down = **animations_list;
+	++animations_list;
+	attacking_down = **animations_list;
+	++animations_list;
 
 	current_animation = &moving_down;
 	return true;
@@ -98,6 +108,7 @@ bool HumanGatherer::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
+		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
 		to_delete = true;

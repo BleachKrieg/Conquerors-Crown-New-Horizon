@@ -55,6 +55,8 @@ public:
 	void OrderPath();
 
 	void AttackTarget();
+
+	void Death();
 public:
 	float time_FX_troops;
 	j1Timer timer2;
@@ -77,6 +79,13 @@ protected:
 	Animation moving_right;
 	Animation moving_diagonal_down;
 	Animation moving_down;
+	Animation attacking_up;
+	Animation attacking_diagonal_up;
+	Animation attacking_right;
+	Animation attacking_diagonal_down;
+	Animation attacking_down;
+	Animation death_up;
+	Animation death_down;
 	// -----------------------------------
 	// Attack Variables ------------------
 	j1Entity*	target_entity;
