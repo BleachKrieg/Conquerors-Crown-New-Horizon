@@ -178,7 +178,7 @@ bool j1GroupMov::Update(float dt) {
 				}
 			}
 		}
-		else
+		else if (gatherer_counter > uint(size / 2))
 		{
 			size = size - gatherer_counter;
 			for (list<j1Entity*>::iterator ite = selected.begin(); ite != selected.end() && size > 0u; ++ite)

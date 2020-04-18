@@ -90,6 +90,7 @@
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceEntities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceEntities.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
