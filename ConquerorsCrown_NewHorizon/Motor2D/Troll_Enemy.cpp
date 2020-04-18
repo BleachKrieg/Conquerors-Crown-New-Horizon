@@ -99,6 +99,9 @@ bool TrollEnemy::Update(float dt)
 	switch (state)
 	{
 	case DynamicState::IDLE:
+		current_animation = &moving_right;
+		current_animation->Reset();
+		current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;

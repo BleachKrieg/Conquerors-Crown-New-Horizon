@@ -50,6 +50,8 @@ public:
 	void GuiInput(GuiItem*);
 	void QueueSwap();
 
+	//FreeTile
+	iPoint Searchtile(iPoint respawn);
 public:
 	// Animations
 	Animation inconstruction;
@@ -109,6 +111,12 @@ public:
 	iPoint pos3;
 	iPoint pos4;
 	iPoint pos5;
+
+private:
+	//Respawn positioning
+	iPoint respawn;
+	int randomrespawn;
+	int randomrespawn2;
 
 };
 #endif // __TEST_1_H__
