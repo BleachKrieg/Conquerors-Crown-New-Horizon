@@ -6,6 +6,7 @@
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
 #include "Troll_Enemy.h"
+#include "ResourceEntities.h"
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
@@ -74,7 +75,8 @@ bool j1EntityManager::Update(float dt)
 
 	for (int i = 0; i < entities.size(); i++) {
 		
-		entities[i]->Update(dt);
+		if (entities[i]->active)
+			entities[i]->Update(dt);
 	}
 	
 	return true;
@@ -93,7 +95,8 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 		else
 		{
-			entities[i]->PostUpdate();
+			if (entities[i]->active)
+				entities[i]->PostUpdate();
 		}
 	}
 
@@ -120,7 +123,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	return ret;
 }
 
-j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy)
+j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy, uint resource_type)
 {
 	j1Entity* ret = nullptr;
 
@@ -128,6 +131,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
 	if (ret != nullptr)

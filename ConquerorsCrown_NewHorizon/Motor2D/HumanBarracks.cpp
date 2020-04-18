@@ -20,6 +20,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	vision = 30;
 	body = 40;
 	collrange = 25;
+	active = true;
 	selectable = true;
 	isSelected = false;
 	to_delete = false;

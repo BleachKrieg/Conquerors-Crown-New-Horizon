@@ -273,6 +273,11 @@ void j1Scene::LoadTiledEntities() {
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
 						}
+						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
+						{
+							active = true;
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 1u);
+						}
 					}
 				}
 			}

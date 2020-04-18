@@ -24,6 +24,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	active = true;
 	createUI = false;
 	create_gatherer = false;
 	selectable_buildings = true;

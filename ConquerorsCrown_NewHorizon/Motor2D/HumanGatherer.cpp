@@ -27,6 +27,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
+	active = true;
 	to_delete = false;
 	isSelected = false;
 	selectable = true;

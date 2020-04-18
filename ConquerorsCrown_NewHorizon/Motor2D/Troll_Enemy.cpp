@@ -32,6 +32,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	orientation = SDL_FLIP_NONE;
 	to_delete = false;
 	isSelected = false;
+	active = true;
 	selectable = false;
 	following_target = false;
 	player_order = false;

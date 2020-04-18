@@ -1,7 +1,9 @@
 #include "ResourceEntities.h"
 #include "p2Log.h"
 #include "j1EntityManager.h"
+#include "j1Pathfinding.h"
 #include "StaticEnt.h"
+#include "j1Map.h"
 #include "Brofiler/Brofiler.h"
 
 ResourceEntity::ResourceEntity(int posx, int posy, uint enter_type) : StaticEnt(StaticEntType::Resource)
@@ -16,12 +18,16 @@ ResourceEntity::ResourceEntity(int posx, int posy, uint enter_type) : StaticEnt(
 		task_time = 20000.0F;
 	position.x = posx;
 	position.y = posy;
+
+	active = false;
 }
 
 ResourceEntity::~ResourceEntity() {}
 
 bool ResourceEntity::Start()
 {
+	iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y);
+	App->pathfinding->ChangeWalkability(pos, 2);
 	return true;
 }
 
@@ -41,6 +47,8 @@ bool ResourceEntity::PostUpdate(float dt)
 
 bool ResourceEntity::CleanUp()
 {
+	iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y);
+	App->pathfinding->ChangeWalkability(pos, 1);
 	return true;
 }
 

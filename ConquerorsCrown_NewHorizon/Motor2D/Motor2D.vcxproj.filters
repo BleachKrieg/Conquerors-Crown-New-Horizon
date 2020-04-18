@@ -90,7 +90,9 @@
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceEntities.cpp" />
+    <ClCompile Include="ResourceEntities.cpp">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -204,7 +206,9 @@
     <ClInclude Include="j1FadeToBlack.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceEntities.h" />
+    <ClInclude Include="ResourceEntities.h">
+      <Filter>Modules\EntitySystem\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
