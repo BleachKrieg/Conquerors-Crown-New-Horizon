@@ -12,7 +12,7 @@ after_build:
     copy C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Release\ConquerorsCrown_NewHorizon.exe C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Game
 
 
-    copy C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\README.md C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Game
+    copy C:\projects\conquerors-crown-new-horizon\README.md C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Game
 artifacts:
 - path: ConquerorsCrown_NewHorizon\Game
   name: ConquerorsCrown_NewHorizon
