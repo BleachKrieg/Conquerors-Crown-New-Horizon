@@ -9,10 +9,10 @@ build:
   verbosity: minimal
 after_build:
 - cmd: >-
-    copy C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Release\ConquerorsCrown_NewHorizon.exe C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Game
+    copy C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Release\ConquerorsCrown_NewHorizon.exe C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Game
 
 
-    copy C:\projects\Proyecto-II\README.md C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Game
+    copy C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\README.md C:\projects\conquerors-crown-new-horizon\ConquerorsCrown_NewHorizon\Game
 artifacts:
 - path: ConquerorsCrown_NewHorizon\Game
   name: ConquerorsCrown_NewHorizon
