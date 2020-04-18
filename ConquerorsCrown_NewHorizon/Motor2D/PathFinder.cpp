@@ -19,8 +19,8 @@ PathFinder::~PathFinder()
 void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
 {
 	// Add the origin tile to open
-	if (open.GetNodeLowestScore() == NULL)
-		open.list.add(PathNode(0, origin.DistanceTo(destination), origin, nullptr));
+	if (open.GetNodeLowestScore() == nullptr)
+		open.list.push_back(PathNode(0, origin.DistanceTo(destination), origin, nullptr));
 
 	uint iterations = 0;
 	this->entity = requester;
@@ -38,62 +38,82 @@ bool PathFinder::IteratePath()
 	if (open.GetNodeLowestScore() != NULL)
 	{
 
-	
-	PathNode* node = new PathNode(open.GetNodeLowestScore()->data);
-	close.list.add(*node);
-	open.list.del(open.Find(node->pos));
+		PathNode* node = new PathNode(*open.GetNodeLowestScore());
+		close.list.push_back(*node);
 
-
-	if (node->pos == destination) {
-		const PathNode* iterator = node;
-
-		last_path.Clear();
-		// Backtrack to create the final path
-		for (iterator; iterator->pos != origin; iterator = iterator->parent)
+		for (int i = 0; i < open.list.size(); i++)
 		{
-			last_path.PushBack(iterator->pos);
+			if (open.list[i].pos == node->pos)
+			{
+				open.list.erase(open.list.begin() + i);
+			}
+
+		}
+		
+		//	player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
+
+		if (node->pos == destination) {
+			const PathNode* iterator = node;
+
+			last_path.Clear();
+			// Backtrack to create the final path
+			for (iterator; iterator->pos != origin; iterator = iterator->parent)
+			{
+				last_path.PushBack(iterator->pos);
+			}
+
+			last_path.PushBack(origin);
+
+			// Use the Pathnode::parent and Flip() the path when you are finish
+			last_path.Flip();
+			pathCompleted = true;
+			initSuccessful = false;
+			available = true;
+			open.list.clear();
+			close.list.clear();
+			SavePath(&entity->path);
+			RELEASE(node);
+
+			return false;
 		}
 
-		last_path.PushBack(origin);
 
-		// Use the Pathnode::parent and Flip() the path when you are finish
-		last_path.Flip();
-		pathCompleted = true;
-		initSuccessful = false;
-		available = true;
-		open.list.clear();
-		close.list.clear();
-		SavePath(&entity->path);
-		RELEASE(node);
-
-		return false;
-	}
+		PathList adjacentNodes;
+		uint numNodes = node->FindWalkableAdjacents(adjacentNodes);
 
 
-	PathList adjacentNodes;
-	uint numNodes = node->FindWalkableAdjacents(adjacentNodes);
-
-
-	for (uint i = 0; i < numNodes; i++)
-	{
-		// ignore nodes in the closed list
-		if (close.Find(adjacentNodes.list[i].pos) == NULL) {
-			// If it is NOT found, calculate its F and add it to the open list
-			if (open.Find(adjacentNodes.list[i].pos) == NULL) {
-				adjacentNodes.list[i].CalculateF(destination);
-				open.list.add(adjacentNodes.list[i]);
-			}
-			// If it is already in the open list, check if it is a better path (compare G)
-			else {
-				if (adjacentNodes.list[i].g < open.Find(adjacentNodes.list[i].pos)->data.g) {
-					// If it is a better path, Update the parent
+		for (uint i = 0; i < numNodes; i++)
+		{
+			// ignore nodes in the closed list
+			if (close.Find(adjacentNodes.list[i].pos) == nullptr) {
+				// If it is NOT found, calculate its F and add it to the open list
+				if (open.Find(adjacentNodes.list[i].pos) == nullptr) {
 					adjacentNodes.list[i].CalculateF(destination);
-					open.list.del(open.Find(adjacentNodes.list[i].pos));
-					open.list.add(adjacentNodes.list[i]);
+					open.list.push_back(adjacentNodes.list[i]);
+				}
+				// If it is already in the open list, check if it is a better path (compare G)
+				else {
+					if (adjacentNodes.list[i].g < open.Find(adjacentNodes.list[i].pos)->g) {
+						// If it is a better path, Update the parent
+						adjacentNodes.list[i].CalculateF(destination);
+						//open.list.erase(std::find(open.list.begin(), open.list.end() + 1, adjacentNodes.list[i]));
+						for (int i = 0; i < open.list.size(); i++)
+						{
+							if (open.list[i].pos == adjacentNodes.list[i].pos)
+							{
+								open.list.erase(open.list.begin() + i);
+							}
+
+						}
+						open.list.push_back(adjacentNodes.list[i]);
+
+
+
+						
+					}
 				}
 			}
 		}
-	}
 	}
 	return ret;
 }
@@ -126,36 +146,39 @@ bool PathFinder::Update()
 // PathList ------------------------------------------------------------------------
 // Looks for a node in this list and returns it's list node or NULL
 // ---------------------------------------------------------------------------------
-p2List_item<PathNode>* PathList::Find(const iPoint& point) const
+const PathNode* PathList::Find(const iPoint& point) const
 {
-	p2List_item<PathNode>* item = list.start;
-	while (item)
+	const PathNode* ret = nullptr;
+
+	for (int i = 0; i < list.size(); i++)
 	{
-		if (item->data.pos == point)
-			return item;
-		item = item->next;
+		if (list[i].pos == point)
+		{
+			ret = &list[i];
+			return ret;
+		}
+			
 	}
-	return NULL;
+	return ret;
 }
 
 // PathList ------------------------------------------------------------------------
 // Returns the Pathnode with lowest score in this list or NULL if empty
 // ---------------------------------------------------------------------------------
-p2List_item<PathNode>* PathList::GetNodeLowestScore() const
+const PathNode* PathList::GetNodeLowestScore() const
 {
-	p2List_item<PathNode>* ret = NULL;
 	int min = 65535;
+	const PathNode* ret = nullptr;
 
-	p2List_item<PathNode>* item = list.end;
-	while (item)
+	for (int i = 0; i < list.size(); i++)
 	{
-		if (item->data.Score() < min)
+		if (list[i].Score() < min)
 		{
-			min = item->data.Score();
-			ret = item;
+			min = list[i].Score();
+			ret = &list[i];
 		}
-		item = item->prev;
 	}
+	
 	return ret;
 }
 
@@ -191,48 +214,48 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 uint PathNode::FindWalkableAdjacents(PathList& list_to_fill)
 {
 	iPoint cell;
-	uint before = list_to_fill.list.count();
+	uint before = list_to_fill.list.size();
 
 	// north
 	cell.create(pos.x, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this));
 
 	cell.create(pos.x + 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this, true));
 
 	// south
 	cell.create(pos.x + 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this, true));
 
 	// east
 	cell.create(pos.x - 1, pos.y + 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this, true));
 
 	// west
 	cell.create(pos.x - 1, pos.y - 1);
 	if (App->pathfinding->IsWalkable(cell))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this, true));
+		list_to_fill.list.push_back(PathNode(-1, -1, cell, this, true));
 
-	return list_to_fill.list.count();
+	return list_to_fill.list.size();
 }
 
 
