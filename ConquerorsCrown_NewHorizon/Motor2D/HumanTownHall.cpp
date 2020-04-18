@@ -41,7 +41,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
 	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
 
-	team = TeamType::NO_TYPE;
+	team = TeamType::PLAYER;
 	actualState = ST_TOWNHALL_PREVIEW;
 	life_points = 100;
 }

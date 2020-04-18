@@ -52,7 +52,7 @@ bool PathFinder::IteratePath()
 		
 		//	player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
 
-		if (node->pos == destination) {
+		if (node->pos == destination || entity->life_points <= 0) {
 			const PathNode* iterator = node;
 
 			last_path.Clear();
@@ -71,7 +71,13 @@ bool PathFinder::IteratePath()
 			available = true;
 			open.list.clear();
 			close.list.clear();
+			if (entity->life_points <= 0)
+			{
+				entity = nullptr;
+			}
+			else {
 			SavePath(&entity->path);
+			}		
 			RELEASE(node);
 
 			return false;
@@ -167,7 +173,7 @@ const PathNode* PathList::Find(const iPoint& point) const
 // ---------------------------------------------------------------------------------
 const PathNode* PathList::GetNodeLowestScore() const
 {
-	int min = 65535;
+	int min = 100000;
 	const PathNode* ret = nullptr;
 
 	for (int i = 0; i < list.size(); i++)
