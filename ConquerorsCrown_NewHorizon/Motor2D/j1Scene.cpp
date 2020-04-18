@@ -306,6 +306,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::menu:
 		current_scene = scenes::menu;
 		CreateMenu();
+		App->audio->StopFx();
 		App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::ingame:
