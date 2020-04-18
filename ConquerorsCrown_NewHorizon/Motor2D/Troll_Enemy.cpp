@@ -105,12 +105,14 @@ bool TrollEnemy::Update(float dt)
 	{
 		if (spawn != nullptr)
 		{
-			/*if (path.At(1) == NULL && time >= 10)
+			if (path.At(1) == NULL && time >= 5)
 			{
 				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
-				App->pathfinding->RequestPath(origin, { 50, 26 }, this);
+				App->pathfinding->RequestPath(origin, target, this);
 				idletime.Start();
-			}*/
+				followpath = 0;
+				change_direction = true;
+			}
 		}
 	
 	}
