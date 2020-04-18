@@ -55,6 +55,12 @@ bool HumanTownHall::Start()
 		actualState = ST_TOWNHALL_AUTOMATIC;
 	}
 	createUI = true;
+
+	Button_Create_Gatherer = nullptr;
+	Gatherer_image = nullptr;
+	creation_TownHall_bar = nullptr;
+
+
 	return true;
 }
 

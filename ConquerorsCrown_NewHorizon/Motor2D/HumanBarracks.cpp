@@ -46,6 +46,9 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	life_points = 100;
 	createUI = false;
 	Barrack_Upgraded = false;
+	
+
+
 }
 
 HumanBarracks::~HumanBarracks()
@@ -57,6 +60,12 @@ bool HumanBarracks::Start()
 		actualState = ST_BARRACK_AUTOMATIC;
 	}
 	createUI = true;
+	Button_Create_Footman = nullptr;
+	Button_Create_Archer = nullptr;
+	Archer_image = nullptr;
+	Swordman_image = nullptr;
+	creation_barrack_bar = nullptr;
+
 	return true;
 }
 
