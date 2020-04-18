@@ -19,8 +19,8 @@ artifacts:
   type: WebDeployPackage
 deploy:
 - provider: GitHub
-  tag: v.0.$(appveyor_build_version)
-  release: ConquerorsCrown_NewHorizon_0.$(appveyor_build_version)
+  tag: v.$(appveyor_build_version)
+  release: ConquerorsCrown_NewHorizon_$(appveyor_build_version)
   description: Automatic Release
   auth_token:
     secure: LmrIWoAeG1Bf5bn3wfmIG77qR7SCBfo2XJcN65Wo2DRMLHLxIF5xWW2bXAPrqPH0
