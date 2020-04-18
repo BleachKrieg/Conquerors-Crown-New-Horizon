@@ -53,6 +53,9 @@ public:
 	void CheckQueue();
 	void ImageSelected();
 
+	//FreeTile
+	iPoint Searchtile(iPoint respawn);
+
 public:
 	// Animations
 	Animation inconstruction;
@@ -97,6 +100,9 @@ public:
 	iPoint pos3;
 	iPoint pos4;
 	iPoint pos5;
+
+private:
+	iPoint respawn;
 
 };
 #endif // __TEST_1_H__
