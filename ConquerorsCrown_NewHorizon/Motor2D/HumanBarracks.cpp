@@ -57,6 +57,13 @@ bool HumanBarracks::Start()
 		actualState = ST_BARRACK_AUTOMATIC;
 	}
 	createUI = true;
+	Button_Create_Footman = nullptr;
+	Button_Create_Archer = nullptr;
+	Archer_image = nullptr;
+	Swordman_image = nullptr;
+	creation_barrack_bar = nullptr;
+
+
 	return true;
 }
 
@@ -66,7 +73,7 @@ bool HumanBarracks::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		//life_points = 0;
+		life_points = 0;
 	}
 	if (life_points <= 0)
 	{
