@@ -1,0 +1,27 @@
+version: 0.{build}
+branches:
+  only:
+  - master
+skip_branch_with_pr: true
+configuration: Release
+platform: x64
+shallow_clone: true
+build:
+  verbosity: minimal
+after_build:
+- cmd: >-
+    copy C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Release\ConquerorsCrown_NewHorizon.exe C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Game
+
+
+    copy C:\projects\Proyecto-II\README.md C:\projects\Proyecto-II\ConquerorsCrown_NewHorizon\Game
+artifacts:
+- path: ConquerorsCrown_NewHorizon\Game
+  name: ConquerorsCrown_NewHorizon
+  type: WebDeployPackage
+deploy:
+- provider: GitHub
+  tag: v.0.$(appveyor_build_version)
+  release: ConquerorsCrown_NewHorizon_0.$(appveyor_build_version)
+  description: Automatic Release
+  auth_token:
+    secure: LmrIWoAeG1Bf5bn3wfmIG77qR7SCBfo2XJcN65Wo2DRMLHLxIF5xWW2bXAPrqPH0
