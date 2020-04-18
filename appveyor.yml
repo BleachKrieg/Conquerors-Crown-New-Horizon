@@ -4,7 +4,6 @@ branches:
   - master
 skip_branch_with_pr: true
 configuration: Release
-platform: x64
 shallow_clone: true
 build:
   verbosity: minimal
