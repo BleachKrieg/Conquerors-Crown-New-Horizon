@@ -131,7 +131,6 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 
 void DynamicEnt::AttackTarget(DynamicEntityType type)
 {
-
 	//attack close enemy entity
 
 	if (target_entity == NULL)
@@ -177,23 +176,28 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 						
 						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 							SpatialAudio(2, App->audio->footman_attack, position.x, position.y);
-							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							LOG("FOOTMAN");
+							LOG("Footman attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
 						}
-						/*if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+						if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
 							SpatialAudio(3, App->audio->archer_attack, position.x, position.y);
+							LOG("ARCHER");
 							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
 						}
 						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
 							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
-							LOG("SPATIAL AUDIO ARCHER");
+							LOG("TROLL");
 							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
 						}
-						*/
-						App->entity->max_audio_attacks++;
+						
 					}
 					
-					LOG("Audio attacks: %i", App->entity->max_audio_attacks);
-
 				}
 			}
 		}
