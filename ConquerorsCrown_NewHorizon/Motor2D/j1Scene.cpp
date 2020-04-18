@@ -57,10 +57,10 @@ bool j1Scene::Start()
 	current_level = "First level design.tmx";
 	debug = false;
 
-	//Playing menu audio
-	App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 1.0F);
-
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
+	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
+	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
+	
 
 	if (CreateLogo()) ret = true;
 
@@ -430,6 +430,8 @@ bool j1Scene::CreateLogo() {
 	logoBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
 
 	logoTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, logoBackground, nullptr, "Press X to continue..");
+
+	App->audio->PlayFx(1, App->audio->Logo_FX, 0);
 
 	return true;
 }

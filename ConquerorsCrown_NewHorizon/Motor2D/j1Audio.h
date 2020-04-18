@@ -50,14 +50,21 @@ public:
 public:
 
 	int construction;
-	int walking;
 	int cancel_building;
+	int select_footman;
+	int select_archer;
+	int select_gatherer;
+	int go_footman;
+	int go_archer;
+	int go_gatherer;
+	int footman_attack;
+	int archer_attack;
+	int troll_attack;
+
 	int click_to_play;
 	int normal_click;
-	int human_attack;
 
-	//ButtonFX
-	int buttonFx;
+	int Logo_FX;
 
 private:
 

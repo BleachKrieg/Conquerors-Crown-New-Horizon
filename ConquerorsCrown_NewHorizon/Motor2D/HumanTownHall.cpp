@@ -55,6 +55,12 @@ bool HumanTownHall::Start()
 		actualState = ST_TOWNHALL_AUTOMATIC;
 	}
 	createUI = true;
+
+	Button_Create_Gatherer = nullptr;
+	Gatherer_image = nullptr;
+	creation_TownHall_bar = nullptr;
+
+
 	return true;
 }
 
@@ -274,8 +280,8 @@ void HumanTownHall::checkAnimation(float dt)
 
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
-			Mix_HaltChannel(-1);
-			SpatialAudio(2, App->audio->cancel_building, position.x, position.y);
+			//Mix_HaltChannel(-1);
+			SpatialAudio(1, App->audio->cancel_building, position.x, position.y);
 			team = TeamType::PLAYER;
 			App->scene->Building_preview = false;
 			to_delete = true;

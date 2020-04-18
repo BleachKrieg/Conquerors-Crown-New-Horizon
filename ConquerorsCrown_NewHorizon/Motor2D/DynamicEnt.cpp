@@ -15,7 +15,6 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
-	time_FX_troops = 0.5;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -56,7 +55,7 @@ void DynamicEnt::CheckCollisions(fPoint* speed)
 	}
 }
 
-void DynamicEnt::OrderPath()
+void DynamicEnt::OrderPath(DynamicEntityType type)
 {
 	j1Entity* it;
 
@@ -67,7 +66,6 @@ void DynamicEnt::OrderPath()
 	}
 	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		//timer2.Start();
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
@@ -118,15 +116,20 @@ void DynamicEnt::OrderPath()
 		player_order = true;
 		followpath = 1;
 		change_direction = true;
+		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+			SpatialAudio(5, App->audio->go_footman, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+			SpatialAudio(5, App->audio->go_archer, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
+			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
+		}
 
-
-
-
-		//	SpatialAudio(3, App->audio->walking, position.x, position.y);
 	}
 }
 
-void DynamicEnt::AttackTarget()
+void DynamicEnt::AttackTarget(DynamicEntityType type)
 {
 
 	//attack close enemy entity
@@ -170,10 +173,26 @@ void DynamicEnt::AttackTarget()
 				{
 					target_entity->life_points -= attack_damage;
 					current_time = timer.ReadMs();
-					if (App->entity->max_audio_attacks < 1)
-						SpatialAudio(3, App->audio->human_attack, position.x, position.y);
-					//	App->audio->PlayFx(3, App->audio->human_attack, 0);
-					App->entity->max_audio_attacks++;
+					if (App->entity->max_audio_attacks < 1) {
+						
+						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+							SpatialAudio(2, App->audio->footman_attack, position.x, position.y);
+							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+						}
+						/*if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+							SpatialAudio(3, App->audio->archer_attack, position.x, position.y);
+							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+						}
+						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
+							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
+							LOG("SPATIAL AUDIO ARCHER");
+							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+						}
+						*/
+						App->entity->max_audio_attacks++;
+					}
+					
+					LOG("Audio attacks: %i", App->entity->max_audio_attacks);
 
 				}
 			}
@@ -243,12 +262,6 @@ void DynamicEnt::Movement()
 				if (path.At(followpath)->y > origin.y) {
 					pathSpeed.y = 1;
 				}
-
-		//		if (timer2.ReadSec() >= time_FX_troops) {
-		////		SpatialAudio(3, App->audio->walking, position.x, position.y);
-		////		time_FX_troops += 0.5;
-		////		LOG("Troops FX: %.1f", time_FX_troops);
-		//		}
 			}
 		}
 		else {
@@ -256,7 +269,6 @@ void DynamicEnt::Movement()
 			player_order = false;
 			path.Clear();
 			change_direction = true;
-			//time_FX_troops = 0.5;
 		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
