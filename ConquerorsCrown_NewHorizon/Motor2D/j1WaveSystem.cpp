@@ -65,8 +65,10 @@ bool j1WaveSystem::Start()
 	spawn2->target = nullptr;
 	spawn3->target = nullptr;
 
-	next_wave = 10;
+	next_wave = 90;
+	spawn_counter = 0;
 	wave_ongoing = false;
+	max_waves = 5;
 
 	return ret;
 }
@@ -82,11 +84,17 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
-	if (wave_ended.ReadSec() > 5 && wave_ongoing == false) { 
+	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) { 
 		if (spawn1->path.At(0) != nullptr && spawn2->path.At(0) != nullptr && spawn3->path.At(0) != nullptr)
 		{
 			StartWave(current_wave);
-			wave_ended.Start();
+		}
+	}
+	else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
+	{
+		if (spawn1->path.At(0) != nullptr && spawn2->path.At(0) != nullptr && spawn3->path.At(0) != nullptr)
+		{
+			StartWave(current_wave);
 		}
 	}
 
@@ -165,9 +173,12 @@ bool j1WaveSystem::Update(float dt)
 
 	}
 	
-	App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
-	App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
-	App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
+	if (App->scene->debug == true)
+	{
+		App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
+		App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
+		App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
+	}
 
 
 	/*for (uint i = 0; i < spawn1->path.Count(); ++i)
@@ -233,10 +244,12 @@ bool j1WaveSystem::Save(pugi::xml_node& data) const
 void j1WaveSystem::StartWave(int wave)
 {
 	
-	int spawns = 9 + 6 * wave;
+	int total_spawns = 9 + 6 * wave;
+	wave_ongoing = true;
+	spawn_cooldown.Start();
+	int spawns = 3;
+	spawn_counter += spawns;
 
-	wave_ongoing = false;
-	spawns = 3;
 	for (int i = 1; i <= spawns; i++) {
 		if (i % 3 == 1)
 		{
@@ -266,6 +279,8 @@ void j1WaveSystem::StartWave(int wave)
 			}
 		}
 	}
+
+	if (spawn_counter >= total_spawns) { FinishWave(); }
 }
 
 
@@ -274,5 +289,6 @@ void j1WaveSystem::FinishWave()
 	current_wave++;
 	wave_ongoing = false;
 	wave_ended.Start();
-	next_wave = 20;
+	//next_wave = 120;
+	spawn_counter = 0;
 }

@@ -53,8 +53,11 @@ public:
 public:
 	int current_wave;
 	int next_wave;
+	int spawn_counter;
+	int max_waves;
 	bool wave_ongoing;
 	j1Timer wave_ended;
+	j1Timer spawn_cooldown;
 
 	SpawnPoint* spawn1;
 	SpawnPoint* spawn2;
