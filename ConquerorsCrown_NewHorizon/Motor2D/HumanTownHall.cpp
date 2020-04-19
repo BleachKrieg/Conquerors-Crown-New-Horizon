@@ -218,7 +218,7 @@ void HumanTownHall::checkAnimation(float dt)
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
 		timer.Start();
-		
+		team = TeamType::PLAYER;
 		world.x = position.x;
 		world.y = position.y;
 		
@@ -427,8 +427,9 @@ void HumanTownHall::CheckQueue()
 		if (Troop[i]->timer.ReadSec() >= Troop[i]->time)
 		{
 			QueueSwap();
-
-			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::GATHERER, { (int)position.x + 7, (int)position.y + 30 });
+			Searchtile(map);
+			int randomrespawn = rand() % 10 + 10;
+			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::GATHERER, { respawn.x +randomrespawn, respawn.y+randomrespawn });
 			if (Troop[i]->image != nullptr)
 			{
 				Troop[i]->image->to_delete = true;
@@ -546,4 +547,56 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 		create_gatherer = true;
 		isSelected = true;
 	}
+}
+
+iPoint HumanTownHall::Searchtile(iPoint map) 
+{
+	map.x += 3;
+	map.y += 3;
+	iPoint home =map;
+	iPoint normal_start = map;
+	int loops=0;
+
+	normal_start.y -= 1;
+	normal_start.x -= 3;
+
+	if (App->pathfinding->IsWalkable(normal_start) == true) 
+	{
+		respawn = normal_start;
+		respawn = App->map->MapToWorld(respawn.x, respawn.y);
+		return respawn;
+	}
+
+	do
+	{
+		if (loops >= 1) 
+		{
+			home.x += 1; 
+			home.y += 1;
+			map = home;
+
+		}
+		for (int i = 0; i < 5 + loops; i++)
+		{
+			map.y -= 1;
+
+			for (int d = 0; d < 5 + loops; d++)
+			{
+				map.x -= 1;
+
+				if (App->pathfinding->IsWalkable(map) == true)
+				{
+					respawn = { map.x,map.y };
+					respawn = App->map->MapToWorld(respawn.x, respawn.y);
+					return respawn;
+				}
+			}
+			map.x += 5 + loops;
+		}
+
+		loops++;
+	} while (loops < 10);
+
+	respawn = { 1,1 };
+	return respawn;
 }
