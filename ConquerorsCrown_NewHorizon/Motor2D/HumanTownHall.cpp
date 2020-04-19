@@ -209,6 +209,7 @@ void HumanTownHall::checkAnimation(float dt)
 {
 	if (actualState == ST_TOWNHALL_AUTOMATIC)
 	{
+		map = App->map->WorldToMap(position.x, position.y);
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
 		timer.Start();

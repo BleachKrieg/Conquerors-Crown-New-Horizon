@@ -216,6 +216,7 @@ void HumanBarracks::CheckWalkable(iPoint map)
 void HumanBarracks::checkAnimation(float dt)
 {
 	if (actualState == ST_BARRACK_AUTOMATIC) {
+		map = App->map->WorldToMap(position.x, position.y);
 		App->scene->Building_preview = false;
 		timer.Start();
 		world.x = position.x;
