@@ -125,7 +125,7 @@ bool HumanArcher::Update(float dt)
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
-		Death();
+		Death(entity_type);
 		break;
 	}
 	

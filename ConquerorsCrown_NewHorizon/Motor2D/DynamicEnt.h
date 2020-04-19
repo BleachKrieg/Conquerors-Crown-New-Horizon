@@ -56,7 +56,7 @@ public:
 
 	void AttackTarget(DynamicEntityType type);
 
-	void Death();
+	void Death(DynamicEntityType entity_type);
 public:
 	DynamicEntityType entity_type;
 
@@ -102,6 +102,7 @@ protected:
 
 private:
 	bool		change_direction;
+	int			death_counter;
 };
 
 #endif // __j1Entity_H__

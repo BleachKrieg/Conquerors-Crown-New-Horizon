@@ -124,7 +124,7 @@ bool TrollEnemy::Update(float dt)
 	case DynamicState::DYING:
 		if (App->movement->ai_selected == this)
 			App->movement->ai_selected = nullptr;
-		Death();
+		Death(entity_type);
 		break;
 	}
 

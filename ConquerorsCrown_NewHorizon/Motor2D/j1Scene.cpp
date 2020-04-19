@@ -466,20 +466,20 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->quitGame = true;
 	}
 	else if (guiElement == menuButtonLoadGame) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 	}
 	else if (guiElement == menuButtonOptions) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 	}
 
 
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 	else if (guiElement == townHallButton) {
