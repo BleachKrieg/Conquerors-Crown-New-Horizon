@@ -2,7 +2,7 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
-
+#include <vector>
 
 #define CURSOR_WIDTH 2
 
@@ -205,7 +205,7 @@ public:
 public:
 	bool buttonPressed;
 	int FocusIt;
-	p2List<GuiItem*> guiElements;
+	vector<GuiItem*> guiElements;
 
 private:
 	p2SString atlas_file_name;

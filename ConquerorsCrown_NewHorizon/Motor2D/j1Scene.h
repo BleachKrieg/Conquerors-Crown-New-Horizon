@@ -19,7 +19,6 @@ enum class scenes {
 	logo
 };
 
-
 class GuiItem;
 
 class j1Scene : public j1Module
