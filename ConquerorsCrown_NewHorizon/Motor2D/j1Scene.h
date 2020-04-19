@@ -79,6 +79,7 @@ private:
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
 	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
 	Animation* current_animation = nullptr;
 	Animation logo;
 	int logoTextTimer;
@@ -118,19 +119,22 @@ public:
 	GuiItem* logoBackground;
 
 	//VictoryGui
+	SDL_Rect rect_victory = { 0, 0, 757, 791 };
 	GuiItem* victoryBackground;
-	//GuiItem* victoryLogo;
 	GuiItem* victoryButtonContinue;
 	GuiItem* victoryTextContinue;
 	GuiItem* victoryTextClick;
-	float scale = 0.0f;
-	float speed = 0.0f;
+	float scale_victory = 0.0f;
+	float speed_victory = 0.0f;
 
 	//DefeatGui
+	SDL_Rect rect_defeat = { 0, 0, 757, 791 };
 	GuiItem* defeatBackground;
 	GuiItem* defeatButtonContinue;
 	GuiItem* defeatTextContinue;
 	GuiItem* defeatTextClick;
+	float scale_defeat = 0.0f;
+	float speed_defeat = 0.0f;
 
 	bool active;
 };

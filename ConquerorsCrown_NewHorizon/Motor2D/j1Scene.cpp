@@ -95,11 +95,14 @@ bool j1Scene::Update(float dt)
 		logoTextTimer++;
 		break;
 	case scenes::victory:
-		//current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		//logoTextTimer++;
+		break;
+	case scenes::defeat:
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
 		break;
 	case scenes::ingame:
 		//Camera movement inputs
@@ -179,6 +182,10 @@ bool j1Scene::Update(float dt)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
 		}
+		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		{
+			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+		}
 
 		break;
 
@@ -228,31 +235,45 @@ bool j1Scene::PostUpdate(float dt)
 		break;
 
 	case scenes::victory:
-		SDL_Rect rect = { 0, 0, 757, 791 };
 		
-		if (scale < 0.005)
+		
+		if (scale_victory < 0.005)
 		{
-			scale = scale + 0.0001;
+			scale_victory = scale_victory + 0.0001;
 		}
-		/*}else if(scale < 0.4f) {
-			scale = scale + 0.005;
-		}
-		else if (scale < 0.45f)
+		else if (scale_victory < 0.5f)
 		{
-			scale = scale + 0.0035;
-		}*/
-		else if (scale < 0.5f)
-		{
-			if (speed > 0.001)
+			if (speed_victory > 0.001)
 			{
-				speed -= 0.00002;
+				speed_victory -= 0.00002;
 			}	
-			scale = scale + speed;
+			scale_victory = scale_victory + speed_victory;
 		}
 		
 
-		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/scale)-(rect.w*scale), ((App->render->camera.h / 2) / scale) - (rect.h*scale) - 150, &rect, 1.0f, 1.0f, SDL_FLIP_NONE, scale);
-	
+		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+
+		break;
+
+	case scenes::defeat:
+		
+
+		if (scale_defeat < 0.005)
+		{
+			scale_defeat = scale_defeat + 0.0001;
+		}
+		else if (scale_defeat < 0.5f)
+		{
+			if (speed_defeat > 0.001)
+			{
+				speed_defeat -= 0.00002;
+			}
+			scale_defeat = scale_defeat + speed_defeat;
+		}
+
+
+		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+
 		break;
 	}
 
@@ -344,7 +365,12 @@ void j1Scene::DeleteScene() {
 	case scenes::victory:
 		DeleteUI();
 		break;
-	}	
+	case scenes::defeat:
+		DeleteUI();
+		break;
+
+	}
+
 }
 
 void j1Scene::CreateScene(scenes next_scene) {
@@ -371,6 +397,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::victory:
 		current_scene = scenes::victory;
 		CreateVictory();
+		break;
+	case scenes::defeat:
+		current_scene = scenes::defeat;
+		CreateDefeat();
 		break;
 	}
 }
@@ -494,8 +524,8 @@ bool j1Scene::CreateVictory() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	scale = 0.0f;
-	speed = 0.005f;
+	scale_victory = 0.0f;
+	speed_victory = 0.005f;
 
 	victoryLogo = App->tex->Load("textures/gui/VictorySheet.png");
 
@@ -521,6 +551,38 @@ bool j1Scene::CreateVictory() {
 	return true;
 }
 
+bool j1Scene::CreateDefeat() {
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
+	scale_defeat = 0.0f;
+	speed_defeat = 0.005f;
+
+	defeatLogo = App->tex->Load("textures/gui/DefeatSheet.png");
+
+	//Loading UI
+	SDL_Rect rect = { 1280, 0, 1280, 720 };
+
+	defeatBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
+
+	//App->render->Blit(victoryLogo, 0, 0);
+
+	defeatButtonContinue = App->gui->CreateGuiElement(Types::button, 480, 550, { 0, 63, 303, 42 }, defeatBackground, this, NULL);
+	defeatButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
+
+
+	//uncomment that to use text and not button to continue
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+
+	//victory music
+	App->audio->PlayMusic("Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+
+
+	return true;
+}
+
 bool j1Scene::DeleteUI() 
 {
 	menuBackground = nullptr;
@@ -538,10 +600,20 @@ bool j1Scene::DeleteUI()
 	ingameTextMenu = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
+
+	//delete victory scene
+	App->tex->UnLoad(victoryLogo);
 	victoryBackground = nullptr;
 	victoryButtonContinue = nullptr;
+	victoryTextContinue = nullptr;
+	victoryTextClick = nullptr;
+	//delete defeat scene
+	App->tex->UnLoad(defeatLogo);
 	defeatBackground = nullptr;
 	defeatButtonContinue = nullptr;
+	defeatTextContinue = nullptr;
+	defeatTextClick = nullptr;
+
 	App->tex->UnLoad(logoSheet);
 	App->gui->DeleteAllGui();
 	return true;
@@ -581,6 +653,12 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 
 	//Victory Buttons
 	if (guiElement == victoryButtonContinue) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+
+	//Defeat Buttons
+	if (guiElement == defeatButtonContinue) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
