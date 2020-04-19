@@ -166,7 +166,7 @@ bool j1Scene::Update(float dt)
 		}
 		//Draw the map
 		App->map->Draw();
-
+		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 		break;
 	}
 
