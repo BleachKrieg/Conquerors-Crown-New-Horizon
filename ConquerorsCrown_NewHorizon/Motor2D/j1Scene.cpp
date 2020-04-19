@@ -90,7 +90,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
-			App->audio->PauseMusic();
+			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
@@ -387,9 +387,13 @@ bool j1Scene::CreateInGame()
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
 
-	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 4, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
+	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
+
+	ingameTextGold = App->gui->CreateGuiElement(Types::text, 722, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 
 	LoadTiledEntities();
 
@@ -453,6 +457,9 @@ bool j1Scene::DeleteUI()
 	ingameTopBar = nullptr;
 	ingameButtonMenu = nullptr;
 	ingameTextMenu = nullptr;
+	ingameTextGold = nullptr;
+	ingameTextWood = nullptr;
+	ingameTextStone = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
 	App->tex->UnLoad(logoSheet);
@@ -464,7 +471,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//Menu buttons
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic();
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
@@ -482,7 +489,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic();
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 	else if (guiElement == townHallButton) {

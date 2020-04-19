@@ -177,7 +177,7 @@ void j1Audio::PauseMusic(float fade_time)
 	{
 		if (fade_time > 0.0f)
 		{
-			Mix_FadeOutMusic(int(fade_time * 500.0f));
+			Mix_FadeOutMusic(int(fade_time * 900.0f));
 			musicToFree = true;
 		}
 		else

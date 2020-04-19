@@ -103,6 +103,9 @@ public:
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
+	GuiItem* ingameTextGold;
+	GuiItem* ingameTextWood;
+	GuiItem* ingameTextStone;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
