@@ -90,6 +90,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->audio->PauseMusic();
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
@@ -463,6 +464,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//Menu buttons
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->audio->PauseMusic();
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
@@ -480,6 +482,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->audio->PauseMusic();
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 	else if (guiElement == townHallButton) {

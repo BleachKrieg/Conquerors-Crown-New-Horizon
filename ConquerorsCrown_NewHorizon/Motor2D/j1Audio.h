@@ -26,6 +26,9 @@ public:
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
+	// Pause the music with or without fadeout
+	void PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool Update(float dt);
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
@@ -78,6 +81,8 @@ private:
 	p2SString			fx_directory;
 	float volumemusic;
 	float volumefx;
+
+	bool musicToFree;
 };
 
 #endif // __j1AUDIO_H__
