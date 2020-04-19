@@ -5,7 +5,7 @@
 #include "j1Entity.h"
 
 
-PathFinder::PathFinder() : last_path(DEFAULT_PATH_LENGTH), initSuccessful(false), pathCompleted(false),max_iterations(50),available(true)
+PathFinder::PathFinder() : last_path(DEFAULT_PATH_LENGTH), initSuccessful(false), pathCompleted(false),max_iterations(150),available(true)
 {
 	LOG("PathFinder created");
 }
@@ -103,19 +103,14 @@ bool PathFinder::IteratePath()
 						// If it is a better path, Update the parent
 						adjacentNodes.list[i].CalculateF(destination);
 						//open.list.erase(std::find(open.list.begin(), open.list.end() + 1, adjacentNodes.list[i]));
-						for (int i = 0; i < open.list.size(); i++)
+						for (int j = 0; j < open.list.size(); j++)
 						{
-							if (open.list[i].pos == adjacentNodes.list[i].pos)
+							if (open.list[j].pos == adjacentNodes.list[i].pos)
 							{
-								open.list.erase(open.list.begin() + i);
+								open.list.erase(open.list.begin() + j);
 							}
-
 						}
 						open.list.push_back(adjacentNodes.list[i]);
-
-
-
-						
 					}
 				}
 			}
@@ -173,7 +168,7 @@ const PathNode* PathList::Find(const iPoint& point) const
 // ---------------------------------------------------------------------------------
 const PathNode* PathList::GetNodeLowestScore() const
 {
-	int min = 100000;
+	int min = 65535;
 	const PathNode* ret = nullptr;
 
 	for (int i = 0; i < list.size(); i++)
