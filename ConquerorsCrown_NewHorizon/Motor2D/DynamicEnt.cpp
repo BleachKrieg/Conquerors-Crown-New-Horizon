@@ -15,6 +15,7 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
+	death_counter = 0;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -131,7 +132,6 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 
 void DynamicEnt::AttackTarget(DynamicEntityType type)
 {
-
 	//attack close enemy entity
 
 	if (target_entity == NULL)
@@ -175,25 +175,32 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 					current_time = timer.ReadMs();
 					if (App->entity->max_audio_attacks < 1) {
 						
+
+						if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+							SpatialAudio(3, App->audio->archer_attack, position.x, position.y);
+							//LOG("ARCHER");
+							//LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
+						}
 						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 							SpatialAudio(2, App->audio->footman_attack, position.x, position.y);
-							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							//LOG("FOOTMAN");
+							//LOG("Footman attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
 						}
-						/*if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
-							SpatialAudio(3, App->audio->archer_attack, position.x, position.y);
-							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
-						}
+						
 						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
 							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
-							LOG("SPATIAL AUDIO ARCHER");
-							LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							//LOG("TROLL");
+							//LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							App->entity->max_audio_attacks++;
+
 						}
-						*/
-						App->entity->max_audio_attacks++;
+						
 					}
 					
-					LOG("Audio attacks: %i", App->entity->max_audio_attacks);
-
 				}
 			}
 		}
@@ -432,8 +439,24 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 	}
 }
 
-void DynamicEnt::Death()
+void DynamicEnt::Death(DynamicEntityType entity_type)
 {
 	current_animation = &death_down;
+	death_counter++;
+	if (death_counter == 2) {
+		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+			SpatialAudio(6, App->audio->die_archer, position.x, position.y);
+
+		}
+		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+			SpatialAudio(7, App->audio->die_footman, position.x, position.y);
+		}
+
+		if (entity_type == DynamicEntityType::ENEMY_TROLL) {
+			SpatialAudio(-1, App->audio->die_troll, position.x, position.y);
+		}
+		
+	}
+	LOG("DEATH: %i", death_counter);
 	if (current_animation->Finished() == true) { to_delete = true; }
 }
