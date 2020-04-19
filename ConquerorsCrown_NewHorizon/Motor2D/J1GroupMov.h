@@ -27,6 +27,10 @@ public:
 	bool NewGroup;
 	j1Entity* player_selected = nullptr;
 	j1Entity* ai_selected = nullptr;
+
+private:
+
+	uint gatherer_counter;
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "StaticEnt.h"
-#include "p2DynArray.h"
+#include "j1PerfTimer.h"
 
 class ResourceEntity : public StaticEnt
 {
@@ -19,12 +19,6 @@ public:
 	// Called before the first frame
 	bool Start();
 
-	// Called each loop iteration
-	bool Update(float dt);
-
-	// Called after all updates
-	bool PostUpdate(float dt);
-
 	bool CleanUp();
 
 	enum class RESOURCE_ENTITY_TYPE
@@ -35,11 +29,8 @@ public:
 		QUARRY,
 	};
 
-public:
-	uint& GetResourceType();
-
 private:
-	RESOURCE_ENTITY_TYPE type;
+	RESOURCE_ENTITY_TYPE	type;
 };
 
 #endif // !__RESOURCEENTITIES_H__

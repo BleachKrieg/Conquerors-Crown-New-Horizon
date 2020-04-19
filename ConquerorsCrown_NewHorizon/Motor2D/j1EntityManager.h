@@ -5,6 +5,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
+#include "ResourceEntities.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 #include "StaticEnt.h"
@@ -41,7 +42,7 @@ public:
 	// Create a new entity
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
-	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0);
+	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
 
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
@@ -60,7 +61,13 @@ public:
 	vector<j1Entity*> player_dyn_ent;
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
+	vector<j1Entity*> resources_ent;
 
+	// Task times --------------------
+	uint trees_time;
+	uint mines_time;
+	uint quarries_time;
+	// ------------------------------
 
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;

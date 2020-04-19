@@ -14,7 +14,7 @@
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
-	name.create("test_1");
+	name.create("town_hall");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
@@ -24,6 +24,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	active = true;
 	createUI = false;
 	create_gatherer = false;
 	selectable_buildings = true;
@@ -65,6 +66,9 @@ bool HumanTownHall::Start()
 bool HumanTownHall::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+
+	if (isSelected && App->movement->player_selected != this)
+		isSelected = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
