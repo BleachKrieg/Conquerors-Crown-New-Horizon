@@ -76,9 +76,11 @@ bool j1GroupMov::Update(float dt) {
 				loop = false;
 			}
 		}
+		LOG("buildings %d", App->entity->player_stat_ent.size());
 		for (int i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
 		{
 			it = App->entity->player_stat_ent[i];
+
 			it->isSelected = false;
 			rect = it->GetAnimation()->GetCurrentSize();
 			rect.x = it->position.x;

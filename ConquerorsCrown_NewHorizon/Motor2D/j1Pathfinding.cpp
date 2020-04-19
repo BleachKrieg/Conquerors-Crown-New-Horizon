@@ -70,7 +70,7 @@ bool j1PathFinding::IsWalkable(const iPoint& pos) const
 iPoint j1PathFinding::InminentNeighbour(const iPoint& origin, const iPoint& destination) const
 {
 	iPoint ret = destination;
-	for (int max = 0; max < 1000; ++max)
+	for (int max = 0; max < 100; ++max)
 	{
 		for (int i = (-1 - max); i < (2 + max); ++i)
 		{
