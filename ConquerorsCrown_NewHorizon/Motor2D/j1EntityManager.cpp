@@ -30,8 +30,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	//trees_time = 20000;
-	trees_time = 1000;
+	trees_time = 20000;
 	quarries_time = 25000;
 	mines_time = 30000;
 
