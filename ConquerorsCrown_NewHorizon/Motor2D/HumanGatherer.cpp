@@ -102,6 +102,8 @@ bool HumanGatherer::Update(float dt)
 		bool found = false;
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click && work_state != WORK_STATE::WORKING)
 		{
+			work_state = WORK_STATE::NONE;
+			target_entity = nullptr;
 			iPoint pos;
 			j1Entity* it;
 			App->input->GetMousePosition(pos.x, pos.y);
@@ -131,7 +133,7 @@ bool HumanGatherer::Update(float dt)
 				}
 			}
 		}
-		else if (!found)
+		if (!found && App->input->screen_click && work_state != WORK_STATE::WORKING)
 		{
 			OrderPath(entity_type);
 		}
@@ -152,7 +154,7 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::GO_TO_TOWNHALL)
 	{
-		if (position.DistanceTo(town_hall->position) <= 32)
+		if (position.DistanceTo(town_hall->position) <= 100)
 		{
 			path.Clear();
 			work_state = WORK_STATE::GO_TO_WORK;
