@@ -143,7 +143,7 @@ bool HumanGatherer::Update(float dt)
 	if (work_state == WORK_STATE::GO_TO_WORK)
 	{
 		target_entity = work_space;
-		if (position.DistanceTo(work_space->position) <= 64)
+		if (position.DistanceTo(work_space->position) <= 100 && path.Count() == 0)
 		{
 			path.Clear();
 			work_state = WORK_STATE::WORKING;
@@ -154,7 +154,7 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::GO_TO_TOWNHALL)
 	{
-		if (position.DistanceTo(town_hall->position) <= 100)
+		if (position.DistanceTo(town_hall->position) <= 200 && path.Count() == 0)
 		{
 			path.Clear();
 			work_state = WORK_STATE::GO_TO_WORK;

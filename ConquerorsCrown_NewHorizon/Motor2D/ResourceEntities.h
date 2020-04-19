@@ -29,9 +29,6 @@ public:
 		QUARRY,
 	};
 
-public:
-	uint& GetResourceType();
-
 private:
 	RESOURCE_ENTITY_TYPE	type;
 };
