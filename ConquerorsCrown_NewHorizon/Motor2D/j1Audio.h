@@ -60,6 +60,10 @@ public:
 	int footman_attack;
 	int archer_attack;
 	int troll_attack;
+	int die_footman;
+	int die_archer;
+	int die_gatherer;
+	int die_troll;
 
 	int click_to_play;
 	int normal_click;

@@ -233,7 +233,7 @@ void HumanTownHall::checkAnimation(float dt)
 			}
 		}
 
-		SpatialAudio(1, App->audio->construction, position.x, position.y);
+		//SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 		actualState = ST_TOWNHALL_FINISHED;
 	}

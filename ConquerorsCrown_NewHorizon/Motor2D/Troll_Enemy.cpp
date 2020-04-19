@@ -39,7 +39,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	team = TeamType::IA;
 	target_entity = NULL;
 	state = DynamicState::IDLE;
-
+	entity_type = DynamicEntityType::ENEMY_TROLL;
 
 
 	// TODO ------------------------------------------
@@ -124,7 +124,7 @@ bool TrollEnemy::Update(float dt)
 	case DynamicState::DYING:
 		if (App->movement->ai_selected == this)
 			App->movement->ai_selected = nullptr;
-		Death();
+		Death(entity_type);
 		break;
 	}
 
