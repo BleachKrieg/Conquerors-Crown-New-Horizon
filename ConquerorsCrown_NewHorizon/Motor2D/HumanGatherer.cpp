@@ -16,6 +16,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	name.create("human_gatherer");
 
 	// TODO: Should get all the DATA from a xml file
+	work_state = WORK_STATE::NONE;
 	speed = { NULL, NULL };
 	life_points = 100;
 	attack_vision = 200;
@@ -23,6 +24,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	time_attack = 0;
 	attack_damage = 0;
 	vision = 26;
+	inv_size = 0;
 	body = 13;
 	position.x = posx;
 	position.y = posy;
@@ -38,6 +40,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	player_order = false;
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::HUMAN_GATHERER;
+	work_name = "";
 
 	// TODO ------------------------------------------
 }
@@ -46,6 +49,16 @@ HumanGatherer::~HumanGatherer() {}
 
 bool HumanGatherer::Start()
 {
+	bool found = false;
+	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
+	{
+		if (App->entity->player_stat_ent[i]->name == "town_hall")
+		{
+			town_hall = App->entity->player_stat_ent[i];
+			found = true;
+		}
+	}
+
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->gatherer_animations.begin();
 	moving_up = **animations_list;
@@ -84,7 +97,92 @@ bool HumanGatherer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 
-	OrderPath(entity_type);
+	if (isSelected)
+	{
+		bool found = false;
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click && work_state != WORK_STATE::WORKING)
+		{
+			iPoint pos;
+			j1Entity* it;
+			App->input->GetMousePosition(pos.x, pos.y);
+			pos = App->render->ScreenToWorld(pos.x, pos.y);
+			bool loop = true;
+			SDL_Rect r;
+			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
+			{
+				it = App->entity->resources_ent[i];
+				r.x = it->position.x;
+				r.y = it->position.y;
+				r.w = 32;
+				r.h = 32;
+				if (pos.x > r.x && pos.x < (r.x + r.w) && pos.y > r.y && pos.y < (r.y + r.h))
+				{
+					work_space = it;
+					loop = false;
+					found = true;
+					work_state = WORK_STATE::GO_TO_WORK;
+					work_name = it->name;
+					if (work_name == "mine")
+						work_time = App->entity->mines_time;
+					if (work_name == "quarry")
+						work_time = App->entity->quarries_time;
+					if (work_name == "tree")
+						work_time = App->entity->trees_time;
+				}
+			}
+		}
+		else if (!found)
+		{
+			OrderPath(entity_type);
+		}
+	}
+
+	
+	if (work_state == WORK_STATE::GO_TO_WORK)
+	{
+		target_entity = work_space;
+		if (position.DistanceTo(work_space->position) <= 64)
+		{
+			path.Clear();
+			work_state = WORK_STATE::WORKING;
+			target_entity = nullptr;
+			start_time = timer.ReadMs();
+		}
+		player_order = true;
+	}
+	if (work_state == WORK_STATE::GO_TO_TOWNHALL)
+	{
+		if (position.DistanceTo(town_hall->position) <= 32)
+		{
+			path.Clear();
+			work_state = WORK_STATE::GO_TO_WORK;
+			target_entity = work_space;
+			if (work_name == "mine")
+				App->scene->gold += inv_size;
+			if (work_name == "quarry")
+				App->scene->stone += inv_size;
+			if (work_name == "tree")
+				App->scene->wood += inv_size;
+			player_order = true;
+			inv_size = 0u;
+			following_target = false;
+		}
+	}
+	if (work_state == WORK_STATE::WORKING)
+	{
+		state = DynamicState::INTERACTING;
+		if ((timer.ReadMs() - start_time) > work_time)
+		{
+			target_entity = town_hall;
+			following_target = false;
+			inv_size = 100;
+			state = DynamicState::IDLE;
+			work_state = WORK_STATE::GO_TO_TOWNHALL;
+		}
+	}
+
+	GathererGoTos();
+
 	Movement();
 
 	if (life_points <= 0)

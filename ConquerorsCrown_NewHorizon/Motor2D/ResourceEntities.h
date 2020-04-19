@@ -19,12 +19,6 @@ public:
 	// Called before the first frame
 	bool Start();
 
-	// Called each loop iteration
-	bool Update(float dt);
-
-	// Called after all updates
-	bool PostUpdate(float dt);
-
 	bool CleanUp();
 
 	enum class RESOURCE_ENTITY_TYPE
@@ -40,8 +34,6 @@ public:
 
 private:
 	RESOURCE_ENTITY_TYPE	type;
-	j1PerfTimer				timer;
-	float					task_time;
 };
 
 #endif // !__RESOURCEENTITIES_H__

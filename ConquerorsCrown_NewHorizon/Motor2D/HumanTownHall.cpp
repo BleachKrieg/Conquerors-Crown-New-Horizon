@@ -14,7 +14,7 @@
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
-	name.create("test_1");
+	name.create("town_hall");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;

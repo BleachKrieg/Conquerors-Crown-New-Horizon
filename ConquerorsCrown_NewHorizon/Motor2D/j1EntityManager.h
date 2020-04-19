@@ -63,6 +63,11 @@ public:
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
 
+	// Task times --------------------
+	uint trees_time;
+	uint mines_time;
+	uint quarries_time;
+	// ------------------------------
 
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;

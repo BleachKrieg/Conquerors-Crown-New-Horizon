@@ -56,6 +56,9 @@ bool j1Scene::Start()
 
 	current_level = "First level design.tmx";
 	debug = false;
+	wood = 0u;
+	stone = 0u;
+	gold = 0u;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -275,7 +278,6 @@ void j1Scene::LoadTiledEntities() {
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
 						{
-							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 1u);
 						}
 					}

@@ -30,6 +30,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	//trees_time = 20000;
+	trees_time = 1000;
+	quarries_time = 25000;
+	mines_time = 30000;
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
@@ -75,8 +79,7 @@ bool j1EntityManager::Update(float dt)
 
 	for (int i = 0; i < entities.size(); i++) {
 		
-		if (entities[i]->active)
-			entities[i]->Update(dt);
+		entities[i]->Update(dt);
 	}
 	
 	return true;
@@ -95,8 +98,7 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 		else
 		{
-			if (entities[i]->active)
-				entities[i]->PostUpdate();
+			entities[i]->PostUpdate();
 		}
 	}
 
@@ -134,10 +136,14 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
-	if (ret != nullptr)
+	if (ret != nullptr && type != StaticEnt::StaticEntType::Resource)
 	{
 		entities.push_back(ret);
 		entities.back()->Start();
+	}
+	else
+	{
+		resources_ent.back()->Start();
 	}
 	return ret;
 }

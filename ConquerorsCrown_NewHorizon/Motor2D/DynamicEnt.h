@@ -56,6 +56,8 @@ public:
 
 	void AttackTarget(DynamicEntityType type);
 
+	void GathererGoTos();
+
 	void Death(DynamicEntityType entity_type);
 public:
 	DynamicEntityType entity_type;
