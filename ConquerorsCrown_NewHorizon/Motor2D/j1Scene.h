@@ -16,7 +16,9 @@ class StaticEnt;;
 enum class scenes {
 	menu,
 	ingame,
-	logo
+	logo,
+	victory,
+	defeat,
 };
 
 class GuiItem;
@@ -58,6 +60,8 @@ public:
 	bool CreateMenu();
 	bool CreateInGame();
 	bool CreateLogo();
+	bool CreateVictory();
+	bool CreateDefeat();
 	bool DeleteUI();
 
 	//InGameUI functions
@@ -76,6 +80,8 @@ private:
 	scenes current_scene;
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
+	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
 	Animation* current_animation = nullptr;
 	Animation logo;
 	int logoTextTimer;
@@ -120,6 +126,24 @@ public:
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
+
+	//VictoryGui
+	SDL_Rect rect_victory = { 0, 0, 757, 791 };
+	GuiItem* victoryBackground;
+	GuiItem* victoryButtonContinue;
+	GuiItem* victoryTextContinue;
+	GuiItem* victoryTextClick;
+	float scale_victory = 0.0f;
+	float speed_victory = 0.0f;
+
+	//DefeatGui
+	SDL_Rect rect_defeat = { 0, 0, 757, 791 };
+	GuiItem* defeatBackground;
+	GuiItem* defeatButtonContinue;
+	GuiItem* defeatTextContinue;
+	GuiItem* defeatTextClick;
+	float scale_defeat = 0.0f;
+	float speed_defeat = 0.0f;
 
 	bool active;
 };

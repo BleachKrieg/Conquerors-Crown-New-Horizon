@@ -61,6 +61,7 @@ bool j1Scene::Start()
 	wood = 0u;
 	stone = 0u;
 	gold = 0u;
+	map_coordinates = { 0, 0 };
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -99,6 +100,16 @@ bool j1Scene::Update(float dt)
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
+		break;
+	case scenes::victory:
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+		break;
+	case scenes::defeat:
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
 		break;
 	case scenes::ingame:
 		//Camera movement inputs
@@ -175,8 +186,24 @@ bool j1Scene::Update(float dt)
 		//Draw the map
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
+
+
+		//Victory and Defeat scenes
+		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		{
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		{
+			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+		}
+
+
 		break;
+
+	
 	}
+	
 
 	//App->render->Blit(debug_tex, p.x, p.y);
 
@@ -217,6 +244,48 @@ bool j1Scene::PostUpdate(float dt)
 			logoTextTimer = 0;
 		}*/
 		App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+		break;
+
+	case scenes::victory:
+		
+		
+		if (scale_victory < 0.005)
+		{
+			scale_victory = scale_victory + 0.0001;
+		}
+		else if (scale_victory < 0.5f)
+		{
+			if (speed_victory > 0.001)
+			{
+				speed_victory -= 0.00002;
+			}	
+			scale_victory = scale_victory + speed_victory;
+		}
+		
+
+		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+
+		break;
+
+	case scenes::defeat:
+		
+
+		if (scale_defeat < 0.005)
+		{
+			scale_defeat = scale_defeat + 0.0001;
+		}
+		else if (scale_defeat < 0.5f)
+		{
+			if (speed_defeat > 0.001)
+			{
+				speed_defeat -= 0.00002;
+			}
+			scale_defeat = scale_defeat + speed_defeat;
+		}
+
+
+		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+
 		break;
 	}
 
@@ -310,8 +379,17 @@ void j1Scene::DeleteScene() {
 	case scenes::logo:
 		DeleteUI();
 		break;
+	case scenes::victory:
+		DeleteUI();
+		break;
+	case scenes::defeat:
+		DeleteUI();
+		break;
+
 	}
+
 }
+
 void j1Scene::CreateScene(scenes next_scene) {
 	//Creating scene
 	switch (next_scene)
@@ -332,6 +410,14 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::logo:
 		current_scene = scenes::logo;
 		CreateLogo();
+		break;
+	case scenes::victory:
+		current_scene = scenes::victory;
+		CreateVictory();
+		break;
+	case scenes::defeat:
+		current_scene = scenes::defeat;
+		CreateDefeat();
 		break;
 	}
 }
@@ -454,6 +540,70 @@ bool j1Scene::CreateLogo() {
 	return true;
 }
 
+bool j1Scene::CreateVictory() {
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
+	scale_victory = 0.0f;
+	speed_victory = 0.005f;
+
+	victoryLogo = App->tex->Load("textures/gui/VictorySheet.png");
+
+	//Loading UI
+	SDL_Rect rect = { 1280, 0, 1280, 720 };
+
+	victoryBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);	
+
+	//App->render->Blit(victoryLogo, 0, 0);
+
+	victoryButtonContinue = App->gui->CreateGuiElement(Types::button, 480, 550, { 0, 63, 303, 42 }, victoryBackground, this, NULL);
+	victoryButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	victoryTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, victoryButtonContinue, nullptr, "Continue");
+	
+
+	//uncomment that to use text and not button to continue
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+
+	//victory music
+	App->audio->PlayMusic("Audio/Music/Human/Human_Victory.ogg", 2.0F);
+
+
+	return true;
+}
+
+bool j1Scene::CreateDefeat() {
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
+	scale_defeat = 0.0f;
+	speed_defeat = 0.005f;
+
+	defeatLogo = App->tex->Load("textures/gui/DefeatSheet.png");
+
+	//Loading UI
+	SDL_Rect rect = { 1280, 0, 1280, 720 };
+
+	defeatBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
+
+	//App->render->Blit(victoryLogo, 0, 0);
+
+	defeatButtonContinue = App->gui->CreateGuiElement(Types::button, 480, 550, { 0, 63, 303, 42 }, defeatBackground, this, NULL);
+	defeatButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
+
+
+	//uncomment that to use text and not button to continue
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+
+	//victory music
+	App->audio->PlayMusic("Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+
+
+	return true;
+}
+
 bool j1Scene::DeleteUI() 
 {
 	menuBackground = nullptr;
@@ -474,6 +624,20 @@ bool j1Scene::DeleteUI()
 	ingameTextStone = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
+
+	//delete victory scene
+	App->tex->UnLoad(victoryLogo);
+	victoryBackground = nullptr;
+	victoryButtonContinue = nullptr;
+	victoryTextContinue = nullptr;
+	victoryTextClick = nullptr;
+	//delete defeat scene
+	App->tex->UnLoad(defeatLogo);
+	defeatBackground = nullptr;
+	defeatButtonContinue = nullptr;
+	defeatTextContinue = nullptr;
+	defeatTextClick = nullptr;
+
 	App->tex->UnLoad(logoSheet);
 	App->gui->DeleteAllGui();
 	return true;
@@ -512,6 +676,19 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			Building_preview = true;
 		}
 	}
+
+	//Victory Buttons
+	if (guiElement == victoryButtonContinue) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+
+	//Defeat Buttons
+	if (guiElement == defeatButtonContinue) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 
