@@ -89,6 +89,10 @@ public:
 	GuiItem* Button_Create_Gatherer;
 	bool create_gatherer;
 	GuiItem* Gatherer_image;
+	GuiItem* Gatherer_stone_cost;
+	GuiItem* Gatherer_Text_stone;
+	GuiItem* Gatherer_gold_cost;
+	GuiItem* Gatherer_Text_Gold;
 
 	//Progress Bar
 	GuiItem* creation_TownHall_bar;

@@ -10,6 +10,7 @@
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
+#include "j1Fonts.h"
 #include "j1Gui.h"
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
@@ -58,7 +59,11 @@ bool HumanTownHall::Start()
 	createUI = true;
 	Button_Create_Gatherer = nullptr;
 	Gatherer_image = nullptr;
+	Gatherer_stone_cost = nullptr;
+	Gatherer_gold_cost = nullptr;
 	creation_TownHall_bar = nullptr;
+	Gatherer_Text_stone = nullptr;
+	Gatherer_Text_Gold = nullptr;
 	deployed = false;
 	return true;
 }
@@ -246,11 +251,13 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 0)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 0 || App->scene->debug == true && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
 		{
-			App->scene->AddResource("wood", -100);
-			App->scene->AddResource("stone", -0);
-
+			if (App->scene->debug == false)
+			{
+				App->scene->AddResource("wood", -100);
+				App->scene->AddResource("stone", -0);
+			}
 			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
@@ -343,10 +350,14 @@ void HumanTownHall::checkAnimation(float dt)
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 0 || create_gatherer == true && App->scene->wood >= 100 && App->scene->gold >= 0)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 0 || create_gatherer == true && App->scene->wood >= 100 && App->scene->gold >= 0 ||
+				App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || App->scene->debug == true && create_gatherer == true)
 			{
-				App->scene->AddResource("wood", -100);
-				App->scene->AddResource("gold", -0);
+				if (App->scene->debug == false) 
+				{
+					App->scene->AddResource("wood", -100);
+					App->scene->AddResource("gold", -0);
+				}
 
 				if (Troop.size() < 6)
 				{
@@ -388,7 +399,7 @@ void HumanTownHall::checkAnimation(float dt)
 		}
 		else
 		{
-			if (Button_Create_Gatherer != nullptr && createUI == false)
+			if (Button_Create_Gatherer != nullptr && createUI == false && Gatherer_gold_cost != nullptr )
 			{
 				DeleteTownHallUI();
 				createUI = true;
@@ -530,13 +541,26 @@ void HumanTownHall::CreateTownHallUI()
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
+	Gatherer_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Gatherer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Gatherer_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Gatherer_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 }
 
 void HumanTownHall::DeleteTownHallUI()
 {
 	if (Button_Create_Gatherer != nullptr) 
 	{
+		Gatherer_stone_cost->to_delete = true;
+		Gatherer_Text_stone->to_delete = true;
+		Gatherer_Text_Gold->to_delete = true;
+		Gatherer_gold_cost->to_delete = true;
 		Button_Create_Gatherer->to_delete = true;
+
+		Gatherer_stone_cost = nullptr;
+		Gatherer_Text_stone = nullptr;
+		Gatherer_Text_Gold = nullptr;
+		Gatherer_gold_cost = nullptr;
 		Button_Create_Gatherer = nullptr;
 	}
 }
@@ -545,7 +569,7 @@ void HumanTownHall::DeleteTownHallUI()
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100) {
+		if (App->scene->wood >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
 		}
 		isSelected = true;

@@ -154,7 +154,10 @@ bool j1Scene::Update(float dt)
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}
-			
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		{
+			App->scene->AddResource("wood", 100);
+		}
 
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
