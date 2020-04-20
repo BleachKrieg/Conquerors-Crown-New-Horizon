@@ -56,6 +56,9 @@ bool j1Scene::Start()
 
 	current_level = "First level design.tmx";
 	debug = false;
+	wood = 0u;
+	stone = 0u;
+	gold = 0u;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -166,7 +169,7 @@ bool j1Scene::Update(float dt)
 		}
 		//Draw the map
 		App->map->Draw();
-
+		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 		break;
 	}
 
@@ -272,6 +275,10 @@ void j1Scene::LoadTiledEntities() {
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
+						}
+						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
+						{
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 1u);
 						}
 					}
 				}

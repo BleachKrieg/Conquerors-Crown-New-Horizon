@@ -11,6 +11,15 @@
 class HumanGatherer : public DynamicEnt
 {
 public:
+
+	enum class WORK_STATE
+	{
+		NONE,
+		WORKING,
+		GO_TO_WORK,
+		GO_TO_TOWNHALL,
+	};
+
 	// Constructor
 	HumanGatherer(int posx, int posy);
 
@@ -27,6 +36,22 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
+private:
+	j1Entity* town_hall;
+	j1Entity* work_space;
+
+	p2SString work_name;
+
+	uint start_time;
+
+	uint work_time;
+
+	uint inv_size;
+
+	WORK_STATE work_state;
+
+	j1PerfTimer timer;
 
 };
 

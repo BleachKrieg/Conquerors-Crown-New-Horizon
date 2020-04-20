@@ -1,9 +1,11 @@
 #ifndef __PATHFINDER_H__
 #define __PATHFINDER_H__
 #include "p2Point.h"
-#include "p2List.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"
+
+#include <list>
+#include <vector>
 
 #pragma region Structs
 
@@ -31,14 +33,14 @@ struct PathList
 {
 
 	// Looks for a node in this list and returns it's list node or NULL
-	p2List_item<PathNode>* Find(const iPoint& point) const;
+	const PathNode* Find(const iPoint& point) const;
 
 	// Returns the Pathnode with lowest score in this list or NULL if empty
-	p2List_item<PathNode>* GetNodeLowestScore() const;
+	const PathNode* GetNodeLowestScore() const;
 
 	// -----------
 	// The list itself, note they are not pointers!
-	p2List<PathNode> list;
+	vector<PathNode> list;
 
 };
 #pragma endregion

@@ -82,6 +82,10 @@ public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
 
+	uint wood;
+	uint stone;
+	uint gold;
+
 	bool debug;
 	bool Building_preview;
 	iPoint mouse_position;

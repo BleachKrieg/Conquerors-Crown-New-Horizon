@@ -6,6 +6,7 @@
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
 #include "Troll_Enemy.h"
+#include "ResourceEntities.h"
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
@@ -29,6 +30,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	trees_time = 20000;
+	quarries_time = 25000;
+	mines_time = 30000;
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
@@ -120,7 +124,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	return ret;
 }
 
-j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy)
+j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy, uint resource_type)
 {
 	j1Entity* ret = nullptr;
 
@@ -128,12 +132,17 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
-	if (ret != nullptr)
+	if (ret != nullptr && type != StaticEnt::StaticEntType::Resource)
 	{
 		entities.push_back(ret);
 		entities.back()->Start();
+	}
+	else
+	{
+		resources_ent.back()->Start();
 	}
 	return ret;
 }
