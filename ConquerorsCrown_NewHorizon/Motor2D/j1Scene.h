@@ -19,7 +19,8 @@ enum class scenes {
 	ingame,
 	logo,
 	victory,
-	defeat,
+	defeat
+
 };
 
 class GuiItem;
@@ -73,6 +74,7 @@ public:
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
+	void TimeToClock();
 
 	void GuiInput(GuiItem* guiElement);
 	
@@ -120,6 +122,7 @@ public:
 	GuiItem* ingameTextGold;
 	GuiItem* ingameTextWood;
 	GuiItem* ingameTextStone;
+	GuiItem* ingameTextClock;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
@@ -145,7 +148,13 @@ public:
 	GuiItem* defeatTextClick;
 	float scale_defeat = 0.0f;
 	float speed_defeat = 0.0f;
-	j1Timer GameClock;
+
+	j1Timer gameClock;
+	int timer;
+	string mins;
+	string secs;
+	bool finish = false;
+
 	bool active;
 };
 
