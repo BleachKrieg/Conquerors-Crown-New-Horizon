@@ -5,7 +5,7 @@
 #include "j1Entity.h"
 
 
-PathFinder::PathFinder() : last_path(DEFAULT_PATH_LENGTH), initSuccessful(false), pathCompleted(false),max_iterations(150),available(true)
+PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true)
 {
 	LOG("PathFinder created");
 }
@@ -59,17 +59,17 @@ bool PathFinder::IteratePath()
 		if (node->pos == destination || stop) {
 			const PathNode* iterator = node;
 
-			last_path.Clear();
+			last_path.clear();
 			// Backtrack to create the final path
 			for (iterator; iterator->pos != origin; iterator = iterator->parent)
 			{
-				last_path.PushBack(iterator->pos);
+				last_path.push_back(iterator->pos);
 			}
 
-			last_path.PushBack(origin);
+			last_path.push_back(origin);
 
 			// Use the Pathnode::parent and Flip() the path when you are finish
-			last_path.Flip();
+			std::reverse(last_path.begin(), last_path.end());
 			pathCompleted = true;
 			initSuccessful = false;
 			available = true;
@@ -132,7 +132,7 @@ bool PathFinder::IteratePath()
 
 
 // To request all tiles involved in the last generated path
-const p2DynArray<iPoint>* PathFinder::GetLastPath() const
+const vector<iPoint>* PathFinder::GetLastPath() const
 {
 	return &last_path;
 }
@@ -195,13 +195,13 @@ const PathNode* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
-void PathFinder::SavePath(p2DynArray<iPoint>* path)
+void PathFinder::SavePath(vector<iPoint>* path)
 {
-	const p2DynArray<iPoint>* last_path = GetLastPath();
-	path->Clear();
-	for (uint i = 0; i < last_path->Count(); ++i)
+	const vector<iPoint>* last_path = GetLastPath();
+	path->clear();
+	for (uint i = 0; i < last_path->size(); ++i)
 	{
-		path->PushBack({ last_path->At(i)->x, last_path->At(i)->y });
+		path->push_back({ last_path->at(i).x, last_path->at(i).y });
 	}
 	LOG("saving path");
 }

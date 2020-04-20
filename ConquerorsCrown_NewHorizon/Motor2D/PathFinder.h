@@ -61,13 +61,13 @@ public:
 
 
 	// To request all tiles involved in the last generated path
-	const p2DynArray<iPoint>* GetLastPath() const;
+	const vector<iPoint>* GetLastPath() const;
 	
-	p2DynArray<iPoint> last_path;
+	vector<iPoint> last_path;
 
 	bool Update();
 
-	void SavePath(p2DynArray<iPoint>* path);
+	void SavePath(vector<iPoint>* path);
 
 
 	bool initSuccessful;
