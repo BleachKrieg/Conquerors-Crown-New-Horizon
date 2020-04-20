@@ -52,6 +52,7 @@ HumanTownHall::~HumanTownHall()
 
 bool HumanTownHall::Start()
 {
+	App->scene->AddResource("wood", 700);
 	if (App->scene->active == true) {
 		actualState = ST_TOWNHALL_AUTOMATIC;
 	}
@@ -248,7 +249,6 @@ void HumanTownHall::checkAnimation(float dt)
 
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click)
 		{
-
 			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
 			timer.Start();
@@ -341,8 +341,9 @@ void HumanTownHall::checkAnimation(float dt)
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_gatherer == true)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 || create_gatherer == true && App->scene->wood >= 100)
 			{
+				App->scene->AddResource("wood", -100);
 				if (Troop.size() < 6)
 				{
 					timer_queue += 3;
@@ -540,7 +541,9 @@ void HumanTownHall::DeleteTownHallUI()
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		create_gatherer = true;
+		if (App->scene->wood >= 100) {
+			create_gatherer = true;
+		}
 		isSelected = true;
 	}
 }

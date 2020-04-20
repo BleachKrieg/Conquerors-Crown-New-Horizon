@@ -346,15 +346,17 @@ void HumanBarracks::checkAnimation(float dt)
 				ImageSelected();
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false)
+			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false && App->scene->wood >= 100)
 			{
+				App->scene->AddResource("wood", -100);
 				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || create_swordman == true)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 || create_swordman == true && App->scene->wood >= 100)
 			{
+				App->scene->AddResource("wood", -100);
 				if (Troop.size() < 6)
 				{
 					timer_queue += 3;
@@ -394,8 +396,9 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				create_swordman = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true || create_archer == true)
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 || create_archer == true && App->scene->wood >= 100)
 			{
+				App->scene->AddResource("wood", -100);
 				if (Troop.size() < 6)
 				{
 					timer_queue += 3;
@@ -545,7 +548,7 @@ void HumanBarracks::CheckQueue()
 			case 2:
 				Searchtile(map);
 				randomrespawn2 = rand() % 10 + 10;
-				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::ARCHER, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::ARCHER, { respawn.x + randomrespawn2, respawn.y + randomrespawn2 });
 				if (Troop[i]->image != nullptr)
 				{
 					Troop[i]->image->to_delete = true;
@@ -719,13 +722,17 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Footman) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		create_swordman = true;
+		if (App->scene->wood >= 100) {
+			create_swordman = true;
+		}
 		isSelected = true;
 	}
 	else if (guiElement == Button_Create_Archer) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		create_archer = true;
+		if (App->scene->wood >= 100) {
+			create_archer = true;
+		}
 		isSelected = true;
 	}
 	
