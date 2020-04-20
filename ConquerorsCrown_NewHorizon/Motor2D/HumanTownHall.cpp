@@ -14,7 +14,7 @@
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
-	name.create("test_1");
+	name.create("town_hall");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
@@ -24,6 +24,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	active = true;
 	createUI = false;
 	create_gatherer = false;
 	selectable_buildings = true;
@@ -41,7 +42,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
 	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
 
-	team = TeamType::NO_TYPE;
+	team = TeamType::PLAYER;
 	actualState = ST_TOWNHALL_PREVIEW;
 	life_points = 100;
 }
@@ -55,11 +56,9 @@ bool HumanTownHall::Start()
 		actualState = ST_TOWNHALL_AUTOMATIC;
 	}
 	createUI = true;
-
 	Button_Create_Gatherer = nullptr;
 	Gatherer_image = nullptr;
 	creation_TownHall_bar = nullptr;
-
 
 	return true;
 }
@@ -67,6 +66,9 @@ bool HumanTownHall::Start()
 bool HumanTownHall::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+
+	if (isSelected && App->movement->player_selected != this)
+		isSelected = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
@@ -211,6 +213,7 @@ void HumanTownHall::checkAnimation(float dt)
 {
 	if (actualState == ST_TOWNHALL_AUTOMATIC)
 	{
+		map = App->map->WorldToMap(position.x, position.y);
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
 		timer.Start();

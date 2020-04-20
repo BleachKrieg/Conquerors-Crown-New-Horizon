@@ -28,6 +28,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
 	to_delete = false;
+	active = true;
 	isSelected = false;
 	selectable = true;
 	following_target = false;

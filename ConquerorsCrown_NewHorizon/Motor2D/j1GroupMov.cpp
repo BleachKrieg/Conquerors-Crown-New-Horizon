@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "j1Map.h"
+#include "DynamicEnt.h"
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
 #include "j1Entity.h"
@@ -36,7 +37,6 @@ bool j1GroupMov::Update(float dt) {
 	j1Entity* it;
 	if (ai_selected != nullptr)
 	{
-		ai_selected->isSelected = false;
 		ai_selected = nullptr;
 	}
 	App->input->GetMousePosition(mouse.x, mouse.y);
@@ -69,16 +69,18 @@ bool j1GroupMov::Update(float dt) {
 			rect.w /= 3;
 			rect.h /= 3;
 			App->render->DrawQuad(rect, 255, 0, 0, 100);
-			if (origin.x > (it->position.x - rect.w ) && origin.x < (it->position.x + rect.w ) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
+			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
 			{
 				it->isSelected = true;
 				player_selected = it;
 				loop = false;
 			}
 		}
+		LOG("buildings %d", App->entity->player_stat_ent.size());
 		for (int i = 0; i < App->entity->player_stat_ent.size(); ++i)
 		{
 			it = App->entity->player_stat_ent[i];
+
 			it->isSelected = false;
 			rect = it->GetAnimation()->GetCurrentSize();
 			rect.x = it->position.x;
@@ -94,7 +96,6 @@ bool j1GroupMov::Update(float dt) {
 	}
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
-		
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
 		bool loop = true;
@@ -119,56 +120,76 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && App->input->screen_click)
 	{
-		
-		for (int i = 0; i < App->entity->entities.size(); i++) {
-			it = App->entity->entities[i];
+		gatherer_counter = 0u;
+		for (int i = 0; i < App->entity->player_dyn_ent.size(); i++) {
+			it = App->entity->player_dyn_ent[i];
 
-			/*if (it->selectable_buildings == true && mouse.x < origin.x + 10 && mouse.y < origin.y + 10 && mouse.x > origin.x - 10 && mouse.y > origin.y - 10)
+			if (it->name == p2SString("human_gatherer"))
 			{
-				int xstatic = it->position.x, ystatic = it->position.y;
-				if (mouse.x > xstatic - 50 && mouse.x < xstatic + 50 && mouse.y > ystatic - 50 && mouse.y < ystatic + 50)
+				gatherer_counter += 1u;
+			}
+
+			if (it != player_selected)
+				it->isSelected = false;
+			int x = it->position.x, y = it->position.y;
+			// We store x and y positions
+			// Now we check if it's inside the rect, so we can "select this entity"
+			if (x > origin.x&& x < mouse.x) {
+				if (y < origin.y && y > mouse.y)
 				{
 					it->isSelected = true;
 				}
-				else {
-					it->isSelected = false;
-				}
-			}*/
-			if (it->selectable && it->type == j1Entity::entityType::DYNAMIC)
-			{
-				if(it != player_selected)
-					it->isSelected = false;
-				int x = it->position.x, y = it->position.y;
-				// We store x and y positions
-				// Now we check if it's inside the rect, so we can "select this entity"
-				if (x > origin.x&& x < mouse.x) {
-					if (y < origin.y && y > mouse.y)
-					{
-						it->isSelected = true;
-					}
-					else if (y > origin.y&& y < mouse.y)
-					{
-						it->isSelected = true;
-					}
-				}
-				else if (x < origin.x && x > mouse.x) {
-					if (y < origin.y && y > mouse.y)
-					{
-						it->isSelected = true;
-					}
-					else if (y > origin.y&& y < mouse.y)
-					{
-						it->isSelected = true;
-					}
-				}
-				if (it->isSelected)
+				else if (y > origin.y&& y < mouse.y)
 				{
-					if (!NewGroup)
-					{
-						selected.clear();
-					}
-					NewGroup = true;
-					selected.push_back(it);
+					it->isSelected = true;
+				}
+			}
+			else if (x < origin.x && x > mouse.x) {
+				if (y < origin.y && y > mouse.y)
+				{
+					it->isSelected = true;
+				}
+				else if (y > origin.y&& y < mouse.y)
+				{
+					it->isSelected = true;
+				}
+			}
+			if (it->isSelected)
+			{
+				if (!NewGroup)
+				{
+					selected.clear();
+				}
+				NewGroup = true;
+				selected.push_back(it);
+			}
+		}
+
+		uint size = selected.size();
+		if (gatherer_counter < uint(size / 2))
+		{
+			for (list<j1Entity*>::iterator ite = selected.begin(); ite != selected.end() && gatherer_counter > 0u; ++ite)
+			{
+				it = *ite;
+				if (it->name == p2SString("human_gatherer"))
+				{
+					it->isSelected = false;
+					gatherer_counter -= 1u;
+					selected.erase(ite);
+				}
+			}
+		}
+		else if (gatherer_counter > uint(size / 2))
+		{
+			size = size - gatherer_counter;
+			for (list<j1Entity*>::iterator ite = selected.begin(); ite != selected.end() && size > 0u; ++ite)
+			{
+				it = *ite;
+				if (it->name != p2SString("human_gatherer"))
+				{
+					it->isSelected = false;
+					size -= 1u;
+					selected.erase(ite);
 				}
 			}
 		}
@@ -181,6 +202,7 @@ bool j1GroupMov::Update(float dt) {
 	}
 	return true;
 }
+
 bool j1GroupMov::PostUpdate(float dt) {
 	return true;
 

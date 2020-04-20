@@ -61,7 +61,7 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 	j1Entity* it;
 
 	list<j1Entity*>::iterator selected_it;
-	if (isSelected && App->movement->ai_selected != nullptr)
+	if (isSelected && entity_type != DynamicEntityType::HUMAN_GATHERER && App->movement->ai_selected != nullptr)
 	{
 		target_entity = App->movement->ai_selected;
 	}
@@ -220,6 +220,34 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 		}
 	}
 }
+void DynamicEnt::GathererGoTos()
+{
+	if (target_entity == NULL)
+	{
+		following_target = false;
+	}
+	if (target_entity != NULL)
+	{
+		/*uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));*/
+
+		int x = target_entity->position.x;
+		int y = target_entity->position.y;
+
+		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+
+		if (!following_target)
+		{
+			current_time = timer.ReadMs();
+			following_target = true;
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->RequestPath(origin, targetPos, this);
+			followpath = 1;
+
+		}
+	}
+}
+
 void DynamicEnt::Movement()
 {
 	

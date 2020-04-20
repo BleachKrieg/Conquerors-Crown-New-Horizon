@@ -20,6 +20,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	vision = 30;
 	body = 40;
 	collrange = 25;
+	active = true;
 	selectable = true;
 	isSelected = false;
 	to_delete = false;
@@ -41,7 +42,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	// Load all animations
 	inconstruction.PushBack({ 399,410,96,81 }, 0.2, 0, 0, 0, 0);
 	finishedconst.PushBack({ 403,273,96,95 }, 0.2, 0, 0, 0, 0);
-	team = TeamType::NO_TYPE;
+	team = TeamType::PLAYER;
 	actualState = ST_BARRACK_PREVIEW;
 	life_points = 100;
 	createUI = false;
@@ -72,6 +73,9 @@ bool HumanBarracks::Start()
 bool HumanBarracks::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+
+	if (isSelected && App->movement->player_selected != this)
+		isSelected = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
@@ -216,6 +220,7 @@ void HumanBarracks::CheckWalkable(iPoint map)
 void HumanBarracks::checkAnimation(float dt)
 {
 	if (actualState == ST_BARRACK_AUTOMATIC) {
+		map = App->map->WorldToMap(position.x, position.y);
 		App->scene->Building_preview = false;
 		timer.Start();
 		world.x = position.x;
