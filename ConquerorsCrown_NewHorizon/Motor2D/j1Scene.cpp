@@ -215,24 +215,25 @@ bool j1Scene::Update(float dt)
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
 		//Victory and Defeat scenes
-		if (timer <= 0)
+		if (timer <= 0 && !finish)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
-			GameClock.Start();
+			finish = true;
 		}
-		else {
-			//GameClock Update
-			timer = 10 - GameClock.ReadSec();
-			TimeToClock();
-		}
-		//LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
-		if (App->entity->player_stat_ent.size() == 0 && GameClock.ReadSec() > 5)
+		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
 		{
-			GameClock.Start();
-			LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
 
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			finish = true;
 		}
+		else {
+			//gameClock Update
+			timer = 660 - gameClock.ReadSec();
+			TimeToClock();
+		}
+
+
 		break;
 	}
 	
@@ -382,9 +383,11 @@ void j1Scene::DeleteScene() {
 		DeleteUI();
 		break;
 	case scenes::victory:
+		App->tex->UnLoad(victoryLogo);
 		DeleteUI();
 		break;
 	case scenes::defeat:
+		App->tex->UnLoad(defeatLogo);
 		DeleteUI();
 		break;
 
@@ -408,7 +411,8 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
-		GameClock.Start();
+		gameClock.Start();
+		finish = false;
 		break;
 	case scenes::logo:
 		current_scene = scenes::logo;
@@ -631,13 +635,11 @@ bool j1Scene::DeleteUI()
 	logoBackground = nullptr;
 
 	//delete victory scene
-	App->tex->UnLoad(victoryLogo);
 	victoryBackground = nullptr;
 	victoryButtonContinue = nullptr;
 	victoryTextContinue = nullptr;
 	victoryTextClick = nullptr;
 	//delete defeat scene
-	App->tex->UnLoad(defeatLogo);
 	defeatBackground = nullptr;
 	defeatButtonContinue = nullptr;
 	defeatTextContinue = nullptr;

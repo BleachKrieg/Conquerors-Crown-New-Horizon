@@ -149,10 +149,11 @@ public:
 	float scale_defeat = 0.0f;
 	float speed_defeat = 0.0f;
 
-	j1Timer GameClock;
+	j1Timer gameClock;
 	int timer;
 	string mins;
 	string secs;
+	bool finish = false;
 
 	bool active;
 };
