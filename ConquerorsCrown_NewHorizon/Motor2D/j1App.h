@@ -30,7 +30,6 @@ class j1Fonts;
 class j1Minimap;
 class EntityRequest;
 class j1FadeToBlack;
-class j1WaveSystem;
 
 
 class j1App
@@ -115,7 +114,6 @@ public:
 	j1Minimap*			minimap;
 	EntityRequest*		requests;
 	j1FadeToBlack*		fade;
-	j1WaveSystem*		wave;
 
 	uint32				framerate = 0u;
 	pugi::xml_document	config_file;

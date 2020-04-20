@@ -21,7 +21,6 @@
 #include "EntityRequest.h"
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
-#include "j1WaveSystem.h"
 
 
 
@@ -48,7 +47,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	pathfinding = new j1PathFinding();
 	movement = new j1GroupMov();
 	fade = new j1FadeToBlack();
-	wave = new j1WaveSystem();
 	
 
 
@@ -64,7 +62,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(movement);
 	AddModule(entity);
 	AddModule(pathfinding);
-	AddModule(wave);
 	AddModule(minimap);
 	AddModule(gui);
 	AddModule(fade);

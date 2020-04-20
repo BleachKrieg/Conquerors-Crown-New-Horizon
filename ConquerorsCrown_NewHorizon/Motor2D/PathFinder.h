@@ -3,7 +3,6 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"
-#include "j1WaveSystem.h"
 
 #include <list>
 #include <vector>
@@ -11,7 +10,6 @@
 #pragma region Structs
 
 struct PathList;
-struct SpawnPoint;
 
 struct PathNode
 {
@@ -56,7 +54,7 @@ public:
 	~PathFinder();
 
 	// Main function to request a path from A to B
-	void PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester = nullptr, SpawnPoint* callback = nullptr);
+	void PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester);
 	bool IteratePath();
 
 
@@ -82,10 +80,9 @@ private:
 	iPoint origin;
 	iPoint destination;
 
-	
 	int max_iterations;
 	j1Entity* entity;
-	SpawnPoint* callback;
+
 	// we store the created path here
 };
 

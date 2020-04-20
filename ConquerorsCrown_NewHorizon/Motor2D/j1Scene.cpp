@@ -16,7 +16,6 @@
 #include "EntityRequest.h"
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
-#include "j1WaveSystem.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -55,7 +54,6 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	current_scene = scenes::ingame;
 	current_level = "First level design.tmx";
 	debug = false;
 	wood = 0u;
@@ -67,7 +65,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
 	
 
-	if (CreateInGame()) ret = true;
+	if (CreateLogo()) ret = true;
 
 	return ret;
 }
@@ -305,7 +303,6 @@ void j1Scene::DeleteScene() {
 		App->entity->DeleteAllEntities();
 		App->minimap->CleanUp();
 		App->map->CleanUp();
-		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
 		DeleteUI();
@@ -362,7 +359,6 @@ bool j1Scene::CreateMenu() {
 	menuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	menuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, menuButtonExit, nullptr, "Exit");
 
-
 	return true;
 }
 
@@ -407,9 +403,6 @@ bool j1Scene::CreateInGame()
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
-
-	App->wave->wave_ended.Start();
-	App->wave->wave_ongoing = false;
 
 	return ret;
 }

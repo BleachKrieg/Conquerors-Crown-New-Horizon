@@ -19,14 +19,12 @@ using namespace std;
 // --------------------------------------------------
 
 struct PathList;
-struct SpawnPoint;
 
 struct PathRequests
 {
 	iPoint origin;
 	iPoint destination;
 	j1Entity* requester;
-	SpawnPoint* callback;
 };
 
 class j1PathFinding : public j1Module
@@ -59,7 +57,7 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	int RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester, SpawnPoint* callback = nullptr);
+	int RequestPath(const iPoint& origin, const iPoint& destination, j1Entity* requester);
 
 	bool Start() override;
 

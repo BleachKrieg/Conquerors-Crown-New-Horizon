@@ -16,7 +16,7 @@ PathFinder::~PathFinder()
 
 
 
-void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester, SpawnPoint* callback)
+void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1Entity* requester)
 {
 	// Add the origin tile to open
 	if (open.GetNodeLowestScore() == nullptr)
@@ -26,7 +26,6 @@ void PathFinder::PreparePath(const iPoint& origin, const iPoint& destination, j1
 	this->entity = requester;
 	this->origin = origin;
 	this->destination = destination;
-	this->callback = callback;
 	initSuccessful = true;
 	available = false;
 	
@@ -52,11 +51,8 @@ bool PathFinder::IteratePath()
 		}
 		
 		//	player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
-		bool stop = false;
-		if (entity != NULL)
-			if (entity->life_points <= 0)
-				stop = true;
-		if (node->pos == destination || stop) {
+
+		if (node->pos == destination || entity->life_points <= 0) {
 			const PathNode* iterator = node;
 
 			last_path.Clear();
@@ -75,19 +71,13 @@ bool PathFinder::IteratePath()
 			available = true;
 			open.list.clear();
 			close.list.clear();
-			if (entity != NULL)
+			if (entity->life_points <= 0)
 			{
-				if (entity->life_points <= 0)
-				{
-					entity = nullptr;
-				}
-				else {
-					SavePath(&entity->path);
-				}
+				entity = nullptr;
 			}
-				
-			if (callback != nullptr)
-				SavePath(&callback->path);
+			else {
+			SavePath(&entity->path);
+			}		
 			RELEASE(node);
 
 			return false;
@@ -178,10 +168,8 @@ const PathNode* PathList::Find(const iPoint& point) const
 // ---------------------------------------------------------------------------------
 const PathNode* PathList::GetNodeLowestScore() const
 {
-
 	int min = 65535;
 	const PathNode* ret = nullptr;
-
 
 	for (int i = 0; i < list.size(); i++)
 	{

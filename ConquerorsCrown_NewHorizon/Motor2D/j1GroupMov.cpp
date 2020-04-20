@@ -124,6 +124,11 @@ bool j1GroupMov::Update(float dt) {
 		for (int i = 0; i < App->entity->player_dyn_ent.size(); i++) {
 			it = App->entity->player_dyn_ent[i];
 
+			if (it->name == p2SString("human_gatherer"))
+			{
+				gatherer_counter += 1u;
+			}
+
 			if (it != player_selected)
 				it->isSelected = false;
 			int x = it->position.x, y = it->position.y;
@@ -158,15 +163,10 @@ bool j1GroupMov::Update(float dt) {
 				NewGroup = true;
 				selected.push_back(it);
 			}
-
-			if (it->isSelected && it->name == p2SString("human_gatherer"))
-			{
-				gatherer_counter += 1u;
-			}
 		}
 
 		uint size = selected.size();
-		if (gatherer_counter < uint(((size) / 2) + 1))
+		if (gatherer_counter < uint(size / 2))
 		{
 			for (list<j1Entity*>::iterator ite = selected.begin(); ite != selected.end() && gatherer_counter > 0u; ++ite)
 			{
