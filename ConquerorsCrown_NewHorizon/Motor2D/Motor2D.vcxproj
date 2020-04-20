@@ -137,7 +137,6 @@
     <ClInclude Include="p2Log.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="p2Defs.h" />
-    <ClInclude Include="p2List.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="j1Render.h" />

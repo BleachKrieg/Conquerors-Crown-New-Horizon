@@ -1,7 +1,6 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include "p2List.h"
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
@@ -66,7 +65,7 @@ public:
 
 	void LoadGame();
 	void SaveGame() const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(list<p2SString>& list_to_fill) const;
 
 
 	bool Pause();

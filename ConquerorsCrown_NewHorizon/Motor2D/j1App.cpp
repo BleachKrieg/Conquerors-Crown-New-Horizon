@@ -394,7 +394,7 @@ void j1App::SaveGame() const
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void j1App::GetSaveGames(list<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
