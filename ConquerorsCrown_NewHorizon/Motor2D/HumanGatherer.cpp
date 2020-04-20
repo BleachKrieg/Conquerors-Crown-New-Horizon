@@ -187,15 +187,15 @@ bool HumanGatherer::Update(float dt)
 			state = DynamicState::IDLE;
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
 		}
-		/*else {
-			if (chop_time >= 70) {
-				SpatialAudio(2, App->audio->wood_gatherer, position.x, position.y);
+		else {
+			if (chop_time >= 70 && work_name=="tree") {
+				SpatialAudio(10, App->audio->wood_gatherer, position.x, position.y);
 				LOG("Position x: %i		Position y: %i", position.x, position.y);
 				chop_time = 0;
 			}
 
 			chop_time++;
-		}*/
+		}
 	}
 
 	GathererGoTos();
@@ -231,6 +231,7 @@ bool HumanGatherer::Update(float dt)
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
+		Death(entity_type);
 		to_delete = true;
 		break;
 	}
