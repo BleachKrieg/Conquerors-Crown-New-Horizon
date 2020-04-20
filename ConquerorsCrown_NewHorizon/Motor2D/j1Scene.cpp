@@ -154,6 +154,7 @@ bool j1Scene::Update(float dt)
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}
+
 			
 		if (debug)
 		{
