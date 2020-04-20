@@ -670,7 +670,8 @@ GuiBar::GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
 	fill->delayBlit = false;
 	to_delete = false;
 	delayBlit = false;
-	value = 100.0f;
+	value = 0.0f;
+	updateBar(value);
 }
 GuiBar::~GuiBar() {
 

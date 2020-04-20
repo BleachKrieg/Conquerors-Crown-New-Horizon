@@ -55,7 +55,7 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	current_scene = scenes::ingame;
+	current_scene = scenes::logo;
 	current_level = "First level design.tmx";
 	debug = false;
 	wood = 0u;
@@ -67,7 +67,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
 	
 
-	if (CreateInGame()) ret = true;
+	if (CreateLogo()) ret = true;
 
 	return ret;
 }
@@ -514,6 +514,31 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 }
 
+void j1Scene::AddResource(char* typeResource, int quantity) 
+{
+	int i = 0;
+	if (typeResource == "gold")i = 1;
+	else if (typeResource == "wood")i = 2;
+	else if (typeResource == "stone")i = 3;
+
+	switch (i) {
+	case 1:
+		gold += quantity;
+		ingameTextGold->SetText(to_string(gold).c_str());
+		break;
+	case 2:
+		wood += quantity;
+		ingameTextWood->SetText(to_string(wood).c_str());
+		break;
+	case 3:
+		stone += quantity;
+		ingameTextStone->SetText(to_string(stone).c_str());
+		break;
+	case 0:
+		LOG("The parameter in AddResource is not correct.");
+		break;
+	}
+}
 
 //Animations
 

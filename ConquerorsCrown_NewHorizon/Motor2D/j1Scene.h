@@ -66,6 +66,9 @@ public:
 
 	void LogoPushbacks();
 	void LoadTiledEntities();
+
+	void AddResource(char*, int);
+
 	void GuiInput(GuiItem* guiElement);
 	
 private:
@@ -81,9 +84,9 @@ public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
 
+	uint gold;
 	uint wood;
 	uint stone;
-	uint gold;
 
 	bool debug;
 	bool Building_preview;
