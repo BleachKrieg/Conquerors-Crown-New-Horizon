@@ -372,7 +372,7 @@ void HumanBarracks::checkAnimation(float dt)
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 0 || create_swordman == true && App->scene->wood >= 100 && App->scene->gold >= 0 || App->scene->debug == true && create_swordman == true|| App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 100 || create_swordman == true && App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true && create_swordman == true|| App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				if (App->scene->debug == false)
 				{
@@ -419,7 +419,7 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				create_swordman = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 && App->scene->gold >= 0 || create_archer == true && App->scene->wood >= 100 && App->scene->gold >= 0 || App->scene->debug == true && create_archer == true || App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 && App->scene->gold >= 100 || create_archer == true && App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true && create_archer == true || App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				if (App->scene->debug == false)
 				{
