@@ -16,7 +16,9 @@ class StaticEnt;;
 enum class scenes {
 	menu,
 	ingame,
-	logo
+	logo,
+	victory,
+	defeat
 };
 
 class GuiItem;
@@ -68,6 +70,7 @@ public:
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
+	void TimeToClock();
 
 	void GuiInput(GuiItem* guiElement);
 	
@@ -113,6 +116,7 @@ public:
 	GuiItem* ingameTextGold;
 	GuiItem* ingameTextWood;
 	GuiItem* ingameTextStone;
+	GuiItem* ingameTextClock;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
@@ -121,6 +125,28 @@ public:
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
 
+	//VictoryGui
+	SDL_Rect rect_victory = { 0, 0, 757, 791 };
+	GuiItem* victoryBackground;
+	GuiItem* victoryButtonContinue;
+	GuiItem* victoryTextContinue;
+	GuiItem* victoryTextClick;
+	float scale_victory = 0.0f;
+	float speed_victory = 0.0f;
+
+	//DefeatGui
+	SDL_Rect rect_defeat = { 0, 0, 757, 791 };
+	GuiItem* defeatBackground;
+	GuiItem* defeatButtonContinue;
+	GuiItem* defeatTextContinue;
+	GuiItem* defeatTextClick;
+	float scale_defeat = 0.0f;
+	float speed_defeat = 0.0f;
+
+	j1Timer GameClock;
+	int timer;
+	string mins;
+	string secs;
 	bool active;
 };
 

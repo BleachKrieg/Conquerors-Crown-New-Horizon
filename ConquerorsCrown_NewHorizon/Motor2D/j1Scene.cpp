@@ -61,6 +61,9 @@ bool j1Scene::Start()
 	wood = 0u;
 	stone = 0u;
 	gold = 0u;
+	timer = 660;
+	map_coordinates = { 0, 0 };
+
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -100,6 +103,43 @@ bool j1Scene::Update(float dt)
 		}
 		logoTextTimer++;
 		break;
+	case scenes::victory:
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+
+		if (scale_victory < 0.005)
+		{
+			scale_victory = scale_victory + 0.0001;
+		}
+		else if (scale_victory < 0.5f)
+		{
+			if (speed_victory > 0.001)
+			{
+				speed_victory -= 0.00002;
+			}
+			scale_victory = scale_victory + speed_victory;
+		}
+
+		break;
+	case scenes::defeat:
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+
+		if (scale_defeat < 0.005)
+		{
+			scale_defeat = scale_defeat + 0.0001;
+		}
+		else if (scale_defeat < 0.5f)
+		{
+			if (speed_defeat > 0.001)
+			{
+				speed_defeat -= 0.00002;
+			}
+			scale_defeat = scale_defeat + speed_defeat;
+		}
+		break;
 	case scenes::ingame:
 		//Camera movement inputs
 		int x, y;
@@ -121,8 +161,6 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x -= 500 * dt;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) ingameTextGold->SetText("237");
-
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
@@ -132,7 +170,6 @@ bool j1Scene::Update(float dt)
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
 		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
 		
-
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
@@ -144,7 +181,6 @@ bool j1Scene::Update(float dt)
 			App->map->blitColliders = !App->map->blitColliders;
 		}
 			
-
 		//Temporal create entities inputs
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
@@ -172,9 +208,30 @@ bool j1Scene::Update(float dt)
 		{
 			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
 		}
+
 		//Draw the map
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
+
+		//Victory and Defeat scenes
+		if (timer <= 0)
+		{
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			GameClock.Start();
+		}
+		else {
+			//GameClock Update
+			timer = 10 - GameClock.ReadSec();
+			TimeToClock();
+		}
+		//LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+		if (App->entity->player_stat_ent.size() == 0 && GameClock.ReadSec() > 5)
+		{
+			GameClock.Start();
+			LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+
+			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+		}
 		break;
 	}
 
@@ -218,6 +275,19 @@ bool j1Scene::PostUpdate(float dt)
 		}*/
 		App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 		break;
+
+	case scenes::victory:
+		
+		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+
+		break;
+
+	case scenes::defeat:
+		
+		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+
+		break;
+
 	}
 
 	return ret;
@@ -310,6 +380,14 @@ void j1Scene::DeleteScene() {
 	case scenes::logo:
 		DeleteUI();
 		break;
+
+	case scenes::victory:
+		DeleteUI();
+		break;
+	case scenes::defeat:
+		DeleteUI();
+		break;
+
 	}
 }
 void j1Scene::CreateScene(scenes next_scene) {
@@ -403,6 +481,7 @@ bool j1Scene::CreateInGame()
 	ingameTextGold = App->gui->CreateGuiElement(Types::text, 722, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 
 	LoadTiledEntities();
 
@@ -472,6 +551,7 @@ bool j1Scene::DeleteUI()
 	ingameTextGold = nullptr;
 	ingameTextWood = nullptr;
 	ingameTextStone = nullptr;
+	ingameTextClock = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
 	App->tex->UnLoad(logoSheet);
@@ -512,6 +592,18 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			Building_preview = true;
 		}
 	}
+
+	//Victory Buttons
+	if (guiElement == victoryButtonContinue) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+
+	//Defeat Buttons
+	if (guiElement == defeatButtonContinue) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 
@@ -538,6 +630,20 @@ void j1Scene::AddResource(char* typeResource, int quantity)
 		LOG("The parameter in AddResource is not correct.");
 		break;
 	}
+}
+
+void j1Scene::TimeToClock() 
+{
+	mins = to_string(timer/60);
+
+	secs = to_string(timer % 60);
+
+	if (mins.size() < 2) mins.insert(0, "0");
+	if (secs.size() < 2) secs.insert(0, "0");
+
+	string str = mins + ":" + secs;
+
+	ingameTextClock->SetText(str.c_str());
 }
 
 //Animations
