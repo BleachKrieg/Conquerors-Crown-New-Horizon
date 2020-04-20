@@ -197,19 +197,14 @@ void j1Gui::DeleteGuiElement()
 {
 	for (int i = 0; i < guiElements.size(); i++)
 	{
+		if (guiElements[i]->parent != nullptr)
+		{
+			if (guiElements[i]->parent->to_delete == true)
+				guiElements.erase(guiElements.begin() + i);
+		}
 		if (guiElements[i]->to_delete == true)
 		{
 			guiElements.erase(guiElements.begin() + i);
-		}
-		else if (guiElements[i]->parent != nullptr)
-		{
-			if (guiElements[i]->parent->to_delete == true)
-				for (int j = 0; j < guiElements.size(); j++) {
-					if (guiElements[j] == guiElements[i]->parent)
-					{
-						guiElements.erase(guiElements.begin() + j);
-					}
-				}
 		}
 	}
 }
