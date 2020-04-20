@@ -85,7 +85,10 @@ bool HumanFootman::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
+	if (App->scene->debug)
+		life_points = 100;
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
@@ -136,6 +139,7 @@ bool HumanFootman::Update(float dt)
 bool HumanFootman::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostUpdate_HumanFootman", Profiler::Color::BurlyWood)
+
 
 		return true;
 }

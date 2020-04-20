@@ -20,7 +20,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 80;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1000;
@@ -89,8 +89,10 @@ bool HumanArcher::Update(float dt)
 	// Speed resetted to 0 each iteration
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
+	if (App->scene->debug)
+		life_points = 80;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);

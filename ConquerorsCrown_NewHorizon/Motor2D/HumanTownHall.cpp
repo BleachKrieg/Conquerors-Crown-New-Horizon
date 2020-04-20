@@ -69,11 +69,12 @@ bool HumanTownHall::Update(float dt)
 
 	if (isSelected && App->movement->player_selected != this)
 		isSelected = false;
+	if(App->scene->debug)
+	life_points = 100;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-	{
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
-	}
+
 	if (life_points <= 0) 
 	{
 		if (creation_TownHall_bar != nullptr) {
