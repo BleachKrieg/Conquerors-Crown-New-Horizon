@@ -76,7 +76,7 @@ bool j1GroupMov::Update(float dt) {
 				loop = false;
 			}
 		}
-		for (int i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
+		for (int i = 0; i < App->entity->player_stat_ent.size(); ++i)
 		{
 			it = App->entity->player_stat_ent[i];
 			it->isSelected = false;
@@ -89,7 +89,6 @@ bool j1GroupMov::Update(float dt) {
 			{
 				it->isSelected = true;
 				player_selected = it;
-				loop = false;
 			}
 		}
 	}

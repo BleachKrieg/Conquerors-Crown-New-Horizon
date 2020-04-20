@@ -116,6 +116,8 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x -= 500 * dt;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) ingameTextGold->SetText("237");
+
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
@@ -376,10 +378,6 @@ bool j1Scene::CreateInGame()
 	}
 	//Creating minimap
 	if (ret) ret = App->minimap->Start();
-
-	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
-	App->minimap->CreateMinimap();
-	SDL_SetRenderTarget(App->render->renderer, NULL);*/
 
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };

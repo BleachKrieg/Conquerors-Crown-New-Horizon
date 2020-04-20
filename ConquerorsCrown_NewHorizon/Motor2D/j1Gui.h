@@ -99,6 +99,7 @@ public:
 
 private:
 	SDL_Color color;
+	_TTF_Font* local_font;
 	const char *text;
 
 public:

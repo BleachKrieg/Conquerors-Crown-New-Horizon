@@ -471,13 +471,13 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 	isDynamic = false;
 	focus = false;
 	follow = false;
+	local_font = font;
 	textureRect = texrect;
 	color = SDL_Color{ 255,255,255 };
 	CallBack = callback;
-	texture = App->font->Print(text, color, font);
-	App->font->CalcSize(text, textureRect.w, textureRect.h, font);
+	texture = App->font->Print(text, color, local_font);
+	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 	to_delete = false;
-
 }
 
 GuiText::~GuiText() {
@@ -492,6 +492,13 @@ const char* GuiText::GetText() const
 void GuiText::SetText(const char* newtext)
 {
 	text = newtext;
+	SDL_DestroyTexture(texture);
+	if (text != "") {
+		texture = App->font->Print(text);
+	}
+	else texture = nullptr;
+	texture = App->font->Print(text, color, local_font);
+	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 }
 
 //-------------------------------------------------------------
