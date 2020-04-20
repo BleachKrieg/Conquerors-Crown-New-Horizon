@@ -89,10 +89,22 @@ public:
 	void ImageSelected();
 	
 	// UI
-	GuiItem* Button_Create_Footman;
+	
+	//Archer UI
 	GuiItem* Button_Create_Archer;
 	GuiItem* Archer_image;
+	GuiItem* Archer_stone_cost;
+	GuiItem* Archer_Text_stone;
+	GuiItem* Archer_gold_cost;
+	GuiItem* Archer_Text_Gold;
+
+	//Swordman UI
+	GuiItem* Button_Create_Footman;
 	GuiItem* Swordman_image;
+	GuiItem* Swordman_stone_cost;
+	GuiItem* Swordman_Text_stone;
+	GuiItem* Swordman_gold_cost;
+	GuiItem* Swordman_Text_Gold;
 	
 	//Progress Bar
 	GuiItem* creation_barrack_bar;
