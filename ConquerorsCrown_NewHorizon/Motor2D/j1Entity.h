@@ -62,6 +62,7 @@ public:
 
 	Animation* GetAnimation();
 
+
 protected:
 	Animation* current_animation = nullptr;
 
@@ -81,6 +82,7 @@ public:
 	int		life_points;
 	p2DynArray<iPoint>	path;
 
+	bool deployed = true;
 	
 };
 

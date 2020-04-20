@@ -59,7 +59,7 @@ bool HumanTownHall::Start()
 	Button_Create_Gatherer = nullptr;
 	Gatherer_image = nullptr;
 	creation_TownHall_bar = nullptr;
-
+	deployed = false;
 	return true;
 }
 
@@ -213,6 +213,7 @@ void HumanTownHall::checkAnimation(float dt)
 {
 	if (actualState == ST_TOWNHALL_AUTOMATIC)
 	{
+		deployed = true;
 		map = App->map->WorldToMap(position.x, position.y);
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
@@ -296,6 +297,7 @@ void HumanTownHall::checkAnimation(float dt)
 
 	if (actualState == ST_TOWNHALL_IN_CONSTRUCTION)
 	{
+		deployed = true;
 		float bar_prog = (timer.ReadSec() * 100) / 3;
 		creation_TownHall_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
@@ -357,27 +359,27 @@ void HumanTownHall::checkAnimation(float dt)
 					{
 					case 0:
 						item->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 1:
 						item->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 2:
 						item->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 3:
 						item->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 4:
 						item->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					case 5:
 						item->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-						item->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+						item->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 						break;
 					}
 					Troop.push_back(item);
@@ -495,32 +497,32 @@ void HumanTownHall::ImageSelected()
 	if (Troop.size() == 6)
 	{
 		Troop[5]->image = App->gui->CreateGuiElement(Types::image, pos5.x, pos5.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[5]->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[5]->bar = App->gui->CreateGuiElement(Types::bar, pos5.x, pos5.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 	if (Troop.size() >= 5)
 	{
 		Troop[4]->image = App->gui->CreateGuiElement(Types::image, pos4.x, pos4.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[4]->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[4]->bar = App->gui->CreateGuiElement(Types::bar, pos4.x, pos4.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 	if (Troop.size() >= 4)
 	{
 		Troop[3]->image = App->gui->CreateGuiElement(Types::image, pos3.x, pos3.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[3]->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[3]->bar = App->gui->CreateGuiElement(Types::bar, pos3.x, pos3.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 	if (Troop.size() >= 3)
 	{
 		Troop[2]->image = App->gui->CreateGuiElement(Types::image, pos2.x, pos2.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[2]->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[2]->bar = App->gui->CreateGuiElement(Types::bar, pos2.x, pos2.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 	if (Troop.size() >= 2)
 	{
 		Troop[1]->image = App->gui->CreateGuiElement(Types::image, pos1.x, pos1.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[1]->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[1]->bar = App->gui->CreateGuiElement(Types::bar, pos1.x, pos1.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 	if (Troop.size() >= 1)
 	{
 		Troop[0]->image = App->gui->CreateGuiElement(Types::image, pos0.x, pos0.y, { 1140, 49, 46, 38 }, App->scene->ingameUI, nullptr, NULL);
-		Troop[0]->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 20, { 306, 107, 129, 9 }, App->scene->ingameUI, nullptr, NULL);
+		Troop[0]->bar = App->gui->CreateGuiElement(Types::bar, pos0.x, pos0.y + 37, { 436, 107, 46, 9 }, App->scene->ingameUI, nullptr, NULL);
 	}
 }
 

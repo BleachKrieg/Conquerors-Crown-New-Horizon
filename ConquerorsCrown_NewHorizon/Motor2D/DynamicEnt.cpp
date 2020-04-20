@@ -453,10 +453,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				}
 			}
 			else {
-				if (target_entity == it && !player_order)
+				/*if (target_entity == it && !player_order)
 				{
 					target_entity = NULL;
-				}
+				}*/
 			}
 			if(it->type == entityType::DYNAMIC)
 			if (distance < vision + it->body)
