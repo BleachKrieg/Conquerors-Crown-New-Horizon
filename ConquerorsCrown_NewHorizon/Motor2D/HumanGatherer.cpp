@@ -160,11 +160,11 @@ bool HumanGatherer::Update(float dt)
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
 			if (work_name == "mine")
-				App->scene->gold += inv_size;
+				App->scene->AddResource("gold", inv_size);
 			if (work_name == "quarry")
-				App->scene->stone += inv_size;
+				App->scene->AddResource("stone", inv_size);
 			if (work_name == "tree")
-				App->scene->wood += inv_size;
+				App->scene->AddResource("wood", inv_size);
 			player_order = true;
 			inv_size = 0u;
 			following_target = false;

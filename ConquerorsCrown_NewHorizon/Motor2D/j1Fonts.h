@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "SDL\include\SDL_pixels.h"
+#include <vector>
 
 #define DEFAULT_FONT "fonts/alagard.ttf"
 #define DEFAULT_FONT_SIZE 12
@@ -35,7 +36,7 @@ public:
 
 public:
 
-	p2List<_TTF_Font*>	fonts;
+	vector<_TTF_Font*>	fonts;
 	_TTF_Font*			defaultfont;
 	_TTF_Font*			smallfont;
 };
