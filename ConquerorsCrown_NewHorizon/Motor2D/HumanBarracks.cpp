@@ -141,7 +141,6 @@ bool HumanBarracks::Update(float dt)
 
 		if (canbuild)
 		{
-
 			App->render->DrawQuad({ world.x - 50, world.y - 50, 96, 95 }, 0, 200, 0, 100);
 		}
 		else

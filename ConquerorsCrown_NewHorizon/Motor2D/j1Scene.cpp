@@ -55,7 +55,7 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	current_scene = scenes::ingame;
+	current_scene = scenes::logo;
 	current_level = "First level design.tmx";
 	debug = false;
 	wood = 0u;
@@ -67,7 +67,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
 	
 
-	if (CreateInGame()) ret = true;
+	if (CreateLogo()) ret = true;
 
 	return ret;
 }
@@ -95,6 +95,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		logoTextTimer++;
@@ -119,6 +120,8 @@ bool j1Scene::Update(float dt)
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
 		}
+
+		if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) ingameTextGold->SetText("237");
 
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
@@ -387,19 +390,19 @@ bool j1Scene::CreateInGame()
 	//Creating minimap
 	if (ret) ret = App->minimap->Start();
 
-	/*SDL_SetRenderTarget(App->render->renderer, App->minimap->texture);
-	App->minimap->CreateMinimap();
-	SDL_SetRenderTarget(App->render->renderer, NULL);*/
-
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
 
-	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 4, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
+	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
+
+	ingameTextGold = App->gui->CreateGuiElement(Types::text, 722, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 
 	LoadTiledEntities();
 
@@ -466,6 +469,9 @@ bool j1Scene::DeleteUI()
 	ingameTopBar = nullptr;
 	ingameButtonMenu = nullptr;
 	ingameTextMenu = nullptr;
+	ingameTextGold = nullptr;
+	ingameTextWood = nullptr;
+	ingameTextStone = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
 	App->tex->UnLoad(logoSheet);
@@ -477,6 +483,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//Menu buttons
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
@@ -494,6 +501,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 	else if (guiElement == townHallButton) {
@@ -506,6 +514,31 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 }
 
+void j1Scene::AddResource(char* typeResource, int quantity) 
+{
+	int i = 0;
+	if (typeResource == "gold")i = 1;
+	else if (typeResource == "wood")i = 2;
+	else if (typeResource == "stone")i = 3;
+
+	switch (i) {
+	case 1:
+		gold += quantity;
+		ingameTextGold->SetText(to_string(gold).c_str());
+		break;
+	case 2:
+		wood += quantity;
+		ingameTextWood->SetText(to_string(wood).c_str());
+		break;
+	case 3:
+		stone += quantity;
+		ingameTextStone->SetText(to_string(stone).c_str());
+		break;
+	case 0:
+		LOG("The parameter in AddResource is not correct.");
+		break;
+	}
+}
 
 //Animations
 
