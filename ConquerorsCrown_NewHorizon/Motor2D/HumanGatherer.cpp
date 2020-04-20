@@ -26,6 +26,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	vision = 26;
 	inv_size = 0;
 	body = 13;
+	chop_time = 0;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -132,6 +133,8 @@ bool HumanGatherer::Update(float dt)
 						work_time = App->entity->trees_time;
 				}
 			}
+			
+			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
 		if (!found && App->input->screen_click && work_state != WORK_STATE::WORKING)
 		{
@@ -181,6 +184,15 @@ bool HumanGatherer::Update(float dt)
 			state = DynamicState::IDLE;
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
 		}
+		/*else {
+			if (chop_time >= 70) {
+				SpatialAudio(2, App->audio->wood_gatherer, position.x, position.y);
+				LOG("Position x: %i		Position y: %i", position.x, position.y);
+				chop_time = 0;
+			}
+
+			chop_time++;
+		}*/
 	}
 
 	GathererGoTos();
