@@ -189,12 +189,18 @@ bool j1Scene::Update(float dt)
 
 
 		//Victory and Defeat scenes
-		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		if (GameClock.ReadSec() > 600)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			GameClock.Start();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		//LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+		if (App->entity->player_stat_ent.size() == 0 && GameClock.ReadSec() > 5)
 		{
+
+			GameClock.Start();
+			LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
 		}
 
@@ -406,6 +412,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
+		GameClock.Start();
 		break;
 	case scenes::logo:
 		current_scene = scenes::logo;
