@@ -63,7 +63,6 @@ public:
 
 public:
 	float time_FX_troops;
-	j1Timer timer2;
 	DynamicEntityType entity_type;
 
 protected:

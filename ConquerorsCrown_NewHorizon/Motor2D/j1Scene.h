@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
+#include "j1Timer.h"
 
 
 #define COORDS(a) a+3000 
@@ -19,6 +20,7 @@ enum class scenes {
 	logo,
 	victory,
 	defeat
+
 };
 
 class GuiItem;
@@ -60,6 +62,8 @@ public:
 	bool CreateMenu();
 	bool CreateInGame();
 	bool CreateLogo();
+	bool CreateVictory();
+	bool CreateDefeat();
 	bool DeleteUI();
 
 	//InGameUI functions
@@ -79,6 +83,8 @@ private:
 	scenes current_scene;
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
+	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
 	Animation* current_animation = nullptr;
 	Animation logo;
 	int logoTextTimer;
@@ -147,6 +153,7 @@ public:
 	int timer;
 	string mins;
 	string secs;
+
 	bool active;
 };
 

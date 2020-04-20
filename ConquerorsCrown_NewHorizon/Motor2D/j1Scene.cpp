@@ -139,6 +139,7 @@ bool j1Scene::Update(float dt)
 			}
 			scale_defeat = scale_defeat + speed_defeat;
 		}
+
 		break;
 	case scenes::ingame:
 		//Camera movement inputs
@@ -234,7 +235,7 @@ bool j1Scene::Update(float dt)
 		}
 		break;
 	}
-
+	
 	//App->render->Blit(debug_tex, p.x, p.y);
 
 	return true;
@@ -380,7 +381,6 @@ void j1Scene::DeleteScene() {
 	case scenes::logo:
 		DeleteUI();
 		break;
-
 	case scenes::victory:
 		DeleteUI();
 		break;
@@ -389,7 +389,9 @@ void j1Scene::DeleteScene() {
 		break;
 
 	}
+
 }
+
 void j1Scene::CreateScene(scenes next_scene) {
 	//Creating scene
 	switch (next_scene)
@@ -406,10 +408,19 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
+		GameClock.Start();
 		break;
 	case scenes::logo:
 		current_scene = scenes::logo;
 		CreateLogo();
+		break;
+	case scenes::victory:
+		current_scene = scenes::victory;
+		CreateVictory();
+		break;
+	case scenes::defeat:
+		current_scene = scenes::defeat;
+		CreateDefeat();
 		break;
 	}
 }
@@ -533,6 +544,70 @@ bool j1Scene::CreateLogo() {
 	return true;
 }
 
+bool j1Scene::CreateVictory() {
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
+	scale_victory = 0.0f;
+	speed_victory = 0.005f;
+
+	victoryLogo = App->tex->Load("textures/gui/VictorySheet.png");
+
+	//Loading UI
+	SDL_Rect rect = { 1280, 0, 1280, 720 };
+
+	victoryBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);	
+
+	//App->render->Blit(victoryLogo, 0, 0);
+
+	victoryButtonContinue = App->gui->CreateGuiElement(Types::button, 480, 550, { 0, 63, 303, 42 }, victoryBackground, this, NULL);
+	victoryButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	victoryTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, victoryButtonContinue, nullptr, "Continue");
+	
+
+	//uncomment that to use text and not button to continue
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+
+	//victory music
+	App->audio->PlayMusic("Audio/Music/Human/Human_Victory.ogg", 2.0F);
+
+
+	return true;
+}
+
+bool j1Scene::CreateDefeat() {
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
+	scale_defeat = 0.0f;
+	speed_defeat = 0.005f;
+
+	defeatLogo = App->tex->Load("textures/gui/DefeatSheet.png");
+
+	//Loading UI
+	SDL_Rect rect = { 1280, 0, 1280, 720 };
+
+	defeatBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
+
+	//App->render->Blit(victoryLogo, 0, 0);
+
+	defeatButtonContinue = App->gui->CreateGuiElement(Types::button, 480, 550, { 0, 63, 303, 42 }, defeatBackground, this, NULL);
+	defeatButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
+
+
+	//uncomment that to use text and not button to continue
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+
+	//victory music
+	App->audio->PlayMusic("Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+
+
+	return true;
+}
+
 bool j1Scene::DeleteUI() 
 {
 	menuBackground = nullptr;
@@ -554,6 +629,20 @@ bool j1Scene::DeleteUI()
 	ingameTextClock = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
+
+	//delete victory scene
+	App->tex->UnLoad(victoryLogo);
+	victoryBackground = nullptr;
+	victoryButtonContinue = nullptr;
+	victoryTextContinue = nullptr;
+	victoryTextClick = nullptr;
+	//delete defeat scene
+	App->tex->UnLoad(defeatLogo);
+	defeatBackground = nullptr;
+	defeatButtonContinue = nullptr;
+	defeatTextContinue = nullptr;
+	defeatTextClick = nullptr;
+
 	App->tex->UnLoad(logoSheet);
 	App->gui->DeleteAllGui();
 	return true;
