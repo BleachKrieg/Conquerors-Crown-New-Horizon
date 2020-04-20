@@ -539,6 +539,14 @@ void HumanTownHall::ImageSelected()
 
 void HumanTownHall::CreateTownHallUI()
 {
+	Button_Create_Barrack = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Barrack->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	BarrackImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 49, 46, 38 }, Button_Create_Barrack, nullptr, NULL);
+	Barrack_wood_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 974, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
@@ -550,6 +558,21 @@ void HumanTownHall::CreateTownHallUI()
 
 void HumanTownHall::DeleteTownHallUI()
 {
+	if (Button_Create_Barrack != nullptr)
+	{
+		Button_Create_Barrack->to_delete = true;
+		Barrack_stone_cost->to_delete = true;
+		Barrack_Text_stone->to_delete = true;
+		Barrack_wood_cost->to_delete = true;
+		Barrack_Text_Wood->to_delete = true;
+
+		Button_Create_Barrack = nullptr;
+		Barrack_stone_cost = nullptr;
+		Barrack_Text_stone = nullptr;
+		Barrack_wood_cost = nullptr;
+		Barrack_Text_Wood = nullptr;
+	}
+
 	if (Button_Create_Gatherer != nullptr) 
 	{
 		Gatherer_stone_cost->to_delete = true;
@@ -574,6 +597,13 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			create_gatherer = true;
 		}
 		isSelected = true;
+	}
+
+	if (guiElement == Button_Create_Barrack) {
+		if (App->scene->wood >= 100 || App->scene->debug == true) {
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks,App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->Building_preview = true;
+		}
 	}
 }
 

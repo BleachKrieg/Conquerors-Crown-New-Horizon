@@ -94,7 +94,15 @@ public:
 	GuiItem* Gatherer_gold_cost;
 	GuiItem* Gatherer_Text_Gold;
 
-	//Progress Bar
+	//UI BARRACK
+	GuiItem* Button_Create_Barrack;
+	GuiItem* BarrackImage;
+	GuiItem* Barrack_stone_cost;
+	GuiItem* Barrack_Text_stone;
+	GuiItem* Barrack_wood_cost;
+	GuiItem* Barrack_Text_Wood;
+
+	//UI Progress Bar
 	GuiItem* creation_TownHall_bar;
 
 	// Queue positions
