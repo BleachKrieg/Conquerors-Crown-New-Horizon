@@ -53,6 +53,8 @@ private:
 
 	j1PerfTimer timer;
 
+	int chop_time;
+
 };
 
 

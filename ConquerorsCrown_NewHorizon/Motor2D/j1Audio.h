@@ -63,6 +63,8 @@ public:
 	int footman_attack;
 	int archer_attack;
 	int troll_attack;
+	int wood_gatherer;
+	int mine_gatherer;
 	int die_footman;
 	int die_archer;
 	int die_gatherer;
