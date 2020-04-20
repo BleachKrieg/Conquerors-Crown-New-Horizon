@@ -257,7 +257,7 @@ void HumanTownHall::checkAnimation(float dt)
 			if (App->scene->debug == false)
 			{
 				App->scene->AddResource("wood", -100);
-				App->scene->AddResource("stone", -0);
+				App->scene->AddResource("stone", -100);
 			}
 			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
@@ -357,7 +357,7 @@ void HumanTownHall::checkAnimation(float dt)
 				if (App->scene->debug == false) 
 				{
 					App->scene->AddResource("wood", -100);
-					App->scene->AddResource("gold", -0);
+					App->scene->AddResource("gold", -100);
 				}
 
 				if (Troop.size() < 6)
@@ -600,7 +600,8 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	}
 
 	if (guiElement == Button_Create_Barrack) {
-		if (App->scene->wood >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks,App->scene->mouse_position.x, App->scene->mouse_position.y);
 			App->scene->Building_preview = true;
 		}

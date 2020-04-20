@@ -267,7 +267,7 @@ void HumanBarracks::checkAnimation(float dt)
 			if (App->scene->debug == false)
 			{
 				App->scene->AddResource("wood", -100);
-				App->scene->AddResource("stone", -0);
+				App->scene->AddResource("stone", -100);
 			}
 			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
@@ -377,7 +377,7 @@ void HumanBarracks::checkAnimation(float dt)
 				if (App->scene->debug == false)
 				{
 					App->scene->AddResource("wood", -100);
-					App->scene->AddResource("gold", -0);
+					App->scene->AddResource("gold", -100);
 				}
 
 				if (Troop.size() < 6)
@@ -424,7 +424,7 @@ void HumanBarracks::checkAnimation(float dt)
 				if (App->scene->debug == false)
 				{
 					App->scene->AddResource("wood", -100);
-					App->scene->AddResource("gold", -0);
+					App->scene->AddResource("gold", -100);
 				}
 				if (Troop.size() < 6)
 				{
