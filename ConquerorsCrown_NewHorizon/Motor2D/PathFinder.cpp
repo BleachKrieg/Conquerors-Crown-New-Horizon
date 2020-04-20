@@ -195,13 +195,15 @@ const PathNode* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
-void PathFinder::SavePath(vector<iPoint>* path)
+void PathFinder::SavePath(vector<iPoint*>* path)
 {
 	const vector<iPoint>* last_path = GetLastPath();
 	path->clear();
 	for (uint i = 0; i < last_path->size(); ++i)
 	{
-		path->push_back({ last_path->at(i).x, last_path->at(i).y });
+		iPoint* point = new iPoint(last_path->at(i).x, last_path->at(i).y);
+
+		path->push_back(point);
 	}
 	LOG("saving path");
 }

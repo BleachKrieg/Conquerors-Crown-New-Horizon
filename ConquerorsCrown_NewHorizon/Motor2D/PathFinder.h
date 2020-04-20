@@ -67,7 +67,7 @@ public:
 
 	bool Update();
 
-	void SavePath(vector<iPoint>* path);
+	void SavePath(vector<iPoint*>* path);
 
 
 	bool initSuccessful;
