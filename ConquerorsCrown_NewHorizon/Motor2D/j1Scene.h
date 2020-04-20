@@ -4,6 +4,8 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
+#include "SDL/include/SDL.h"
+#include "j1Timer.h"
 
 
 #define COORDS(a) a+3000 
@@ -66,17 +68,23 @@ public:
 	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
+	void TeamLogoPushbacks();
 	void LoadTiledEntities();
 	void GuiInput(GuiItem* guiElement);
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene = scenes::logo;
+	scenes current_scene;
 	p2SString logoSheet_file_name;
+	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
+	SDL_Texture* teamLogoSheet;
 	Animation* current_animation = nullptr;
 	Animation logo;
+	Animation team_logo;
 	int logoTextTimer;
+	j1Timer logoTimer;
+	int alpha;
 
 public:
 	p2SString current_level;
@@ -111,6 +119,9 @@ public:
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
+
+	//TeamLogoGui
+	SDL_Rect teamLogoBackground;
 
 	bool active;
 };
