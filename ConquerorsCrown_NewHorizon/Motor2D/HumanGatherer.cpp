@@ -18,7 +18,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	// TODO: Should get all the DATA from a xml file
 	work_state = WORK_STATE::NONE;
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 80;
 	attack_vision = 200;
 	attack_range = 0;
 	time_attack = 0;
@@ -95,7 +95,10 @@ bool HumanGatherer::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
+	if (App->scene->debug)
+		life_points = 80;
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)
@@ -244,7 +247,7 @@ bool HumanGatherer::Update(float dt)
 bool HumanGatherer::PostUpdate(float dt)
 {
 	BROFILER_CATEGORY("PostUpdate_HumanFootman", Profiler::Color::BurlyWood)
-
+		
 		return true;
 }
 

@@ -132,7 +132,7 @@ bool j1Scene::Update(float dt)
 			App->render->camera.x -= 500 * dt;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN) ingameTextGold->SetText("237");
+	
 
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
@@ -149,55 +149,70 @@ bool j1Scene::Update(float dt)
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
 		//Debug input
-		if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) 
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-		{
-			App->scene->AddResource("wood", 100);
-		}
 
-		//Temporal create entities inputs
-		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+			
+		if (debug)
 		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			{
+				App->scene->AddResource("wood", 100);
+				App->scene->AddResource("stone", +100);
+				App->scene->AddResource("gold", +100);
+			}
+			
+			
 		}
-		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
-		}
-		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !Building_preview)
-		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
-			Building_preview = true;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && !Building_preview)
-		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
-			Building_preview = true;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { mouse_position.x, mouse_position.y });
-		}
-		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		{
-			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
-		}
+		
+		
 		//Draw the map
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
 
 		//Victory and Defeat scenes
-		if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+		if (GameClock.ReadSec() > 660)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			GameClock.Start();
 		}
-		if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+		//LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+		if (App->entity->player_stat_ent.size() == 0 && GameClock.ReadSec() > 5)
 		{
+
+			GameClock.Start();
+			LOG("%f %d", GameClock.ReadSec(), App->entity->player_stat_ent.size());
+
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
 		}
 
@@ -409,6 +424,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
+		GameClock.Start();
 		break;
 	case scenes::logo:
 		current_scene = scenes::logo;

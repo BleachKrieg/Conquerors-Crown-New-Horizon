@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
+#include "j1Timer.h"
 
 
 #define COORDS(a) a+3000 
@@ -144,7 +145,7 @@ public:
 	GuiItem* defeatTextClick;
 	float scale_defeat = 0.0f;
 	float speed_defeat = 0.0f;
-
+	j1Timer GameClock;
 	bool active;
 };
 
