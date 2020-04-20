@@ -251,8 +251,10 @@ void HumanBarracks::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 0)
 		{
+			App->scene->AddResource("wood", -100);
+			App->scene->AddResource("stone", -0);
 
 			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
@@ -354,9 +356,11 @@ void HumanBarracks::checkAnimation(float dt)
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 || create_swordman == true && App->scene->wood >= 100)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 0 || create_swordman == true && App->scene->wood >= 100 && App->scene->gold >= 0)
 			{
 				App->scene->AddResource("wood", -100);
+				App->scene->AddResource("gold", -0);
+
 				if (Troop.size() < 6)
 				{
 					timer_queue += 3;
@@ -396,9 +400,11 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				create_swordman = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 || create_archer == true && App->scene->wood >= 100)
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 && App->scene->gold >= 0 || create_archer == true && App->scene->wood >= 100 && App->scene->gold >= 0)
 			{
 				App->scene->AddResource("wood", -100);
+				App->scene->AddResource("gold", -0);
+
 				if (Troop.size() < 6)
 				{
 					timer_queue += 3;
