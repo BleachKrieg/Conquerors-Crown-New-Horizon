@@ -66,6 +66,7 @@ bool HumanBarracks::Start()
 	Archer_image = nullptr;
 	Swordman_image = nullptr;
 	creation_barrack_bar = nullptr;
+	deployed = false;
 
 	return true;
 }
@@ -301,6 +302,7 @@ void HumanBarracks::checkAnimation(float dt)
 
 	if (actualState == ST_BARRANCK_IN_CONSTRUCTION)
 	{
+		deployed = true;
 		float bar_prog = (timer.ReadSec() * 100) / 3;
 		creation_barrack_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;

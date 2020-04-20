@@ -59,7 +59,7 @@ bool HumanTownHall::Start()
 	Button_Create_Gatherer = nullptr;
 	Gatherer_image = nullptr;
 	creation_TownHall_bar = nullptr;
-
+	deployed = false;
 	return true;
 }
 
@@ -213,6 +213,7 @@ void HumanTownHall::checkAnimation(float dt)
 {
 	if (actualState == ST_TOWNHALL_AUTOMATIC)
 	{
+		deployed = true;
 		map = App->map->WorldToMap(position.x, position.y);
 		Mix_HaltChannel(-1);
 		App->scene->Building_preview = false;
@@ -296,6 +297,7 @@ void HumanTownHall::checkAnimation(float dt)
 
 	if (actualState == ST_TOWNHALL_IN_CONSTRUCTION)
 	{
+		deployed = true;
 		float bar_prog = (timer.ReadSec() * 100) / 3;
 		creation_TownHall_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
