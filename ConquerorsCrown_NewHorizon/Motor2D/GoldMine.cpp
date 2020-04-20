@@ -15,8 +15,8 @@
 GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 {
 	name.create("gold_mine");
-	position.x = posx;
-	position.y = posy;
+	position.x = posx - 64;
+	position.y = posy - 64;
 	body = 40;
 	active = true;
 	team = TeamType::NO_TYPE;
@@ -33,14 +33,14 @@ bool GoldMine::Start()
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	iPoint tempPos = pos;
 
-	for (int i = -1; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int j = -1; j < 2; j++)
+		for (int j = 0; j < 3; j++)
 		{
 			tempPos.x = pos.x + i;
 			tempPos.y = pos.y + j;
-			App->entity->CreateStaticEntity(StaticEntType::Resource, tempPos.x, tempPos.y, 2u);
-			App->pathfinding->ChangeWalkability(tempPos, 2);
+			App->entity->CreateStaticEntity(StaticEntType::Resource, position.x + (32 * i), position.y + (32 * j), 2u);
+			App->pathfinding->ChangeWalkability(tempPos, 1);
 		}
 	}
 
@@ -59,19 +59,16 @@ bool GoldMine::Update(float dt)
 		current_animation = &light_mine;
 	}
 	r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->miscs, world.x - 50, world.y - 50, r, 1.0F, 1.0F);
+	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
 
-	iPoint pos = { (int)position.x, (int)position.y };
-	pos = App->map->WorldToMap(pos.x, pos.y);
-	iPoint tempPos = pos;
-
-	for (int i = -1; i < 2; i++)
+	if (App->scene->debug)
 	{
-		for (int j = -1; j < 2; j++)
+		for (int i = 0; i < 3; i++)
 		{
-			tempPos.x = pos.x + i;
-			tempPos.y = pos.y + j;
-			App->render->DrawQuad(SDL_Rect{ int(world.x + (32 * i)), int(world.y + (32 * j)), 32, 32 }, 255, 255, 0, 255);
+			for (int j = 0; j < 3; j++)
+			{
+				App->render->DrawQuad(SDL_Rect{ int(position.x + (32 * i)), int(position.y + (32 * j)), 32, 32 }, 255, 255, 0, 100);
+			}
 		}
 	}
 
@@ -87,19 +84,6 @@ bool GoldMine::PostUpdate(float dt)
 
 bool GoldMine::CleanUp()
 {
-	iPoint pos = { (int)position.x, (int)position.y };
-	pos = App->map->WorldToMap(pos.x, pos.y);
-	iPoint tempPos = pos;
-
-	for (int i = -1; i < 2; i++)
-	{
-		for (int j = -1; j < 2; j++)
-		{
-			tempPos.x = pos.x + i;
-			tempPos.y = pos.y + j;
-			App->pathfinding->ChangeWalkability(tempPos, 1);
-		}
-	}
 
 	return true;
 }

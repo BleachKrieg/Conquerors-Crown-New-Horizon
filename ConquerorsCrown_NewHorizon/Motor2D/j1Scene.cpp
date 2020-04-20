@@ -354,6 +354,10 @@ void j1Scene::LoadTiledEntities() {
 						iPoint pos;
 						pos = App->map->MapToWorld(x, y);
 						switch (tile_id) {
+						case 381:
+							active = true;
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							break;
 						case 401:
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
@@ -361,13 +365,6 @@ void j1Scene::LoadTiledEntities() {
 						case 418:
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
-							break;
-						case 6:
-							if (layer->name == "resources")
-							{
-								active = true;
-								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
-							}
 							break;
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
@@ -384,6 +381,9 @@ void j1Scene::LoadTiledEntities() {
 		}
 	}
 	active = false;
+	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1175 });
+	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1165 });
+	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1185 });
 }
 
 void j1Scene::DeleteScene() {

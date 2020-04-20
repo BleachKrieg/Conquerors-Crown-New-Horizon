@@ -159,7 +159,7 @@ bool HumanGatherer::Update(float dt)
 			if (work_name == "mine")
 			{
 				to_blit = false;
-				selectable = false;
+				isSelected = false;
 			}
 			start_time = timer.ReadMs();
 		}
@@ -185,6 +185,7 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
+		isSelected = false;
 		state = DynamicState::INTERACTING;
 		if ((timer.ReadMs() - start_time) > work_time)
 		{

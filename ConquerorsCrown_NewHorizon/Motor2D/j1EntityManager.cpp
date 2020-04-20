@@ -10,6 +10,7 @@
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
+#include "GoldMine.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 
@@ -30,9 +31,9 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	trees_time = 20000;
-	quarries_time = 25000;
-	mines_time = 30000;
+	trees_time = 10000;
+	quarries_time = 10000;
+	mines_time = 10000;
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
@@ -134,6 +135,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
