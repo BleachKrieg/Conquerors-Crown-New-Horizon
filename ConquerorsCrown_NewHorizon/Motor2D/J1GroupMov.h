@@ -23,6 +23,7 @@ public:
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
 	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint, float);
 	fPoint GetDirectionSpeed(list<j1Entity*>);
+public:
 	list<j1Entity*>	selected;
 	bool NewGroup;
 	j1Entity* player_selected = nullptr;

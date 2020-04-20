@@ -56,10 +56,14 @@ public:
 
 	void AttackTarget(DynamicEntityType type);
 
+
 	void GathererGoTos();
 
 	void Death(DynamicEntityType entity_type);
+
 public:
+	float time_FX_troops;
+	j1Timer timer2;
 	DynamicEntityType entity_type;
 
 protected:
@@ -101,10 +105,12 @@ protected:
 	// Time counter ----------------------
 	j1PerfTimer	timer;
 	uint		current_time;
+	bool		change_direction;
 
 private:
-	bool		change_direction;
+
 	int			death_counter;
+
 };
 
 #endif // __j1Entity_H__

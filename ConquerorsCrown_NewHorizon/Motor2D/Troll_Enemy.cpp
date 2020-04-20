@@ -38,7 +38,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	player_order = false;
 	can_attack = true;
 	team = TeamType::IA;
-	target_entity = NULL;
+	target_entity = nullptr;
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::ENEMY_TROLL;
 
@@ -78,6 +78,11 @@ bool TrollEnemy::Start()
 	++animations_list;
 
 	current_animation = &moving_down;
+
+	spawn = nullptr;
+	time = 10;
+	followpath = 0;
+	change_direction = true;
 	return true;
 }
 
@@ -91,9 +96,29 @@ bool TrollEnemy::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected)
 		life_points = 0;
 	
+
 	AttackTarget(entity_type);
+
 	Movement();
 
+	origin = App->map->WorldToMap(position.x, position.y);
+
+	if (target_entity == nullptr)
+	{
+		if (spawn != nullptr)
+		{
+			if (path.At(1) == NULL && time >= 5)
+			{
+				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
+				App->pathfinding->RequestPath(origin, target, this);
+				idletime.Start();
+				followpath = 0;
+				change_direction = true;
+			}
+		}
+	
+	}
+	time = idletime.ReadSec();
 	if (life_points <= 0)
 		state = DynamicState::DYING;
 

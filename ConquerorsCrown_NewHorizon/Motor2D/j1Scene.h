@@ -70,7 +70,7 @@ public:
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene = scenes::logo;
+	scenes current_scene;
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
 	Animation* current_animation = nullptr;
