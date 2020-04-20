@@ -310,13 +310,7 @@ void HumanTownHall::checkAnimation(float dt)
 			actualState = ST_TOWNHALL_FINISHED;
 			Mix_HaltChannel(-1);
 		}
-		/*else {
-			if (timer.ReadSec() >= time_FX_barracks) {
-				SpatialAudio(1, App->audio->construction, position.x, position.y);
-				time_FX_barracks++;
-			}
-		}*/
-
+		
 	}
 
 	if (actualState == ST_TOWNHALL_FINISHED)
@@ -543,6 +537,7 @@ void HumanTownHall::DeleteTownHallUI()
 
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		create_gatherer = true;
 		isSelected = true;
 	}

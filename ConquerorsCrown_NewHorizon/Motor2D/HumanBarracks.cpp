@@ -11,6 +11,7 @@
 #include "J1GroupMov.h"
 #include "j1Pathfinding.h"
 #include "j1Gui.h"
+#include "j1Audio.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
@@ -716,11 +717,13 @@ void HumanBarracks::DeleteBarracksUI()
 void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Footman) 
 	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		create_swordman = true;
 		isSelected = true;
 	}
 	else if (guiElement == Button_Create_Archer) 
 	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		create_archer = true;
 		isSelected = true;
 	}
