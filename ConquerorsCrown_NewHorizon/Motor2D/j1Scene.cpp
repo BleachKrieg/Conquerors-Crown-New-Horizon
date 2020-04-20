@@ -362,6 +362,13 @@ void j1Scene::LoadTiledEntities() {
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
+						case 6:
+							if (layer->name == "resources")
+							{
+								active = true;
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							}
+							break;
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
 						{

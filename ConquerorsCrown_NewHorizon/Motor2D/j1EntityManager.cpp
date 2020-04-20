@@ -46,6 +46,8 @@ bool j1EntityManager::Start()
 	LoadAnimations("textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
+	miscs = App->tex->Load("textures/misc/misc.png");
+
 	max_audio_attacks = 0;
 	timer.Start();
 
@@ -153,6 +155,11 @@ bool j1EntityManager::DeleteAllEntities()
 
 	for (int i = 0; i < entities.size(); i++) {
 		entities[i]->to_delete = true;
+	}
+	for (int i = 0; i < resources_ent.size(); ++i)
+	{
+		resources_ent[i]->to_delete = true;
+		resources_ent[i]->CleanUp();
 	}
 	return true;
 }

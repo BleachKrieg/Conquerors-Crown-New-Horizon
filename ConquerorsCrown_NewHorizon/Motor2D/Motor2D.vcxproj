@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="DynamicEnt.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
+    <ClCompile Include="GoldMine.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
@@ -113,6 +114,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="EntityRequest.h" />
+    <ClInclude Include="GoldMine.h" />
     <ClInclude Include="HumanArcher.h" />
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />

@@ -33,6 +33,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	active = true;
 	to_delete = false;
 	isSelected = false;
+	to_blit = true;
 	selectable = true;
 	following_target = false;
 	can_attack = false;
@@ -104,7 +105,7 @@ bool HumanGatherer::Update(float dt)
 	if (isSelected)
 	{
 		bool found = false;
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click && work_state != WORK_STATE::WORKING)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
@@ -114,6 +115,7 @@ bool HumanGatherer::Update(float dt)
 			pos = App->render->ScreenToWorld(pos.x, pos.y);
 			bool loop = true;
 			SDL_Rect r;
+			inv_size = 0;
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
 			{
 				it = App->entity->resources_ent[i];
@@ -154,6 +156,11 @@ bool HumanGatherer::Update(float dt)
 			path.Clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
+			if (work_name == "mine")
+			{
+				to_blit = false;
+				selectable = false;
+			}
 			start_time = timer.ReadMs();
 		}
 		player_order = true;
@@ -186,6 +193,8 @@ bool HumanGatherer::Update(float dt)
 			inv_size = 100;
 			state = DynamicState::IDLE;
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
+			to_blit = true;
+			selectable = true;
 		}
 		/*else {
 			if (chop_time >= 70) {
@@ -239,8 +248,8 @@ bool HumanGatherer::Update(float dt)
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
 		App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-
-	App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	if (to_blit)
+		App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 

@@ -20,6 +20,7 @@ public:
 		HumanBarracks,
 		HumanTownHall,
 		Resource,
+		GoldMine,
 	};
 
 	// Constructor

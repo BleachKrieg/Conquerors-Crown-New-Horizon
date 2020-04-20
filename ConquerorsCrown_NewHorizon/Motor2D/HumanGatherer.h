@@ -55,6 +55,8 @@ private:
 
 	int chop_time;
 
+	bool to_blit;
+
 };
 
 

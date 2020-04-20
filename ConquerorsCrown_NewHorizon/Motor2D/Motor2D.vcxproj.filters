@@ -96,6 +96,9 @@
     <ClCompile Include="j1Map.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="GoldMine.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="j1Map.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldMine.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
