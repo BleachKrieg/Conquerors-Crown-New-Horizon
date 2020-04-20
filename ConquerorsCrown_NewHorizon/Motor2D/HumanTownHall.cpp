@@ -252,7 +252,7 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 0 || App->scene->debug == true && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 100 || App->scene->debug == true && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
 		{
 			if (App->scene->debug == false)
 			{
@@ -351,7 +351,7 @@ void HumanTownHall::checkAnimation(float dt)
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
 
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 0 || create_gatherer == true && App->scene->wood >= 100 && App->scene->gold >= 0 ||
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 100 || create_gatherer == true && App->scene->wood >= 100 && App->scene->gold >= 100 ||
 				App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN || App->scene->debug == true && create_gatherer == true)
 			{
 				if (App->scene->debug == false) 
