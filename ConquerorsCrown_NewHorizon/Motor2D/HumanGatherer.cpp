@@ -203,7 +203,7 @@ bool HumanGatherer::Update(float dt)
 		else {
 			if (chop_time >= 70 && work_name=="tree") {
 				SpatialAudio(10, App->audio->wood_gatherer, position.x, position.y);
-				LOG("Position x: %i		Position y: %i", position.x, position.y);
+				//LOG("Position x: %i		Position y: %i", position.x, position.y);
 				chop_time = 0;
 			}
 

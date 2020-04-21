@@ -244,7 +244,7 @@ bool j1WaveSystem::Save(pugi::xml_node& data) const
 void j1WaveSystem::StartWave(int wave)
 {
 	
-	int total_spawns = 9 + 6 * wave;
+	int total_spawns = 5 + 8 * wave;
 	wave_ongoing = true;
 	spawn_cooldown.Start();
 	int spawns = 3;
