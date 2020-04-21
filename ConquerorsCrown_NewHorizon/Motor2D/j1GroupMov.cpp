@@ -108,7 +108,7 @@ bool j1GroupMov::Update(float dt) {
 			rect.y = it->position.y;
 			rect.w /= 3;
 			rect.h /= 3;
-			App->render->DrawQuad(rect, 255, 0, 0, 100);
+			//App->render->DrawQuad(rect, 255, 0, 0, 100);
 			if (origin.x > (it->position.x - rect.w) && origin.x < (it->position.x + rect.w) && origin.y >(it->position.y - rect.h) && origin.y < (it->position.y + rect.h))
 			{
 				it->isSelected = true;
