@@ -107,9 +107,9 @@ bool HumanTownHall::Update(float dt)
 	//Debug features
 	if (App->scene->debug && actualState != ST_TOWNHALL_PREVIEW)
 	{
-		App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
-		App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
-		App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
+		//App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
 
 		iPoint pos = { (int)position.x, (int)position.y };
@@ -593,14 +593,14 @@ void HumanTownHall::DeleteTownHallUI()
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
 		}
 		isSelected = true;
 	}
 
 	if (guiElement == Button_Create_Barrack) {
-		if (App->scene->wood >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		if (App->scene->wood >= 100 && App->scene->stone >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks,App->scene->mouse_position.x, App->scene->mouse_position.y);
 			App->scene->Building_preview = true;

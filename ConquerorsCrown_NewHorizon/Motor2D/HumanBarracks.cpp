@@ -128,9 +128,9 @@ bool HumanBarracks::Update(float dt)
 	//Debug features
 	if (App->scene->debug && actualState != ST_BARRACK_PREVIEW)
 	{
-		App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
-		App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
-		App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
+		//App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
 
 		iPoint pos = { (int)position.x, (int)position.y };
@@ -800,7 +800,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Footman) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 ||App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_swordman = true;
 		}
 		isSelected = true;
@@ -808,7 +808,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	else if (guiElement == Button_Create_Archer) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_archer = true;
 		}
 		isSelected = true;
