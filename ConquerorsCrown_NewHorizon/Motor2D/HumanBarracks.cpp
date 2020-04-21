@@ -376,6 +376,7 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
+				App->audio->PlayFx(1, App->audio->normal_click, 0);
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
