@@ -242,11 +242,8 @@ void DynamicEnt::GathererGoTos()
 	}
 }
 
-void DynamicEnt::Movement()
+void DynamicEnt::Movement(float dt)
 {
-	
-
-
 	fPoint pathSpeed{ 0,0 };
 	if (!path.empty())
 	{
@@ -410,8 +407,8 @@ void DynamicEnt::Movement()
 
 	CheckCollisions(&speed);
 
-	position.y += speed.y;
-	position.x += speed.x;
+	position.y += 60 * dt * speed.y;
+	position.x += 60 * dt * speed.x;
 }
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)

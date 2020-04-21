@@ -99,7 +99,7 @@ bool TrollEnemy::Update(float dt)
 
 	AttackTarget(entity_type);
 
-	Movement();
+	Movement(dt);
 
 	origin = App->map->WorldToMap(position.x, position.y);
 

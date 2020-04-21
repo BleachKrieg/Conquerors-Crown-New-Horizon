@@ -213,7 +213,7 @@ bool HumanGatherer::Update(float dt)
 
 	GathererGoTos();
 
-	Movement();
+	Movement(dt);
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;

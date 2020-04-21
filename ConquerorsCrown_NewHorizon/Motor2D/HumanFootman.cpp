@@ -93,7 +93,7 @@ bool HumanFootman::Update(float dt)
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
-	Movement();
+	Movement(dt);
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
