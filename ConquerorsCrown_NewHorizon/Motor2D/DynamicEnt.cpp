@@ -477,6 +477,6 @@ void DynamicEnt::Death(DynamicEntityType entity_type)
 			SpatialAudio(9, App->audio->die_troll, position.x, position.y);
 		}		
 	}
-	LOG("DEATH: %i", death_counter);
+//	LOG("DEATH: %i", death_counter);
 	if (current_animation->Finished() == true) { to_delete = true; }
 }
