@@ -467,6 +467,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
+		App->wave->Start();
 		gameClock.Start();
 		timer = 660;
 		wood = 0u;
