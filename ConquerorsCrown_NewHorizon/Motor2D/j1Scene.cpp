@@ -108,7 +108,7 @@ bool j1Scene::Update(float dt)
 			current_animation = &team_logo;
 			logo_team_sfx_counter++;
 			if (logo_team_sfx_counter == 120) {
-				App->audio->PlayFx(2, App->audio->Logo_Team_FX, 0);
+				App->audio->PlayFx(2, App->audio->logo_team_fx, 0);
 			}
 
 		}
@@ -118,7 +118,7 @@ bool j1Scene::Update(float dt)
 			current_animation = &logo;
 			logoTextTimer++;
 			if (logoTextTimer == 20) {
-				App->audio->PlayFx(1, App->audio->Logo_Game_FX, 0);
+				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
 	//		LOG("Logo text timer: %i", logoTextTimer);
 		}

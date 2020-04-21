@@ -376,7 +376,6 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
-				App->audio->PlayFx(1, App->audio->normal_click, 0);
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
@@ -531,10 +530,8 @@ void HumanBarracks::checkAnimation(float dt)
 				creation_barrack_bar->to_delete = true;
 			}
 			Barrack_Upgraded = true;
-			
 			Troop.clear();
 			timer_queue = 0;
-
 			actualState = ST_BARRACK_FINISHED;
 			createUI = true;
 		}
@@ -818,6 +815,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	}
 	else if(guiElement == Button_Upgrade)
 	{
+		App->audio->PlayFx(1, App->audio->normal_click, 0);
 		if (Barrack_Upgraded == false) 
 		{
 			if (App->scene->wood >= 100 || App->scene->debug == true) {

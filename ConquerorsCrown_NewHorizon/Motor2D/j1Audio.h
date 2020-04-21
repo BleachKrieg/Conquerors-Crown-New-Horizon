@@ -73,9 +73,10 @@ public:
 
 	int click_to_play;
 	int normal_click;
+	int upgrade_complete;
 
-	int Logo_Game_FX;
-	int Logo_Team_FX;
+	int logo_game_fx;
+	int logo_team_fx;
 
 private:
 
