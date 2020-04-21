@@ -293,4 +293,5 @@ void j1WaveSystem::FinishWave()
 	wave_ended.Start();
 	//next_wave = 120;
 	spawn_counter = 0;
+	App->scene->ingameTextWave->SetText(to_string(current_wave - 1).c_str());
 }

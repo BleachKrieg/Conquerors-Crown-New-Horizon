@@ -131,6 +131,7 @@ public:
 	GuiItem* ingameTextWood;
 	GuiItem* ingameTextStone;
 	GuiItem* ingameTextClock;
+	GuiItem* ingameTextWave;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
