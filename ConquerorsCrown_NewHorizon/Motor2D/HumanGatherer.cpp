@@ -158,6 +158,7 @@ bool HumanGatherer::Update(float dt)
 			target_entity = nullptr;
 			if (work_name == "mine")
 			{
+				App->entity->lights = true;
 				to_blit = false;
 				isSelected = false;
 			}
@@ -185,6 +186,8 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
+		if (work_name == "mine")
+			App->entity->lights = true;
 		isSelected = false;
 		state = DynamicState::INTERACTING;
 		if ((timer.ReadMs() - start_time) > work_time)

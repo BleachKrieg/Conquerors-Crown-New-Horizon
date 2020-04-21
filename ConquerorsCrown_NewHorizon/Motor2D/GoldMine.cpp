@@ -29,6 +29,7 @@ GoldMine::~GoldMine() {}
 bool GoldMine::Start()
 {
 	mine_lights = LIGHTS_OFF;
+	App->entity->mine = this;
 	iPoint pos = { (int)position.x, (int)position.y };
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	iPoint tempPos = pos;
@@ -54,7 +55,7 @@ bool GoldMine::Update(float dt)
 	{
 		current_animation = &no_light_mine;
 	}
-	else if (mine_lights = LIGHTS_ON)
+	else if (mine_lights == LIGHTS_ON)
 	{
 		current_animation = &light_mine;
 	}

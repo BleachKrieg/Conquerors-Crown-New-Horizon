@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Entity.h"
+#include "GoldMine.h"
 #include "DynamicEnt.h"
 
 class HumanGatherer : public DynamicEnt

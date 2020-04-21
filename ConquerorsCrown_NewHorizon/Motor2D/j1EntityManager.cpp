@@ -31,6 +31,8 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	mine = nullptr;
+	lights = false;
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
@@ -82,10 +84,15 @@ bool j1EntityManager::Update(float dt)
 		timer.Start();
 	}
 
+	lights = false;
 	for (int i = 0; i < entities.size(); i++) {
 		
 		entities[i]->Update(dt);
 	}
+	if (lights && mine != nullptr)
+		mine->mine_lights = MINE_LIGHTS::LIGHTS_ON;
+	if (!lights && mine != nullptr)
+		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	
 	return true;
 }
