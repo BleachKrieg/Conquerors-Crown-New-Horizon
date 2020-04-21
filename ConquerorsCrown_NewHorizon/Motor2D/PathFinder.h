@@ -67,7 +67,7 @@ public:
 
 	bool Update();
 
-	void SavePath(vector<iPoint*>* path);
+	void SavePath(vector<iPoint>* path);
 
 
 	bool initSuccessful;
@@ -84,6 +84,7 @@ private:
 
 	
 	int max_iterations;
+	int max_frames;
 	j1Entity* entity;
 	SpawnPoint* callback;
 	// we store the created path here

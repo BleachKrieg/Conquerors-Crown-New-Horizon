@@ -183,7 +183,7 @@ bool j1WaveSystem::Update(float dt)
 
 	for (uint i = 0; i < spawn1->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i)->x, spawn1->path.at(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
 		if (App->scene->debug)
 		{
 			
@@ -193,7 +193,7 @@ bool j1WaveSystem::Update(float dt)
 
 	for (uint i = 0; i < spawn2->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i)->x, spawn2->path.at(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
 		if (App->scene->debug)
 		{
 
@@ -203,7 +203,7 @@ bool j1WaveSystem::Update(float dt)
 
 	for (uint i = 0; i < spawn3->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i)->x, spawn3->path.at(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
 		if (App->scene->debug)
 		{
 
@@ -258,7 +258,7 @@ void j1WaveSystem::StartWave(int wave)
 			
 			for (uint i = 0; i < spawn1->path.size(); ++i)
 			{
-				iPoint* point = new iPoint(spawn1->path.at(i)->x, spawn1->path.at(i)->y);
+				iPoint point(spawn1->path.at(i).x, spawn1->path.at(i).y);
 				temp->path.push_back( point );
 			}
 		}
@@ -267,7 +267,7 @@ void j1WaveSystem::StartWave(int wave)
 			temp->spawn = spawn2;	
 			for (uint i = 0; i < spawn2->path.size(); ++i)
 			{
-				iPoint* point = new iPoint(spawn2->path.at(i)->x, spawn2->path.at(i)->y);
+				iPoint point(spawn2->path.at(i).x, spawn2->path.at(i).y);
 				temp->path.push_back( point );
 			}
 		}																													
@@ -276,7 +276,7 @@ void j1WaveSystem::StartWave(int wave)
 			temp->spawn = spawn3;
 			for (uint i = 0; i < spawn3->path.size(); ++i)
 			{
-				iPoint* point = new iPoint(spawn3->path.at(i)->x, spawn3->path.at(i)->y);
+				iPoint point(spawn3->path.at(i).x, spawn3->path.at(i).y);
 				temp->path.push_back( point );
 			}
 		}

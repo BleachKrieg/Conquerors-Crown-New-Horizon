@@ -260,7 +260,7 @@ void DynamicEnt::Movement()
 		{
 			for (uint i = 0; i < path.size(); ++i)
 			{
-				iPoint nextPoint = App->map->MapToWorld(path.at(i)->x, path.at(i)->y);
+				iPoint nextPoint = App->map->MapToWorld(path.at(i).x, path.at(i).y);
 				if (App->scene->debug)
 				{
 					if (i == followpath)
@@ -274,7 +274,7 @@ void DynamicEnt::Movement()
 				}
 			}
 
-			if (origin.x == path.at(followpath)->x && origin.y == path.at(followpath)->y)
+			if (origin.x == path.at(followpath).x && origin.y == path.at(followpath).y)
 			{
 				followpath++;
 				change_direction = true;
@@ -282,19 +282,19 @@ void DynamicEnt::Movement()
 			if (followpath < path.size())
 			{
 
-				if (path.at(followpath)->x < origin.x) {
+				if (path.at(followpath).x < origin.x) {
 					pathSpeed.x = -1;
 				}
 
-				if (path.at(followpath)->x > origin.x) {
+				if (path.at(followpath).x > origin.x) {
 					pathSpeed.x = +1;
 				}
 
-				if (path.at(followpath)->y < origin.y) {
+				if (path.at(followpath).y < origin.y) {
 					pathSpeed.y = -1;
 				}
 
-				if (path.at(followpath)->y > origin.y) {
+				if (path.at(followpath).y > origin.y) {
 					pathSpeed.y = 1;
 				}
 			}

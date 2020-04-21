@@ -80,7 +80,7 @@ public:
 	entityType type;
 	TeamType	team;
 	int		life_points;
-	vector<iPoint*>	path;
+	vector<iPoint>	path;
 
 	bool deployed = true;
 	

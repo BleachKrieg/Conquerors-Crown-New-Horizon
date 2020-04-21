@@ -15,7 +15,7 @@ struct SpawnPoint
 	iPoint		position;
 	j1Entity*	target;
 	fPoint		targetpos;
-	vector<iPoint*>	path;
+	vector<iPoint>	path;
 };
 
 class j1WaveSystem : public j1Module {

@@ -5,7 +5,7 @@
 #include "j1Entity.h"
 
 
-PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true)
+PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true), max_frames(120)
 {
 	LOG("PathFinder created");
 }
@@ -141,10 +141,26 @@ bool PathFinder::Update()
 {	
 	//TODO 2: Make a loop to take control on how many times the function "IteratePath" should be called in one frame
 	bool ret = true;
-	for (int i = 0; i < max_iterations && ret; i++)
+	
+	max_frames++;
+	if (max_frames > 120)
 	{
-		 ret = IteratePath();
+		max_frames = 0;
+		pathCompleted = true;
+		initSuccessful = false;
+		available = true;
+		open.list.clear();
+		close.list.clear();
+		entity = nullptr;
+		callback = nullptr;
 	}
+	else {
+		for (int i = 0; i < max_iterations && ret; i++)
+		{
+			ret = IteratePath();
+		}
+	}
+	
 
 	return ret;
 }
@@ -195,13 +211,13 @@ const PathNode* PathList::GetNodeLowestScore() const
 	return ret;
 }
 
-void PathFinder::SavePath(vector<iPoint*>* path)
+void PathFinder::SavePath(vector<iPoint>* path)
 {
 	const vector<iPoint>* last_path = GetLastPath();
 	path->clear();
 	for (uint i = 0; i < last_path->size(); ++i)
 	{
-		iPoint* point = new iPoint(last_path->at(i).x, last_path->at(i).y);
+		iPoint point(last_path->at(i).x, last_path->at(i).y);
 
 		path->push_back(point);
 	}
