@@ -468,6 +468,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
 		gameClock.Start();
+		timer = 660;
+		wood = 0u;
+		stone = 0u;
+		gold = 0u;
 		finish = false;
 		break;
 	case scenes::logo:
