@@ -134,6 +134,10 @@ public:
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
+	GuiItem* townHallWoodCostImage;
+	GuiItem* townHallStoneCostImage;
+	GuiItem* townHallWoodCostText;
+	GuiItem* townHallStoneCostText;
 
 	//LogoGui
 	GuiItem* logoTextClick;
