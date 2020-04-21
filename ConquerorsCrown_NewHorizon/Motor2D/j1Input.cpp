@@ -2,9 +2,9 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Input.h"
+#include "j1Render.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
-#include "j1Render.h"
 
 #define MAX_KEYS 300
 
@@ -115,6 +115,11 @@ bool j1Input::PreUpdate(float dt)
 
 			case SDL_MOUSEBUTTONDOWN:
 				mouse_buttons[event.button.button - 1] = KEY_DOWN;
+				mouse = App->render->ScreenToWorld(mouse_x, mouse_y);
+				if (mouse.y > (-App->render->camera.y + 36) && mouse.y < ((-App->render->camera.y) + App->render->camera.h - 272))
+					screen_click = true;
+				else 
+					screen_click = false;
 				//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
@@ -188,8 +193,8 @@ bool j1Input::GetWindowEvent(j1EventWindow ev)
 
 void j1Input::GetMousePosition(int& x, int& y)
 {
-	x = mouse_x - App->render->camera.x;
-	y = mouse_y - App->render->camera.y;
+	x = mouse_x;
+	y = mouse_y;
 }
 
 void j1Input::GetMouseMotion(int& x, int& y)

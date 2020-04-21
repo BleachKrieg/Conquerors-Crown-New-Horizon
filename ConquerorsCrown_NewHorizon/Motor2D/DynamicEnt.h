@@ -19,8 +19,21 @@ public:
 		NO_TYPE,
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
+		HUMAN_GATHERER,
+		ENEMY_TROLL,
 	};
-
+	enum class DynamicState
+	{
+		IDLE,
+		UP,
+		DOWN,
+		HORIZONTAL,
+		DIAGONAL_UP,
+		DIAGONAL_DOWN,
+		INTERACTING,
+		DYING
+	};
+	
 	// Constructor
 	DynamicEnt(DynamicEntityType type);
 
@@ -39,31 +52,64 @@ public:
 
 	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
+	void OrderPath(DynamicEntityType type);
+
+	void AttackTarget(DynamicEntityType type);
+
+
+	void GathererGoTos();
+
+	void Death(DynamicEntityType entity_type);
+
 public:
-
-
+	float time_FX_troops;
+	DynamicEntityType entity_type;
 
 protected:
-	uint life_points;
 
-	int followpath;
-	int collrange;
-	int vision;
-	bool move;
-	SDL_RendererFlip orientation;
-	iPoint origin, mouse, relative_target;
-	p2DynArray<iPoint> path;
-	list<j1Entity*> close_entity_list;
-	list<j1Entity*> colliding_entity_list;
-
+	int					followpath;
+	uint				vision;
+	uint				move;
+	SDL_RendererFlip	orientation;
+	iPoint				origin, mouse, relative_target;
+	list<j1Entity*>		close_entity_list;
+	list<j1Entity*>		colliding_entity_list;
+	// States ------------------------
+	DynamicState		state;
 	// Animations ------------------------
 	Animation moving_up;
 	Animation moving_diagonal_up;
 	Animation moving_right;
 	Animation moving_diagonal_down;
 	Animation moving_down;
+	Animation attacking_up;
+	Animation attacking_diagonal_up;
+	Animation attacking_right;
+	Animation attacking_diagonal_down;
+	Animation attacking_down;
+	Animation death_up;
+	Animation death_down;
 	// -----------------------------------
-	
+	// Attack Variables ------------------
+	j1Entity*	target_entity;
+	uint		attack_vision;
+	uint		attack_range;
+	uint		attack_damage;
+	bool		following_target;
+	bool		player_order;
+	bool		can_attack;
+	uint		time_attack;
+	// -----------------------------------
+
+	// Time counter ----------------------
+	j1PerfTimer	timer;
+	uint		current_time;
+	bool		change_direction;
+
+private:
+
+	int			death_counter;
+
 };
 
 #endif // __j1Entity_H__

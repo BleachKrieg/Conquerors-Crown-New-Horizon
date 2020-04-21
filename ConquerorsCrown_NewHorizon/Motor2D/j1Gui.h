@@ -2,7 +2,7 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
-
+#include <vector>
 
 #define CURSOR_WIDTH 2
 
@@ -13,6 +13,7 @@ enum class Types
 	button,
 	inputText,
 	slider,
+	bar
 };
 
 struct _TTF_Font;
@@ -34,6 +35,10 @@ public:
 	void GetScreenPos(int&, int&);
 	void GetLocalPos(int&, int&);
 	void SetLocalPos(int&, int&);
+	void SetLocalSize(int&, int&);
+
+	virtual void updateBar(float) {
+	}
 	virtual void returnChilds(GuiItem*, GuiItem*) {
 	}
 	virtual void slide() {
@@ -94,6 +99,7 @@ public:
 
 private:
 	SDL_Color color;
+	_TTF_Font* local_font;
 	const char *text;
 
 public:
@@ -137,6 +143,21 @@ private:
 
 public:
 	int dragarea;
+};
+
+class GuiBar : public GuiItem
+{
+public:
+	GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback = nullptr);
+	virtual ~GuiBar();
+	void returnChilds(GuiItem*, GuiItem*);
+	void updateBar(float); 
+private:
+	GuiItem* background;
+	GuiItem* fill;
+	SDL_Rect originalSize;
+public:
+	float value;
 };
 
 // ---------------------------------------------------
@@ -185,7 +206,7 @@ public:
 public:
 	bool buttonPressed;
 	int FocusIt;
-	p2List<GuiItem*> guiElements;
+	vector<GuiItem*> guiElements;
 
 private:
 	p2SString atlas_file_name;

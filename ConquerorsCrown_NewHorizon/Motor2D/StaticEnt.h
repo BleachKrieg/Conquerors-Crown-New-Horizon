@@ -17,7 +17,10 @@ public:
 	enum class StaticEntType
 	{
 		NO_TYPE,
-		TEST_3,
+		HumanBarracks,
+		HumanTownHall,
+		Resource,
+		GoldMine,
 	};
 
 	// Constructor
@@ -48,7 +51,11 @@ public:
 	iPoint map, world; // Preview mode
 	int x, y; // Preview mode
 	int construction_time;
+	int time_FX_barracks;
 	j1Timer timer;
+
+	// UI
+	bool createUI;
 
 };
 

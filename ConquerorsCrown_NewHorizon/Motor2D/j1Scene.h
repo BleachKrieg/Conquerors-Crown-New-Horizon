@@ -3,6 +3,10 @@
 
 #include "j1Module.h"
 #include "Animation.h"
+#include "p2Point.h"
+#include "SDL/include/SDL.h"
+#include "j1Timer.h"
+
 
 #define COORDS(a) a+3000 
 
@@ -11,11 +15,14 @@ class j1Entity;
 class DynamicEnt;
 class StaticEnt;;
 
-enum scenes {
+enum class scenes {
 	menu,
-	ingame
-};
+	ingame,
+	logo,
+	victory,
+	defeat
 
+};
 
 class GuiItem;
 
@@ -50,25 +57,58 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	//Menu functions
+	void DeleteScene();
+	void CreateScene(scenes);
 
 	bool CreateMenu();
 	bool CreateInGame();
+	bool CreateLogo();
+	bool CreateVictory();
+	bool CreateDefeat();
 	bool DeleteUI();
+
+	//InGameUI functions
+	bool CreateButtonsUI();
+	bool DeleteButtonsUI();
+
+	void LogoPushbacks();
+	void TeamLogoPushbacks();
+	void LoadTiledEntities();
+
+	void AddResource(char*, int);
+	void TimeToClock();
 
 	void GuiInput(GuiItem* guiElement);
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene = menu;
+	scenes current_scene;
+	p2SString logoSheet_file_name;
+	p2SString teamLogoSheet_file_name;
+	SDL_Texture* logoSheet;
+	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
+	SDL_Texture* teamLogoSheet;
+	Animation* current_animation = nullptr;
+	Animation logo;
+	Animation team_logo;
+	int logoTextTimer;
+	int logo_team_sfx_counter;
+	j1Timer logoTimer;
+	int alpha;
 
 public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
 
+	uint gold;
+	uint wood;
+	uint stone;
+
 	bool debug;
 	bool Building_preview;
+	iPoint mouse_position;
 	iPoint map_coordinates;
-
 
 	//MenuGui
 	GuiItem* menuButtonNewGame;
@@ -82,11 +122,55 @@ public:
 	GuiItem* menuBackground;
 
 	//InGameGui
-	iPoint ingameUIPosition;
+	iPoint	 ingameUIPosition;
 	GuiItem* ingameUI;
 	GuiItem* ingameTopBar;
 	GuiItem* ingameButtonMenu;
 	GuiItem* ingameTextMenu;
+	GuiItem* ingameTextGold;
+	GuiItem* ingameTextWood;
+	GuiItem* ingameTextStone;
+	GuiItem* ingameTextClock;
+
+	GuiItem* townHallButton;
+	GuiItem* townHallImage;
+	GuiItem* townHallWoodCostImage;
+	GuiItem* townHallStoneCostImage;
+	GuiItem* townHallWoodCostText;
+	GuiItem* townHallStoneCostText;
+
+	//LogoGui
+	GuiItem* logoTextClick;
+	GuiItem* logoBackground;
+
+	//TeamLogoGui
+	SDL_Rect teamLogoBackground;
+
+	//VictoryGui
+	SDL_Rect rect_victory = { 0, 0, 757, 791 };
+	GuiItem* victoryBackground;
+	GuiItem* victoryButtonContinue;
+	GuiItem* victoryTextContinue;
+	GuiItem* victoryTextClick;
+	float scale_victory = 0.0f;
+	float speed_victory = 0.0f;
+
+	//DefeatGui
+	SDL_Rect rect_defeat = { 0, 0, 757, 791 };
+	GuiItem* defeatBackground;
+	GuiItem* defeatButtonContinue;
+	GuiItem* defeatTextContinue;
+	GuiItem* defeatTextClick;
+	float scale_defeat = 0.0f;
+	float speed_defeat = 0.0f;
+
+	j1Timer gameClock;
+	int timer;
+	string mins;
+	string secs;
+	bool finish = false;
+
+	bool active;
 };
 
 #endif // __j1SCENE_H__

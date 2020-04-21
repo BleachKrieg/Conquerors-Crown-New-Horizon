@@ -44,6 +44,7 @@
   <map>
     <folder>textures/maps/</folder>
   </map>
+  <minimap width="225" corner="bottom_left" margin="15"/>
 
   <entity_manager>
     <spritesheet test_1="textures/sprites/human_footman.png"/>
@@ -51,5 +52,16 @@
   
    <scene>
      <map name="maplevel1.tmx"/>
+     <logo file="textures/gui/LogoSheet.png"/>
+     <team_logo file="textures/gui/TeamLogoSheet.png"/>
    </scene>
+
+  <wave>
+    <spawnpoints>
+      <spawnpoint1 x="1050" y="850"/>
+      <spawnpoint2 x="850" y="2800"/>
+      <spawnpoint3 x="2200" y="3800"/>
+
+    </spawnpoints>
+  </wave>
 </config>

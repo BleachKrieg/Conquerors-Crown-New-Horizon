@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include <vector>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -26,6 +27,9 @@ public:
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
+	// Pause the music with or without fadeout
+	void PauseMusic(float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool Update(float dt);
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
@@ -49,35 +53,41 @@ public:
 
 public:
 
-	//Player FX
-	/*int moveFx;
-	int jumpFx;
-	int dashFx;
-	int winFx;
-	int deathFx;
-	int arrowFx;
-	int bowFx;
-	int swordFx;
-	int checkpointFx;
-	int wizarDeathFx;
-	int slimeDeathFx;
-	int coinpickupFx;
-	int extraLifeFx;*/
-
 	int construction;
-	int walking;
+	int cancel_building;
+	int select_footman;
+	int select_archer;
+	int select_gatherer;
+	int go_footman;
+	int go_archer;
+	int go_gatherer;
+	int footman_attack;
+	int archer_attack;
+	int troll_attack;
+	int wood_gatherer;
+	int mine_gatherer;
+	int die_footman;
+	int die_archer;
+	int die_gatherer;
+	int die_troll;
 
+	int click_to_play;
+	int normal_click;
+	int upgrade_complete;
 
-	//ButtonFX
-	int buttonFx;
+	int logo_game_fx;
+	int logo_team_fx;
+
 private:
 
 	_Mix_Music* music = NULL;
-	p2List<Mix_Chunk*>	fx;
+	vector<Mix_Chunk*>	fx;
 	p2SString			music_directory;
 	p2SString			fx_directory;
 	float volumemusic;
 	float volumefx;
+
+	bool musicToFree;
 };
 
 #endif // __j1AUDIO_H__

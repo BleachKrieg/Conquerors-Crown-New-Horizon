@@ -2,7 +2,6 @@
 #define __j1MAP_H__
 
 #include "PugiXml/src/pugixml.hpp"
-#include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
 #include <list>
@@ -120,6 +119,9 @@ public:
 	iPoint WorldToMap(int x, int y) const;
 
 	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer);
+
+	TileSet* GetTilesetFromTileId(int id) const;
+
 private:
 
 	bool LoadMap();
@@ -129,7 +131,6 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties* properties);
 	
 
-	TileSet* GetTilesetFromTileId(int id) const;
 
 public:
 	bool blitColliders = false;

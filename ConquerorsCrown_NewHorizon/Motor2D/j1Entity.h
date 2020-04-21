@@ -36,7 +36,13 @@ public:
 		DYNAMIC
 	};
 
-	entityType type;
+	enum class TeamType
+	{
+		NO_TYPE,
+		PLAYER,
+		IA,
+	};
+
 
 	// Constructor
 	j1Entity(entityType type);
@@ -51,19 +57,31 @@ public:
 	bool CleanUp();
 
 	//Spatial Audio
-	void SpatialAudio(int channel, int posx, int posy);
+	void SpatialAudio(int channel, int SFX, int posx, int posy);
+
+	Animation* GetAnimation();
+
 
 protected:
 	Animation* current_animation = nullptr;
 
+
 public: 	
 	bool isSelected;
 	bool selectable;
+	bool selectable_buildings;
 	fPoint position;
 	bool to_delete;
 	int body;
 	fPoint speed;
 	int volume;
+	int SFX;
+	entityType type;
+	TeamType	team;
+	int		life_points;
+	vector<iPoint>	path;
+
+	bool deployed = true;
 	
 };
 

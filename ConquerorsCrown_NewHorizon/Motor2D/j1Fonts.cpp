@@ -47,11 +47,8 @@ bool j1Fonts::CleanUp()
 {
 	LOG("Freeing True Type fonts and library");
 
-	p2List_item<TTF_Font*>* item;
-
-	for(item = fonts.start; item != NULL; item = item->next)
-	{
-		TTF_CloseFont(item->data);
+	for (int i = 0; i < fonts.size(); i++) {
+		TTF_CloseFont(fonts[i]);
 	}
 
 	fonts.clear();
@@ -72,7 +69,7 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 	else
 	{
 		LOG("Successfully loaded font %s size %d", path, size);
-		fonts.add(font);
+		fonts.push_back(font);
 	}
 
 	return font;

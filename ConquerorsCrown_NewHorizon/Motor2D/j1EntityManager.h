@@ -4,7 +4,8 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Module.h"
 #include "p2Point.h"
-#include "p2DynArray.h"
+#include "ResourceEntities.h"
+#include "GoldMine.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 #include "StaticEnt.h"
@@ -41,29 +42,55 @@ public:
 	// Create a new entity
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
-	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0);
+	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
 
 	// Delete an entity
-	bool j1EntityManager::DeleteEntity(list<j1Entity*>::iterator entity_iterator, j1Entity* entity);
+	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
+	bool DeleteAllEntities();
 
 	void LoadAnimations(const char* path, list<Animation*>& animations);
+
+	//Check if any entity is selected
+	bool IsSomethingSelected();
 
 protected:
 	TileSetEntity TileSetData;
 
 public:
-	list<j1Entity*> entities;
-	SDL_Texture* foot_man_tex = nullptr;
-	SDL_Texture* arch_man = nullptr;
+	vector<j1Entity*> entities;
+	vector<j1Entity*> player_dyn_ent;
+	vector<j1Entity*> ai_dyn_ent;
+	vector<j1Entity*> player_stat_ent;
+	vector<j1Entity*> resources_ent;
 
-	// Animations
+	GoldMine* mine;
+
+	// Task times --------------------
+	uint trees_time;
+	uint mines_time;
+	uint quarries_time;
+	// ------------------------------
+
+	SDL_Texture* foot_man_tex = nullptr;
+	SDL_Texture* arch_man_tex = nullptr;
+	SDL_Texture* gather_man_tex = nullptr;
+	SDL_Texture* troll_tex = nullptr;
+	int			max_audio_attacks;
+	j1PerfTimer	timer;
+
+	// Animations ----------------------
 	list<Animation*> archer_animations;
 	list<Animation*> footman_animations;
+	list<Animation*> gatherer_animations;
+	list<Animation*> troll_animations;
+	// ---------------------------------
 
 	SDL_Texture* building = nullptr;
+	SDL_Texture* miscs = nullptr;
+
+	bool lights;
 
 	// Load entities textures
-
 };
 
 #endif // __j1EntityManager_H__

@@ -15,7 +15,7 @@
 
 DynamicEnt::DynamicEnt(DynamicEntityType type) : j1Entity(entityType::DYNAMIC)
 {
-
+	death_counter = 0;
 }
 
 DynamicEnt::~DynamicEnt()
@@ -56,16 +56,19 @@ void DynamicEnt::CheckCollisions(fPoint* speed)
 	}
 }
 
-void DynamicEnt::Movement()
+void DynamicEnt::OrderPath(DynamicEntityType type)
 {
 	j1Entity* it;
 
 	list<j1Entity*>::iterator selected_it;
-
-
-	if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (isSelected && entity_type != DynamicEntityType::HUMAN_GATHERER && App->movement->ai_selected != nullptr)
+	{
+		target_entity = App->movement->ai_selected;
+	}
+	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
+		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
 		mouse = App->map->WorldToMap(mouse.x, mouse.y);
 		relative_target = { 0,0 };
 
@@ -98,111 +101,259 @@ void DynamicEnt::Movement()
 		{
 			relative_target.y = mouse.y + 1;
 		}
+
 		if (App->movement->selected.size() > 10)
 		{
-			if (App->pathfinding->CreatePath(origin, relative_target) == -1)
+			if (App->pathfinding->RequestPath(origin, relative_target, this) == -1)
 			{
-				App->pathfinding->CreatePath(origin, mouse);
+				App->pathfinding->RequestPath(origin, mouse, this);
 			}
 		}
 		else
 		{
-			App->pathfinding->CreatePath(origin, mouse);
+			App->pathfinding->RequestPath(origin, mouse, this);
 		}
 
-		const p2DynArray<iPoint>* last_path = App->pathfinding->GetLastPath();
-		path.Clear();
-		for (uint i = 0; i < last_path->Count(); ++i)
-		{
-			path.PushBack({ last_path->At(i)->x, last_path->At(i)->y });
-		}
+		player_order = true;
 		followpath = 1;
+		change_direction = true;
+		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+			SpatialAudio(5, App->audio->go_footman, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+			SpatialAudio(5, App->audio->go_archer, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
+			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
+		}
+
 	}
+}
 
-	fPoint pathSpeed{ 0,0 };
-	if (path.At(followpath) != NULL)
+void DynamicEnt::AttackTarget(DynamicEntityType type)
+{
+	//attack close enemy entity
+
+	if (target_entity == NULL)
 	{
-		for (uint i = 0; i < path.Count(); ++i)
-		{
-			iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
-			if (App->scene->debug)
-			{
-				if (i == followpath)
-				{
-					App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
-				}
-				else {
-					App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+		following_target = false;
+	}
+	if (target_entity != NULL)
+	{
+		/*uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));*/
 
+		int x = target_entity->position.x;
+		int y = target_entity->position.y;
+
+		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+
+		//if (!following_target && distance > (attack_range * attack_range))
+		if (!following_target && !player_order && distance >= attack_range + target_entity->body)
+		{
+			current_time = timer.ReadMs();
+			following_target = true;
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->RequestPath(origin, targetPos, this);
+			followpath = 1;
+
+		}
+
+		// Finish attack
+
+		if (distance < attack_range + target_entity->body)
+		{
+			state = DynamicState::INTERACTING;
+
+			following_target = false;
+			if (player_order == false)
+			{
+				path.clear();
+				if ((timer.ReadMs() - current_time) >= time_attack)
+				{
+					target_entity->life_points -= attack_damage;
+					current_time = timer.ReadMs();
+					if (App->entity->max_audio_attacks < 1) {
+						
+
+						if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+							SpatialAudio(2, App->audio->archer_attack, position.x, position.y);
+							App->entity->max_audio_attacks++;
+
+						}
+						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+							SpatialAudio(3, App->audio->footman_attack, position.x, position.y);
+							App->entity->max_audio_attacks++;
+
+						}
+						
+						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
+							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
+							App->entity->max_audio_attacks++;
+
+						}
+						
+					}
+					
 				}
 			}
 		}
-		if (path.At(followpath)->x < origin.x) {
-			pathSpeed.x = -1;
-		}
+		/*	else if(path.At(1) == NULL){
 
-		if (path.At(followpath)->x > origin.x) {
-			pathSpeed.x = +1;
-		}
+				target_entity = NULL;
+				following_target = false;
+			}*/
 
-		if (path.At(followpath)->y < origin.y) {
-			pathSpeed.y = -1;
-		}
-
-		if (path.At(followpath)->y > origin.y) {
-			pathSpeed.y = 1;
-		}
-		if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+		if (target_entity->life_points <= 0)
 		{
-			followpath++;
+			target_entity = NULL;
+			state = DynamicState::IDLE;
+			current_time = timer.ReadMs();
+			path.clear();
+			following_target = false;
+		}
+	}
+}
+void DynamicEnt::GathererGoTos()
+{
+	if (target_entity == NULL)
+	{
+		following_target = false;
+	}
+	if (target_entity != NULL)
+	{
+		/*uint distance = ((target_entity->position.x - position.x) * (target_entity->position.x - position.x)
+			+ (target_entity->position.y - position.y) * (target_entity->position.y - position.y));*/
+
+		int x = target_entity->position.x;
+		int y = target_entity->position.y;
+
+		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+
+		if (!following_target)
+		{
+			current_time = timer.ReadMs();
+			following_target = true;
+			iPoint targetPos = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+			App->pathfinding->RequestPath(origin, targetPos, this);
+			followpath = 1;
+
+		}
+	}
+}
+
+void DynamicEnt::Movement()
+{
+	
+
+
+	fPoint pathSpeed{ 0,0 };
+	if (!path.empty())
+	{
+		if (followpath < path.size())
+		{
+			for (uint i = 0; i < path.size(); ++i)
+			{
+				iPoint nextPoint = App->map->MapToWorld(path.at(i).x, path.at(i).y);
+				if (App->scene->debug)
+				{
+					if (i == followpath)
+					{
+						App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 12, 12 }, 200, 0, 0, 100);
+					}
+					else {
+						App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+
+					}
+				}
+			}
+
+			if (origin.x == path.at(followpath).x && origin.y == path.at(followpath).y)
+			{
+				followpath++;
+				change_direction = true;
+			}
+			if (followpath < path.size())
+			{
+
+				if (path.at(followpath).x < origin.x) {
+					pathSpeed.x = -1;
+				}
+
+				if (path.at(followpath).x > origin.x) {
+					pathSpeed.x = +1;
+				}
+
+				if (path.at(followpath).y < origin.y) {
+					pathSpeed.y = -1;
+				}
+
+				if (path.at(followpath).y > origin.y) {
+					pathSpeed.y = 1;
+				}
+			}
+		}
+		else {
+			following_target = false;
+			player_order = false;
+			path.clear();
+			change_direction = true;
 		}
 	}
 	if (pathSpeed.x != 0 && pathSpeed.y != 0)
 	{
 		pathSpeed.x /= 1.5;
 		pathSpeed.y /= 1.5;
-	}
-	if (pathSpeed.x != 0)
-	{
-		current_animation = &moving_right;
 		
-		if (pathSpeed.y < 0)
-		{
-			current_animation = &moving_diagonal_up;
-		}
-
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_diagonal_down;
-		}
 	}
-	else if (pathSpeed.y != 0) {
-		if (pathSpeed.y < 0)
-		{
-			current_animation = &moving_up;
-		}
-
-		if (pathSpeed.y > 0)
-		{
-			current_animation = &moving_down;
-		}
-	}
-	else 
+	if (change_direction)
 	{
-		//idle anim
-	}
-	if (pathSpeed.x < 0)
-	{
-		orientation = SDL_FLIP_HORIZONTAL;
-	}
-	if(pathSpeed.x > 0)
-	{
-		orientation = SDL_FLIP_NONE;
-	}
+		if (pathSpeed.x != 0)
+		{
+			state = DynamicState::HORIZONTAL;
+			current_animation = &moving_right;
 
+			if (pathSpeed.y < 0)
+			{
+				state = DynamicState::DIAGONAL_UP;
+				current_animation = &moving_diagonal_up;
+			}
+
+			if (pathSpeed.y > 0)
+			{
+				state = DynamicState::DIAGONAL_DOWN;
+				current_animation = &moving_diagonal_down;
+			}
+		}
+		else if (pathSpeed.y != 0) {
+			if (pathSpeed.y < 0)
+			{
+				state = DynamicState::UP;
+				current_animation = &moving_up;
+			}
+
+			if (pathSpeed.y > 0)
+			{
+				state = DynamicState::DOWN;
+				current_animation = &moving_down;
+			}
+		}
+		else
+		{
+			state = DynamicState::IDLE;
+		}
+		if (pathSpeed.x < 0)
+		{
+			orientation = SDL_FLIP_HORIZONTAL;
+		}
+		if (pathSpeed.x > 0)
+		{
+			orientation = SDL_FLIP_NONE;
+		}
+		change_direction = false;
+
+	}
 	
-
-		list<j1Entity*>::iterator neighbours_it;
 
 		SaveNeighbours(&close_entity_list, &colliding_entity_list);
 
@@ -217,17 +368,20 @@ void DynamicEnt::Movement()
 			separationSpeed.x = 0;
 			separationSpeed.y = 0;
 		}
-		if (App->scene->debug)
+	/*	if (App->scene->debug)
 		{
-			App->render->DrawCircle(position.x + 5, position.y + 5, vision, 200, 0, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, collrange, 200, 200, 0);
-			App->render->DrawCircle(position.x + 5, position.y + 5, body, 0, 0, 200);
-		}
+			App->render->DrawCircle(position.x, position.y, vision, 0, 200, 0);
+			App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
+			App->render->DrawCircle(position.x, position.y, attack_vision, 200, 200, 0);
+			App->render->DrawCircle(position.x, position.y, attack_range, 255, 0, 0);
+		}*/
+	
+		
 
 		fPoint cohesionSpeed;
 		if (!close_entity_list.empty())
 		{
-			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position);
+			cohesionSpeed = App->movement->GetCohesionSpeed(close_entity_list, position, body);
 		}
 		else
 		{
@@ -247,9 +401,12 @@ void DynamicEnt::Movement()
 		}
 
 	
-
-	speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.1 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.1 * cohesionSpeed.y + 0 * alignmentSpeed.y;
+		if(team == TeamType::PLAYER)
+			speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+		else
+	speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+	
+		speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
 	CheckCollisions(&speed);
 
@@ -259,29 +416,70 @@ void DynamicEnt::Movement()
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
 {
-	list<j1Entity*>::iterator entities_list;
 	j1Entity* it;
+
 	colliding_entity_list->clear();
 	close_entity_list->clear();
 
-	for (entities_list = App->entity->entities.begin(); entities_list != App->entity->entities.end(); ++entities_list) {
-		it = *entities_list;
+	uint closest_enemy = attack_vision;
+	if (target_entity != NULL)
+		closest_enemy = -1;
+
+	for (int i = 0; i < App->entity->entities.size(); i++) {
+		it = App->entity->entities[i];
 		if (it != this)
 		{
 			int x = it->position.x;
 			int y = it->position.y;
 
 			float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
-			if (distance < collrange + it->body)
+			if (distance < body + it->body)
 			{
 				colliding_entity_list->push_back(it);
 
 			}
-			if(it->selectable)
+			if (can_attack && distance < attack_vision + it->body && team != it->team && it->team != TeamType::NO_TYPE && it->life_points > 0)
+			{
+				if (distance < closest_enemy)
+				{
+					closest_enemy = distance;
+					target_entity = it;
+				}
+			}
+			else {
+				/*if (target_entity == it && !player_order)
+				{
+					target_entity = NULL;
+				}*/
+			}
+			if(it->type == entityType::DYNAMIC)
 			if (distance < vision + it->body)
 			{
 				close_entity_list->push_back(it);
 			}
 		}
 	}
+}
+
+void DynamicEnt::Death(DynamicEntityType entity_type)
+{
+	current_animation = &death_down;
+	death_counter++;
+	if (death_counter == 2) {
+		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
+			SpatialAudio(6, App->audio->die_archer, position.x, position.y);
+
+		}
+		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
+			SpatialAudio(7, App->audio->die_footman, position.x, position.y);
+		}
+		/*if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
+			SpatialAudio(8, App->audio->die_gatherer, position.x, position.y);
+		}*/
+		if (entity_type == DynamicEntityType::ENEMY_TROLL) {
+			SpatialAudio(9, App->audio->die_troll, position.x, position.y);
+		}		
+	}
+	LOG("DEATH: %i", death_counter);
+	if (current_animation->Finished() == true) { to_delete = true; }
 }

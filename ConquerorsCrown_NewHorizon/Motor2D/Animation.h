@@ -48,6 +48,12 @@ public:
 
 		return frames[(int)current_frame];
 	}
+
+	SDL_Rect& GetCurrentSize()
+	{
+		return frames[int(current_frame)];
+	}
+
 	int returnCurrentFrame() {
 		return (int)current_frame;
 	}

@@ -4,7 +4,6 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
-#include "p2DynArray.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 
@@ -28,8 +27,6 @@ public:
 
 	// Clean
 	bool CleanUp();
-
-//	void SaveNeighbours(list<j1Entity*>*, list<j1Entity*>*);
 
 };
 

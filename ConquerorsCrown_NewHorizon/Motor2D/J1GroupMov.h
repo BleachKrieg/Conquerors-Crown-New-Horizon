@@ -4,7 +4,6 @@
 
 
 #include "j1Module.h"
-#include "p2List.h"
 #include "p2Point.h"
 #include <list>
 
@@ -21,11 +20,17 @@ public:
 	bool PostUpdate(float dt);
 	bool CleanUp();
 	fPoint GetSeparationSpeed(list<j1Entity*>, fPoint);
-	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint);
+	fPoint GetCohesionSpeed(list<j1Entity*>, fPoint, float);
 	fPoint GetDirectionSpeed(list<j1Entity*>);
+public:
 	list<j1Entity*>	selected;
 	bool NewGroup;
+	j1Entity* player_selected = nullptr;
+	j1Entity* ai_selected = nullptr;
 
+private:
+
+	uint gatherer_counter;
 };
 
 #endif

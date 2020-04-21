@@ -1,7 +1,6 @@
 #ifndef __j1APP_H__
 #define __j1APP_H__
 
-#include "p2List.h"
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
@@ -27,7 +26,10 @@ class j1PathFinding;
 class j1GroupMov;
 class j1Gui;
 class j1Fonts;
+class j1Minimap;
 class EntityRequest;
+class j1FadeToBlack;
+class j1WaveSystem;
 
 
 class j1App
@@ -63,7 +65,7 @@ public:
 
 	void LoadGame();
 	void SaveGame() const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(list<p2SString>& list_to_fill) const;
 
 
 	bool Pause();
@@ -109,7 +111,10 @@ public:
 	j1GroupMov*			movement;
 	j1Gui*				gui;
 	j1Fonts*			font = NULL;
+	j1Minimap*			minimap;
 	EntityRequest*		requests;
+	j1FadeToBlack*		fade;
+	j1WaveSystem*		wave;
 
 	uint32				framerate = 0u;
 	pugi::xml_document	config_file;

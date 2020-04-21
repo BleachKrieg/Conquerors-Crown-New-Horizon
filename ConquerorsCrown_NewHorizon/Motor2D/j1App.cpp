@@ -19,6 +19,9 @@
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "EntityRequest.h"
+#include "j1Minimap.h"
+#include "j1FadeToBlack.h"
+#include "j1WaveSystem.h"
 
 
 
@@ -37,12 +40,15 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	minimap = new j1Minimap();
 	entity = new j1EntityManager();
 	requests = new EntityRequest();
 	gui = new  j1Gui();
 	font = new j1Fonts();
 	pathfinding = new j1PathFinding();
 	movement = new j1GroupMov();
+	fade = new j1FadeToBlack();
+	wave = new j1WaveSystem();
 	
 
 
@@ -55,16 +61,17 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(requests);
-	AddModule(pathfinding);
-	AddModule(entity);
 	AddModule(movement);
-	AddModule(render);
+	AddModule(entity);
+	AddModule(pathfinding);
+	AddModule(wave);
+	AddModule(minimap);
 	AddModule(gui);
+	AddModule(fade);
 	AddModule(font);
-	
 
 	// render last to swap buffer
-
+	AddModule(render);
 
 	PERF_PEEK(ptimer);
 }
@@ -149,7 +156,6 @@ bool j1App::Start()
 	}
 
 	startup_time.Start();
-
 	PERF_PEEK(ptimer);
 
 	return ret;
@@ -388,7 +394,7 @@ void j1App::SaveGame() const
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void j1App::GetSaveGames(list<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
