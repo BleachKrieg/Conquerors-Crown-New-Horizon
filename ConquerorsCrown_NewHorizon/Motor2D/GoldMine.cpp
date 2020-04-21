@@ -17,7 +17,7 @@ GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 	name.create("gold_mine");
 	position.x = posx - 64;
 	position.y = posy - 64;
-	body = 40;
+	body = 0;
 	active = true;
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
