@@ -1,7 +1,6 @@
 #ifndef __PATHFINDER_H__
 #define __PATHFINDER_H__
 #include "p2Point.h"
-#include "p2DynArray.h"
 #include "j1Entity.h"
 #include "j1WaveSystem.h"
 

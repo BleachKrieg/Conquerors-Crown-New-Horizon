@@ -175,9 +175,6 @@
     <ClInclude Include="p2Defs.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>Classes</Filter>
     </ClInclude>
