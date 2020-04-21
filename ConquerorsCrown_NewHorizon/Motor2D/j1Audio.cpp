@@ -78,13 +78,14 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Audio/SFX/Humans/archer/Archer_Death2.wav");
-	die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
+	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
 	die_troll = App->audio->LoadFx("Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	
 	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
 	
-	Logo_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_SFX.wav");
+	Logo_Game_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_Game_SFX.wav");
+	Logo_Team_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_Team_SFX.wav");
 	return ret;
 }
 

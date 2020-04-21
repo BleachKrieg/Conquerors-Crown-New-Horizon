@@ -93,6 +93,7 @@ private:
 	Animation logo;
 	Animation team_logo;
 	int logoTextTimer;
+	int logo_team_sfx_counter;
 	j1Timer logoTimer;
 	int alpha;
 

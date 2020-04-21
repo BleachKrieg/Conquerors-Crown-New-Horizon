@@ -25,6 +25,7 @@ j1Scene::j1Scene() : j1Module()
 
 	Building_preview = false;
 	active = false;
+	logo_team_sfx_counter = 0;
 }
 
 // Destructor
@@ -100,13 +101,26 @@ bool j1Scene::Update(float dt)
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
+		
 		if (logoTimer.ReadSec() <= 5.5) {
 			current_animation = &team_logo;
+			logo_team_sfx_counter++;
+			if (logo_team_sfx_counter == 120) {
+				App->audio->PlayFx(2, App->audio->Logo_Team_FX, 0);
+			}
+
 		}
+		
 		else {
+			logo_team_sfx_counter = 0;
 			current_animation = &logo;
 			logoTextTimer++;
+			if (logoTextTimer == 20) {
+				App->audio->PlayFx(1, App->audio->Logo_Game_FX, 0);
+			}
+			LOG("Logo text timer: %i", logoTextTimer);
 		}
+		LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -589,8 +603,6 @@ bool j1Scene::CreateLogo() {
 	logoBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
 
 	logoTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, logoBackground, nullptr, "Press X to continue..");
-
-	App->audio->PlayFx(1, App->audio->Logo_FX, 0);
 
 	return true;
 }
