@@ -252,12 +252,12 @@ void HumanTownHall::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst2;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 100 || App->scene->debug == true && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 200 && App->scene->stone >= 300 || App->scene->debug == true && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true)
 		{
 			if (App->scene->debug == false)
 			{
-				App->scene->AddResource("wood", -100);
-				App->scene->AddResource("stone", -100);
+				App->scene->AddResource("wood", -200);
+				App->scene->AddResource("stone", -300);
 			}
 			Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;

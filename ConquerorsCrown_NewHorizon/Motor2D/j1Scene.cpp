@@ -288,14 +288,13 @@ bool j1Scene::PostUpdate(float dt)
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())
 			{
-				if (townHallButton != nullptr) DeleteButtonsUI();
+				if (townHallButton != nullptr) ret = DeleteButtonsUI();
 			}
 			else
 			{
-				if (townHallButton == nullptr) CreateButtonsUI();
+				if (townHallButton == nullptr) ret = CreateButtonsUI();
 			}
 		}
-
 		break;
 	case scenes::logo:
 		if (logoTimer.ReadSec() <= 4.5) {
@@ -571,13 +570,29 @@ bool j1Scene::CreateButtonsUI()
 	townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
 	townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
-
+	
+	townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
+	townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
+	townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
+	townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
+	
 	return true;
 }
 
 bool j1Scene::DeleteButtonsUI()
 {
+	townHallWoodCostImage->to_delete = true;
+	townHallStoneCostImage->to_delete = true;
+	townHallWoodCostText->to_delete = true;
+	townHallStoneCostText->to_delete = true;
+	
 	townHallButton->to_delete = true;
+
+	townHallWoodCostImage = nullptr;
+	townHallStoneCostImage = nullptr;
+	townHallWoodCostText = nullptr;
+	townHallStoneCostText = nullptr;
+
 	townHallButton = nullptr;
 
 	return true;
@@ -682,6 +697,8 @@ bool j1Scene::CreateDefeat() {
 
 bool j1Scene::DeleteUI() 
 {
+	if (townHallButton != nullptr) DeleteButtonsUI();
+
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
 	menuTextNewGame = nullptr;
