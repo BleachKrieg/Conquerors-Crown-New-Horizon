@@ -5,7 +5,7 @@
 #include "j1Entity.h"
 
 
-PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true), max_frames(120)
+PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true), max_frames(0)
 {
 	LOG("PathFinder created");
 }
