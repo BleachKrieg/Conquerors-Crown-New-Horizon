@@ -73,7 +73,8 @@ public:
 	int click_to_play;
 	int normal_click;
 
-	int Logo_FX;
+	int Logo_Game_FX;
+	int Logo_Team_FX;
 
 private:
 

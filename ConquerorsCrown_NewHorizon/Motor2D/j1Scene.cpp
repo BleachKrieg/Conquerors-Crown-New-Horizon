@@ -25,6 +25,7 @@ j1Scene::j1Scene() : j1Module()
 
 	Building_preview = false;
 	active = false;
+	logo_team_sfx_counter = 0;
 }
 
 // Destructor
@@ -44,6 +45,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
+	teamLogoSheet_file_name = config.child("team_logo").attribute("file").as_string("");
 	
 	return ret;
 }
@@ -63,7 +65,6 @@ bool j1Scene::Start()
 	gold = 0u;
 	timer = 660;
 	map_coordinates = { 0, 0 };
-
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -96,12 +97,30 @@ bool j1Scene::Update(float dt)
 
 		break;
 	case scenes::logo:
-		current_animation = &logo;
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		logoTextTimer++;
+		
+		if (logoTimer.ReadSec() <= 5.5) {
+			current_animation = &team_logo;
+			logo_team_sfx_counter++;
+			if (logo_team_sfx_counter == 120) {
+				App->audio->PlayFx(2, App->audio->Logo_Team_FX, 0);
+			}
+
+		}
+		
+		else {
+			logo_team_sfx_counter = 0;
+			current_animation = &logo;
+			logoTextTimer++;
+			if (logoTextTimer == 20) {
+				App->audio->PlayFx(1, App->audio->Logo_Game_FX, 0);
+			}
+			LOG("Logo text timer: %i", logoTextTimer);
+		}
+		LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -277,15 +296,31 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::logo:
-		/*
-		if (logoTextTimer == 35) {
-			logoTextClick->delayBlit = !logoTextClick->delayBlit;
+		if (logoTimer.ReadSec() <= 4.5) {
+			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
+			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
+
+			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 		}
-		if (logoTextTimer == 60) {
-			logoTextClick->delayBlit = !logoTextClick->delayBlit;
-			logoTextTimer = 0;
-		}*/
-		App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+		else if (logoTimer.ReadSec() <= 5.5) {
+			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
+			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
+
+			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+
+			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
+			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
+			alpha += 10;
+			if (alpha > 255) { alpha = 255; }
+		}
+		else {
+			App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			
+			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
+			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
+			alpha -= 5;
+			if (alpha < 0) { alpha = 0; }
+		}
 		break;
 
 	case scenes::victory:
@@ -551,7 +586,19 @@ bool j1Scene::CreateLogo() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
+	teamLogoSheet = App->tex->Load(teamLogoSheet_file_name.GetString());
+
+	TeamLogoPushbacks();
+
+	teamLogoBackground.x = 0;
+	teamLogoBackground.y = 0;
+	teamLogoBackground.w = 1280;
+	teamLogoBackground.h = 720;
+
+	logoTimer.Start();
+
 	logoTextTimer = 0;
+	alpha = 0;
 
 	logoSheet = App->tex->Load(logoSheet_file_name.GetString());
 	
@@ -563,8 +610,6 @@ bool j1Scene::CreateLogo() {
 	logoBackground = App->gui->CreateGuiElement(Types::image, 0, 0, rect);
 
 	logoTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, logoBackground, nullptr, "Press X to continue..");
-
-	App->audio->PlayFx(1, App->audio->Logo_FX, 0);
 
 	return true;
 }
@@ -667,6 +712,7 @@ bool j1Scene::DeleteUI()
 	defeatTextClick = nullptr;
 
 	App->tex->UnLoad(logoSheet);
+	App->tex->UnLoad(teamLogoSheet);
 	App->gui->DeleteAllGui();
 	return true;
 }
@@ -762,7 +808,7 @@ void j1Scene::TimeToClock()
 
 void j1Scene::LogoPushbacks() {
 
-	logo.PushBack({913, 44, 828, 295}, 0.02f, 0, 0, 0, 0);
+	logo.PushBack({913, 44, 828, 295}, 0.04f, 0, 0, 0, 0);
 	logo.PushBack({ 1811, 44, 828, 295 }, 0.18f, 0, 0, 0, 0);
 	logo.PushBack({ 2709, 44, 828, 295 }, 0.25f, 0, 1, 0, 0);
 	logo.PushBack({ 15, 439, 828, 295 }, 0.25f, 3, 0, 0, 0);
@@ -784,4 +830,34 @@ void j1Scene::LogoPushbacks() {
 	logo.PushBack({ 15, 44, 828, 295 }, 0.1f, 0, 0, 0, 0);
 
 	logo.loop = false;
+}
+
+void j1Scene::TeamLogoPushbacks() {
+
+	team_logo.PushBack({ 0, 875, 10, 10 }, 0.02f, 0, 0, 0, 0);
+	team_logo.PushBack({0, 0, 259, 423}, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 286, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 572, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 858, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 1144, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 1430, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 1716, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 2002, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 2288, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 2574, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 2860, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 3146, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 3432, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 3718, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 0, 445, 259, 423 }, 0.35f, 510, 148, 0, 0);
+	team_logo.PushBack({ 286, 445, 259, 423 }, 0.15f, 510, 148, 0, 0);
+	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.3f, 0, 0, 0, 0);
+	team_logo.PushBack({ 1879, 445, 1280, 720 }, 0.5f, 0, 0, 0, 0);
+	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.25f, 0, 0, 0, 0);
+	team_logo.PushBack({ 0, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
+	team_logo.PushBack({ 1311, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
+	team_logo.PushBack({ 2622, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
+	team_logo.PushBack({ 3335, 445, 712, 720 }, 0.2f, 356, 0, 0, 0);
+
+	team_logo.loop = false;
 }

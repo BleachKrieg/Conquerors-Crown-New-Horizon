@@ -73,6 +73,9 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
+
+	Mix_AllocateChannels(20);
+
 	if(timer.ReadMs() > 200)
 	{
 		max_audio_attacks = 0;

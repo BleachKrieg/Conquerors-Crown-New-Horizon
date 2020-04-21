@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
+#include "SDL/include/SDL.h"
 #include "j1Timer.h"
 
 
@@ -71,6 +72,7 @@ public:
 	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
+	void TeamLogoPushbacks();
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
@@ -82,12 +84,18 @@ private:
 	bool changeEntities = false;
 	scenes current_scene;
 	p2SString logoSheet_file_name;
+	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
 	SDL_Texture* victoryLogo;
 	SDL_Texture* defeatLogo;
+	SDL_Texture* teamLogoSheet;
 	Animation* current_animation = nullptr;
 	Animation logo;
+	Animation team_logo;
 	int logoTextTimer;
+	int logo_team_sfx_counter;
+	j1Timer logoTimer;
+	int alpha;
 
 public:
 	p2SString current_level;
@@ -130,6 +138,9 @@ public:
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
+
+	//TeamLogoGui
+	SDL_Rect teamLogoBackground;
 
 	//VictoryGui
 	SDL_Rect rect_victory = { 0, 0, 757, 791 };
