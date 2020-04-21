@@ -88,7 +88,14 @@ public:
 	void ImageSelected();
 	
 	// UI
-	
+	//Upggrade UI
+	GuiItem* Button_Upgrade;
+	GuiItem* Barrack_image;
+	GuiItem* Arrow_image;
+	GuiItem* Upgrade_wood_cost;
+	GuiItem* Upgrade_Text_wood;
+	bool barrack_Ui_upgrade;
+
 	//Archer UI
 	GuiItem* Button_Create_Archer;
 	GuiItem* Archer_image;
