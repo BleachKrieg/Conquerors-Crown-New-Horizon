@@ -68,7 +68,7 @@ bool j1WaveSystem::Start()
 	next_wave = 90;
 	spawn_counter = 0;
 	wave_ongoing = false;
-	max_waves = 5;
+	max_waves = 7;
 
 	return ret;
 }

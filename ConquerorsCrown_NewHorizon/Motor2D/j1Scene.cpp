@@ -118,9 +118,9 @@ bool j1Scene::Update(float dt)
 			if (logoTextTimer == 20) {
 				App->audio->PlayFx(1, App->audio->Logo_Game_FX, 0);
 			}
-			LOG("Logo text timer: %i", logoTextTimer);
+	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
-		LOG("Logo timer: %.2f", logoTimer.ReadSec());
+	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
