@@ -62,6 +62,8 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
+	bool CreatePauseMenu();
+	bool ClosePauseMenu();
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -138,6 +140,17 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
+
+	//PauseMenuGui
+	GuiItem* pausemenuBackground;
+	GuiItem* pausemenuButtonResume;
+	GuiItem* pausemenuTextResume;
+	GuiItem* pausemenuButtonOptions;
+	GuiItem* pausemenuTextOptions;
+	bool pausemenu_open = false;
+	int menu_pos_x;
+	int menu_pos_y;
+
 
 	//LogoGui
 	GuiItem* logoTextClick;
