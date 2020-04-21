@@ -4,8 +4,8 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "j1Module.h"
 #include "p2Point.h"
-#include "p2DynArray.h"
 #include "ResourceEntities.h"
+#include "GoldMine.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
 #include "StaticEnt.h"
@@ -63,6 +63,8 @@ public:
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
 
+	GoldMine* mine;
+
 	// Task times --------------------
 	uint trees_time;
 	uint mines_time;
@@ -84,6 +86,9 @@ public:
 	// ---------------------------------
 
 	SDL_Texture* building = nullptr;
+	SDL_Texture* miscs = nullptr;
+
+	bool lights;
 
 	// Load entities textures
 };

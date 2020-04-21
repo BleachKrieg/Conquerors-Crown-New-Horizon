@@ -96,6 +96,9 @@
     <ClCompile Include="j1Map.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="GoldMine.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -175,12 +178,6 @@
     <ClInclude Include="p2Defs.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="p2Point.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="j1Map.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldMine.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

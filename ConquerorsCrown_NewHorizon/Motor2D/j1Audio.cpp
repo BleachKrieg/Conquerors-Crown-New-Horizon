@@ -75,16 +75,17 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	archer_attack = App->audio->LoadFx("Audio/SFX/Combat/Arrow_Throwing.wav");
 	troll_attack = App->audio->LoadFx("Audio/SFX/Combat/Axe_Throwing.wav");
 	wood_gatherer = App->audio->LoadFx("Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
-	mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
+	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Audio/SFX/Humans/archer/Archer_Death2.wav");
-	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Axe_Throwing.wav");
+	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
 	die_troll = App->audio->LoadFx("Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	
 	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
 	
-	Logo_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_SFX.wav");
+	Logo_Game_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_Game_SFX.wav");
+	Logo_Team_FX = App->audio->LoadFx("Audio/SFX/Logo/Logo_Team_SFX.wav");
 	return ret;
 }
 
@@ -101,9 +102,9 @@ bool j1Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
-	for(item = fx.start; item != NULL; item = item->next)
-		Mix_FreeChunk(item->data);
+	for (int i = 0; i < fx.size(); i++) {
+		Mix_FreeChunk(fx[i]);
+	}
 
 	fx.clear();
 
@@ -210,8 +211,8 @@ unsigned int j1Audio::LoadFx(const char* path)
 	}
 	else
 	{
-		fx.add(chunk);
-		ret = fx.count();
+		fx.push_back(chunk);
+		ret = fx.size();
 	}
 
 	return ret;
@@ -225,7 +226,7 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 	if (!active)
 		return false;
 
-	if (id > 0 && id <= fx.count())
+	if (id > 0 && id <= fx.size())
 	{
 		Mix_PlayChannel(channel, fx[id - 1], repeat);
 		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));

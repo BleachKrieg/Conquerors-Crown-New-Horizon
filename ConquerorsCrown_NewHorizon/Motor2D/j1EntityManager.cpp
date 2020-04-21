@@ -10,6 +10,7 @@
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
+#include "GoldMine.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 
@@ -30,9 +31,11 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	trees_time = 20000;
-	quarries_time = 25000;
-	mines_time = 30000;
+	mine = nullptr;
+	lights = false;
+	trees_time = 10000;
+	quarries_time = 10000;
+	mines_time = 10000;
 
 	foot_man_tex = App->tex->Load("textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
@@ -46,6 +49,8 @@ bool j1EntityManager::Start()
 	LoadAnimations("textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 
 	building = App->tex->Load("textures/buildings/Human Buildings/human_buildings_summer.png");
+	miscs = App->tex->Load("textures/misc/misc.png");
+
 	max_audio_attacks = 0;
 	timer.Start();
 
@@ -70,16 +75,24 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
+
+	Mix_AllocateChannels(20);
+
 	if(timer.ReadMs() > 200)
 	{
 		max_audio_attacks = 0;
 		timer.Start();
 	}
 
+	lights = false;
 	for (int i = 0; i < entities.size(); i++) {
 		
 		entities[i]->Update(dt);
 	}
+	if (lights && mine != nullptr)
+		mine->mine_lights = MINE_LIGHTS::LIGHTS_ON;
+	if (!lights && mine != nullptr)
+		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	
 	return true;
 }
@@ -132,6 +145,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -153,6 +167,11 @@ bool j1EntityManager::DeleteAllEntities()
 
 	for (int i = 0; i < entities.size(); i++) {
 		entities[i]->to_delete = true;
+	}
+	for (int i = 0; i < resources_ent.size(); ++i)
+	{
+		resources_ent[i]->to_delete = true;
+		resources_ent[i]->CleanUp();
 	}
 	return true;
 }

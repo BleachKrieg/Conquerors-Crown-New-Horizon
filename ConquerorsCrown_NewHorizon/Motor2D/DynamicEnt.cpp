@@ -168,7 +168,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 			following_target = false;
 			if (player_order == false)
 			{
-				path.Clear();
+				path.clear();
 				if ((timer.ReadMs() - current_time) >= time_attack)
 				{
 					target_entity->life_points -= attack_damage;
@@ -177,24 +177,18 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 						
 
 						if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
-							SpatialAudio(3, App->audio->archer_attack, position.x, position.y);
-							//LOG("ARCHER");
-							//LOG("Audio attacks: %i", App->entity->max_audio_attacks);
+							SpatialAudio(2, App->audio->archer_attack, position.x, position.y);
 							App->entity->max_audio_attacks++;
 
 						}
 						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
-							SpatialAudio(2, App->audio->footman_attack, position.x, position.y);
-							//LOG("FOOTMAN");
-							//LOG("Footman attacks: %i", App->entity->max_audio_attacks);
+							SpatialAudio(3, App->audio->footman_attack, position.x, position.y);
 							App->entity->max_audio_attacks++;
 
 						}
 						
 						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
 							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
-							//LOG("TROLL");
-							//LOG("Audio attacks: %i", App->entity->max_audio_attacks);
 							App->entity->max_audio_attacks++;
 
 						}
@@ -215,7 +209,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 			target_entity = NULL;
 			state = DynamicState::IDLE;
 			current_time = timer.ReadMs();
-			path.Clear();
+			path.clear();
 			following_target = false;
 		}
 	}
@@ -254,13 +248,13 @@ void DynamicEnt::Movement()
 
 
 	fPoint pathSpeed{ 0,0 };
-	if (path.At(1) != NULL)
+	if (!path.empty())
 	{
-		if (path.At(followpath) != NULL)
+		if (followpath < path.size())
 		{
-			for (uint i = 0; i < path.Count(); ++i)
+			for (uint i = 0; i < path.size(); ++i)
 			{
-				iPoint nextPoint = App->map->MapToWorld(path.At(i)->x, path.At(i)->y);
+				iPoint nextPoint = App->map->MapToWorld(path.at(i).x, path.at(i).y);
 				if (App->scene->debug)
 				{
 					if (i == followpath)
@@ -274,27 +268,27 @@ void DynamicEnt::Movement()
 				}
 			}
 
-			if (origin.x == path.At(followpath)->x && origin.y == path.At(followpath)->y)
+			if (origin.x == path.at(followpath).x && origin.y == path.at(followpath).y)
 			{
 				followpath++;
 				change_direction = true;
 			}
-			if (path.At(followpath) != NULL)
+			if (followpath < path.size())
 			{
 
-				if (path.At(followpath)->x < origin.x) {
+				if (path.at(followpath).x < origin.x) {
 					pathSpeed.x = -1;
 				}
 
-				if (path.At(followpath)->x > origin.x) {
+				if (path.at(followpath).x > origin.x) {
 					pathSpeed.x = +1;
 				}
 
-				if (path.At(followpath)->y < origin.y) {
+				if (path.at(followpath).y < origin.y) {
 					pathSpeed.y = -1;
 				}
 
-				if (path.At(followpath)->y > origin.y) {
+				if (path.at(followpath).y > origin.y) {
 					pathSpeed.y = 1;
 				}
 			}
@@ -302,7 +296,7 @@ void DynamicEnt::Movement()
 		else {
 			following_target = false;
 			player_order = false;
-			path.Clear();
+			path.clear();
 			change_direction = true;
 		}
 	}
@@ -479,11 +473,12 @@ void DynamicEnt::Death(DynamicEntityType entity_type)
 		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 			SpatialAudio(7, App->audio->die_footman, position.x, position.y);
 		}
-
+		/*if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
+			SpatialAudio(8, App->audio->die_gatherer, position.x, position.y);
+		}*/
 		if (entity_type == DynamicEntityType::ENEMY_TROLL) {
-			SpatialAudio(-1, App->audio->die_troll, position.x, position.y);
-		}
-		
+			SpatialAudio(9, App->audio->die_troll, position.x, position.y);
+		}		
 	}
 	LOG("DEATH: %i", death_counter);
 	if (current_animation->Finished() == true) { to_delete = true; }

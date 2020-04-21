@@ -1,7 +1,6 @@
 #ifndef __PATHFINDER_H__
 #define __PATHFINDER_H__
 #include "p2Point.h"
-#include "p2DynArray.h"
 #include "j1Entity.h"
 #include "j1WaveSystem.h"
 
@@ -61,13 +60,13 @@ public:
 
 
 	// To request all tiles involved in the last generated path
-	const p2DynArray<iPoint>* GetLastPath() const;
+	const vector<iPoint>* GetLastPath() const;
 	
-	p2DynArray<iPoint> last_path;
+	vector<iPoint> last_path;
 
 	bool Update();
 
-	void SavePath(p2DynArray<iPoint>* path);
+	void SavePath(vector<iPoint>* path);
 
 
 	bool initSuccessful;
@@ -84,6 +83,7 @@ private:
 
 	
 	int max_iterations;
+	int max_frames;
 	j1Entity* entity;
 	SpawnPoint* callback;
 	// we store the created path here

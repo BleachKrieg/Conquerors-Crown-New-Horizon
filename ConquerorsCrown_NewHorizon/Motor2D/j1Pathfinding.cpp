@@ -25,7 +25,7 @@ bool j1PathFinding::CleanUp()
 
 	for (int i = 0; i < pathfinderList.size(); i++)
 	{
-	pathfinderList[i]->last_path.Clear();
+	pathfinderList[i]->last_path.clear();
 	}
 	pathfinderList.clear();
 	RELEASE_ARRAY(map);

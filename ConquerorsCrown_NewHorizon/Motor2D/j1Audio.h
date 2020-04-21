@@ -2,6 +2,7 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include <vector>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -73,12 +74,13 @@ public:
 	int click_to_play;
 	int normal_click;
 
-	int Logo_FX;
+	int Logo_Game_FX;
+	int Logo_Team_FX;
 
 private:
 
 	_Mix_Music* music = NULL;
-	p2List<Mix_Chunk*>	fx;
+	vector<Mix_Chunk*>	fx;
 	p2SString			music_directory;
 	p2SString			fx_directory;
 	float volumemusic;

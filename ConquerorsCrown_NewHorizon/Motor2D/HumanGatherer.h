@@ -4,8 +4,8 @@
 #include "j1Module.h"
 #include "Animation.h"
 #include "p2Point.h"
-#include "p2DynArray.h"
 #include "j1Entity.h"
+#include "GoldMine.h"
 #include "DynamicEnt.h"
 
 class HumanGatherer : public DynamicEnt
@@ -54,6 +54,8 @@ private:
 	j1PerfTimer timer;
 
 	int chop_time;
+
+	bool to_blit;
 
 };
 

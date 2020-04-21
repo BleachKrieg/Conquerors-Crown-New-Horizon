@@ -33,6 +33,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	active = true;
 	to_delete = false;
 	isSelected = false;
+	to_blit = true;
 	selectable = true;
 	following_target = false;
 	can_attack = false;
@@ -104,7 +105,7 @@ bool HumanGatherer::Update(float dt)
 	if (isSelected)
 	{
 		bool found = false;
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click && work_state != WORK_STATE::WORKING)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
@@ -114,6 +115,7 @@ bool HumanGatherer::Update(float dt)
 			pos = App->render->ScreenToWorld(pos.x, pos.y);
 			bool loop = true;
 			SDL_Rect r;
+			inv_size = 0;
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
 			{
 				it = App->entity->resources_ent[i];
@@ -149,20 +151,26 @@ bool HumanGatherer::Update(float dt)
 	if (work_state == WORK_STATE::GO_TO_WORK)
 	{
 		target_entity = work_space;
-		if (position.DistanceTo(work_space->position) <= 100 && path.Count() == 0)
+		if (position.DistanceTo(work_space->position) <= 100 && path.size() == 0)
 		{
-			path.Clear();
+			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
+			if (work_name == "mine")
+			{
+				App->entity->lights = true;
+				to_blit = false;
+				isSelected = false;
+			}
 			start_time = timer.ReadMs();
 		}
 		player_order = true;
 	}
 	if (work_state == WORK_STATE::GO_TO_TOWNHALL)
 	{
-		if (position.DistanceTo(town_hall->position) <= 200 && path.Count() == 0)
+		if (position.DistanceTo(town_hall->position) <= 200 && path.size() == 0)
 		{
-			path.Clear();
+			path.clear();
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
 			if (work_name == "mine")
@@ -178,6 +186,9 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
+		if (work_name == "mine")
+			App->entity->lights = true;
+		isSelected = false;
 		state = DynamicState::INTERACTING;
 		if ((timer.ReadMs() - start_time) > work_time)
 		{
@@ -186,16 +197,18 @@ bool HumanGatherer::Update(float dt)
 			inv_size = 100;
 			state = DynamicState::IDLE;
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
+			to_blit = true;
+			selectable = true;
 		}
-		/*else {
-			if (chop_time >= 70) {
-				SpatialAudio(2, App->audio->wood_gatherer, position.x, position.y);
+		else {
+			if (chop_time >= 70 && work_name=="tree") {
+				SpatialAudio(10, App->audio->wood_gatherer, position.x, position.y);
 				LOG("Position x: %i		Position y: %i", position.x, position.y);
 				chop_time = 0;
 			}
 
 			chop_time++;
-		}*/
+		}
 	}
 
 	GathererGoTos();
@@ -231,6 +244,7 @@ bool HumanGatherer::Update(float dt)
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
+		Death(entity_type);
 		to_delete = true;
 		break;
 	}
@@ -239,8 +253,8 @@ bool HumanGatherer::Update(float dt)
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
 		App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-
-	App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	if (to_blit)
+		App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
@@ -255,7 +269,7 @@ bool HumanGatherer::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
-	path.Clear();
+	path.clear();
 	name.Clear();
 	return true;
 }

@@ -8,7 +8,6 @@
 #include "j1App.h"
 #include <list>
 #include "Animation.h"
-#include "p2DynArray.h"
 #include "j1Audio.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -80,7 +79,7 @@ public:
 	entityType type;
 	TeamType	team;
 	int		life_points;
-	p2DynArray<iPoint>	path;
+	vector<iPoint>	path;
 
 	bool deployed = true;
 	
