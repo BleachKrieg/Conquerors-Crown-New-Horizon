@@ -151,7 +151,7 @@ bool HumanArcher::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
-	path.Clear();
+	path.clear();
 	name.Clear();
 	return true;
 }

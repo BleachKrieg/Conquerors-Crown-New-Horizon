@@ -107,7 +107,7 @@ bool TrollEnemy::Update(float dt)
 	{
 		if (spawn != nullptr)
 		{
-			if (path.At(1) == NULL && time >= 5)
+			if (path.empty() && time >= 5)
 			{
 				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
 				App->pathfinding->RequestPath(origin, target, this);
@@ -177,7 +177,7 @@ bool TrollEnemy::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
-	path.Clear();
+	path.clear();
 	name.Clear();
 	return true;
 }

@@ -85,14 +85,14 @@ bool j1WaveSystem::Update(float dt)
 	bool ret = true;
 	//wave_ongoing = true;
 	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) { 
-		if (spawn1->path.At(0) != nullptr && spawn2->path.At(0) != nullptr && spawn3->path.At(0) != nullptr)
+		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 		{
 			StartWave(current_wave);
 		}
 	}
 	else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
 	{
-		if (spawn1->path.At(0) != nullptr && spawn2->path.At(0) != nullptr && spawn3->path.At(0) != nullptr)
+		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 		{
 			StartWave(current_wave);
 		}
@@ -181,9 +181,9 @@ bool j1WaveSystem::Update(float dt)
 	}
 
 
-	for (uint i = 0; i < spawn1->path.Count(); ++i)
+	for (uint i = 0; i < spawn1->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn1->path.At(i)->x, spawn1->path.At(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
 		if (App->scene->debug)
 		{
 			
@@ -191,9 +191,9 @@ bool j1WaveSystem::Update(float dt)
 		}
 	}
 
-	for (uint i = 0; i < spawn2->path.Count(); ++i)
+	for (uint i = 0; i < spawn2->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn2->path.At(i)->x, spawn2->path.At(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
 		if (App->scene->debug)
 		{
 
@@ -201,9 +201,9 @@ bool j1WaveSystem::Update(float dt)
 		}
 	}
 
-	for (uint i = 0; i < spawn3->path.Count(); ++i)
+	for (uint i = 0; i < spawn3->path.size(); ++i)
 	{
-		iPoint nextPoint = App->map->MapToWorld(spawn3->path.At(i)->x, spawn3->path.At(i)->y);
+		iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
 		if (App->scene->debug)
 		{
 
@@ -256,26 +256,28 @@ void j1WaveSystem::StartWave(int wave)
 			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn1->position.x, spawn1->position.y);
 			temp->spawn = spawn1;
 			
-			for (uint i = 0; i < spawn1->path.Count(); ++i)
+			for (uint i = 0; i < spawn1->path.size(); ++i)
 			{
-				temp->path.PushBack({ spawn1->path.At(i)->x, spawn1->path.At(i)->y });
+				iPoint point(spawn1->path.at(i).x, spawn1->path.at(i).y);
+				temp->path.push_back( point );
 			}
 		}
 		else if (i % 3 == 2) {
 			TrollEnemy* temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn2->position.x, spawn2->position.y);
 			temp->spawn = spawn2;	
-			for (uint i = 0; i < spawn2->path.Count(); ++i)
+			for (uint i = 0; i < spawn2->path.size(); ++i)
 			{
-				temp->path.PushBack({ spawn2->path.At(i)->x, spawn2->path.At(i)->y });
+				iPoint point(spawn2->path.at(i).x, spawn2->path.at(i).y);
+				temp->path.push_back( point );
 			}
 		}																													
 		else if (i % 3 == 0) {																								
 			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn3->position.x, spawn3->position.y);
 			temp->spawn = spawn3;
-			for (uint i = 0; i < spawn3->path.Count(); ++i)
+			for (uint i = 0; i < spawn3->path.size(); ++i)
 			{
-				temp->path.PushBack({ spawn3->path.At(i)->x, spawn3->path.At(i)->y });
-
+				iPoint point(spawn3->path.at(i).x, spawn3->path.at(i).y);
+				temp->path.push_back( point );
 			}
 		}
 	}

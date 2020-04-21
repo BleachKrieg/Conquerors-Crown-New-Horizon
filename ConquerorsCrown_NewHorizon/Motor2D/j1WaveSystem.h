@@ -7,7 +7,6 @@
 #include "p2Point.h"
 #include "j1Timer.h"
 #include "Troll_Enemy.h"
-#include "p2DynArray.h"
 
 
 struct SpawnPoint
@@ -15,7 +14,7 @@ struct SpawnPoint
 	iPoint		position;
 	j1Entity*	target;
 	fPoint		targetpos;
-	p2DynArray<iPoint>	path;
+	vector<iPoint>	path;
 };
 
 class j1WaveSystem : public j1Module {

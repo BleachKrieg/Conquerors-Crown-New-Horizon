@@ -151,9 +151,9 @@ bool HumanGatherer::Update(float dt)
 	if (work_state == WORK_STATE::GO_TO_WORK)
 	{
 		target_entity = work_space;
-		if (position.DistanceTo(work_space->position) <= 100 && path.Count() == 0)
+		if (position.DistanceTo(work_space->position) <= 100 && path.size() == 0)
 		{
-			path.Clear();
+			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
 			if (work_name == "mine")
@@ -168,9 +168,9 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::GO_TO_TOWNHALL)
 	{
-		if (position.DistanceTo(town_hall->position) <= 200 && path.Count() == 0)
+		if (position.DistanceTo(town_hall->position) <= 200 && path.size() == 0)
 		{
-			path.Clear();
+			path.clear();
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
 			if (work_name == "mine")
@@ -269,7 +269,7 @@ bool HumanGatherer::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
-	path.Clear();
+	path.clear();
 	name.Clear();
 	return true;
 }
