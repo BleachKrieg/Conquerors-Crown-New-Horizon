@@ -593,14 +593,14 @@ void HumanTownHall::DeleteTownHallUI()
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
 		}
 		isSelected = true;
 	}
 
 	if (guiElement == Button_Create_Barrack) {
-		if (App->scene->wood >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		if (App->scene->wood >= 100 && App->scene->stone >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks,App->scene->mouse_position.x, App->scene->mouse_position.y);
 			App->scene->Building_preview = true;
