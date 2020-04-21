@@ -157,8 +157,8 @@ bool TrollEnemy::Update(float dt)
 	
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	if (isSelected)
-		App->render->DrawCircle((int)position.x, (int)position.y, 20, 200, 0, 0, 200);
+	/*if (isSelected)
+		App->render->DrawCircle((int)position.x, (int)position.y, 20, 200, 0, 0, 200);*/
 	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
 		isSelected = false;
 
