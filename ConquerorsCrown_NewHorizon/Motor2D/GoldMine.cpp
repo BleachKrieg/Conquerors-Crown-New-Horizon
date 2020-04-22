@@ -22,6 +22,7 @@ GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
+	isSelected = false;
 }
 
 GoldMine::~GoldMine() {}
