@@ -545,7 +545,7 @@ void HumanTownHall::CreateTownHallUI()
 	Barrack_wood_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
 	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 974, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
 
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });

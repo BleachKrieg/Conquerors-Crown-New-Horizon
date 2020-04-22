@@ -268,12 +268,12 @@ void HumanBarracks::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 100 || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->scene->debug == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 100 && App->scene->stone >= 200 || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->scene->debug == true)
 		{
 			if (App->scene->debug == false)
 			{
 				App->scene->AddResource("wood", -100);
-				App->scene->AddResource("stone", -100);
+				App->scene->AddResource("stone", -200);
 			}
 			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;
@@ -367,23 +367,23 @@ void HumanBarracks::checkAnimation(float dt)
 				ImageSelected();
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false && App->scene->wood >= 100 || App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false && App->scene->debug == true || barrack_Ui_upgrade == true && Barrack_Upgraded == false && App->scene->wood >= 100 || barrack_Ui_upgrade == true && Barrack_Upgraded == false && App->scene->debug == true )
+			if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false && App->scene->wood >= 200 || App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN && actualState != ST_BARRACK_UPGRADING && Barrack_Upgraded == false && App->scene->debug == true || barrack_Ui_upgrade == true && Barrack_Upgraded == false && App->scene->wood >= 200 || barrack_Ui_upgrade == true && Barrack_Upgraded == false && App->scene->debug == true )
 			{
 				barrack_Ui_upgrade = false;
 				if (App->scene->debug == false) 
 				{
-					App->scene->AddResource("wood", -100);
+					App->scene->AddResource("wood", -200);
 				}
 				creation_barrack_bar = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
 				upgrade_timer.Start();
 				actualState = ST_BARRACK_UPGRADING;
 			}
 			
-			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 100 && App->scene->gold >= 100 || create_swordman == true && App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true && create_swordman == true|| App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && App->scene->wood >= 50 && App->scene->gold >= 100 || create_swordman == true && App->scene->wood >= 50 && App->scene->gold >= 100 || App->scene->debug == true && create_swordman == true|| App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				if (App->scene->debug == false)
 				{
-					App->scene->AddResource("wood", -100);
+					App->scene->AddResource("wood", -50);
 					App->scene->AddResource("gold", -100);
 				}
 
@@ -426,11 +426,11 @@ void HumanBarracks::checkAnimation(float dt)
 				}
 				create_swordman = false;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 100 && App->scene->gold >= 100 || create_archer == true && App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true && create_archer == true || App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && Barrack_Upgraded == true && App->scene->wood >= 150 && App->scene->gold >= 100 || create_archer == true && App->scene->wood >= 150 && App->scene->gold >= 100 || App->scene->debug == true && create_archer == true || App->scene->debug == true && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				if (App->scene->debug == false)
 				{
-					App->scene->AddResource("wood", -100);
+					App->scene->AddResource("wood", -150);
 					App->scene->AddResource("gold", -100);
 				}
 				if (Troop.size() < 6)
@@ -722,12 +722,7 @@ void HumanBarracks::ImageSelected()
 
 void HumanBarracks::CreateBarrackUI()
 {
-	Button_Upgrade = App->gui->CreateGuiElement(Types::button, 1190, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-	Button_Upgrade->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Barrack_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 49, 46, 38 }, Button_Upgrade, nullptr, NULL);
-	Arrow_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 88, 15, 18 }, Button_Upgrade, nullptr, NULL);
-	Upgrade_wood_cost = App->gui->CreateGuiElement(Types::image, 0, 85, { 832, 5, 70, 26 }, Button_Upgrade, nullptr, NULL);
-	Upgrade_Text_wood = App->gui->CreateGuiElement(Types::text, 30, 85, { 0, 0, 138, 30 }, Button_Upgrade, nullptr, "100", App->font->smallfont);
+	
 
 	Button_Create_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
@@ -735,7 +730,7 @@ void HumanBarracks::CreateBarrackUI()
 	Swordman_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
 	Swordman_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 	Swordman_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "50", App->font->smallfont);
 	if (Barrack_Upgraded == true) 
 	{
 		Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
@@ -744,7 +739,16 @@ void HumanBarracks::CreateBarrackUI()
 		Archer_gold_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
 		Archer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 		Archer_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-		Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+		Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "150", App->font->smallfont);
+	}
+	else
+	{
+		Button_Upgrade = App->gui->CreateGuiElement(Types::button, 1190, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Upgrade->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Barrack_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 49, 46, 38 }, Button_Upgrade, nullptr, NULL);
+		Arrow_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 88, 15, 18 }, Button_Upgrade, nullptr, NULL);
+		Upgrade_wood_cost = App->gui->CreateGuiElement(Types::image, 0, 85, { 832, 5, 70, 26 }, Button_Upgrade, nullptr, NULL);
+		Upgrade_Text_wood = App->gui->CreateGuiElement(Types::text, 30, 85, { 0, 0, 138, 30 }, Button_Upgrade, nullptr, "200", App->font->smallfont);
 	}
 }
 
@@ -800,7 +804,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Footman) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 50 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_swordman = true;
 		}
 		isSelected = true;
@@ -808,7 +812,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	else if (guiElement == Button_Create_Archer) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 150 || App->scene->debug == true) {
 			create_archer = true;
 		}
 		isSelected = true;
@@ -818,7 +822,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(1, App->audio->normal_click, 0);
 		if (Barrack_Upgraded == false) 
 		{
-			if (App->scene->wood >= 100 || App->scene->debug == true) {
+			if (App->scene->wood >= 200 || App->scene->debug == true) {
 				barrack_Ui_upgrade = true;
 			}
 			
