@@ -132,7 +132,6 @@ bool j1Gui::Update(float dt)
 	}
 
 	
-	DeleteGuiElement();
 
 	return true;
 }
@@ -166,6 +165,8 @@ bool j1Gui::PostUpdate(float dt)
 			}
 		}
 	}
+
+	DeleteGuiElement();
 
 	return true;
 }

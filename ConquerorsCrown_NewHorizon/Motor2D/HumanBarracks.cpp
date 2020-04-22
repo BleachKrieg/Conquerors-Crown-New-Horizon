@@ -812,7 +812,7 @@ void HumanBarracks::GuiInput(GuiItem* guiElement) {
 	else if (guiElement == Button_Create_Archer) 
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 && App->scene->gold >= 150 || App->scene->debug == true) {
+		if (App->scene->wood >= 150 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_archer = true;
 		}
 		isSelected = true;
