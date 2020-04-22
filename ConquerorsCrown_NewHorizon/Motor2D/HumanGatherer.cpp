@@ -141,9 +141,10 @@ bool HumanGatherer::Update(float dt)
 			
 			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
-		if (!found && App->input->screen_click && work_state != WORK_STATE::WORKING)
+		if (!found && App->input->screen_click)
 		{
 			OrderPath(entity_type);
+			inv_size = 0;
 		}
 	}
 
@@ -186,9 +187,11 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
-		if (work_name == "mine")
+		if (work_name == "mine") 
+		{
 			App->entity->lights = true;
-		isSelected = false;
+			isSelected = false;
+		}
 		state = DynamicState::INTERACTING;
 		if ((timer.ReadMs() - start_time) > work_time)
 		{
@@ -213,7 +216,7 @@ bool HumanGatherer::Update(float dt)
 
 	GathererGoTos();
 
-	Movement();
+	Movement(dt);
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -252,7 +255,9 @@ bool HumanGatherer::Update(float dt)
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
-		App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 15), (int)(position.y) - 10);
+
+	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 	if (to_blit)
 		App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;

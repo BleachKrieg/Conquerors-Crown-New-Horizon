@@ -486,13 +486,15 @@ const char* GuiText::GetText() const
 
 void GuiText::SetText(const char* newtext)
 {
-	text = newtext;
-	SDL_DestroyTexture(texture);
-	if (text != "") {
-		texture = App->font->Print(text, color, local_font);
+	if (to_delete == false) {
+		text = newtext;
+		SDL_DestroyTexture(texture);
+		if (text != "") {
+			texture = App->font->Print(text, color, local_font);
+			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
+		}
+		else texture = nullptr;
 	}
-	else texture = nullptr;
-	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 }
 
 //-------------------------------------------------------------

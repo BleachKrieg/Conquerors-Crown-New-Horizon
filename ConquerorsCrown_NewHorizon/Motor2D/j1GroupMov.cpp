@@ -120,8 +120,9 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && App->input->screen_click)
 	{
+		uint count = 0;
 		gatherer_counter = 0u;
-		for (int i = 0; i < App->entity->player_dyn_ent.size(); i++) {
+		for (int i = 0; i < App->entity->player_dyn_ent.size() && count < 30; i++) {
 			it = App->entity->player_dyn_ent[i];
 
 			if (it != player_selected)
@@ -133,20 +134,24 @@ bool j1GroupMov::Update(float dt) {
 				if (y < origin.y && y > mouse.y)
 				{
 					it->isSelected = true;
+					count += 1;
 				}
 				else if (y > origin.y&& y < mouse.y)
 				{
 					it->isSelected = true;
+					count += 1;
 				}
 			}
 			else if (x < origin.x && x > mouse.x) {
 				if (y < origin.y && y > mouse.y)
 				{
 					it->isSelected = true;
+					count += 1;
 				}
 				else if (y > origin.y&& y < mouse.y)
 				{
 					it->isSelected = true;
+					count += 1;
 				}
 			}
 			if (it->isSelected)

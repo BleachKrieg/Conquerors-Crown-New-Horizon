@@ -244,7 +244,7 @@ bool j1WaveSystem::Save(pugi::xml_node& data) const
 void j1WaveSystem::StartWave(int wave)
 {
 	
-	int total_spawns = 5 + 8 * wave;
+	int total_spawns = 2 + 9 * wave;
 	wave_ongoing = true;
 	spawn_cooldown.Start();
 	int spawns = 3;
@@ -293,4 +293,6 @@ void j1WaveSystem::FinishWave()
 	wave_ended.Start();
 	//next_wave = 120;
 	spawn_counter = 0;
+	if (App->scene->ingameTextWave != nullptr)
+		App->scene->ingameTextWave->SetText(to_string(current_wave - 1).c_str());
 }

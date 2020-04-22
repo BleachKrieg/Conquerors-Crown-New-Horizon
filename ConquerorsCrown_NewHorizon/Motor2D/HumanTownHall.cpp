@@ -107,9 +107,9 @@ bool HumanTownHall::Update(float dt)
 	//Debug features
 	if (App->scene->debug && actualState != ST_TOWNHALL_PREVIEW)
 	{
-		App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
-		App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
-		App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
+		//App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
+		//App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
 		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
 
 		iPoint pos = { (int)position.x, (int)position.y };
@@ -545,7 +545,7 @@ void HumanTownHall::CreateTownHallUI()
 	Barrack_wood_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
 	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 974, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
 
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
@@ -593,14 +593,14 @@ void HumanTownHall::DeleteTownHallUI()
 void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	if (guiElement == Button_Create_Gatherer) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (App->scene->wood >= 100 || App->scene->debug == true) {
+		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
 		}
 		isSelected = true;
 	}
 
 	if (guiElement == Button_Create_Barrack) {
-		if (App->scene->wood >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		if (App->scene->wood >= 100 && App->scene->stone >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks,App->scene->mouse_position.x, App->scene->mouse_position.y);
 			App->scene->Building_preview = true;

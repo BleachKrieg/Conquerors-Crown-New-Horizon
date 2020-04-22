@@ -204,7 +204,6 @@ bool j1Scene::Update(float dt)
 		}			
 
 		if (debug)
-
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
@@ -407,7 +406,7 @@ void j1Scene::LoadTiledEntities() {
 						{
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 1u);
 						}
-						if (tile_id >= 373 && tile_id <= 375)
+						if (tile_id >= 374 && tile_id <= 376)
 						{
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 3u);
 						}
@@ -468,7 +467,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
+		App->wave->Start();
 		gameClock.Start();
+		timer = 660;
+		wood = 0u;
+		stone = 0u;
+		gold = 0u;
 		finish = false;
 		break;
 	case scenes::logo:
@@ -554,6 +558,8 @@ bool j1Scene::CreateInGame()
 	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
+	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
+
 
 	LoadTiledEntities();
 
@@ -716,6 +722,7 @@ bool j1Scene::DeleteUI()
 	ingameTextWood = nullptr;
 	ingameTextStone = nullptr;
 	ingameTextClock = nullptr;
+	ingameTextWave = nullptr;
 	logoTextClick = nullptr;
 	logoBackground = nullptr;
 

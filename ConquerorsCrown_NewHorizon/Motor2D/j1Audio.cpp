@@ -229,7 +229,8 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 
 	if (id > 0 && id <= fx.size())
 	{
-		Mix_PlayChannel(channel, fx[id - 1], repeat);
+		if (fx[id - 1] != nullptr) Mix_PlayChannel(channel, fx[id - 1], repeat);
+		else LOG("Could not play audio because there is no fx.");
 		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));
 	}
 

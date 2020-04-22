@@ -41,7 +41,9 @@ bool j1EntityManager::Start()
 	arch_man_tex = App->tex->Load("textures/units/Human Sprites/human_archer.png");
 	gather_man_tex = App->tex->Load("textures/units/Human Sprites/human_gatherer.png");
 	troll_tex = App->tex->Load("textures/units/Orc Sprites/orc_troll.png");
-
+	ally_sel_tex = App->tex->Load("textures/units/selection_ally.png");
+	enemy_sel_tex = App->tex->Load("textures/units/selection_enemy.png");
+	
 	LOG("Loading Dynamic Entities Animations");
 	LoadAnimations("textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
