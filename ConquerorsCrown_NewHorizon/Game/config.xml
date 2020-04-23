@@ -19,20 +19,20 @@
   </window>
 
   <gui>
-      <atlas file="textures/gui/Ui_Atlas.png"/>
-      <icons file="textures/gui/icons.png"/>
+      <atlas file="Assets/textures/gui/Ui_Atlas.png"/>
+      <icons file="Assets/textures/gui/icons.png"/>
   </gui>
   <fonts>
-    <default_font file="fonts/alagard.ttf"/>
+    <default_font file="Assets/fonts/alagard.ttf"/>
     <font_size big="38" small="28"/>
   </fonts>
   <audio>
     <music>
-      <folder>audio/music/</folder>
+      <folder>Assets/audio/music/</folder>
       <volumemusic value="1.0"/>
     </music>
     <fx>
-      <folder>audio/fx/</folder>
+      <folder>Assets/audio/fx/</folder>
       <volumefx value="1.0"/>
     </fx>
   </audio>
@@ -42,18 +42,18 @@
   </file_system>
 
   <map>
-    <folder>textures/maps/</folder>
+    <folder>Assets/textures/maps/</folder>
   </map>
   <minimap width="225" corner="bottom_left" margin="15"/>
 
   <entity_manager>
-    <spritesheet test_1="textures/sprites/human_footman.png"/>
+    <spritesheet test_1="Assets/textures/sprites/human_footman.png"/>
    </entity_manager>
   
    <scene>
      <map name="maplevel1.tmx"/>
-     <logo file="textures/gui/LogoSheet.png"/>
-     <team_logo file="textures/gui/TeamLogoSheet.png"/>
+     <logo file="Assets/textures/gui/LogoSheet.png"/>
+     <team_logo file="Assets/textures/gui/TeamLogoSheet.png"/>
    </scene>
 
   <wave>
