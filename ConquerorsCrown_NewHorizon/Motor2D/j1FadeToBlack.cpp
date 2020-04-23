@@ -21,8 +21,8 @@ bool j1FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
-	screen_ = App->tex->Load("textures/gui/LoadingScreen.png");
-	loadingIcon = App->tex->Load("textures/gui/LoadingLogo.png");
+	screen_ = App->tex->Load("Assets/textures/gui/LoadingScreen.png");
+	loadingIcon = App->tex->Load("Assets/textures/gui/LoadingLogo.png");
 	position = App->render->camera.h;
 	return true;
 }

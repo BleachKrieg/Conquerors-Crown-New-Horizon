@@ -62,31 +62,31 @@ bool j1Audio::Awake(pugi::xml_node & config)
 		ret = true;
 	}
 
-	construction = App->audio->LoadFx("Audio/SFX/Buildings/Construction_Loop_2.wav");
-	cancel_building = App->audio->LoadFx("Audio/SFX/Buildings/Cancel_Building2.wav");
+	construction = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Construction_Loop_2.wav");
+	cancel_building = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Cancel_Building2.wav");
 	
 	/*select_footman = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	select_archer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	select_gatherer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");*/
-	go_footman = App->audio->LoadFx("Audio/SFX/Humans/footman/Footman_Move_2.wav");
-	go_archer = App->audio->LoadFx("Audio/SFX/Humans/archer/Archer_Move_3.wav");
-	go_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Move.wav");
-	footman_attack = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
-	archer_attack = App->audio->LoadFx("Audio/SFX/Combat/Arrow_Throwing.wav");
-	troll_attack = App->audio->LoadFx("Audio/SFX/Combat/Axe_Throwing.wav");
-	wood_gatherer = App->audio->LoadFx("Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
+	go_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Move_2.wav");
+	go_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Move_3.wav");
+	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/peasant/Peasant_Move.wav");
+	footman_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
+	archer_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Arrow_Throwing.wav");
+	troll_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Axe_Throwing.wav");
+	wood_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
-	die_footman = App->audio->LoadFx("Audio/SFX/Humans/footman/Footman_Death.wav");
-	die_archer = App->audio->LoadFx("Audio/SFX/Humans/archer/Archer_Death2.wav");
+	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
+	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
 	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
-	die_troll = App->audio->LoadFx("Audio/SFX/Orcs/Troll/Troll_Death2.wav");
+	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	
-	click_to_play = App->audio->LoadFx("Audio/SFX/UI/Big_Button_Click.wav");
-	normal_click = App->audio->LoadFx("Audio/SFX/UI/Click.wav");
+	click_to_play = App->audio->LoadFx("Assets/Audio/SFX/UI/Big_Button_Click.wav");
+	normal_click = App->audio->LoadFx("Assets/Audio/SFX/UI/Click.wav");
 	//upgrade_complete = App->audio->LoadFx("Audio/SFX/Humans/Upgrade_Complete_1.wav");
 	
-	logo_game_fx = App->audio->LoadFx("Audio/SFX/Logo/Logo_Game_SFX.wav");
-	logo_team_fx = App->audio->LoadFx("Audio/SFX/Logo/Logo_Team_SFX.wav");
+	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");
+	logo_team_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Team_SFX.wav");
 	return ret;
 }
 

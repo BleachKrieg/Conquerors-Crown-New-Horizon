@@ -5,7 +5,7 @@
 #include "SDL\include\SDL_pixels.h"
 #include <vector>
 
-#define DEFAULT_FONT "fonts/alagard.ttf"
+#define DEFAULT_FONT "Assets/fonts/alagard.ttf"
 #define DEFAULT_FONT_SIZE 12
 
 struct SDL_Texture;

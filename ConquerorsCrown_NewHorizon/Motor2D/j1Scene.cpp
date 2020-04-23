@@ -68,7 +68,7 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	App->audio->PlayMusic("Audio/Music/Warcraft_II_Logo_Music.ogg");
+	App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Logo_Music.ogg");
 	
 
 	if (CreateLogo()) ret = true;
@@ -459,12 +459,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		current_scene = scenes::menu;
 		CreateMenu();
 		App->audio->StopFx();
-		App->audio->PlayMusic("Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
+		App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
-		App->audio->PlayMusic("Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
 		App->wave->Start();
@@ -645,7 +645,7 @@ bool j1Scene::CreateVictory() {
 	scale_victory = 0.0f;
 	speed_victory = 0.005f;
 
-	victoryLogo = App->tex->Load("textures/gui/VictorySheet.png");
+	victoryLogo = App->tex->Load("Assets/textures/gui/VictorySheet.png");
 
 	//Loading UI
 	SDL_Rect rect = { 1280, 0, 1280, 720 };
@@ -663,7 +663,7 @@ bool j1Scene::CreateVictory() {
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
 
 	//victory music
-	App->audio->PlayMusic("Audio/Music/Human/Human_Victory.ogg", 2.0F);
+	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Victory.ogg", 2.0F);
 
 
 	return true;
@@ -677,7 +677,7 @@ bool j1Scene::CreateDefeat() {
 	scale_defeat = 0.0f;
 	speed_defeat = 0.005f;
 
-	defeatLogo = App->tex->Load("textures/gui/DefeatSheet.png");
+	defeatLogo = App->tex->Load("Assets/textures/gui/DefeatSheet.png");
 
 	//Loading UI
 	SDL_Rect rect = { 1280, 0, 1280, 720 };
@@ -695,7 +695,7 @@ bool j1Scene::CreateDefeat() {
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
 
 	//victory music
-	App->audio->PlayMusic("Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
 
 
 	return true;
