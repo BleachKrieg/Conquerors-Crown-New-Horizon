@@ -99,6 +99,7 @@ bool j1Window::CleanUp()
 void j1Window::SetTitle(const char* new_title)
 {
 	//title.create(new_title);
+	if (new_title != nullptr);
 	SDL_SetWindowTitle(window, new_title);
 }
 
