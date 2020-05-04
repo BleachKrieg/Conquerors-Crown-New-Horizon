@@ -469,7 +469,7 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 	follow = false;
 	local_font = font;
 	textureRect = texrect;
-	color = SDL_Color{ 255,255,255 };
+	color = SDL_Color{ 255,255,255,255 };
 	CallBack = callback;
 	texture = App->font->Print(text, color, local_font);
 	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);

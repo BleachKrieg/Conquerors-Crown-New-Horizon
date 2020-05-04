@@ -827,7 +827,7 @@ void j1Scene::TimeToClock()
 
 	string str = mins + ":" + secs;
 
-	ingameTextClock->SetText(str.c_str());
+	//ingameTextClock->SetText(str.c_str());
 }
 
 //Animations

@@ -98,9 +98,8 @@ bool j1Window::CleanUp()
 // Set new window title
 void j1Window::SetTitle(const char* new_title)
 {
-	//title.create(new_title);
-	if (new_title != nullptr);
-	SDL_SetWindowTitle(window, new_title);
+	/*title.create(new_title);
+	SDL_SetWindowTitle(window, title.GetString());*/
 }
 
 void j1Window::GetWindowSize(uint& width, uint& height) const
