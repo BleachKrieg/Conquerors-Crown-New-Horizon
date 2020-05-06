@@ -22,6 +22,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1Tutorial.h"
 
 
 
@@ -49,7 +50,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	movement = new j1GroupMov();
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
-	
+	tutorial = new j1Tutorial();
 
 
 	// Ordered for awake / Start / Update
@@ -60,6 +61,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(tutorial);
 	AddModule(requests);
 	AddModule(movement);
 	AddModule(entity);
