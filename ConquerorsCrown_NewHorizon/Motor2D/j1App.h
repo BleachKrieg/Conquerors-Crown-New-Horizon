@@ -30,6 +30,7 @@ class j1Minimap;
 class EntityRequest;
 class j1FadeToBlack;
 class j1WaveSystem;
+class FoWManager;
 
 
 class j1App
@@ -99,22 +100,24 @@ private:
 public:
 
 	// Modules
-	j1Window*			win;
-	j1Input*			input;
-	j1Render*			render;
-	j1Textures*			tex;
-	j1Audio*			audio;
-	j1Scene*			scene;
-	j1Map*				map;
-	j1EntityManager*	entity;
-	j1PathFinding*		pathfinding;
-	j1GroupMov*			movement;
-	j1Gui*				gui;
+	j1Window*			win = NULL;
+	j1Input*			input = NULL;
+	j1Render*			render = NULL;
+	j1Textures*			tex = NULL;
+	j1Audio*			audio = NULL;
+	j1Scene*			scene = NULL;
+	j1Map*				map = NULL;
+	j1EntityManager*	entity = NULL;
+	j1PathFinding*		pathfinding = NULL;
+	j1GroupMov*			movement = NULL;
+	j1Gui*				gui = NULL;
 	j1Fonts*			font = NULL;
-	j1Minimap*			minimap;
-	EntityRequest*		requests;
-	j1FadeToBlack*		fade;
-	j1WaveSystem*		wave;
+	j1Minimap*			minimap = NULL;
+	EntityRequest*		requests = NULL;
+	j1FadeToBlack*		fade = NULL;
+	j1WaveSystem*		wave = NULL;
+	FoWManager*			fowManager = NULL;
+
 
 	uint32				framerate = 0u;
 	pugi::xml_document	config_file;

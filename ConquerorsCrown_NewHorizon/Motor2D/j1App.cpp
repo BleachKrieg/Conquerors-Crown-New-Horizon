@@ -22,6 +22,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "FoWManager.h"
 
 
 
@@ -41,6 +42,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	minimap = new j1Minimap();
+	fowManager = new FoWManager();
 	entity = new j1EntityManager();
 	requests = new EntityRequest();
 	gui = new  j1Gui();
@@ -62,6 +64,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(requests);
 	AddModule(movement);
+	AddModule(fowManager);
 	AddModule(entity);
 	AddModule(pathfinding);
 	AddModule(wave);

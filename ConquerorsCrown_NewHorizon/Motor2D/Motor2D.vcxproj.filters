@@ -99,6 +99,12 @@
     <ClCompile Include="GoldMine.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="FoWEntity.cpp">
+      <Filter>Project II\FoW</Filter>
+    </ClCompile>
+    <ClCompile Include="FoWManager.cpp">
+      <Filter>Project II\FoW</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -217,6 +223,15 @@
     <ClInclude Include="GoldMine.h">
       <Filter>Entities\Static</Filter>
     </ClInclude>
+    <ClInclude Include="FoWBitDefs.h">
+      <Filter>Project II\FoW</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWEntity.h">
+      <Filter>Project II\FoW</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWManager.h">
+      <Filter>Project II\FoW</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -245,6 +260,9 @@
     </Filter>
     <Filter Include="Project II">
       <UniqueIdentifier>{c6e0d7c9-c782-48af-b206-b5cba12529d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Project II\FoW">
+      <UniqueIdentifier>{ba63019f-045c-4a72-9738-877d442958d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
