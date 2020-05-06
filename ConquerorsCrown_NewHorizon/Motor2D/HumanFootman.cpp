@@ -97,7 +97,11 @@ bool HumanFootman::Update(float dt)
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
+	fPoint auxPos = position;
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
