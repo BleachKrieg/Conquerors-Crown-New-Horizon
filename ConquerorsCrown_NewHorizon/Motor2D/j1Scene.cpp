@@ -267,7 +267,6 @@ bool j1Scene::Update(float dt)
 
 			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
 			{
-				App->minimap->CleanUp();
 				App->fade->FadeToBlack(scenes::ingame, 2.0f);
 			}	
 			//Camera movement inputs
