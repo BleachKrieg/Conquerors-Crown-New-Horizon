@@ -185,11 +185,11 @@ bool j1Scene::Update(float dt)
 
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
-		camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
+		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
 		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
 
 		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
-		camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
+		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
 		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
 		
 		//UI Position update
@@ -262,92 +262,9 @@ bool j1Scene::Update(float dt)
 			timer = 660 - gameClock.ReadSec();
 			TimeToClock();
 		}
+
+
 		break;
-		case scenes::tutorial:
-
-			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-			{
-				App->minimap->CleanUp();
-				App->fade->FadeToBlack(scenes::ingame, 2.0f);
-			}	
-			//Camera movement inputs
-			int x1, y1;
-			App->input->GetMousePosition(x, y);
-
-			mouse_position = App->render->ScreenToWorld(x, y);
-
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-				App->render->camera.y += 500 * dt;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-				App->render->camera.y -= 500 * dt;
-			}
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-				App->render->camera.x += 500 * dt;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				App->render->camera.x -= 500 * dt;
-			}
-
-			//Camera Limits
-			if (App->render->camera.x > 0) { App->render->camera.x = 0; }
-			int camera_limit_x2 = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
-			if (App->render->camera.x < camera_limit_x2) { App->render->camera.x = camera_limit_x2; }
-
-			if (App->render->camera.y > 0) { App->render->camera.y = 0; }
-			int camera_limit_y2 = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-			if (App->render->camera.y < camera_limit_y2) { App->render->camera.y = camera_limit_y2; }
-
-			//UI Position update
-			ingameUIPosition = App->render->ScreenToWorld(0, 442);
-			ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
-
-			//Debug input
-			if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-			{
-				debug = !debug;
-				App->map->blitColliders = !App->map->blitColliders;
-			}
-
-			if (debug)
-			{
-				if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-				{
-					App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
-				}
-				if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-				{
-					App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
-				}
-				if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-				{
-					App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { mouse_position.x, mouse_position.y });
-				}
-				if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
-				{
-					App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
-				}
-				if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && !Building_preview)
-				{
-					App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
-					Building_preview = true;
-				}
-				if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && !Building_preview)
-				{
-					App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
-					Building_preview = true;
-				}
-				if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
-				{
-					App->scene->AddResource("wood", 100);
-					App->scene->AddResource("stone", +100);
-					App->scene->AddResource("gold", +100);
-				}
-			}
-			//Draw the map
-			App->map->Draw();
-			break;
 	}
 	
 	//App->render->Blit(debug_tex, p.x, p.y);
@@ -362,6 +279,7 @@ bool j1Scene::PostUpdate(float dt)
 	switch (current_scene)
 	{
 	case scenes::menu:
+
 		break;
 	case scenes::ingame:
 
@@ -415,19 +333,6 @@ bool j1Scene::PostUpdate(float dt)
 		
 		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
 
-		break;
-	case scenes::tutorial:
-		//Mouse input for UI buttons
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-			if (App->entity->IsSomethingSelected())
-			{
-				if (townHallButton != nullptr) ret = DeleteButtonsUI();
-			}
-			else
-			{
-				if (townHallButton == nullptr) ret = CreateButtonsUI();
-			}
-		}
 		break;
 
 	}
@@ -541,13 +446,7 @@ void j1Scene::DeleteScene() {
 		App->tex->UnLoad(defeatLogo);
 		DeleteUI();
 		break;
-	case scenes::tutorial:
-		DeleteUI();
-		App->entity->DeleteAllEntities();
-		App->minimap->CleanUp();
-		App->map->CleanUp();
-		App->wave->wave_ongoing = false;
-		break;
+
 	}
 
 }
@@ -588,20 +487,6 @@ void j1Scene::CreateScene(scenes next_scene) {
 		current_scene = scenes::defeat;
 		CreateDefeat();
 		break;
-	case scenes::tutorial:
-		current_scene = scenes::tutorial;
-		CreateTutorial();
-		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -2830;
-		App->render->camera.y = -967;
-		App->wave->Start();
-		gameClock.Start();
-		timer = 660;
-		wood = 0u;
-		stone = 0u;
-		gold = 0u;
-		finish = false;
-		break;
 	}
 }
 
@@ -634,53 +519,7 @@ bool j1Scene::CreateMenu() {
 
 	return true;
 }
-bool j1Scene::CreateTutorial()
-{
-	bool ret = true;
 
-	//Loading the map
-	if (App->map->Load(current_level.GetString()) == true)
-	{
-		int w, h;
-		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
-		{
-			LOG("Setting map %d", data[1]);
-			App->pathfinding->SetMap(w, h, data);
-		}
-		else
-		{
-			LOG("Could not create walkability");
-			ret = false;
-		}
-		RELEASE_ARRAY(data);
-	}
-	//Creating minimap
-	if (ret) ret = App->minimap->Start();
-
-	//Loading UI
-	SDL_Rect downRect = { 0, 222, 1280, 278 };
-	SDL_Rect topRect = { 0, 0, 1280, 49 };
-	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
-	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
-
-	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
-	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
-	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
-
-	ingameTextGold = App->gui->CreateGuiElement(Types::text, 722, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
-	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
-	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
-	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
-	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
-
-
-	LoadTiledEntities();
-
-	if (ret) ret = CreateButtonsUI();
-
-	return ret;
-}
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
@@ -909,7 +748,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::tutorial, 2.0f);
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 	else if (guiElement == menuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);

@@ -18,7 +18,6 @@ class StaticEnt;;
 enum class scenes {
 	menu,
 	ingame,
-	tutorial,
 	logo,
 	victory,
 	defeat
@@ -63,7 +62,6 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
-	bool CreateTutorial();
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -98,8 +96,7 @@ private:
 	int logo_team_sfx_counter;
 	j1Timer logoTimer;
 	int alpha;
-	int camera_limit_x;
-	int camera_limit_y;
+
 public:
 	p2SString current_level;
 	//SDL_Texture* debug_tex;
