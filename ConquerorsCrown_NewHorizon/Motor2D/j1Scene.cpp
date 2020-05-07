@@ -96,6 +96,20 @@ bool j1Scene::Update(float dt)
 	case scenes::menu:
 
 		break;
+	case scenes::tutorial:
+		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
+		{
+			tutorial = false;
+			App->fade->FadeToBlack(scenes::ingame, 2.0f);
+		}
+
+		//UI Position update
+		ingameUIPosition = App->render->ScreenToWorld(0, 442);
+		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
+
+		//Draw the map
+		App->map->Draw();
+		break;
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
@@ -281,6 +295,19 @@ bool j1Scene::PostUpdate(float dt)
 	case scenes::menu:
 
 		break;
+	case scenes::tutorial:
+		//Mouse input for UI buttons
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+			if (App->entity->IsSomethingSelected())
+			{
+				if (townHallButton != nullptr) ret = DeleteButtonsUI();
+			}
+			else
+			{
+				if (townHallButton == nullptr) ret = CreateButtonsUI();
+			}
+		}
+		break;
 	case scenes::ingame:
 
 		//Mouse input for UI buttons
@@ -428,6 +455,11 @@ void j1Scene::DeleteScene() {
 	case scenes::menu:
 		DeleteUI();
 		break;
+	case scenes::tutorial:
+		DeleteUI();
+		App->entity->DeleteAllEntities();
+		App->map->CleanUp();
+		break;
 	case scenes::ingame:
 		DeleteUI();
 		App->entity->DeleteAllEntities();
@@ -460,6 +492,17 @@ void j1Scene::CreateScene(scenes next_scene) {
 		CreateMenu();
 		App->audio->StopFx();
 		App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
+		break;
+	case scenes::tutorial:
+		current_scene = scenes::tutorial;
+		CreateTutorial();
+		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		App->render->camera.x = -550;
+		App->render->camera.y = -430;
+		wood = 0u;
+		stone = 0u;
+		gold = 0u;
+		finish = false;
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
@@ -518,6 +561,50 @@ bool j1Scene::CreateMenu() {
 
 
 	return true;
+}
+
+bool j1Scene::CreateTutorial()
+{
+	bool ret = true;
+	
+	//Loading the map
+	if (App->map->Load(current_level.GetString()) == true)
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+		{
+			LOG("Setting map %d", data[1]);
+			App->pathfinding->SetMap(w, h, data);
+		}
+		else
+		{
+			LOG("Could not create walkability");
+			ret = false;
+		}
+		RELEASE_ARRAY(data);
+	}
+
+	//Loading UI
+	SDL_Rect downRect = { 0, 222, 1280, 278 };
+	SDL_Rect topRect = { 0, 0, 1280, 49 };
+	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
+	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
+
+	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
+	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
+	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
+
+	ingameTextGold = App->gui->CreateGuiElement(Types::text, 722, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextWood = App->gui->CreateGuiElement(Types::text, 862, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextStone = App->gui->CreateGuiElement(Types::text, 1003, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "0", App->font->smallfont);
+	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
+	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
+
+	if (ret) ret = CreateButtonsUI();
+
+
+	return ret;
 }
 
 bool j1Scene::CreateInGame() 
@@ -748,7 +835,8 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == menuButtonNewGame) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::ingame, 2.0f);
+		App->fade->FadeToBlack(scenes::tutorial, 2.0f);
+		tutorial = true;
 	}
 	else if (guiElement == menuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);

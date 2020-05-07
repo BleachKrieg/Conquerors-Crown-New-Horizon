@@ -17,6 +17,7 @@ class StaticEnt;;
 
 enum class scenes {
 	menu,
+	tutorial,
 	ingame,
 	logo,
 	victory,
@@ -61,6 +62,7 @@ public:
 	void CreateScene(scenes);
 
 	bool CreateMenu();
+	bool CreateTutorial();
 	bool CreateInGame();
 	bool CreateLogo();
 	bool CreateVictory();
@@ -172,6 +174,9 @@ public:
 	bool finish = false;
 
 	bool active;
+
+	// Tutorial
+	bool tutorial;
 };
 
 #endif // __j1SCENE_H__
