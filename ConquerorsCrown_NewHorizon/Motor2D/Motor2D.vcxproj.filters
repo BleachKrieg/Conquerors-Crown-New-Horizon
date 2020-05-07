@@ -99,6 +99,9 @@
     <ClCompile Include="GoldMine.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="j1Tutorial.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="GoldMine.h">
       <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Tutorial.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
