@@ -84,7 +84,6 @@ public:
 	
 private:
 	bool changeEntities = false;
-	scenes current_scene;
 	p2SString logoSheet_file_name;
 	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
@@ -101,6 +100,8 @@ private:
 
 public:
 	p2SString current_level;
+	scenes current_scene;
+
 	//SDL_Texture* debug_tex;
 
 	uint gold;
