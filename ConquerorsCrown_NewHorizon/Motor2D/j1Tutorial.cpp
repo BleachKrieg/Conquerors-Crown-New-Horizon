@@ -42,6 +42,14 @@ bool j1Tutorial::Awake(pugi::xml_node& config)
 bool j1Tutorial::Start()
 {
 	bool ret = true;
+	createUI = true;
+
+	Button_Yes = nullptr;
+	Button_Yes_Text = nullptr;
+	Button_No = nullptr;
+	Button_No_Text = nullptr;
+
+	ActualState = ST_Tutorial_Q1;
 
 	return ret;
 }
@@ -51,7 +59,7 @@ bool j1Tutorial::PreUpdate(float dt)
 {
 	BROFILER_CATEGORY("PreUpdate_Scene", Profiler::Color::Snow);
 
-
+	
 	return true;
 }
 
@@ -62,12 +70,41 @@ bool j1Tutorial::Update(float dt)
 
 	if (App->scene->tutorial) 
 	{
-		int a = 0;
+		CheckTutorialStep(dt);
+
+		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
+		{
+			ActualState = ST_Tutorial_Finished;
+		}
 	}
+
 
 	return true;
 }
 
+void j1Tutorial::CheckTutorialStep(float dt)
+{
+
+	if (ActualState == ST_Tutorial_Q1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Button_Yes = App->gui->CreateGuiElement(Types::button, 400, 300, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Yes->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Yes_Text = App->gui->CreateGuiElement(Types::text, 405, 310, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "YES", App->font->smallfont);
+
+			Button_No = App->gui->CreateGuiElement(Types::button, 800, 300, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_No->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_No_Text = App->gui->CreateGuiElement(Types::text, 805, 310, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "NO", App->font->smallfont);
+
+			Question_1_text = App->gui->CreateGuiElement(Types::text, 115, 210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Greetings fellow stranger, do you want to skip the tutorial ?", App->font->defaultfont);
+		}
+	}
+
+	
+}
 // Called each loop iteration
 bool j1Tutorial::PostUpdate(float dt)
 {
@@ -81,5 +118,36 @@ bool j1Tutorial::PostUpdate(float dt)
 bool j1Tutorial::CleanUp()
 {
 	
+	return true;
+}
+
+void j1Tutorial::GuiInput(GuiItem* guiElement) {
+
+	if (guiElement == Button_Yes)
+	{
+
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
+		deleteUI();
+
+	}
+	else if (guiElement == Button_No)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+
+	}
+}
+
+bool j1Tutorial::deleteUI() 
+{
+	if (Button_Yes != nullptr && Button_No != nullptr) 
+	{
+		Button_Yes->to_delete = true;
+		Button_No->to_delete = true;
+
+		Button_Yes = nullptr;
+		Button_No = nullptr;
+	}
+
 	return true;
 }

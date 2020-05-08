@@ -296,6 +296,10 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
+		if (TutorialTimer.ReadSec() <= 4.5) 
+		{
+			tutorial = true;
+		}
 		//Mouse input for UI buttons
 		/*if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())
@@ -495,8 +499,8 @@ void j1Scene::CreateScene(scenes next_scene) {
 		break;
 	case scenes::tutorial:
 		current_scene = scenes::tutorial;
-		/*CreateTutorial();
-		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		CreateTutorial();
+		/*App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -550;
 		App->render->camera.y = -430;
 		wood = 0u;
@@ -566,7 +570,8 @@ bool j1Scene::CreateMenu() {
 bool j1Scene::CreateTutorial()
 {
 	bool ret = true;
-	
+	TutorialTimer.Start();
+	/*
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
 	{
@@ -602,7 +607,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	if (ret) ret = CreateButtonsUI();
-
+	*/
 
 	return ret;
 }
@@ -836,7 +841,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::tutorial, 2.0f);
-		tutorial = true;
+		//tutorial = true;
 	}
 	else if (guiElement == menuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);

@@ -178,6 +178,7 @@ public:
 
 	// Tutorial
 	bool tutorial;
+	j1Timer TutorialTimer;
 };
 
 #endif // __j1SCENE_H__
