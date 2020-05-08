@@ -62,6 +62,8 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
+	bool CreateOptions();
+	bool DeleteOptions();
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -139,6 +141,12 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
+
+	//OptionsGui
+	bool optionsMenu;
+	GuiItem* optionsBackground;
+	GuiItem* optionsButtonClose;
+	GuiItem* optionsTextClose;
 
 	//LogoGui
 	GuiItem* logoTextClick;

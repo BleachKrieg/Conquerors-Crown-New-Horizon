@@ -65,6 +65,7 @@ bool j1Scene::Start()
 	gold = 0u;
 	timer = 660;
 	map_coordinates = { 0, 0 };
+	optionsMenu = false;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -520,6 +521,36 @@ bool j1Scene::CreateMenu() {
 	return true;
 }
 
+bool j1Scene::CreateOptions() 
+{
+	if (current_scene == scenes::menu) 
+	{
+		optionsBackground = App->gui->CreateGuiElement(Types::image, 865, 150, { 2144, 0, 416, 400 });
+
+	}
+	else 
+	{
+		optionsBackground = App->gui->CreateGuiElement(Types::image, 400, 200, { 1620, 0, 521, 400 });
+	}
+
+	optionsButtonClose = App->gui->CreateGuiElement(Types::button, 55, 320, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+	optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
+
+	return true;
+}
+
+bool j1Scene::DeleteOptions() {
+	optionsBackground->to_delete = true;
+	optionsButtonClose->to_delete = true;
+	optionsTextClose->to_delete = true;
+
+	optionsBackground = nullptr;
+	optionsButtonClose = nullptr;
+	optionsTextClose = nullptr;
+	return true;
+}
+
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
@@ -704,6 +735,7 @@ bool j1Scene::CreateDefeat() {
 bool j1Scene::DeleteUI() 
 {
 	if (townHallButton != nullptr) DeleteButtonsUI();
+	if (optionsBackground != nullptr) DeleteOptions();
 
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
@@ -737,8 +769,9 @@ bool j1Scene::DeleteUI()
 	defeatTextContinue = nullptr;
 	defeatTextClick = nullptr;
 
-	App->tex->UnLoad(logoSheet);
-	App->tex->UnLoad(teamLogoSheet);
+	if (logoSheet != nullptr) App->tex->UnLoad(logoSheet);
+	if (teamLogoSheet != nullptr) App->tex->UnLoad(teamLogoSheet);
+
 	App->gui->DeleteAllGui();
 	return true;
 }
@@ -759,8 +792,17 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == menuButtonOptions) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		if (optionsMenu) DeleteOptions();
+		else CreateOptions();
+		optionsMenu = !optionsMenu;
 	}
 
+	//Options Button
+	if (guiElement == optionsButtonClose) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		DeleteOptions();
+		optionsMenu = false;
+	}
 
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
