@@ -26,10 +26,10 @@ j1Audio::~j1Audio()
 bool j1Audio::Awake(pugi::xml_node & config)
 {
 	
-	/*music_directory = config.child("music").child_value("folder");
+	music_directory = config.child("music").child_value("folder");
 	fx_directory = config.child("fx").child_value("folder");
 	volumemusic = config.child("music").child("volumemusic").attribute("value").as_float();
-	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();*/
+	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();
 	
 
 	LOG("Loading Audio Mixer");
@@ -128,7 +128,7 @@ bool j1Audio::Update(float dt) {
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
-	//Mix_VolumeMusic(128 * volumemusic);
+	
 	bool ret = true;
 
 	if(!active)
@@ -174,7 +174,6 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	}
 
 	LOG("Successfully playing %s", path);
-
 	return ret;
 }
 
@@ -231,7 +230,6 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 	{
 		if (fx[id - 1] != nullptr) Mix_PlayChannel(channel, fx[id - 1], repeat);
 		else LOG("Could not play audio because there is no fx.");
-		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));
 	}
 
 	return ret;
@@ -262,9 +260,23 @@ bool j1Audio::Load(pugi::xml_node& data)
 	volumefx = data.child("volumefx").attribute("value").as_float();
 	return true;
 }
-void j1Audio::musicvolume(float value) {
-	volumemusic = value;
+void j1Audio::musicvolume() {
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) {
+		volumemusic -= 0.1;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) {
+		volumemusic += 0.1;
+	}
+
 	Mix_VolumeMusic(128 * volumemusic);
+
+	if (volumemusic >= 1) {
+		volumemusic = 1;
+	}
+	if (volumemusic <= 0) {
+		volumemusic = 0;
+	}
+	LOG("VOLUME: %.2f", volumemusic);
 }
 
 float j1Audio::fxvolume(float value) {
@@ -274,6 +286,8 @@ float j1Audio::fxvolume(float value) {
 
 void j1Audio::SetChannelVolume(int channel, int volume)
 {
-	Mix_Volume(channel, volume);
+	//volume_fx = volume_fx * spatial_audio_volume;
+	Mix_Volume(channel, (volumefx * 128));
+	LOG("VOLUME: %i", volumefx);
 }
 

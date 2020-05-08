@@ -68,7 +68,8 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Logo_Music.ogg");
+	
+	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
 	
 
 	if (CreateLogo()) ret = true;
@@ -94,7 +95,7 @@ bool j1Scene::Update(float dt)
 	switch (current_scene) 
 	{
 	case scenes::menu:
-
+		
 		break;
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -103,7 +104,7 @@ bool j1Scene::Update(float dt)
 
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		
+				
 		if (logoTimer.ReadSec() <= 5.5) {
 			current_animation = &team_logo;
 			logo_team_sfx_counter++;
@@ -122,6 +123,7 @@ bool j1Scene::Update(float dt)
 			}
 	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
+
 	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
@@ -182,7 +184,7 @@ bool j1Scene::Update(float dt)
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
 		}
-
+		
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
@@ -459,12 +461,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		current_scene = scenes::menu;
 		CreateMenu();
 		App->audio->StopFx();
-		App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
+		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
-		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
 		App->wave->Start();
