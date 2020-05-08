@@ -28,12 +28,12 @@
   </fonts>
   <audio>
     <music>
-      <folder>Assets/audio/music/</folder>
+      <folder>Assets/Audio/Music/</folder>
       <volumemusic value="1.0"/>
     </music>
     <fx>
-      <folder>Assets/audio/fx/</folder>
-      <volumefx value="1.0"/>
+      <folder>Assets/Audio/SFX/</folder>
+      <volumefx value="0.5"/>
     </fx>
   </audio>
   

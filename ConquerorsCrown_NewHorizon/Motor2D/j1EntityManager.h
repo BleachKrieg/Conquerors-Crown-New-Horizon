@@ -79,6 +79,7 @@ public:
 	SDL_Texture* enemy_sel_tex = nullptr;
 
 	int			max_audio_attacks;
+	int volume;
 	j1PerfTimer	timer;
 
 	// Animations ----------------------
