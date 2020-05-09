@@ -855,6 +855,23 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		ClosePauseMenu();
 	}
+	if (guiElement == pausemenuButtonSave) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//save
+	}
+	if (guiElement == pausemenuButtonLoad) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//load
+	}
+	if (guiElement == pausemenuButtonOptions) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//options
+	}
+	if (guiElement == pausemenuButtonExit) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		ClosePauseMenu();
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
 
 
 	//Victory Buttons
