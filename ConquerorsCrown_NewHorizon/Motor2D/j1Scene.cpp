@@ -723,6 +723,22 @@ bool j1Scene::CreatePauseMenu() {
 	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextResume = App->gui->CreateGuiElement(Types::text, 85, 4, { 0, 0, 138, 30 }, pausemenuButtonResume, nullptr, "Resume");
 
+	pausemenuButtonSave = App->gui->CreateGuiElement(Types::button, 150, 200, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonSave->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextSave = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonSave, nullptr, "Save");
+
+	pausemenuButtonLoad = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonLoad->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextLoad = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonLoad, nullptr, "Load");
+
+	pausemenuButtonOptions = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, pausemenuButtonOptions, nullptr, "Options");
+
+	pausemenuButtonExit = App->gui->CreateGuiElement(Types::button, 150, 350, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
+
 	LOG("PAUSE MENU OPENED");
 
 	return true;
@@ -730,13 +746,29 @@ bool j1Scene::CreatePauseMenu() {
 
 bool j1Scene::ClosePauseMenu() {
 
-	pausemenuBackground = nullptr;
-	//pausemenuButtonResume = nullptr;
-	//pausemenuTextResume = nullptr;
-
 	pausemenuBackground->to_delete = true;
-	//pausemenuButtonResume->to_delete = true;
-	//pausemenuTextResume->to_delete = true;	
+	pausemenuButtonResume->to_delete = true;
+	pausemenuTextResume->to_delete = true;	
+	pausemenuButtonSave->to_delete = true;
+	pausemenuTextSave->to_delete = true;
+	pausemenuButtonLoad->to_delete = true;
+	pausemenuTextLoad->to_delete = true;
+	pausemenuButtonOptions->to_delete = true;
+	pausemenuTextOptions->to_delete = true;
+	pausemenuButtonExit->to_delete = true;
+	pausemenuTextExit->to_delete = true;
+
+	pausemenuBackground = nullptr;
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
 	
 	LOG("PAUSE MENU CLOSED");
 
