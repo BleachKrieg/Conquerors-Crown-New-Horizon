@@ -228,8 +228,15 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 
 	if (id > 0 && id <= fx.size())
 	{
-		if (fx[id - 1] != nullptr) Mix_PlayChannel(channel, fx[id - 1], repeat);
-		else LOG("Could not play audio because there is no fx.");
+		if (fx[id - 1] != nullptr) 
+		{ 
+			//FxVolume(-1, volumefx, sp_audio);
+			Mix_PlayChannel(channel, fx[id - 1], repeat);
+		}
+		else {
+			LOG("Could not play audio because there is no fx.");
+		}
+
 	}
 
 	return ret;
@@ -272,13 +279,22 @@ void j1Audio::MusicVolume(float vol) {
 	}
 
 	Mix_VolumeMusic(128 * volumemusic);
-
-	//LOG("VOLUME: %.2f", volumemusic);
 }
 
-float j1Audio::FxVolume(float value) {
-	volumefx = value;
-	return volumefx;
+void j1Audio::FxVolume(int channel, float vol) {
+	
+	volumefx = vol;
+	
+	if (volumefx >= 1) {
+		volumefx = 1;
+	}
+	if (volumefx <= 0) {
+		volumefx = 0;
+	}
+	Mix_Volume(channel, volumefx*128);
+	//LOG("VOLUME SLIDER: %.2f", vol);
+
+	LOG("VOLUME: %.2f", Mix_Volume(0, -1));
 }
 
 void j1Audio::SetChannelVolume(int channel, int volume)

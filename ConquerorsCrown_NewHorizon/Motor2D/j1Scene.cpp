@@ -824,7 +824,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
 	}
 	else if (guiElement == optionsFxSlider) {
-		//App->audio->FxVolume(optionsFxSlider->returnSliderPos());
+		App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
 	}
 
 	//InGame Buttons

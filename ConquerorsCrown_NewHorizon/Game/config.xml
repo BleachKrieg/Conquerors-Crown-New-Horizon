@@ -33,7 +33,7 @@
     </music>
     <fx>
       <folder>Assets/Audio/SFX/</folder>
-      <volumefx value="0.5"/>
+      <volumefx value="1.0"/>
     </fx>
   </audio>
   

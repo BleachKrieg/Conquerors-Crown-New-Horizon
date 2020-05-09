@@ -48,12 +48,13 @@ public:
 	//Load module audio data
 	bool j1Audio::Load(pugi::xml_node& config);
 	void MusicVolume(float vol);
-	float FxVolume(float value);
+	void FxVolume(int channel, float value);
 	void SetChannelVolume(int channel, int volume);
 
 public:
 	float volumemusic;
 	float volumefx;
+	int sp_audio;
 
 	int construction;
 	int cancel_building;
