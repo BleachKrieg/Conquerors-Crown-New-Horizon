@@ -293,8 +293,6 @@ void j1Audio::FxVolume(int channel, float vol) {
 	}
 	Mix_Volume(channel, volumefx*128);
 	//LOG("VOLUME SLIDER: %.2f", vol);
-
-	LOG("VOLUME: %.2f", Mix_Volume(0, -1));
 }
 
 void j1Audio::SetChannelVolume(int channel, int volume)

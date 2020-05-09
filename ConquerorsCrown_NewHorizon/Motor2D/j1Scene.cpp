@@ -610,7 +610,6 @@ bool j1Scene::CreateInGame()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
-
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
