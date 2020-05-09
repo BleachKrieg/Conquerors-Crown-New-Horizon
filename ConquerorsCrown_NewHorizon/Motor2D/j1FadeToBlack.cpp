@@ -1,4 +1,3 @@
-#include <math.h>
 #include "j1App.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"

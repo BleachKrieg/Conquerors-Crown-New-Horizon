@@ -1,3 +1,4 @@
+#include <math.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -128,7 +129,6 @@ bool j1Audio::Update(float dt) {
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
-	
 	bool ret = true;
 
 	if(!active)
@@ -260,15 +260,9 @@ bool j1Audio::Load(pugi::xml_node& data)
 	volumefx = data.child("volumefx").attribute("value").as_float();
 	return true;
 }
-void j1Audio::musicvolume() {
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN) {
-		volumemusic -= 0.1;
-	}
-	else if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN) {
-		volumemusic += 0.1;
-	}
+void j1Audio::MusicVolume(float vol) {
 
-	Mix_VolumeMusic(128 * volumemusic);
+	volumemusic = vol;
 
 	if (volumemusic >= 1) {
 		volumemusic = 1;
@@ -276,10 +270,13 @@ void j1Audio::musicvolume() {
 	if (volumemusic <= 0) {
 		volumemusic = 0;
 	}
+
+	Mix_VolumeMusic(128 * volumemusic);
+
 	LOG("VOLUME: %.2f", volumemusic);
 }
 
-float j1Audio::fxvolume(float value) {
+float j1Audio::FxVolume(float value) {
 	volumefx = value;
 	return volumefx;
 }
@@ -288,6 +285,6 @@ void j1Audio::SetChannelVolume(int channel, int volume)
 {
 	//volume_fx = volume_fx * spatial_audio_volume;
 	Mix_Volume(channel, (volumefx * 128));
-	LOG("VOLUME: %i", volumefx);
+	LOG("VOLUME: %i", 128 - Mix_Volume(channel, -1));
 }
 

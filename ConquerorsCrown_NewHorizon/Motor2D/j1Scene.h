@@ -21,7 +21,6 @@ enum class scenes {
 	logo,
 	victory,
 	defeat
-
 };
 
 class GuiItem;
@@ -147,6 +146,7 @@ public:
 	GuiItem* optionsBackground;
 	GuiItem* optionsButtonClose;
 	GuiItem* optionsTextClose;
+	GuiItem* optionsSlider;
 
 	//LogoGui
 	GuiItem* logoTextClick;

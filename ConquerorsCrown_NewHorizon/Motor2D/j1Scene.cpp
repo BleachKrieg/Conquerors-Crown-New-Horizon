@@ -69,10 +69,8 @@ bool j1Scene::Start()
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	
 	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
 	
-
 	if (CreateLogo()) ret = true;
 
 	return ret;
@@ -265,8 +263,6 @@ bool j1Scene::Update(float dt)
 			timer = 660 - gameClock.ReadSec();
 			TimeToClock();
 		}
-
-
 		break;
 	}
 	
@@ -538,6 +534,7 @@ bool j1Scene::CreateOptions()
 	optionsButtonClose = App->gui->CreateGuiElement(Types::button, 55, 320, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
 	optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
+	optionsSlider = App->gui->CreateGuiElement(Types::slider, 55, 100, { 306, 177, 176, 9 }, optionsBackground, this);
 
 	return true;
 }
@@ -546,10 +543,12 @@ bool j1Scene::DeleteOptions() {
 	optionsBackground->to_delete = true;
 	optionsButtonClose->to_delete = true;
 	optionsTextClose->to_delete = true;
+	optionsSlider->to_delete = true;
 
 	optionsBackground = nullptr;
 	optionsButtonClose = nullptr;
 	optionsTextClose = nullptr;
+	optionsSlider = nullptr;
 	return true;
 }
 
@@ -723,13 +722,11 @@ bool j1Scene::CreateDefeat() {
 	defeatButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
 
-
 	//uncomment that to use text and not button to continue
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
 
 	//victory music
 	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
-
 
 	return true;
 }
@@ -804,6 +801,9 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		DeleteOptions();
 		optionsMenu = false;
+	}
+	else if (guiElement == optionsSlider) {
+		App->audio->MusicVolume(optionsSlider->returnSliderPos());
 	}
 
 	//InGame Buttons
