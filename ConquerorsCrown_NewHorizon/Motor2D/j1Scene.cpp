@@ -524,31 +524,49 @@ bool j1Scene::CreateOptions()
 	if (current_scene == scenes::menu) 
 	{
 		optionsBackground = App->gui->CreateGuiElement(Types::image, 865, 150, { 2144, 0, 416, 400 });
-
 	}
 	else 
 	{
 		optionsBackground = App->gui->CreateGuiElement(Types::image, 400, 200, { 1620, 0, 521, 400 });
 	}
+	 
+	optionsTitleText = App->gui->CreateGuiElement(Types::text, 60, 20, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Options");
+
+	optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 55, 120, { 306, 177, 176, 9 }, optionsBackground, this);
+	optionsMusicSlider->setSliderPos(App->audio->volumemusic);
+	optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 55, 170, { 306, 177, 176, 9 }, optionsBackground, this);
+	optionsFxSlider->setSliderPos(App->audio->volumefx);
+
+	optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 55, 240, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+	optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
 
 	optionsButtonClose = App->gui->CreateGuiElement(Types::button, 55, 320, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
 	optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
-	optionsSlider = App->gui->CreateGuiElement(Types::slider, 55, 100, { 306, 177, 176, 9 }, optionsBackground, this);
 
 	return true;
 }
 
-bool j1Scene::DeleteOptions() {
+bool j1Scene::DeleteOptions() 
+{
 	optionsBackground->to_delete = true;
+	optionsTitleText->to_delete = true;
+	optionsButtonFullScreen->to_delete = true;
+	optionsTextFullScreen->to_delete = true;
 	optionsButtonClose->to_delete = true;
 	optionsTextClose->to_delete = true;
-	optionsSlider->to_delete = true;
+	optionsMusicSlider->to_delete = true;
+	optionsFxSlider->to_delete = true;
 
 	optionsBackground = nullptr;
+	optionsTitleText = nullptr;
+	optionsButtonFullScreen = nullptr;
+	optionsTextFullScreen = nullptr;
 	optionsButtonClose = nullptr;
 	optionsTextClose = nullptr;
-	optionsSlider = nullptr;
+	optionsMusicSlider = nullptr;
+	optionsFxSlider = nullptr;
 	return true;
 }
 
@@ -802,8 +820,11 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		DeleteOptions();
 		optionsMenu = false;
 	}
-	else if (guiElement == optionsSlider) {
-		App->audio->MusicVolume(optionsSlider->returnSliderPos());
+	else if (guiElement == optionsMusicSlider) {
+		App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
+	}
+	else if (guiElement == optionsFxSlider) {
+		//App->audio->FxVolume(optionsFxSlider->returnSliderPos());
 	}
 
 	//InGame Buttons

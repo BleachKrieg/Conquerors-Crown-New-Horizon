@@ -144,9 +144,13 @@ public:
 	//OptionsGui
 	bool optionsMenu;
 	GuiItem* optionsBackground;
+	GuiItem* optionsTitleText;
 	GuiItem* optionsButtonClose;
 	GuiItem* optionsTextClose;
-	GuiItem* optionsSlider;
+	GuiItem* optionsMusicSlider;
+	GuiItem* optionsFxSlider;
+	GuiItem* optionsButtonFullScreen;
+	GuiItem* optionsTextFullScreen;
 
 	//LogoGui
 	GuiItem* logoTextClick;

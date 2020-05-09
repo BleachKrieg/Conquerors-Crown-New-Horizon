@@ -547,7 +547,6 @@ InputText::InputText(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	image = App->gui->CreateGuiElement(Types::image, 0, 0, { 444, 661, 244, 65 }, this);
 	text = App->gui->CreateGuiElement(Types::text, 20, 15, texrect, this, callback, "Insert Text");
 	text->isDynamic = true;
-
 }
 
 InputText::~InputText() {
@@ -645,6 +644,20 @@ float GuiSlider::returnSliderPos()
 	ScrollThumb->GetLocalPos(x, y);
 
 	return x / a;
+}
+
+void GuiSlider::setSliderPos(float value)
+{
+
+	int x, y;
+	float a, b;
+	a = Image->GetLocalRect()->w;
+	b = ScrollThumb->GetLocalRect()->w;
+	a = a - b;
+	ScrollThumb->GetLocalPos(x, y);
+	x = value * a;
+	ScrollThumb->SetLocalPos(x, y);
+
 }
 
 void GuiSlider::ReturnChilds(GuiItem * imagepointer, GuiItem * ScrollPointer)

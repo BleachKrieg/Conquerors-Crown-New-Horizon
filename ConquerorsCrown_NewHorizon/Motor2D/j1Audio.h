@@ -52,6 +52,8 @@ public:
 	void SetChannelVolume(int channel, int volume);
 
 public:
+	float volumemusic;
+	float volumefx;
 
 	int construction;
 	int cancel_building;
@@ -84,9 +86,6 @@ private:
 	p2SString			music_directory;
 	p2SString			fx_directory;
 	
-	float volumemusic;
-	float volumefx;
-
 	bool musicToFree;
 };
 

@@ -46,6 +46,8 @@ public:
 	virtual float returnSliderPos() {
 		return 0;
 	}
+	virtual void setSliderPos(float) {
+	}
 	virtual void SetText(const char*) {
 	}
 	
@@ -136,6 +138,7 @@ public:
 	virtual ~GuiSlider();
 	void slide();
 	float returnSliderPos();
+	void setSliderPos(float);
 	void ReturnChilds(GuiItem*, GuiItem*);
 private:
 	GuiItem* Image;

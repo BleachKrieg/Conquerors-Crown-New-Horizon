@@ -273,7 +273,7 @@ void j1Audio::MusicVolume(float vol) {
 
 	Mix_VolumeMusic(128 * volumemusic);
 
-	LOG("VOLUME: %.2f", volumemusic);
+	//LOG("VOLUME: %.2f", volumemusic);
 }
 
 float j1Audio::FxVolume(float value) {
