@@ -805,10 +805,10 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 
 void j1Scene::CreatePopUpMessage(int x, int y, j1Module* callback, char* titletext, char* text)
 {
-	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2334, 775, 198, 236 }, ingameTopBar);
+	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2334, 775, 255, 277 }, ingameTopBar);
 	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
 	PopUpText = App->gui->CreateGuiElement(Types::text, x + 10, y + 35, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text, App->font->xs_font);
-	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 152, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, callback);
+	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 205, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, callback);
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 
