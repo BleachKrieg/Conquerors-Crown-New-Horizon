@@ -172,6 +172,11 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			App->render->camera.y += 500 * dt;
 		}
+
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+			CreatePopUpMessage(20, 46, this, "test text", "test text test text");
+		}
+
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			App->render->camera.y -= 500 * dt;
 		}
@@ -196,12 +201,14 @@ bool j1Scene::Update(float dt)
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
-		//Debug input
+				//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}			
+
+
 
 		if (debug)
 		{
@@ -768,6 +775,12 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
+	if (guiElement == PopUpButton) {
+		PopUpImage->to_delete = true;
+		PopUpTitleText->to_delete = true;
+		PopUpText->to_delete = true;
+		PopUpButton->to_delete = true;
+	}
 	else if (guiElement == townHallButton) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		if (!Building_preview && !App->entity->IsSomethingSelected())
@@ -788,6 +801,14 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
+}
+
+void j1Scene::CreatePopUpMessage(int x, int y, j1Module* callback, char* titletext, char* text)
+{
+	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2334, 775, 198, 236 }, ingameTopBar);
+	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
+	PopUpText = App->gui->CreateGuiElement(Types::text, x + 10, y + 35, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text, App->font->xs_font);
+	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 152, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, callback);
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 

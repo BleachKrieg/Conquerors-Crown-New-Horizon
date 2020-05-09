@@ -70,6 +70,7 @@ public:
 	//InGameUI functions
 	bool CreateButtonsUI();
 	bool DeleteButtonsUI();
+	void CreatePopUpMessage(int x, int y, j1Module* callback = nullptr, char* titletext = "", char* text = "");
 
 	void LogoPushbacks();
 	void TeamLogoPushbacks();
@@ -132,6 +133,10 @@ public:
 	GuiItem* ingameTextStone;
 	GuiItem* ingameTextClock;
 	GuiItem* ingameTextWave;
+	GuiItem* PopUpImage;
+	GuiItem* PopUpText;
+	GuiItem* PopUpTitleText;
+	GuiItem* PopUpButton;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
@@ -139,7 +144,7 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
-
+	
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
