@@ -46,6 +46,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
 	teamLogoSheet_file_name = config.child("team_logo").attribute("file").as_string("");
+	fullscreen = false;
 	
 	return ret;
 }
@@ -65,12 +66,12 @@ bool j1Scene::Start()
 	gold = 0u;
 	timer = 660;
 	map_coordinates = { 0, 0 };
+	optionsMenu = false;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
-	App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Logo_Music.ogg");
+	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
 	
-
 	if (CreateLogo()) ret = true;
 
 	return ret;
@@ -94,7 +95,7 @@ bool j1Scene::Update(float dt)
 	switch (current_scene) 
 	{
 	case scenes::menu:
-
+		
 		break;
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -103,7 +104,7 @@ bool j1Scene::Update(float dt)
 
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		
+				
 		if (logoTimer.ReadSec() <= 5.5) {
 			current_animation = &team_logo;
 			logo_team_sfx_counter++;
@@ -122,6 +123,7 @@ bool j1Scene::Update(float dt)
 			}
 	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
+
 	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
@@ -169,19 +171,20 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			App->render->camera.y += 500 * dt;
-		}
-
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			App->render->camera.y -= 500 * dt;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			App->render->camera.x += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			App->render->camera.x -= 500 * dt;
+		if (!pauseMenu)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				App->render->camera.y += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				App->render->camera.y -= 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				App->render->camera.x += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				App->render->camera.x -= 500 * dt;
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
@@ -201,7 +204,17 @@ bool j1Scene::Update(float dt)
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
-				//Debug input
+		//Pause Menu
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			if (!pauseMenu) CreatePauseMenu();
+			else DeletePauseMenu();
+
+			pauseMenu = !pauseMenu;
+		}
+
+		//Debug input
+
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
 			debug = !debug;
@@ -248,7 +261,7 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
-		//Victory and Defeat scenes
+		
 
 		if (timer <= 0 && !finish)
 		{
@@ -267,8 +280,6 @@ bool j1Scene::Update(float dt)
 			timer = 660 - gameClock.ReadSec();
 			TimeToClock();
 		}
-
-
 		break;
 	}
 	
@@ -464,12 +475,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		current_scene = scenes::menu;
 		CreateMenu();
 		App->audio->StopFx();
-		App->audio->PlayMusic("Assets/Audio/Music/Warcraft_II_Main_Menu.ogg", 2.0F);
+		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
-		App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
+		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
 		App->wave->Start();
@@ -525,6 +536,162 @@ bool j1Scene::CreateMenu() {
 	return true;
 }
 
+bool j1Scene::CreatePauseMenu() 
+{
+	if(pausemenuBackground == nullptr)
+		pausemenuBackground = App->gui->CreateGuiElement(Types::image, 347, -342, { 2292, 731, 586, 483 }, ingameUI);
+
+	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextResume = App->gui->CreateGuiElement(Types::text, 85, 4, { 0, 0, 138, 30 }, pausemenuButtonResume, nullptr, "Resume");
+
+	pausemenuButtonSave = App->gui->CreateGuiElement(Types::button, 150, 200, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonSave->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextSave = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonSave, nullptr, "Save");
+
+	pausemenuButtonLoad = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonLoad->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextLoad = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonLoad, nullptr, "Load");
+
+	pausemenuButtonOptions = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, pausemenuButtonOptions, nullptr, "Options");
+
+	pausemenuButtonExit = App->gui->CreateGuiElement(Types::button, 150, 350, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
+
+	return true;
+}
+
+bool j1Scene::DeletePauseMenu() {
+	if (optionsMenu)
+	{
+		DeleteOptions();
+	}
+	else 
+	{
+		DeletePauseMenuButtons();
+	}
+
+	pausemenuBackground->to_delete = true;
+	pausemenuBackground = nullptr;
+
+	return true;
+}
+
+bool j1Scene::DeletePauseMenuButtons() 
+{
+	pausemenuButtonResume->to_delete = true;
+	pausemenuTextResume->to_delete = true;
+	pausemenuButtonSave->to_delete = true;
+	pausemenuTextSave->to_delete = true;
+	pausemenuButtonLoad->to_delete = true;
+	pausemenuTextLoad->to_delete = true;
+	pausemenuButtonOptions->to_delete = true;
+	pausemenuTextOptions->to_delete = true;
+	pausemenuButtonExit->to_delete = true;
+	pausemenuTextExit->to_delete = true;
+
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
+
+	return true;
+}
+
+bool j1Scene::CreateOptions() 
+{
+	if (current_scene == scenes::menu) 
+	{
+		optionsBackground = App->gui->CreateGuiElement(Types::image, 880, 120, { 2292, 731, 586, 483 });
+
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 70, 80, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Options");
+
+		optionsMusicText = App->gui->CreateGuiElement(Types::text, 65, 130, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Music", App->font->smallfont);
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 65, 160, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
+		optionsFxText = App->gui->CreateGuiElement(Types::text, 65, 180, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Fx", App->font->smallfont);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 65, 210, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsFxSlider->setSliderPos(App->audio->volumefx);
+
+		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 65, 250, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+		optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
+
+		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 65, 330, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextClose = App->gui->CreateGuiElement(Types::text, 110, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
+	}
+	else if(pauseMenu)
+	{
+		//Deleting pause buttons
+		DeletePauseMenuButtons();
+
+		//Creating options
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 225, 80, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
+
+		optionsMusicText = App->gui->CreateGuiElement(Types::text, 200, 130, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Music", App->font->smallfont);
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 200, 160, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
+		optionsFxText = App->gui->CreateGuiElement(Types::text, 200, 180, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Fx", App->font->smallfont);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 200, 210, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsFxSlider->setSliderPos(App->audio->volumefx);
+
+		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
+
+		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextClose = App->gui->CreateGuiElement(Types::text, 105, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
+	}
+	 
+	return true;
+}
+
+bool j1Scene::DeleteOptions() 
+{
+	if (!pauseMenu) 
+	{
+		optionsBackground->to_delete = true;
+	}
+	else
+	{
+		CreatePauseMenu();
+	}
+
+	optionsTitleText->to_delete = true;
+	optionsButtonFullScreen->to_delete = true;
+	optionsTextFullScreen->to_delete = true;
+	optionsButtonClose->to_delete = true;
+	optionsTextClose->to_delete = true;
+	optionsMusicText->to_delete = true;
+	optionsMusicSlider->to_delete = true;
+	optionsFxText->to_delete = true;
+	optionsFxSlider->to_delete = true;
+
+	optionsTitleText = nullptr;
+	optionsButtonFullScreen = nullptr;
+	optionsTextFullScreen = nullptr;
+	optionsButtonClose = nullptr;
+	optionsTextClose = nullptr;
+	optionsMusicText = nullptr;
+	optionsMusicSlider = nullptr;
+	optionsFxText = nullptr;
+	optionsFxSlider = nullptr;
+
+	optionsBackground = nullptr;
+	return true;
+}
+
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
@@ -565,7 +732,6 @@ bool j1Scene::CreateInGame()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
-
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
@@ -596,14 +762,12 @@ bool j1Scene::DeleteButtonsUI()
 	townHallStoneCostImage->to_delete = true;
 	townHallWoodCostText->to_delete = true;
 	townHallStoneCostText->to_delete = true;
-	
 	townHallButton->to_delete = true;
 
 	townHallWoodCostImage = nullptr;
 	townHallStoneCostImage = nullptr;
 	townHallWoodCostText = nullptr;
 	townHallStoneCostText = nullptr;
-
 	townHallButton = nullptr;
 
 	return true;
@@ -695,13 +859,11 @@ bool j1Scene::CreateDefeat() {
 	defeatButtonContinue->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
 
-
 	//uncomment that to use text and not button to continue
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
 
 	//victory music
 	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
-
 
 	return true;
 }
@@ -709,6 +871,10 @@ bool j1Scene::CreateDefeat() {
 bool j1Scene::DeleteUI() 
 {
 	if (townHallButton != nullptr) DeleteButtonsUI();
+	if (optionsBackground != nullptr) DeleteOptions();
+	if (pauseMenu) DeletePauseMenu();
+
+	App->gui->DeleteAllGui();
 
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
@@ -742,9 +908,8 @@ bool j1Scene::DeleteUI()
 	defeatTextContinue = nullptr;
 	defeatTextClick = nullptr;
 
-	App->tex->UnLoad(logoSheet);
-	App->tex->UnLoad(teamLogoSheet);
-	App->gui->DeleteAllGui();
+	if (logoSheet != nullptr) App->tex->UnLoad(logoSheet);
+	if (teamLogoSheet != nullptr) App->tex->UnLoad(teamLogoSheet);
 	return true;
 }
 
@@ -764,16 +929,47 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == menuButtonOptions) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		if (optionsMenu) DeleteOptions();
+		else CreateOptions();
+		optionsMenu = !optionsMenu;
 	}
 
+	//Options Button
+	if (guiElement == optionsButtonClose) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		DeleteOptions();
+		optionsMenu = false;
+	}
+	else if (guiElement == optionsMusicSlider) {
+		App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
+	}
+	else if (guiElement == optionsFxSlider) {
+		App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
+	}
+	else if (guiElement == optionsButtonFullScreen) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+
+		if (!fullscreen) 
+		{
+			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+		}
+		else 
+		{
+			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+		}
+
+		fullscreen = !fullscreen;
+	}
 
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
+		if (!pauseMenu) CreatePauseMenu();
+		else DeletePauseMenu();
+
+		pauseMenu = !pauseMenu;
 	}
-	if (guiElement == PopUpButton) {
+	else if (guiElement == PopUpButton) {
 		PopUpImage->to_delete = true;
 		PopUpTitleText->to_delete = true;
 		PopUpText1->to_delete = true;
@@ -790,6 +986,33 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
 		}
+	}
+
+	//Pause Menu Buttons
+	if (guiElement == pausemenuButtonResume) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		pauseMenu = false;
+		DeletePauseMenu();
+	}
+	else if (guiElement == pausemenuButtonSave) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//save
+	}
+	else if (guiElement == pausemenuButtonLoad) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//load
+	}
+	else if (guiElement == pausemenuButtonOptions) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//options
+		CreateOptions();
+		optionsMenu = true;
+	}
+	else if (guiElement == pausemenuButtonExit) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		DeletePauseMenu();
+		pauseMenu = false;
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 
 	//Victory Buttons

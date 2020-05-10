@@ -21,7 +21,6 @@ enum class scenes {
 	logo,
 	victory,
 	defeat
-
 };
 
 class GuiItem;
@@ -64,6 +63,14 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
+
+	bool CreateOptions();
+	bool DeleteOptions();
+
+	bool CreatePauseMenu();
+	bool DeletePauseMenu();
+	bool DeletePauseMenuButtons();
+
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -151,7 +158,35 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
-	
+
+	//OptionsGui
+	bool optionsMenu;
+	bool fullscreen;
+	GuiItem* optionsBackground;
+	GuiItem* optionsTitleText;
+	GuiItem* optionsButtonClose;
+	GuiItem* optionsTextClose;
+	GuiItem* optionsMusicText;
+	GuiItem* optionsMusicSlider;
+	GuiItem* optionsFxText;
+	GuiItem* optionsFxSlider;
+	GuiItem* optionsButtonFullScreen;
+	GuiItem* optionsTextFullScreen;
+
+	//PauseMenuGui
+	GuiItem* pausemenuBackground;
+	GuiItem* pausemenuButtonResume;
+	GuiItem* pausemenuTextResume;
+	GuiItem* pausemenuButtonOptions;
+	GuiItem* pausemenuTextOptions;
+	GuiItem* pausemenuButtonSave;
+	GuiItem* pausemenuTextSave;
+	GuiItem* pausemenuButtonLoad;
+	GuiItem* pausemenuTextLoad;
+	GuiItem* pausemenuButtonExit;
+	GuiItem* pausemenuTextExit;
+	bool pauseMenu = false;
+
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;

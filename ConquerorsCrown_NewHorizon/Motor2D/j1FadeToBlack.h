@@ -15,6 +15,9 @@ public:
 	bool PostUpdate(float dt);
 	bool FadeToBlack(scenes, float time = 2.0f);
 
+	// Called before quitting
+	bool CleanUp();
+
 private:
 
 	enum fade_step
