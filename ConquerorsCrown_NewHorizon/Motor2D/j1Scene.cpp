@@ -17,6 +17,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1CutsceneManager.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -169,19 +170,26 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			App->render->camera.y += 500 * dt;
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+			App->cutscene->StartCutscene("CinematicCameraTest");
 		}
 
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			App->render->camera.y -= 500 * dt;
-		}
+		if(App->cutscene->cinematic_camera.active == false)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				App->render->camera.y += 500 * dt;
+			}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			App->render->camera.x += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			App->render->camera.x -= 500 * dt;
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				App->render->camera.y -= 500 * dt;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				App->render->camera.x += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				App->render->camera.x -= 500 * dt;
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
@@ -554,7 +562,6 @@ bool j1Scene::CreateInGame()
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
-
 	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);

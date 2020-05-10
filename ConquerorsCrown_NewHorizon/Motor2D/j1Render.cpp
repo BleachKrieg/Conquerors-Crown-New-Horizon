@@ -89,6 +89,9 @@ bool j1Render::Update(float dt)
 	if (shaking)
 		UpdateCameraShake();
 
+	camera_pos.x = camera.x;
+	camera_pos.y = camera.y;
+
 	return true;
 }
 

@@ -83,6 +83,7 @@
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
     <ClCompile Include="HumanTownHall.cpp" />
+    <ClCompile Include="j1CutsceneManager.cpp" />
     <ClCompile Include="j1Entity.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />
     <ClInclude Include="HumanTownHall.h" />
+    <ClInclude Include="j1CutsceneManager.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="j1FadeToBlack.h" />

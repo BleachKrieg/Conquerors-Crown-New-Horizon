@@ -99,6 +99,9 @@
     <ClCompile Include="GoldMine.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="j1CutsceneManager.cpp">
+      <Filter>Project II</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="GoldMine.h">
       <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="j1CutsceneManager.h">
+      <Filter>Project II</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
