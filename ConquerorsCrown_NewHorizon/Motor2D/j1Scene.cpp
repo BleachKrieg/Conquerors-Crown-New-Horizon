@@ -633,18 +633,18 @@ bool j1Scene::CreateOptions()
 		DeletePauseMenuButtons();
 
 		//Creating options
-		optionsTitleText = App->gui->CreateGuiElement(Types::text, 180, 20, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 225, 100, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
 
-		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 170, 120, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 200, 150, { 306, 177, 176, 9 }, pausemenuBackground, this);
 		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
-		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 170, 170, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 200, 200, { 306, 177, 176, 9 }, pausemenuBackground, this);
 		optionsFxSlider->setSliderPos(App->audio->volumefx);
 
-		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 150, 240, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
 		optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 		optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
 
-		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 150, 320, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
 		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 		optionsTextClose = App->gui->CreateGuiElement(Types::text, 105, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
 	}
