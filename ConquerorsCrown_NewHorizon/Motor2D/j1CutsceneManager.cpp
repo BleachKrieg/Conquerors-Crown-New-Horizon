@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "j1Window.h"
 #include "j1CutsceneManager.h"
+#include "j1Minimap.h"
 
 
 j1CutsceneManager::j1CutsceneManager() : j1Module()
@@ -54,7 +55,6 @@ bool j1CutsceneManager::Update(float dt)
 	{
 		DoCutscene(cinematic_camera, App->render->camera_pos);
 	}
-	
 
 	return true;
 }
@@ -113,7 +113,7 @@ void BlackBars::FadeOut()
 
 void j1CutsceneManager::StartCutscene(string name)
 {
-	//if (!SomethingActive())
+	if (!SomethingActive())
 	{
 		for (pugi::xml_node cutscene = cutsceneManager.child("cutscene"); cutscene; cutscene = cutscene.next_sibling("cutscene"))
 		{
@@ -123,6 +123,8 @@ void j1CutsceneManager::StartCutscene(string name)
 			}
 		}
 		if (cinematic_camera.active) { cinematic_camera.UpdateStep(); }
+		App->gui->SetGuiVisible(false);
+		App->minimap->visible = false;
 	}
 }
 
@@ -267,7 +269,8 @@ void j1CutsceneManager::FinishCutscene(CutsceneObject& object)
 	object.steps.clear();
 	object.active = false;
 	if (black_bars.phase == Drawing) { black_bars.phase = FadeOut; }
-
+	App->gui->SetGuiVisible(true);
+	App->minimap->visible = true;
 }
 
 bool j1CutsceneManager::SomethingActive()

@@ -81,6 +81,7 @@ public:
 	bool isDynamic;
 	bool follow;
 	bool delayBlit;
+	bool visible;
 };
 
 class GuiImage: public GuiItem
@@ -202,6 +203,8 @@ public:
 	SDL_Texture* GetAtlas() const;
 	
 	GuiItem* CreateGuiElement(Types type, int x, int y, SDL_Rect, GuiItem* parentnode = NULL, j1Module* callback = nullptr, char* text = "", _TTF_Font* font = nullptr);
+
+	void SetGuiVisible(bool is_visible);
 
 public:
 	bool buttonPressed;

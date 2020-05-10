@@ -20,6 +20,7 @@ j1Minimap::j1Minimap() : j1Module() {
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	minimap_test_rect = { 0,0,4,4 };
+	visible = true;
 }
 
 j1Minimap::~j1Minimap() {
@@ -119,8 +120,11 @@ bool j1Minimap::PreUpdate(float dt) {
 bool j1Minimap::Update(float dt) {
 
 	//TODO 3: When you have the texture try blitting it on screen
-	if(texture != NULL)
-	App->render->Blit(texture, position.x, position.y, NULL, 0, 0);
+	if (texture != NULL && visible)
+	{
+		App->render->Blit(texture, position.x, position.y, NULL, 0, 0);
+	}
+	
 	//TODO 4.1: Fill the function WorldToMinimap to make the representation of the rect in the minimap be in the position it should 
 	/*iPoint minimap_test_rect_position = App->minimap->WorldToMinimap(App->scene->test_rect.x, App->scene->test_rect.y);
 	minimap_test_rect.x = minimap_test_rect_position.x;
@@ -130,7 +134,7 @@ bool j1Minimap::Update(float dt) {
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
 	SDL_Rect rect = { 0,0,0,0 };
 	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-	App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+	if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
 
 	return true;
 }
