@@ -615,9 +615,11 @@ bool j1Scene::CreateOptions()
 
 		optionsTitleText = App->gui->CreateGuiElement(Types::text, 70, 80, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Options");
 
-		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 65, 150, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsMusicText = App->gui->CreateGuiElement(Types::text, 65, 130, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Music", App->font->smallfont);
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 65, 160, { 306, 177, 176, 9 }, optionsBackground, this);
 		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
-		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 65, 200, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsFxText = App->gui->CreateGuiElement(Types::text, 65, 180, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Fx", App->font->smallfont);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 65, 210, { 306, 177, 176, 9 }, optionsBackground, this);
 		optionsFxSlider->setSliderPos(App->audio->volumefx);
 
 		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 65, 250, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
@@ -634,11 +636,13 @@ bool j1Scene::CreateOptions()
 		DeletePauseMenuButtons();
 
 		//Creating options
-		optionsTitleText = App->gui->CreateGuiElement(Types::text, 225, 100, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 225, 80, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
 
-		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 200, 150, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsMusicText = App->gui->CreateGuiElement(Types::text, 200, 130, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Music", App->font->smallfont);
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 200, 160, { 306, 177, 176, 9 }, pausemenuBackground, this);
 		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
-		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 200, 200, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsFxText = App->gui->CreateGuiElement(Types::text, 200, 180, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Fx", App->font->smallfont);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 200, 210, { 306, 177, 176, 9 }, pausemenuBackground, this);
 		optionsFxSlider->setSliderPos(App->audio->volumefx);
 
 		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
@@ -669,7 +673,9 @@ bool j1Scene::DeleteOptions()
 	optionsTextFullScreen->to_delete = true;
 	optionsButtonClose->to_delete = true;
 	optionsTextClose->to_delete = true;
+	optionsMusicText->to_delete = true;
 	optionsMusicSlider->to_delete = true;
+	optionsFxText->to_delete = true;
 	optionsFxSlider->to_delete = true;
 
 	optionsTitleText = nullptr;
@@ -677,7 +683,9 @@ bool j1Scene::DeleteOptions()
 	optionsTextFullScreen = nullptr;
 	optionsButtonClose = nullptr;
 	optionsTextClose = nullptr;
+	optionsMusicText = nullptr;
 	optionsMusicSlider = nullptr;
+	optionsFxText = nullptr;
 	optionsFxSlider = nullptr;
 
 	optionsBackground = nullptr;
@@ -949,6 +957,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		{
 			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
 		}
+
 		fullscreen = !fullscreen;
 	}
 
@@ -960,7 +969,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 
 		pauseMenu = !pauseMenu;
 	}
-	if (guiElement == PopUpButton) {
+	else if (guiElement == PopUpButton) {
 		PopUpImage->to_delete = true;
 		PopUpTitleText->to_delete = true;
 		PopUpText1->to_delete = true;
@@ -1005,7 +1014,6 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		pauseMenu = false;
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
-
 
 	//Victory Buttons
 	if (guiElement == victoryButtonContinue) {

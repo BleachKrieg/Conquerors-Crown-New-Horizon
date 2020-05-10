@@ -166,7 +166,9 @@ public:
 	GuiItem* optionsTitleText;
 	GuiItem* optionsButtonClose;
 	GuiItem* optionsTextClose;
+	GuiItem* optionsMusicText;
 	GuiItem* optionsMusicSlider;
+	GuiItem* optionsFxText;
 	GuiItem* optionsFxSlider;
 	GuiItem* optionsButtonFullScreen;
 	GuiItem* optionsTextFullScreen;
