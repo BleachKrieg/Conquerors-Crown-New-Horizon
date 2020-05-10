@@ -56,6 +56,8 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	void UpdateCameraPosition(int speed);
+
 	//Menu functions
 	void DeleteScene();
 	void CreateScene(scenes);
@@ -70,7 +72,7 @@ public:
 	//InGameUI functions
 	bool CreateButtonsUI();
 	bool DeleteButtonsUI();
-	void CreatePopUpMessage(int x, int y, j1Module* callback = nullptr, char* titletext = "", char* text = "");
+	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
 
 	void LogoPushbacks();
 	void TeamLogoPushbacks();
@@ -97,6 +99,7 @@ private:
 	int logo_team_sfx_counter;
 	j1Timer logoTimer;
 	int alpha;
+	iPoint speed;
 
 public:
 	p2SString current_level;
@@ -134,7 +137,11 @@ public:
 	GuiItem* ingameTextClock;
 	GuiItem* ingameTextWave;
 	GuiItem* PopUpImage;
-	GuiItem* PopUpText;
+	GuiItem* PopUpText1;
+	GuiItem* PopUpText2;
+	GuiItem* PopUpText3;
+	GuiItem* PopUpText4; 
+	GuiItem* PopUpText5;
 	GuiItem* PopUpTitleText;
 	GuiItem* PopUpButton;
 
