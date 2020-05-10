@@ -13,10 +13,9 @@ j1Minimap::j1Minimap() : j1Module() {
 
 	texture = nullptr;
 	height = 100;
-	width = 200;
+	width = 100;
 	map_height = 200;
 	scale = 1;
-	width = 100;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	minimap_test_rect = { 0,0,4,4 };
@@ -83,7 +82,7 @@ bool j1Minimap::Start() {
 		break;
 	case Corner::BOTTOM_LEFT:
 		position.x = margin;
-		position.y = window_height - height - margin;
+		position.y = window_height - height - margin + 5;
 		break;
 	case Corner::BOTTOM_RIGHT:
 		position.x = window_width - width - margin;

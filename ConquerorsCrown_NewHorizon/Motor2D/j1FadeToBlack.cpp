@@ -26,6 +26,12 @@ bool j1FadeToBlack::Start()
 	return true;
 }
 
+bool j1FadeToBlack::CleanUp() {
+	App->tex->UnLoad(screen_);
+	App->tex->UnLoad(loadingIcon);
+	return true;
+}
+
 // Update: draw background
 bool j1FadeToBlack::Update(float dt)
 {

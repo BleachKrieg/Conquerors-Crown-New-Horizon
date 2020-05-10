@@ -625,7 +625,7 @@ bool j1Scene::CreateOptions()
 
 		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 65, 330, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
 		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-		optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
+		optionsTextClose = App->gui->CreateGuiElement(Types::text, 110, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
 	}
 	else if(pauseMenu)
 	{
