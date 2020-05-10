@@ -172,6 +172,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			App->render->camera.y += 500 * dt;
 		}
+
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			App->render->camera.y -= 500 * dt;
 		}
@@ -181,6 +182,10 @@ bool j1Scene::Update(float dt)
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+			CreatePopUpMessage(20, 46, "Test Title", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text");
 		}
 
 		//Camera Limits
@@ -196,7 +201,7 @@ bool j1Scene::Update(float dt)
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
 
-		//Debug input
+				//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
 			debug = !debug;
@@ -768,6 +773,16 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
+	if (guiElement == PopUpButton) {
+		PopUpImage->to_delete = true;
+		PopUpTitleText->to_delete = true;
+		PopUpText1->to_delete = true;
+		PopUpText2->to_delete = true;
+		PopUpText3->to_delete = true;
+		PopUpText4->to_delete = true;
+		PopUpText5->to_delete = true;
+		PopUpButton->to_delete = true;
+	}
 	else if (guiElement == townHallButton) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		if (!Building_preview && !App->entity->IsSomethingSelected())
@@ -788,6 +803,19 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
+}
+
+void j1Scene::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
+{
+	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2295, 775, 266, 209 }, ingameTopBar);
+	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
+	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text1, App->font->xs_font);
+	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text2, App->font->xs_font);
+	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text3, App->font->xs_font);
+	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
+	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
+	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 222, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, this);
+	PopUpButton->setRects({ 2229, 751, 30, 30 }, { 2229, 751, 30, 30 });
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 
@@ -886,4 +914,10 @@ void j1Scene::TeamLogoPushbacks() {
 	team_logo.PushBack({ 3335, 445, 712, 720 }, 0.2f, 356, 0, 0, 0);
 
 	team_logo.loop = false;
+}
+
+
+void j1Scene::UpdateCameraPosition(int speed) 
+{
+
 }
