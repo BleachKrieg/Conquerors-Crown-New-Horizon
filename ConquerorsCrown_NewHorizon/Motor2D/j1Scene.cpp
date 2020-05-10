@@ -170,7 +170,7 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (!pausemenu_open)
+		if (!pauseMenu)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 				App->render->camera.y += 500 * dt;
@@ -203,17 +203,10 @@ bool j1Scene::Update(float dt)
 		//Pause Menu
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
-			//insert game pause
-			if (!pausemenu_open)
-			{
-				pausemenu_open = true;
-				CreatePauseMenu();
-			}
-			else {
-				pausemenu_open = false;
-				ClosePauseMenu();
-			}
+			if (!pauseMenu) CreatePauseMenu();
+			else DeletePauseMenu();
 
+			pauseMenu = !pauseMenu;
 		}
 
 		//Debug input
@@ -538,38 +531,138 @@ bool j1Scene::CreateMenu() {
 	return true;
 }
 
+bool j1Scene::CreatePauseMenu() 
+{
+	if(pausemenuBackground == nullptr)
+		pausemenuBackground = App->gui->CreateGuiElement(Types::image, 347, -342, { 2292, 731, 586, 483 }, ingameUI);
+
+	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextResume = App->gui->CreateGuiElement(Types::text, 85, 4, { 0, 0, 138, 30 }, pausemenuButtonResume, nullptr, "Resume");
+
+	pausemenuButtonSave = App->gui->CreateGuiElement(Types::button, 150, 200, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonSave->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextSave = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonSave, nullptr, "Save");
+
+	pausemenuButtonLoad = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonLoad->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextLoad = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonLoad, nullptr, "Load");
+
+	pausemenuButtonOptions = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, pausemenuButtonOptions, nullptr, "Options");
+
+	pausemenuButtonExit = App->gui->CreateGuiElement(Types::button, 150, 350, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
+
+	LOG("PAUSE MENU OPENED");
+
+	return true;
+}
+
+bool j1Scene::DeletePauseMenu() {
+	if (optionsMenu)
+	{
+		DeleteOptions();
+	}
+	else 
+	{
+		DeletePauseMenuButtons();
+	}
+
+	pausemenuBackground->to_delete = true;
+	pausemenuBackground = nullptr;
+
+	LOG("PAUSE MENU CLOSED");
+
+	return true;
+}
+
+bool j1Scene::DeletePauseMenuButtons() 
+{
+	pausemenuButtonResume->to_delete = true;
+	pausemenuTextResume->to_delete = true;
+	pausemenuButtonSave->to_delete = true;
+	pausemenuTextSave->to_delete = true;
+	pausemenuButtonLoad->to_delete = true;
+	pausemenuTextLoad->to_delete = true;
+	pausemenuButtonOptions->to_delete = true;
+	pausemenuTextOptions->to_delete = true;
+	pausemenuButtonExit->to_delete = true;
+	pausemenuTextExit->to_delete = true;
+
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
+
+	return true;
+}
+
 bool j1Scene::CreateOptions() 
 {
 	if (current_scene == scenes::menu) 
 	{
 		optionsBackground = App->gui->CreateGuiElement(Types::image, 865, 150, { 2144, 0, 416, 400 });
+
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 60, 20, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Options");
+
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 55, 120, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 55, 170, { 306, 177, 176, 9 }, optionsBackground, this);
+		optionsFxSlider->setSliderPos(App->audio->volumefx);
+
+		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 55, 240, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+		optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
+
+		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 55, 320, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
+		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
 	}
-	else 
+	else if(pauseMenu)
 	{
-		optionsBackground = App->gui->CreateGuiElement(Types::image, 400, 200, { 1620, 0, 521, 400 });
+		//Deleting pause buttons
+		DeletePauseMenuButtons();
+
+		//Creating options
+		optionsTitleText = App->gui->CreateGuiElement(Types::text, 180, 20, { 0, 0, 138, 30 }, pausemenuBackground, nullptr, "Options");
+
+		optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 170, 120, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsMusicSlider->setSliderPos(App->audio->volumemusic);
+		optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 170, 170, { 306, 177, 176, 9 }, pausemenuBackground, this);
+		optionsFxSlider->setSliderPos(App->audio->volumefx);
+
+		optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 150, 240, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
+
+		optionsButtonClose = App->gui->CreateGuiElement(Types::button, 150, 320, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+		optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+		optionsTextClose = App->gui->CreateGuiElement(Types::text, 105, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
 	}
 	 
-	optionsTitleText = App->gui->CreateGuiElement(Types::text, 60, 20, { 0, 0, 138, 30 }, optionsBackground, nullptr, "Options");
-
-	optionsMusicSlider = App->gui->CreateGuiElement(Types::slider, 55, 120, { 306, 177, 176, 9 }, optionsBackground, this);
-	optionsMusicSlider->setSliderPos(App->audio->volumemusic);
-	optionsFxSlider = App->gui->CreateGuiElement(Types::slider, 55, 170, { 306, 177, 176, 9 }, optionsBackground, this);
-	optionsFxSlider->setSliderPos(App->audio->volumefx);
-
-	optionsButtonFullScreen = App->gui->CreateGuiElement(Types::button, 55, 240, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
-	optionsButtonFullScreen->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	optionsTextFullScreen = App->gui->CreateGuiElement(Types::text, 50, 4, { 0, 0, 138, 30 }, optionsButtonFullScreen, nullptr, "Full Screen");
-
-	optionsButtonClose = App->gui->CreateGuiElement(Types::button, 55, 320, { 0, 63, 303, 42 }, optionsBackground, this, NULL);
-	optionsButtonClose->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	optionsTextClose = App->gui->CreateGuiElement(Types::text, 100, 4, { 0, 0, 138, 30 }, optionsButtonClose, nullptr, "Close");
-
 	return true;
 }
 
 bool j1Scene::DeleteOptions() 
 {
-	optionsBackground->to_delete = true;
+	if (!pauseMenu) 
+	{
+		optionsBackground->to_delete = true;
+	}
+	else
+	{
+		CreatePauseMenu();
+	}
+
 	optionsTitleText->to_delete = true;
 	optionsButtonFullScreen->to_delete = true;
 	optionsTextFullScreen->to_delete = true;
@@ -578,7 +671,6 @@ bool j1Scene::DeleteOptions()
 	optionsMusicSlider->to_delete = true;
 	optionsFxSlider->to_delete = true;
 
-	optionsBackground = nullptr;
 	optionsTitleText = nullptr;
 	optionsButtonFullScreen = nullptr;
 	optionsTextFullScreen = nullptr;
@@ -586,6 +678,8 @@ bool j1Scene::DeleteOptions()
 	optionsTextClose = nullptr;
 	optionsMusicSlider = nullptr;
 	optionsFxSlider = nullptr;
+
+	optionsBackground = nullptr;
 	return true;
 }
 
@@ -659,14 +753,12 @@ bool j1Scene::DeleteButtonsUI()
 	townHallStoneCostImage->to_delete = true;
 	townHallWoodCostText->to_delete = true;
 	townHallStoneCostText->to_delete = true;
-	
 	townHallButton->to_delete = true;
 
 	townHallWoodCostImage = nullptr;
 	townHallStoneCostImage = nullptr;
 	townHallWoodCostText = nullptr;
 	townHallStoneCostText = nullptr;
-
 	townHallButton = nullptr;
 
 	return true;
@@ -767,71 +859,13 @@ bool j1Scene::CreateDefeat() {
 	return true;
 }
 
-bool j1Scene::CreatePauseMenu() {
-
-	pausemenuBackground = App->gui->CreateGuiElement(Types::image, 345, -342, { 2292, 731, 586, 483 }, ingameUI);
-
-	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
-	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	pausemenuTextResume = App->gui->CreateGuiElement(Types::text, 85, 4, { 0, 0, 138, 30 }, pausemenuButtonResume, nullptr, "Resume");
-
-	pausemenuButtonSave = App->gui->CreateGuiElement(Types::button, 150, 200, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
-	pausemenuButtonSave->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	pausemenuTextSave = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonSave, nullptr, "Save");
-
-	pausemenuButtonLoad = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
-	pausemenuButtonLoad->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	pausemenuTextLoad = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonLoad, nullptr, "Load");
-
-	pausemenuButtonOptions = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
-	pausemenuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	pausemenuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, pausemenuButtonOptions, nullptr, "Options");
-
-	pausemenuButtonExit = App->gui->CreateGuiElement(Types::button, 150, 350, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
-	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
-	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
-
-	LOG("PAUSE MENU OPENED");
-
-	return true;
-}
-
-bool j1Scene::ClosePauseMenu() {
-
-	pausemenuBackground->to_delete = true;
-	pausemenuButtonResume->to_delete = true;
-	pausemenuTextResume->to_delete = true;	
-	pausemenuButtonSave->to_delete = true;
-	pausemenuTextSave->to_delete = true;
-	pausemenuButtonLoad->to_delete = true;
-	pausemenuTextLoad->to_delete = true;
-	pausemenuButtonOptions->to_delete = true;
-	pausemenuTextOptions->to_delete = true;
-	pausemenuButtonExit->to_delete = true;
-	pausemenuTextExit->to_delete = true;
-
-	pausemenuBackground = nullptr;
-	pausemenuButtonResume = nullptr;
-	pausemenuTextResume = nullptr;
-	pausemenuButtonSave = nullptr;
-	pausemenuTextSave = nullptr;
-	pausemenuButtonLoad = nullptr;
-	pausemenuTextLoad = nullptr;
-	pausemenuButtonOptions = nullptr;
-	pausemenuTextOptions = nullptr;
-	pausemenuButtonExit = nullptr;
-	pausemenuTextExit = nullptr;
-	
-	LOG("PAUSE MENU CLOSED");
-
-	return true;
-}
-
 bool j1Scene::DeleteUI() 
 {
 	if (townHallButton != nullptr) DeleteButtonsUI();
 	if (optionsBackground != nullptr) DeleteOptions();
-	if (pausemenu_open) ClosePauseMenu();
+	if (pauseMenu) DeletePauseMenu();
+
+	App->gui->DeleteAllGui();
 
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
@@ -867,8 +901,6 @@ bool j1Scene::DeleteUI()
 
 	if (logoSheet != nullptr) App->tex->UnLoad(logoSheet);
 	if (teamLogoSheet != nullptr) App->tex->UnLoad(teamLogoSheet);
-
-	App->gui->DeleteAllGui();
 	return true;
 }
 
@@ -909,8 +941,10 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//InGame Buttons
 	if (guiElement == ingameButtonMenu) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
+		if (!pauseMenu) CreatePauseMenu();
+		else DeletePauseMenu();
+
+		pauseMenu = !pauseMenu;
 	}
 	else if (guiElement == townHallButton) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
@@ -924,7 +958,8 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	//Pause Menu Buttons
 	if (guiElement == pausemenuButtonResume) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		ClosePauseMenu();
+		pauseMenu = false;
+		DeletePauseMenu();
 	}
 	else if (guiElement == pausemenuButtonSave) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
@@ -937,10 +972,13 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	else if (guiElement == pausemenuButtonOptions) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		//options
+		CreateOptions();
+		optionsMenu = true;
 	}
 	else if (guiElement == pausemenuButtonExit) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		ClosePauseMenu();
+		DeletePauseMenu();
+		pauseMenu = false;
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
 

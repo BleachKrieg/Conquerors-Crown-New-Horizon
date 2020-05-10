@@ -205,6 +205,7 @@ void j1Gui::DeleteGuiElement()
 			}
 			if (guiElements[i]->to_delete == true)
 			{
+				if (guiElements[i]->texture != nullptr) guiElements[i]->SetText("");
 				guiElements.erase(guiElements.begin() + i);
 				i--;
 			}
@@ -496,7 +497,15 @@ void GuiText::SetText(const char* newtext)
 			texture = App->font->Print(text, color, local_font);
 			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 		}
-		else texture = nullptr;
+		else 
+		{
+			App->tex->UnLoad(texture);
+			texture = nullptr;
+		}
+	}
+	else {
+		App->tex->UnLoad(texture);
+		texture = nullptr;
 	}
 }
 
