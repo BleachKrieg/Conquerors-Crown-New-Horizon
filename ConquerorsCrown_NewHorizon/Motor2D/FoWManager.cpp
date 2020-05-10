@@ -356,13 +356,13 @@ void FoWManager::DrawFoWMap()
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-			//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
 			}
 			if (shroudId != -1)
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
 				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				//App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
 				
 			}
 			
@@ -376,8 +376,8 @@ void FoWManager::DrawFoWMap()
 
 	SDL_UpdateTexture(minimapFoWtexture, NULL, pixels, 130 * sizeof(Uint32));
 
-	SDL_Rect section{ 0, 0, 200, 200 };
-	App->render->Blit(minimapFoWtexture, -App->render->camera.x + 200, -App->render->camera.y + 200, &section);
+	SDL_Rect section{ 0, 0, 225, 225 };
+	App->render->Blit(minimapFoWtexture, -App->render->camera.x+15, -App->render->camera.y + 485, &section);
 	delete[] pixels;
 
 }
