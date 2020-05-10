@@ -33,9 +33,10 @@ bool FoWManager::Start()
 	
 	smoothFoWtexture = App->tex->Load("Assets/textures/maps/fogTiles.png");
 	debugFoWtexture = App->tex->Load("Assets/textures/maps/fogTilesDebug.png");
-	minimapFoWtexture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 130, 130);
+	minimapFoWtexture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 130, 130);
 	
-
+	SDL_SetTextureBlendMode(minimapFoWtexture, SDL_BLENDMODE_BLEND);
+	//SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 	/*if (smoothFoWtexture == nullptr || debugFoWtexture == nullptr);
 	ret = false;*/
 
@@ -295,7 +296,7 @@ void FoWManager::DrawFoWMap()
 	SDL_PixelFormat* mappingFormat = SDL_AllocFormat(format);
 	Uint32  transparent = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0x00);*/
 
-	memset(pixels, 255, 130 * 130 * sizeof(Uint32));
+	memset(pixels, 0x00000000, 130 * 130 * sizeof(Uint32));
 
 	for (int y = 0; y < height; y++)
 	{
@@ -337,12 +338,12 @@ void FoWManager::DrawFoWMap()
 			//int scale = 2;
 			if (shroudId != -1)
 			{
-				pixels[y * 130 + x] = 0;
+				pixels[y * 130 + x] = 255;
 				//App->render->DrawQuad({ minimapDrawPos.x - cameraX, minimapDrawPos.y - cameraY, scale , scale }, 0, 0, 0, 255);
 			}
 			else if (fogId != -1)
 			{
-				pixels[y * 130 + x] = 0;
+				pixels[y * 130 + x] = 255;
 			//	App->render->DrawQuad({ minimapDrawPos.x - cameraX, minimapDrawPos.y - cameraY, scale, scale }, 0, 0, 0, 100);
 			}
 			if (worldDrawPos.x < -cameraX - 32 || worldDrawPos.y < -cameraY - 32 ||
