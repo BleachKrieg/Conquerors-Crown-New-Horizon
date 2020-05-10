@@ -33,9 +33,9 @@ public:
 	int width;
 	int height;
 	SDL_Texture* texture;
+	float scale;
 
 private:
-	float scale;
 	int map_width;
 	int map_height;
 	int margin;

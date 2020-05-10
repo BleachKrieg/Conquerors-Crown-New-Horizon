@@ -110,7 +110,7 @@ private:
 
 	SDL_Texture* smoothFoWtexture = nullptr;
 	SDL_Texture* debugFoWtexture = nullptr;
-
+	SDL_Texture* minimapFoWtexture = nullptr;
 	//Map that we use to translate bits to Texture Id's
 	std::map<unsigned short, uint> bitToTextureTable;
 

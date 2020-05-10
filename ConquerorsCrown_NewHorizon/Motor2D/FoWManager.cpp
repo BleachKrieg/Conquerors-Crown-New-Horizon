@@ -5,6 +5,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Window.h"
+#include "j1Minimap.h"
 
 FoWManager::FoWManager()
 {
@@ -32,6 +33,8 @@ bool FoWManager::Start()
 	
 	smoothFoWtexture = App->tex->Load("Assets/textures/maps/fogTiles.png");
 	debugFoWtexture = App->tex->Load("Assets/textures/maps/fogTilesDebug.png");
+	minimapFoWtexture = SDL_CreateTexture(App->render->renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 130, 130);
+	
 
 	/*if (smoothFoWtexture == nullptr || debugFoWtexture == nullptr);
 	ret = false;*/
@@ -130,6 +133,7 @@ bool FoWManager::Update(float dt)
 		UpdateFoWMap();
 		foWMapNeedsRefresh = false;
 	}
+	DrawFoWMap();
 	return ret;
 }
 
@@ -137,7 +141,6 @@ bool FoWManager::Update(float dt)
 bool FoWManager::PostUpdate(float dt)
 {
 	bool ret = true;
-	DrawFoWMap();
 	return ret;
 }
 
@@ -286,6 +289,14 @@ void FoWManager::DrawFoWMap()
 {
 	int cameraX = App->render->camera.x, cameraY = App->render->camera.y, winWidth = App->win->width, winHeight = App->win->height;
 
+	Uint32* pixels = new Uint32[130 * 130];
+
+	/*Uint32 format = SDL_GetWindowPixelFormat(App->win->get);
+	SDL_PixelFormat* mappingFormat = SDL_AllocFormat(format);
+	Uint32  transparent = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0x00);*/
+
+	memset(pixels, 255, 130 * 130 * sizeof(Uint32));
+
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -294,11 +305,7 @@ void FoWManager::DrawFoWMap()
 			iPoint worldDrawPos, screenPos;
 			worldDrawPos = App->map->MapToWorld(x, y);
 
-			if (worldDrawPos.x < -cameraX - 32 || worldDrawPos.y < -cameraY - 32 ||
-				worldDrawPos.x > -cameraX + winWidth || worldDrawPos.y > -cameraY + winHeight)
-			{
-				continue;
-			}
+			
 			FoWDataStruct* tileInfo = GetFoWTileState({ x, y });
 			int fogId = -1;
 			int shroudId = -1;
@@ -325,24 +332,53 @@ void FoWManager::DrawFoWMap()
 			}
 			else displayFogTexture = smoothFoWtexture;
 
+			iPoint minimapDrawPos = App->minimap->WorldToMinimap(worldDrawPos.x, worldDrawPos.y);
+			//int scale = 32 * App->minimap->scale;
+			//int scale = 2;
+			if (shroudId != -1)
+			{
+				pixels[y * 130 + x] = 0;
+				//App->render->DrawQuad({ minimapDrawPos.x - cameraX, minimapDrawPos.y - cameraY, scale , scale }, 0, 0, 0, 255);
+			}
+			else if (fogId != -1)
+			{
+				pixels[y * 130 + x] = 0;
+			//	App->render->DrawQuad({ minimapDrawPos.x - cameraX, minimapDrawPos.y - cameraY, scale, scale }, 0, 0, 0, 100);
+			}
+			if (worldDrawPos.x < -cameraX - 32 || worldDrawPos.y < -cameraY - 32 ||
+				worldDrawPos.x > -cameraX + winWidth || worldDrawPos.y > -cameraY + winHeight)
+			{
+				continue;
+			}
 			//draw fog
 			if (fogId != -1)
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				//App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
 			}
 			if (shroudId != -1)
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 255);//set the alpha to white again
 				SDL_Rect r = { shroudId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				//App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+				
 			}
+			
 
 
 
 		}
 	}
+
+	
+
+	SDL_UpdateTexture(minimapFoWtexture, NULL, pixels, 130 * sizeof(Uint32));
+
+	SDL_Rect section{ 0, 0, 200, 200 };
+	App->render->Blit(minimapFoWtexture, -App->render->camera.x + 200, -App->render->camera.y + 200, &section);
+	delete[] pixels;
+
 }
 
 //TODO 2: Complete this function: given a position and a flag, create a new entity and return a pointer to it (or nullptr if something has gone wrong)

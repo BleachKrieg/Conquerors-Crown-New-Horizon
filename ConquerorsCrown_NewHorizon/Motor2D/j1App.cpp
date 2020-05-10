@@ -64,11 +64,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(requests);
 	AddModule(movement);
-	AddModule(fowManager);
 	AddModule(entity);
 	AddModule(pathfinding);
 	AddModule(wave);
 	AddModule(minimap);
+	AddModule(fowManager);
 	AddModule(gui);
 	AddModule(fade);
 	AddModule(font);
