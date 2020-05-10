@@ -343,7 +343,7 @@ void FoWManager::DrawFoWMap()
 			}
 			else if (fogId != -1)
 			{
-				pixels[y * 130 + x] = 255;
+				pixels[y * 130 + x] = 0x00000050;
 			//	App->render->DrawQuad({ minimapDrawPos.x - cameraX, minimapDrawPos.y - cameraY, scale, scale }, 0, 0, 0, 100);
 			}
 			if (worldDrawPos.x < -cameraX - 32 || worldDrawPos.y < -cameraY - 32 ||
@@ -356,7 +356,7 @@ void FoWManager::DrawFoWMap()
 			{
 				SDL_SetTextureAlphaMod(displayFogTexture, 128);//set the alpha of the texture to half to reproduce fog
 				SDL_Rect r = { fogId * 64,0,64,64 }; //this rect crops the desired fog Id texture from the fogTiles spritesheet
-				//App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
+			//	App->render->Blit(displayFogTexture, worldDrawPos.x, worldDrawPos.y, &r);
 			}
 			if (shroudId != -1)
 			{
