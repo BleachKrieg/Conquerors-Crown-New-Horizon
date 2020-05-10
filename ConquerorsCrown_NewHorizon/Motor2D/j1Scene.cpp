@@ -170,18 +170,21 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			App->render->camera.y += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			App->render->camera.y -= 500 * dt;
-		}
+		if (!pausemenu_open)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				App->render->camera.y += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				App->render->camera.y -= 500 * dt;
+			}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			App->render->camera.x += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			App->render->camera.x -= 500 * dt;
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				App->render->camera.x += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				App->render->camera.x -= 500 * dt;
+			}
 		}
 		
 		//Camera Limits
@@ -196,6 +199,22 @@ bool j1Scene::Update(float dt)
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
 		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
+
+		//Pause Menu
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		{
+			//insert game pause
+			if (!pausemenu_open)
+			{
+				pausemenu_open = true;
+				CreatePauseMenu();
+			}
+			else {
+				pausemenu_open = false;
+				ClosePauseMenu();
+			}
+
+		}
 
 		//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
@@ -244,7 +263,7 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
-		//Victory and Defeat scenes
+		
 
 		if (timer <= 0 && !finish)
 		{
@@ -748,10 +767,71 @@ bool j1Scene::CreateDefeat() {
 	return true;
 }
 
+bool j1Scene::CreatePauseMenu() {
+
+	pausemenuBackground = App->gui->CreateGuiElement(Types::image, 345, -342, { 2292, 731, 586, 483 }, ingameUI);
+
+	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextResume = App->gui->CreateGuiElement(Types::text, 85, 4, { 0, 0, 138, 30 }, pausemenuButtonResume, nullptr, "Resume");
+
+	pausemenuButtonSave = App->gui->CreateGuiElement(Types::button, 150, 200, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonSave->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextSave = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonSave, nullptr, "Save");
+
+	pausemenuButtonLoad = App->gui->CreateGuiElement(Types::button, 150, 250, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonLoad->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextLoad = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonLoad, nullptr, "Load");
+
+	pausemenuButtonOptions = App->gui->CreateGuiElement(Types::button, 150, 300, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonOptions->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextOptions = App->gui->CreateGuiElement(Types::text, 90, 4, { 0, 0, 138, 30 }, pausemenuButtonOptions, nullptr, "Options");
+
+	pausemenuButtonExit = App->gui->CreateGuiElement(Types::button, 150, 350, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
+	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
+	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
+
+	LOG("PAUSE MENU OPENED");
+
+	return true;
+}
+
+bool j1Scene::ClosePauseMenu() {
+
+	pausemenuBackground->to_delete = true;
+	pausemenuButtonResume->to_delete = true;
+	pausemenuTextResume->to_delete = true;	
+	pausemenuButtonSave->to_delete = true;
+	pausemenuTextSave->to_delete = true;
+	pausemenuButtonLoad->to_delete = true;
+	pausemenuTextLoad->to_delete = true;
+	pausemenuButtonOptions->to_delete = true;
+	pausemenuTextOptions->to_delete = true;
+	pausemenuButtonExit->to_delete = true;
+	pausemenuTextExit->to_delete = true;
+
+	pausemenuBackground = nullptr;
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
+	
+	LOG("PAUSE MENU CLOSED");
+
+	return true;
+}
+
 bool j1Scene::DeleteUI() 
 {
 	if (townHallButton != nullptr) DeleteButtonsUI();
 	if (optionsBackground != nullptr) DeleteOptions();
+	if (pausemenu_open) ClosePauseMenu();
 
 	menuBackground = nullptr;
 	menuButtonNewGame = nullptr;
@@ -840,6 +920,30 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			Building_preview = true;
 		}
 	}
+
+	//Pause Menu Buttons
+	if (guiElement == pausemenuButtonResume) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		ClosePauseMenu();
+	}
+	else if (guiElement == pausemenuButtonSave) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//save
+	}
+	else if (guiElement == pausemenuButtonLoad) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//load
+	}
+	else if (guiElement == pausemenuButtonOptions) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		//options
+	}
+	else if (guiElement == pausemenuButtonExit) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		ClosePauseMenu();
+		App->fade->FadeToBlack(scenes::menu, 2.0f);
+	}
+
 
 	//Victory Buttons
 	if (guiElement == victoryButtonContinue) {

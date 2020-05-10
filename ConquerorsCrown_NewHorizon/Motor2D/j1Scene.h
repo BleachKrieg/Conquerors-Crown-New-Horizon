@@ -61,8 +61,13 @@ public:
 
 	bool CreateMenu();
 	bool CreateInGame();
+
 	bool CreateOptions();
 	bool DeleteOptions();
+
+	bool CreatePauseMenu();
+	bool ClosePauseMenu();
+
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -151,6 +156,22 @@ public:
 	GuiItem* optionsFxSlider;
 	GuiItem* optionsButtonFullScreen;
 	GuiItem* optionsTextFullScreen;
+
+	//PauseMenuGui
+	GuiItem* pausemenuBackground;
+	GuiItem* pausemenuButtonResume;
+	GuiItem* pausemenuTextResume;
+	GuiItem* pausemenuButtonOptions;
+	GuiItem* pausemenuTextOptions;
+	GuiItem* pausemenuButtonSave;
+	GuiItem* pausemenuTextSave;
+	GuiItem* pausemenuButtonLoad;
+	GuiItem* pausemenuTextLoad;
+	GuiItem* pausemenuButtonExit;
+	GuiItem* pausemenuTextExit;
+	bool pausemenu_open = false;
+	int menu_pos_x;
+	int menu_pos_y;
 
 	//LogoGui
 	GuiItem* logoTextClick;
