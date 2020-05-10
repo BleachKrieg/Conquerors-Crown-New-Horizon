@@ -39,6 +39,7 @@ public:
 	vector<_TTF_Font*>	fonts;
 	_TTF_Font*			defaultfont;
 	_TTF_Font*			smallfont;
+	_TTF_Font*			xs_font;
 };
 
 
