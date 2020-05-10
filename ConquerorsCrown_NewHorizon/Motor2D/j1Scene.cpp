@@ -46,6 +46,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
 	teamLogoSheet_file_name = config.child("team_logo").attribute("file").as_string("");
+	fullscreen = false;
 	
 	return ret;
 }
@@ -560,8 +561,6 @@ bool j1Scene::CreatePauseMenu()
 	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
 
-	LOG("PAUSE MENU OPENED");
-
 	return true;
 }
 
@@ -577,8 +576,6 @@ bool j1Scene::DeletePauseMenu() {
 
 	pausemenuBackground->to_delete = true;
 	pausemenuBackground = nullptr;
-
-	LOG("PAUSE MENU CLOSED");
 
 	return true;
 }
@@ -940,6 +937,19 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == optionsFxSlider) {
 		App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
+	}
+	else if (guiElement == optionsButtonFullScreen) {
+		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+
+		if (!fullscreen) 
+		{
+			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+		}
+		else 
+		{
+			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+		}
+		fullscreen = !fullscreen;
 	}
 
 	//InGame Buttons

@@ -161,6 +161,7 @@ public:
 
 	//OptionsGui
 	bool optionsMenu;
+	bool fullscreen;
 	GuiItem* optionsBackground;
 	GuiItem* optionsTitleText;
 	GuiItem* optionsButtonClose;
