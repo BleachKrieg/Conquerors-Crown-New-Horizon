@@ -80,9 +80,11 @@ public:
 
 	void GuiInput(GuiItem* guiElement);
 	
+public:
+	scenes current_scene;
+
 private:
 	bool changeEntities = false;
-	scenes current_scene;
 	p2SString logoSheet_file_name;
 	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;

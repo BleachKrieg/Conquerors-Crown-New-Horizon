@@ -6,6 +6,7 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "j1Minimap.h"
+#include "j1Scene.h"
 
 FoWManager::FoWManager()
 {
@@ -142,6 +143,12 @@ bool FoWManager::Update(float dt)
 bool FoWManager::PostUpdate(float dt)
 {
 	bool ret = true;
+	if (App->scene->current_scene == scenes::ingame)
+	{
+		SDL_Rect section{ 0, 0, 225, 225 };
+		App->render->Blit(minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
+	}
+
 	return ret;
 }
 
@@ -376,8 +383,7 @@ void FoWManager::DrawFoWMap()
 
 	SDL_UpdateTexture(minimapFoWtexture, NULL, pixels, 130 * sizeof(Uint32));
 
-	SDL_Rect section{ 0, 0, 225, 225 };
-	App->render->Blit(minimapFoWtexture, -App->render->camera.x+15, -App->render->camera.y + 485, &section);
+	
 	delete[] pixels;
 
 }

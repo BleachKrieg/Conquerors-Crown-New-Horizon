@@ -21,6 +21,8 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool PreUpdate(float dt);
 	bool Update(float dt);
+	bool PostUpdate(float dt);
+
 
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);

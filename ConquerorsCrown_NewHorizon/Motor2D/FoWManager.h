@@ -101,6 +101,8 @@ public:
 		},
 	};
 
+public:
+	bool foWMapNeedsRefresh = false;
 
 private:
 	//This is where the FoWEntites are stored
@@ -117,7 +119,6 @@ private:
 	uint width;
 	uint height;
 	bool debugMode = false;
-	bool foWMapNeedsRefresh = false;
 };
 
 #endif // !__FOW_MANAGER_H__

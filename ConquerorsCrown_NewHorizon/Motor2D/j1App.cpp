@@ -67,8 +67,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(pathfinding);
 	AddModule(wave);
-	AddModule(minimap);
 	AddModule(fowManager);
+	AddModule(minimap);
 	AddModule(gui);
 	AddModule(fade);
 	AddModule(font);
@@ -245,7 +245,7 @@ void j1App::FinishUpdate()
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
 
 	
-	App->win->SetTitle(title);
+	//App->win->SetTitle(title);
 
 	delaytimer.Start();
 	

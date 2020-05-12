@@ -42,7 +42,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	entity_type = DynamicEntityType::HUMAN_FOOTMAN;
 
 	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
-	visionEntity->SetNewVisionRadius(4);
+	visionEntity->SetNewVisionRadius(5);
 	// TODO ------------------------------------------
 }
 
@@ -157,6 +157,8 @@ bool HumanFootman::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

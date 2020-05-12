@@ -589,6 +589,7 @@ bool j1Scene::CreateButtonsUI()
 
 bool j1Scene::DeleteButtonsUI()
 {
+	//a veces hay crash aqui
 	townHallWoodCostImage->to_delete = true;
 	townHallStoneCostImage->to_delete = true;
 	townHallWoodCostText->to_delete = true;
@@ -829,7 +830,7 @@ void j1Scene::TimeToClock()
 
 	string str = mins + ":" + secs;
 
-	ingameTextClock->SetText(str.c_str());
+	//ingameTextClock->SetText(str.c_str());
 }
 
 //Animations
