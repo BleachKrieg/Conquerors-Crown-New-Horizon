@@ -65,6 +65,8 @@ public:
 
 	bool createUI;
 
+	iPoint	 ingameUIPosition;
+
 };
 
 #endif // __j1TUTORIAL_H__

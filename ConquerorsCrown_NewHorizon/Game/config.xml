@@ -52,6 +52,7 @@
   
    <scene>
      <map name="maplevel1.tmx"/>
+     <map name2="Tutorial.tmx"/>
      <logo file="Assets/textures/gui/LogoSheet.png"/>
      <team_logo file="Assets/textures/gui/TeamLogoSheet.png"/>
    </scene>

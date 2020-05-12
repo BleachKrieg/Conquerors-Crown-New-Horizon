@@ -17,6 +17,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1Tutorial.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -58,7 +59,7 @@ bool j1Scene::Start()
 	LOG("Start scene");
 
 	current_scene = scenes::logo;
-	current_level = "First level design.tmx";
+	current_level = "Tutorial.tmx";
 	debug = false;
 	wood = 0u;
 	stone = 0u;
@@ -102,13 +103,10 @@ bool j1Scene::Update(float dt)
 			tutorial = false;
 			App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		}
-
-		////UI Position update
-		//ingameUIPosition = App->render->ScreenToWorld(0, 442);
-		//ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
-
-		////Draw the map
-		//App->map->Draw();
+		//UI Position update
+		ingameUIPosition = App->render->ScreenToWorld(0, 442);
+		ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
+		App->map->Draw();
 		break;
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -460,9 +458,12 @@ void j1Scene::DeleteScene() {
 		DeleteUI();
 		break;
 	case scenes::tutorial:
-		/*DeleteUI();
-		App->entity->DeleteAllEntities();
-		App->map->CleanUp();*/
+		App->render->camera.x = 0;
+		App->render->camera.y = 0;
+		App->minimap->CleanUp();
+		App->map->CleanUp();
+		DeleteUI();
+		/*App->entity->DeleteAllEntities();*/
 		break;
 	case scenes::ingame:
 		DeleteUI();
@@ -502,11 +503,11 @@ void j1Scene::CreateScene(scenes next_scene) {
 		CreateTutorial();
 		/*App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -550;
-		App->render->camera.y = -430;
+		App->render->camera.y = -430;*/
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;
-		finish = false;*/
+		finish = false;
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
@@ -569,9 +570,11 @@ bool j1Scene::CreateMenu() {
 
 bool j1Scene::CreateTutorial()
 {
+	App->tutorial->createUI = true;
 	bool ret = true;
 	TutorialTimer.Start();
-	/*
+	current_level = "Tutorial.tmx";
+
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
 	{
@@ -589,7 +592,9 @@ bool j1Scene::CreateTutorial()
 		}
 		RELEASE_ARRAY(data);
 	}
-
+	//Creating minimap
+	if (ret) ret = App->minimap->Start();
+	
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
@@ -607,7 +612,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	if (ret) ret = CreateButtonsUI();
-	*/
+	
 
 	return ret;
 }
@@ -615,7 +620,7 @@ bool j1Scene::CreateTutorial()
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
-
+	current_level = "First level design.tmx";
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
 	{
