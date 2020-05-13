@@ -203,12 +203,16 @@ void j1Gui::DeleteGuiElement()
 			{
 				guiElements[i]->to_delete = true;
 			}
-			if (guiElements[i]->to_delete == true)
-			{
+		}
+	}
+	for (int i = 0; i < guiElements.size(); i++)
+	{
+		if (guiElements[i]->to_delete == true)
+		{
 				if (guiElements[i]->texture != nullptr) guiElements[i]->SetText("");
 				guiElements.erase(guiElements.begin() + i);
 				i--;
-			}
+			
 		}
 	}
 }
