@@ -24,6 +24,8 @@ enum class SpawnTypes
 	GATHERER,
 	PEASANT,
 	TROLL,
+	OGRE,
+	GRUNT
 };
 
 struct QueueItem

@@ -72,6 +72,54 @@ bool j1Tutorial::Update(float dt)
 
 	if (App->scene->tutorial) 
 	{
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		{
+			App->scene->debug = !App->scene->debug;
+			App->map->blitColliders = !App->map->blitColliders;
+		}
+		if (App->scene->debug)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { App->scene->mouse_position.x,App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GATHERER, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+			{
+				App->scene->AddResource("wood", 100);
+				App->scene->AddResource("stone", +100);
+				App->scene->AddResource("gold", +100);
+			}
+		}
 		// Camera movement inputs
 			int x, y;
 		App->input->GetMousePosition(x, y);
@@ -93,13 +141,13 @@ bool j1Tutorial::Update(float dt)
 		}
 
 		//Camera Limits
-		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+		/*if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
 		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
 
 		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }*/
 		
 		CheckTutorialStep(dt);
 

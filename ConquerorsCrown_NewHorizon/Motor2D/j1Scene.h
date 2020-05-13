@@ -22,7 +22,6 @@ enum class scenes {
 	logo,
 	victory,
 	defeat
-
 };
 
 class GuiItem;
@@ -57,6 +56,8 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	void UpdateCameraPosition(int speed);
+
 	//Menu functions
 	void DeleteScene();
 	void CreateScene(scenes);
@@ -64,6 +65,14 @@ public:
 	bool CreateMenu();
 	bool CreateTutorial();
 	bool CreateInGame();
+
+	bool CreateOptions();
+	bool DeleteOptions();
+
+	bool CreatePauseMenu();
+	bool DeletePauseMenu();
+	bool DeletePauseMenuButtons();
+
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -72,6 +81,7 @@ public:
 	//InGameUI functions
 	bool CreateButtonsUI();
 	bool DeleteButtonsUI();
+	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
 
 	void LogoPushbacks();
 	void TeamLogoPushbacks();
@@ -97,6 +107,7 @@ private:
 	int logo_team_sfx_counter;
 	j1Timer logoTimer;
 	int alpha;
+	iPoint speed;
 
 public:
 	p2SString current_level;
@@ -135,6 +146,14 @@ public:
 	GuiItem* ingameTextStone;
 	GuiItem* ingameTextClock;
 	GuiItem* ingameTextWave;
+	GuiItem* PopUpImage;
+	GuiItem* PopUpText1;
+	GuiItem* PopUpText2;
+	GuiItem* PopUpText3;
+	GuiItem* PopUpText4; 
+	GuiItem* PopUpText5;
+	GuiItem* PopUpTitleText;
+	GuiItem* PopUpButton;
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
@@ -142,6 +161,34 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
+
+	//OptionsGui
+	bool optionsMenu;
+	bool fullscreen;
+	GuiItem* optionsBackground;
+	GuiItem* optionsTitleText;
+	GuiItem* optionsButtonClose;
+	GuiItem* optionsTextClose;
+	GuiItem* optionsMusicText;
+	GuiItem* optionsMusicSlider;
+	GuiItem* optionsFxText;
+	GuiItem* optionsFxSlider;
+	GuiItem* optionsButtonFullScreen;
+	GuiItem* optionsTextFullScreen;
+
+	//PauseMenuGui
+	GuiItem* pausemenuBackground;
+	GuiItem* pausemenuButtonResume;
+	GuiItem* pausemenuTextResume;
+	GuiItem* pausemenuButtonOptions;
+	GuiItem* pausemenuTextOptions;
+	GuiItem* pausemenuButtonSave;
+	GuiItem* pausemenuTextSave;
+	GuiItem* pausemenuButtonLoad;
+	GuiItem* pausemenuTextLoad;
+	GuiItem* pausemenuButtonExit;
+	GuiItem* pausemenuTextExit;
+	bool pauseMenu = false;
 
 	//LogoGui
 	GuiItem* logoTextClick;
@@ -179,6 +226,9 @@ public:
 	// Tutorial
 	bool tutorial;
 	j1Timer TutorialTimer;
+
+	int camera_limit_x2;
+	int camera_limit_y2;
 };
 
 #endif // __j1SCENE_H__
