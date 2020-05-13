@@ -1,4 +1,7 @@
 # Conquerors-Crown-New-Horizon
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e7e2acbd4914ef98f444ad0da945540)](https://app.codacy.com/gh/BleachKrieg/Conquerors-Crown-New-Horizon?utm_source=github.com&utm_medium=referral&utm_content=BleachKrieg/Conquerors-Crown-New-Horizon&utm_campaign=Badge_Grade_Dashboard)
+
 This is the Vertical Slice from the team BleachKrieg for the subject of project 2 in UPC,CITM
 
 ## Repository
