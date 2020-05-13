@@ -5,7 +5,7 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "Troll_Enemy.h"
+#include "Ogre_Enemy.h"
 #include "DynamicEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
@@ -13,16 +13,16 @@
 #include "J1GroupMov.h"
 #include <math.h>
 
-TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_TROLL)
+OgreEnemy::OgreEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_OGRE)
 {
-	name.create("enemy_troll");
+	name.create("enemy_ogre");
 
-	
+
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 100;
 	attack_vision = 200;
-	attack_range = 140;
+	attack_range = 30;
 	time_attack = 1400;
 	attack_damage = 12;
 	vision = 26;
@@ -40,18 +40,18 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	team = TeamType::IA;
 	target_entity = nullptr;
 	state = DynamicState::IDLE;
-	entity_type = DynamicEntityType::ENEMY_TROLL;
+	entity_type = DynamicEntityType::ENEMY_OGRE;
 
 
 	// TODO ------------------------------------------
 }
 
-TrollEnemy::~TrollEnemy() {}
+OgreEnemy::~OgreEnemy() {}
 
-bool TrollEnemy::Start()
+bool OgreEnemy::Start()
 {
 	list<Animation*>::iterator animations_list;
-	animations_list = App->entity->troll_animations.begin();
+	animations_list = App->entity->ogre_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;
@@ -86,16 +86,16 @@ bool TrollEnemy::Start()
 	return true;
 }
 
-bool TrollEnemy::Update(float dt)
+bool OgreEnemy::Update(float dt)
 {
-	BROFILER_CATEGORY("Update_TrollEnemy", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_OgreEnemy", Profiler::Color::BlanchedAlmond);
 
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
-	
+
 
 	AttackTarget(entity_type);
 
@@ -116,7 +116,7 @@ bool TrollEnemy::Update(float dt)
 				change_direction = true;
 			}
 		}
-	
+
 	}
 	time = idletime.ReadSec();
 	if (life_points <= 0)
@@ -154,7 +154,7 @@ bool TrollEnemy::Update(float dt)
 		break;
 	}
 
-	
+
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
@@ -164,18 +164,18 @@ bool TrollEnemy::Update(float dt)
 	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
 		isSelected = false;
 
-	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	App->render->Blit(App->entity->ogre_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
-bool TrollEnemy::PostUpdate(float dt)
+bool OgreEnemy::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("PostUpdate_TrollEnemy", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("PostUpdate_OgreEnemy", Profiler::Color::BurlyWood)
 
 		return true;
 }
 
-bool TrollEnemy::CleanUp()
+bool OgreEnemy::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();

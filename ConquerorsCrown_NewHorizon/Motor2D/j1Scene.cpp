@@ -239,17 +239,25 @@ bool j1Scene::Update(float dt)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
 			}
-			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 			{
 				App->scene->AddResource("wood", 100);
 				App->scene->AddResource("stone", +100);
