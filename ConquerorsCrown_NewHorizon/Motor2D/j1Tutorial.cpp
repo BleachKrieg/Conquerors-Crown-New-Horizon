@@ -91,10 +91,7 @@ bool j1Tutorial::Update(float dt)
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
 		}
-		//UI Position update
-	//	ingameUIPosition = App->render->ScreenToWorld(0, 442);
-	//	App->scene->ingameUI->SetLocalPos(ingameUIPosition.x, ingameUIPosition.y);
-		/*
+
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
@@ -103,7 +100,7 @@ bool j1Tutorial::Update(float dt)
 		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
 		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
-		*/
+		
 		CheckTutorialStep(dt);
 
 		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
