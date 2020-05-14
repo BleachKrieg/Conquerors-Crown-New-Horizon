@@ -39,12 +39,14 @@ public:
 
 	virtual void updateBar(float) {
 	}
-	virtual void returnChilds(GuiItem*, GuiItem*) {
+	virtual void ReturnChilds(GuiItem*, GuiItem*) {
 	}
 	virtual void slide() {
 	}
 	virtual float returnSliderPos() {
 		return 0;
+	}
+	virtual void setSliderPos(float) {
 	}
 	virtual void SetText(const char*) {
 	}
@@ -137,7 +139,8 @@ public:
 	virtual ~GuiSlider();
 	void slide();
 	float returnSliderPos();
-	void returnChilds(GuiItem*, GuiItem*);
+	void setSliderPos(float);
+	void ReturnChilds(GuiItem*, GuiItem*);
 private:
 	GuiItem* Image;
 	GuiItem* ScrollThumb;
@@ -151,7 +154,7 @@ class GuiBar : public GuiItem
 public:
 	GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback = nullptr);
 	virtual ~GuiBar();
-	void returnChilds(GuiItem*, GuiItem*);
+	void ReturnChilds(GuiItem*, GuiItem*);
 	void updateBar(float); 
 private:
 	GuiItem* background;
