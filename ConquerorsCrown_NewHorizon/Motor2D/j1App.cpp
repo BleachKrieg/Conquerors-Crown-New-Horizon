@@ -23,6 +23,7 @@
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
 #include "j1Tutorial.h"
+#include "j1Video.h"
 
 
 // Constructor
@@ -50,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
 	tutorial = new j1Tutorial();
+	video = new j1Video();
 
 
 	// Ordered for awake / Start / Update
@@ -70,6 +72,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gui);
 	AddModule(fade);
 	AddModule(font);
+	AddModule(video);
 	
 
 	// render last to swap buffer

@@ -102,6 +102,14 @@
     <ClCompile Include="j1Tutorial.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Grunt_Enemy.cpp" />
+    <ClCompile Include="Ogre_Enemy.cpp" />
+    <ClCompile Include="theoraplay.cpp">
+      <Filter>Tools\theoraplay</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Video.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h" />
@@ -223,6 +231,17 @@
     <ClInclude Include="j1Tutorial.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Grunt_Enemy.h" />
+    <ClInclude Include="Ogre_Enemy.h" />
+    <ClInclude Include="theoraplay.h">
+      <Filter>Tools\theoraplay</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>Tools\theoraplay</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Video.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -251,6 +270,9 @@
     </Filter>
     <Filter Include="Project II">
       <UniqueIdentifier>{c6e0d7c9-c782-48af-b206-b5cba12529d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\theoraplay">
+      <UniqueIdentifier>{7e802059-e570-4a0b-ba03-2350b3a67a0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
