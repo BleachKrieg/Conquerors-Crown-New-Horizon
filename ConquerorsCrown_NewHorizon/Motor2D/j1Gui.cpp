@@ -111,7 +111,7 @@ bool j1Gui::Update(float dt)
 			guiElements[i]->Input();
 
 		guiElements[i]->GetScreenPos(x, y);
-		if (!guiElements[i]->delayBlit)
+		if (!guiElements[i]->delayBlit && guiElements[i]->visible)
 		{
 			if (guiElements[i]->type == Types::text)
 			{
@@ -459,6 +459,7 @@ GuiImage::GuiImage(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem
 	follow = false;
 	CallBack = callback;
 	to_delete = false;
+	visible = true;
 }
 
 GuiImage::~GuiImage() {
@@ -483,6 +484,7 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 	texture = App->font->Print(text, color, local_font);
 	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 	to_delete = false;
+	visible = true;
 }
 
 GuiText::~GuiText() {
@@ -532,6 +534,7 @@ GuiButton::GuiButton(int x, int y, SDL_Rect idle_rect, j1Module* callback) : Gui
 	focus = false;
 	CallBack = callback;
 	to_delete = false;
+	visible = true;
 }
 
 GuiButton::~GuiButton() {
@@ -558,7 +561,7 @@ InputText::InputText(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	focus = false;
 	CallBack = callback;
 	delayBlit = false;
-
+	visible = true;
 	to_delete = false;
 
 	image = App->gui->CreateGuiElement(Types::image, 0, 0, { 444, 661, 244, 65 }, this);
@@ -595,6 +598,7 @@ GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	ScrollThumb->delayBlit = false;
 	to_delete = false;
 	delayBlit = false;
+	visible = true;
 }
 
 GuiSlider::~GuiSlider() {
@@ -703,6 +707,7 @@ GuiBar::GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
 	delayBlit = false;
 	value = 0.0f;
 	updateBar(value);
+	visible = true;
 }
 GuiBar::~GuiBar() {
 
@@ -719,4 +724,15 @@ void GuiBar::ReturnChilds(GuiItem * bgPointer, GuiItem * fillPointer)
 {
 	bgPointer = background;
 	fillPointer = fill;
+}
+
+void j1Gui::SetGuiVisible(bool visibility)
+{
+	for (int i = 0; i < guiElements.size(); i++)
+	{
+		if (guiElements[i] != nullptr)
+		{
+			guiElements[i]->visible = visibility;
+		}
+	}
 }

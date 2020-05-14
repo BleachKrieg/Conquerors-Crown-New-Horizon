@@ -22,18 +22,15 @@ class j1EntityManager;
 class j1Entity;
 class j1PathFinding;
 class j1GroupMov;
-class j1PathFinding;
-class j1GroupMov;
 class j1Gui;
 class j1Fonts;
 class j1Minimap;
 class EntityRequest;
 class j1FadeToBlack;
 class j1WaveSystem;
+class j1CutsceneManager;
 class j1Tutorial;
 class FoWManager;
-
-
 
 class j1App
 {
@@ -118,8 +115,10 @@ public:
 	EntityRequest*		requests = NULL;
 	j1FadeToBlack*		fade = NULL;
 	j1WaveSystem*		wave = NULL;
+	j1CutsceneManager* cutscene;
 	FoWManager*			fowManager = NULL;
 	j1Tutorial*			tutorial = NULL;
+
 
 
 	uint32				framerate = 0u;

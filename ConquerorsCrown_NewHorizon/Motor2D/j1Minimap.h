@@ -35,6 +35,8 @@ public:
 	int width;
 	int height;
 	SDL_Texture* texture;
+	bool visible;
+	bool input;
 	float scale;
 
 private:

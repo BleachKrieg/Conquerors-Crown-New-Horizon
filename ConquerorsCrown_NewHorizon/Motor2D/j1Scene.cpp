@@ -17,9 +17,9 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
-
 
 
 j1Scene::j1Scene() : j1Module()
@@ -29,6 +29,7 @@ j1Scene::j1Scene() : j1Module()
 	Building_preview = false;
 	active = false;
 	logo_team_sfx_counter = 0;
+	UiEnabled = true;
 }
 
 // Destructor
@@ -184,17 +185,20 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (!pauseMenu)
+		if (!pauseMenu && App->cutscene->cinematic_camera.active == false)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 				App->render->camera.y += 500 * dt;
 			}
+
 			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				App->render->camera.y -= 500 * dt;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 				App->render->camera.x += 500 * dt;
 			}
+
 			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				App->render->camera.x -= 500 * dt;
 			}
@@ -623,7 +627,6 @@ bool j1Scene::CreateTutorial()
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
-
 	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
@@ -1021,133 +1024,137 @@ bool j1Scene::DeleteUI()
 	return true;
 }
 
+
 void j1Scene::GuiInput(GuiItem* guiElement) {
-	//Menu buttons
-	if (guiElement == menuButtonNewGame) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::tutorial, 2.0f);
-		//tutorial = true;
-	}
-	else if (guiElement == menuButtonExit) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->quitGame = true;
-	}
-	else if (guiElement == menuButtonLoadGame) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-	}
-	else if (guiElement == menuButtonOptions) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		if (optionsMenu) DeleteOptions();
-		else CreateOptions();
-		optionsMenu = !optionsMenu;
-	}
-
-	//Options Button
-	if (guiElement == optionsButtonClose) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		DeleteOptions();
-		optionsMenu = false;
-	}
-	else if (guiElement == optionsMusicSlider) {
-		App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
-	}
-	else if (guiElement == optionsFxSlider) {
-		App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
-	}
-	else if (guiElement == optionsButtonFullScreen) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-
-		if (!fullscreen) 
-		{
-			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+	if (UiEnabled)
+	{
+		//Menu buttons
+		if (guiElement == menuButtonNewGame) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->audio->PauseMusic(1.0f);
+			App->fade->FadeToBlack(scenes::tutorial, 2.0f);
+			//tutorial = true;
 		}
-		else 
-		{
-			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+		else if (guiElement == menuButtonExit) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->quitGame = true;
+		}
+		else if (guiElement == menuButtonLoadGame) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		}
+		else if (guiElement == menuButtonOptions) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (optionsMenu) DeleteOptions();
+			else CreateOptions();
+			optionsMenu = !optionsMenu;
 		}
 
-		fullscreen = !fullscreen;
-	}
-
-	//InGame Buttons
-	if (guiElement == ingameButtonMenu) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		if (!pauseMenu) CreatePauseMenu();
-		else DeletePauseMenu();
-
-		pauseMenu = !pauseMenu;
-	}
-	else if (guiElement == PopUpButton) {
-		PopUpImage->to_delete = true;
-		PopUpTitleText->to_delete = true;
-		PopUpText1->to_delete = true;
-		PopUpText2->to_delete = true;
-		PopUpText3->to_delete = true;
-		PopUpText4->to_delete = true;
-		PopUpText5->to_delete = true;
-		PopUpButton->to_delete = true;
-	}
-	else if (guiElement == townHallButton) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (!Building_preview && !App->entity->IsSomethingSelected())
-		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
-			Building_preview = true;
+		//Options Button
+		if (guiElement == optionsButtonClose) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			DeleteOptions();
+			optionsMenu = false;
 		}
-	}
+		else if (guiElement == optionsMusicSlider) {
+			App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
+		}
+		else if (guiElement == optionsFxSlider) {
+			App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
+		}
+		else if (guiElement == optionsButtonFullScreen) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 
-	//Pause Menu Buttons
-	if (guiElement == pausemenuButtonResume) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		pauseMenu = false;
-		DeletePauseMenu();
-	}
-	else if (guiElement == pausemenuButtonSave) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//save
-	}
-	else if (guiElement == pausemenuButtonLoad) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//load
-	}
-	else if (guiElement == pausemenuButtonOptions) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//options
-		CreateOptions();
-		optionsMenu = true;
-	}
-	else if (guiElement == pausemenuButtonExit) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		DeletePauseMenu();
-		pauseMenu = false;
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
-	}
+			if (!fullscreen)
+			{
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+			}
+			else
+			{
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+			}
 
-	//Victory Buttons
-	if (guiElement == victoryButtonContinue) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
-	}
+			fullscreen = !fullscreen;
+		}
 
-	//Defeat Buttons
-	if (guiElement == defeatButtonContinue) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
+		//InGame Buttons
+		if (guiElement == ingameButtonMenu) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (!pauseMenu) CreatePauseMenu();
+			else DeletePauseMenu();
+
+			pauseMenu = !pauseMenu;
+		}
+		else if (guiElement == PopUpButton) {
+			PopUpImage->to_delete = true;
+			PopUpTitleText->to_delete = true;
+			PopUpText1->to_delete = true;
+			PopUpText2->to_delete = true;
+			PopUpText3->to_delete = true;
+			PopUpText4->to_delete = true;
+			PopUpText5->to_delete = true;
+			PopUpButton->to_delete = true;
+		}
+		else if (guiElement == townHallButton) {
+			App->audio->PlayFx(-1, App->audio->normal_click, 0);
+			if (!Building_preview && !App->entity->IsSomethingSelected())
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+		}
+
+		//Pause Menu Buttons
+		if (guiElement == pausemenuButtonResume) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			pauseMenu = false;
+			DeletePauseMenu();
+		}
+		else if (guiElement == pausemenuButtonSave) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//save
+		}
+		else if (guiElement == pausemenuButtonLoad) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//load
+		}
+		else if (guiElement == pausemenuButtonOptions) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//options
+			CreateOptions();
+			optionsMenu = true;
+		}
+		else if (guiElement == pausemenuButtonExit) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			DeletePauseMenu();
+			pauseMenu = false;
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+
+		//Victory Buttons
+		if (guiElement == victoryButtonContinue) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+
+		//Defeat Buttons
+		if (guiElement == defeatButtonContinue) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
 	}
 }
 
 void j1Scene::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
 {
-	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2295, 775, 266, 209 }, ingameTopBar);
+	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2620, 0, 266, 209 }, ingameTopBar);
 	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
 	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text1, App->font->xs_font);
 	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text2, App->font->xs_font);
 	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text3, App->font->xs_font);
 	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
 	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 222, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, this);
-	PopUpButton->setRects({ 2229, 751, 30, 30 }, { 2229, 751, 30, 30 });
+	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 222, y + 8, { 2590, 0, 30, 30 }, ingameTopBar, this);
+	PopUpButton->setRects({ 2560, 0, 30, 30 }, { 2229, 0, 30, 30 });
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 

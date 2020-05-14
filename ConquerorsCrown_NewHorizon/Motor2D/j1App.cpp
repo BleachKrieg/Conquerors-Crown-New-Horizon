@@ -22,9 +22,9 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
-
 
 
 // Constructor
@@ -52,6 +52,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	movement = new j1GroupMov();
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
+	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
 
 
@@ -74,7 +75,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gui);
 	AddModule(fade);
 	AddModule(font);
-	
+	AddModule(cutscene);
 
 	// render last to swap buffer
 	AddModule(render);

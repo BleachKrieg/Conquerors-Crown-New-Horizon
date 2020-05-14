@@ -5,7 +5,6 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-
 enum RENDER_PIVOT
 {
 	TOP_RIGHT,
@@ -63,11 +62,10 @@ public:
 public:
 
 	SDL_Renderer*	renderer;
+	iPoint		    camera_pos;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
-
-	
 	
 private:
 	bool shaking = false;
