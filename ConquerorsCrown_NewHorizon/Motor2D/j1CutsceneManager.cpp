@@ -156,6 +156,7 @@ bool j1CutsceneManager::LoadSteps(pugi::xml_node node)
 
 void j1CutsceneManager::DoCutscene(CutsceneObject& object, iPoint& objective_position)
 {
+	LOG("DOING A CUTSCENE");
 	Step step = object.current_step;
 
 	if (object.active)

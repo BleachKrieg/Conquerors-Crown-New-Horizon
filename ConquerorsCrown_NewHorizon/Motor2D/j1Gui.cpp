@@ -196,25 +196,16 @@ void j1Gui::DeleteAllGui() {
 //Delete a gui element
 void j1Gui::DeleteGuiElement() 
 {
-
 	for (int i = 0; i < guiElements.size(); i++)
 	{
-
-		if (guiElements[i] != nullptr) {
-			if (guiElements[i]->parent != nullptr && guiElements[i]->parent->to_delete == true)
-			{
-				guiElements[i]->to_delete = true;
-			}
+		if (guiElements[i]->parent != nullptr)
+		{
+			if (guiElements[i]->parent->to_delete == true)
+				guiElements.erase(guiElements.begin() + i);
 		}
-	}
-	for (int i = 0; i < guiElements.size(); i++)
-	{
 		if (guiElements[i]->to_delete == true)
 		{
-				if (guiElements[i]->texture != nullptr) guiElements[i]->SetText("");
-				guiElements.erase(guiElements.begin() + i);
-				i--;
-			
+			guiElements.erase(guiElements.begin() + i);
 		}
 	}
 }
@@ -359,12 +350,12 @@ void GuiItem::Input() {
 		}
 
 	}
-	if(parent != nullptr)
+	if(parent!= nullptr)
 	{
 		if (parent->type == Types::slider) {
 			if (focus == true)
 			{
-				App->gui->sendInput(parent);
+				App->gui->sendInput(this);
 				parent->slide();
 			}
 
@@ -500,21 +491,12 @@ void GuiText::SetText(const char* newtext)
 {
 	if (to_delete == false) {
 		text = newtext;
-		//This need TO BE FIXED :D
-		//App->tex->UnLoad(texture);
+		SDL_DestroyTexture(texture);
 		if (text != "") {
 			texture = App->font->Print(text, color, local_font);
 			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
 		}
-		else 
-		{
-			texture = nullptr;
-		}
-	}
-	else {
-		//This TOO :D
-	//	App->tex->UnLoad(texture);
-		texture = nullptr;
+		else texture = nullptr;
 	}
 }
 
@@ -566,6 +548,7 @@ InputText::InputText(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	image = App->gui->CreateGuiElement(Types::image, 0, 0, { 444, 661, 244, 65 }, this);
 	text = App->gui->CreateGuiElement(Types::text, 20, 15, texrect, this, callback, "Insert Text");
 	text->isDynamic = true;
+
 }
 
 InputText::~InputText() {
@@ -591,8 +574,8 @@ GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	CallBack = callback;
 	Image = App->gui->CreateGuiElement(Types::image, 0, 0, texrect, this);
 	Image->delayBlit = false;
-	ScrollThumb = App->gui->CreateGuiElement(Types::image, 0, -4, { 286, 157, 12, 17 }, this, callback);
-	//ScrollThumb->setRects({ 78, 912, 46, 23 }, { 78, 888, 46, 23 });
+	ScrollThumb = App->gui->CreateGuiElement(Types::image, -18, 0, { 56, 280, 46, 23 }, this, callback);
+	ScrollThumb->setRects({ 78, 912, 46, 23 }, { 78, 888, 46, 23 });
 	ScrollThumb->isDynamic = true;
 	ScrollThumb->delayBlit = false;
 	to_delete = false;
@@ -604,50 +587,50 @@ GuiSlider::~GuiSlider() {
 
 }
 
-void GuiSlider::slide()
+void GuiSlider::slide() 
 {
-	int x, y, LocalX, LocalY, ScreenX, ScreenY, parentx, parenty, difference, width;
+	int x, y, LocalX, LocalY, ScreenX, ScreenY, parentx, parenty, difference, height;
 	App->input->GetMousePosition(x, y);
 	iPoint temp = App->render->ScreenToWorld(x, y);
-	x = temp.x - 6;
-	y = temp.y;
+	x = 5 + temp.x;
+	y = 5 + temp.y;
+	
 
-
-	width = Image->GetLocalRect()->w - ScrollThumb->GetLocalRect()->w + 1;
+	height = Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h + 1;
 
 	GetScreenPos(parentx, parenty);
 
 	ScrollThumb->GetScreenPos(ScreenX, ScreenY);
 	ScrollThumb->GetLocalPos(LocalX, LocalY);
 
-	if (x > ScreenX)
+	if (y > ScreenY) 
 	{
-		difference = LocalX + x - ScreenX;
-		if (ScreenX <= parentx + Image->GetLocalRect()->w - ScrollThumb->GetLocalRect()->w)
+		difference = LocalY + y - ScreenY;
+		if(ScreenY <= parenty+ Image->GetLocalRect()->h - ScrollThumb->GetLocalRect()->h)
 		{
-
-			ScrollThumb->SetLocalPos(difference, LocalY);
+			
+			ScrollThumb->SetLocalPos(LocalX, difference);
 		}
-		else
+		else 
 		{
-
-			ScrollThumb->SetLocalPos(width, LocalY);
+			
+			ScrollThumb->SetLocalPos(LocalX, height);
 		}
 	}
-	else if (x < ScreenX)
+	else if (y < ScreenY)
 	{
-		difference = LocalX + x - ScreenX;
-		if (ScreenX >= parentx)
+		difference = LocalY + y - ScreenY ;
+		if (ScreenY >= parenty) 
 		{
-			ScrollThumb->SetLocalPos(difference, LocalY);
+			ScrollThumb->SetLocalPos(LocalX, difference);
 		}
-		else
+		else 
 		{
 			int pos = -1;
-			ScrollThumb->SetLocalPos(pos, LocalY);
+			ScrollThumb->SetLocalPos(LocalX, pos);
 		}
 	}
-	else if (x == ScreenX)
+	else if (y == ScreenY)
 	{
 		ScrollThumb->SetLocalPos(LocalX, LocalY);
 	}
@@ -656,35 +639,24 @@ void GuiSlider::slide()
 
 float GuiSlider::returnSliderPos()
 {
+	float ratio;
 	int x, y;
 	float a, b;
-	a = Image->GetLocalRect()->w;
-	b = ScrollThumb->GetLocalRect()->w;
+	a = Image->GetLocalRect()->h;
+	b = ScrollThumb->GetLocalRect()->h;
 	a = a - b;
 	ScrollThumb->GetLocalPos(x, y);
+	ratio =  1 - (y / a);
 
-	return x / a;
+	return ratio;
 }
 
-void GuiSlider::setSliderPos(float value)
-{
-
-	int x, y;
-	float a, b;
-	a = Image->GetLocalRect()->w;
-	b = ScrollThumb->GetLocalRect()->w;
-	a = a - b;
-	ScrollThumb->GetLocalPos(x, y);
-	x = value * a;
-	ScrollThumb->SetLocalPos(x, y);
-
-}
-
-void GuiSlider::ReturnChilds(GuiItem * imagepointer, GuiItem * ScrollPointer)
+void GuiSlider::returnChilds(GuiItem* imagepointer, GuiItem* ScrollPointer)
 {
 	imagepointer = Image;
 	ScrollPointer = ScrollThumb;
 }
+
 //--------------------------------------------------------------
 GuiBar::GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
 	type = Types::bar;
@@ -719,7 +691,7 @@ void GuiBar::updateBar(float newValue) {
 
 }
 
-void GuiBar::ReturnChilds(GuiItem * bgPointer, GuiItem * fillPointer)
+void GuiBar::returnChilds(GuiItem * bgPointer, GuiItem * fillPointer)
 {
 	bgPointer = background;
 	fillPointer = fill;

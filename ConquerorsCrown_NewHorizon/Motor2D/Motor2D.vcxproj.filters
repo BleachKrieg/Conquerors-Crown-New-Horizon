@@ -101,8 +101,6 @@
     </ClCompile>
     <ClCompile Include="j1CutsceneManager.cpp">
       <Filter>Project II</Filter>
-    <ClCompile Include="j1Tutorial.cpp">
-      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,8 +222,6 @@
     </ClInclude>
     <ClInclude Include="j1CutsceneManager.h">
       <Filter>Project II</Filter>
-    <ClInclude Include="j1Tutorial.h">
-      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

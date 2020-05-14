@@ -79,7 +79,6 @@
     <ClCompile Include="DynamicEnt.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="GoldMine.cpp" />
-    <ClCompile Include="Grunt_Enemy.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
@@ -101,9 +100,7 @@
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
-    <ClCompile Include="j1Tutorial.cpp" />
     <ClCompile Include="j1WaveSystem.cpp" />
-    <ClCompile Include="Ogre_Enemy.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
@@ -119,7 +116,6 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="GoldMine.h" />
-    <ClInclude Include="Grunt_Enemy.h" />
     <ClInclude Include="HumanArcher.h" />
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />
@@ -137,12 +133,10 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1Timer.h" />
-    <ClInclude Include="j1Tutorial.h" />
     <ClInclude Include="j1Url.h" />
     <ClInclude Include="j1WaveSystem.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
-    <ClInclude Include="Ogre_Enemy.h" />
     <ClInclude Include="p2Log.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="p2Defs.h" />

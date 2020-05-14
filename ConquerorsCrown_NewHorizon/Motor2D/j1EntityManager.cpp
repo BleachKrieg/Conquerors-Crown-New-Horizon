@@ -6,8 +6,6 @@
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
 #include "Troll_Enemy.h"
-#include "Ogre_Enemy.h"
-#include "Grunt_Enemy.h"
 #include "ResourceEntities.h"
 #include "j1App.h"
 #include <stdio.h>
@@ -45,16 +43,12 @@ bool j1EntityManager::Start()
 	troll_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_troll.png");
 	ally_sel_tex = App->tex->Load("Assets/textures/units/selection_ally.png");
 	enemy_sel_tex = App->tex->Load("Assets/textures/units/selection_enemy.png");
-	ogre_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_ogre.png");
-	grunt_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_grunt.png");
 	
 	LOG("Loading Dynamic Entities Animations");
 	LoadAnimations("Assets/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
-	LoadAnimations("Assets/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
-	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
@@ -135,8 +129,6 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	case DynamicEnt::DynamicEntityType::HUMAN_ARCHER: ret = new HumanArcher(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_GATHERER: ret = new HumanGatherer(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
-	case DynamicEnt::DynamicEntityType::ENEMY_OGRE: ret = new OgreEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
-	case DynamicEnt::DynamicEntityType::ENEMY_GRUNT: ret = new GruntEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	}
 
 	if (ret != nullptr)

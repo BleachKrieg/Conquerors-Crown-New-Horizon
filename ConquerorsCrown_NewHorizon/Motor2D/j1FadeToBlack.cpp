@@ -1,3 +1,4 @@
+#include <math.h>
 #include "j1App.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
@@ -23,12 +24,6 @@ bool j1FadeToBlack::Start()
 	screen_ = App->tex->Load("Assets/textures/gui/LoadingScreen.png");
 	loadingIcon = App->tex->Load("Assets/textures/gui/LoadingLogo.png");
 	position = App->render->camera.h;
-	return true;
-}
-
-bool j1FadeToBlack::CleanUp() {
-	App->tex->UnLoad(screen_);
-	App->tex->UnLoad(loadingIcon);
 	return true;
 }
 

@@ -13,9 +13,10 @@ j1Minimap::j1Minimap() : j1Module() {
 
 	texture = nullptr;
 	height = 100;
-	width = 100;
+	width = 200;
 	map_height = 200;
 	scale = 1;
+	width = 100;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	minimap_test_rect = { 0,0,4,4 };
@@ -84,7 +85,7 @@ bool j1Minimap::Start() {
 		break;
 	case Corner::BOTTOM_LEFT:
 		position.x = margin;
-		position.y = window_height - height - margin + 5;
+		position.y = window_height - height - margin;
 		break;
 	case Corner::BOTTOM_RIGHT:
 		position.x = window_width - width - margin;
@@ -101,27 +102,23 @@ bool j1Minimap::PreUpdate(float dt) {
 	if (input) 
 	{
 		//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
-		if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)) && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial))
-
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
 		{
-			//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
-			if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
-			{
-				App->input->GetMousePosition(mouse_x, mouse_y);
-				SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
+			App->input->GetMousePosition(mouse_x, mouse_y);
+			SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
 
-				if ((mouse_x > minimap.x) && (mouse_x < minimap.x + minimap.w) && (mouse_y > minimap.y) && (mouse_y < minimap.y + minimap.h))
-				{
-					//TODO 6: Use the function created in the previous TODO to transform the position of the mouse into Minimap coordinates and then to the world
-					iPoint minimap_mouse_position;
-					minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
-					//LOG("Minimap position: x: %i y: %i", minimap_mouse_position.x, minimap_mouse_position.y);
-					App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
-					App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
-				}
+			if ((mouse_x > minimap.x) && (mouse_x < minimap.x + minimap.w) && (mouse_y > minimap.y) && (mouse_y < minimap.y + minimap.h))
+			{
+				//TODO 6: Use the function created in the previous TODO to transform the position of the mouse into Minimap coordinates and then to the world
+				iPoint minimap_mouse_position;
+				minimap_mouse_position = App->minimap->ScreenToMinimapToWorld(mouse_x, mouse_y);
+				//LOG("Minimap position: x: %i y: %i", minimap_mouse_position.x, minimap_mouse_position.y);
+				App->render->camera.x = -(minimap_mouse_position.x - App->render->camera.w * 0.5f);
+				App->render->camera.y = -(minimap_mouse_position.y - App->render->camera.h * 0.5f);
 			}
 		}
 	}
+	
 
 	return ret;
 }
@@ -140,24 +137,16 @@ bool j1Minimap::Update(float dt) {
 	App->render->DrawQuad(minimap_test_rect, 255, 0, 0, 255,true,false);*/
 
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
-
 	SDL_Rect rect = { 0,0,0,0 };
 	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-
-
-	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial)
-	{
-		SDL_Rect rect = { 0,0,0,0 };
-		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-		if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
-	}
+	if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
 
 	return true;
 }
 
 bool j1Minimap::CleanUp() {
 	App->tex->UnLoad(texture);
-	texture = nullptr;
+//	texture = nullptr;
 	return true;
 }
 bool j1Minimap::CreateMinimap() {

@@ -77,11 +77,8 @@ public:
 	SDL_Texture* troll_tex = nullptr;
 	SDL_Texture* ally_sel_tex = nullptr;
 	SDL_Texture* enemy_sel_tex = nullptr;
-	SDL_Texture* ogre_tex = nullptr;
-	SDL_Texture* grunt_tex = nullptr;
 
 	int			max_audio_attacks;
-	int volume;
 	j1PerfTimer	timer;
 
 	// Animations ----------------------
@@ -89,8 +86,6 @@ public:
 	list<Animation*> footman_animations;
 	list<Animation*> gatherer_animations;
 	list<Animation*> troll_animations;
-	list<Animation*> ogre_animations;
-	list<Animation*> grunt_animations;
 	// ---------------------------------
 
 	SDL_Texture* building = nullptr;

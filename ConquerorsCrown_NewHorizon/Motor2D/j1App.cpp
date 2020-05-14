@@ -23,8 +23,6 @@
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
 #include "j1CutsceneManager.h"
-#include "j1Tutorial.h"
-
 
 
 // Constructor
@@ -52,7 +50,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
 	cutscene = new j1CutsceneManager();
-	tutorial = new j1Tutorial();
+
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -61,7 +59,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
-	AddModule(tutorial);
 	AddModule(scene);
 	AddModule(requests);
 	AddModule(movement);

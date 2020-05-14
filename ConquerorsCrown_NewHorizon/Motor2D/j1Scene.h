@@ -17,11 +17,11 @@ class StaticEnt;;
 
 enum class scenes {
 	menu,
-	tutorial,
 	ingame,
 	logo,
 	victory,
 	defeat
+
 };
 
 class GuiItem;
@@ -63,16 +63,7 @@ public:
 	void CreateScene(scenes);
 
 	bool CreateMenu();
-	bool CreateTutorial();
 	bool CreateInGame();
-
-	bool CreateOptions();
-	bool DeleteOptions();
-
-	bool CreatePauseMenu();
-	bool DeletePauseMenu();
-	bool DeletePauseMenuButtons();
-
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -94,6 +85,7 @@ public:
 	
 private:
 	bool changeEntities = false;
+	scenes current_scene;
 	p2SString logoSheet_file_name;
 	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
@@ -111,8 +103,6 @@ private:
 
 public:
 	p2SString current_level;
-	scenes current_scene;
-
 	//SDL_Texture* debug_tex;
 
 	uint gold;
@@ -161,35 +151,7 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
-
-	//OptionsGui
-	bool optionsMenu;
-	bool fullscreen;
-	GuiItem* optionsBackground;
-	GuiItem* optionsTitleText;
-	GuiItem* optionsButtonClose;
-	GuiItem* optionsTextClose;
-	GuiItem* optionsMusicText;
-	GuiItem* optionsMusicSlider;
-	GuiItem* optionsFxText;
-	GuiItem* optionsFxSlider;
-	GuiItem* optionsButtonFullScreen;
-	GuiItem* optionsTextFullScreen;
-
-	//PauseMenuGui
-	GuiItem* pausemenuBackground;
-	GuiItem* pausemenuButtonResume;
-	GuiItem* pausemenuTextResume;
-	GuiItem* pausemenuButtonOptions;
-	GuiItem* pausemenuTextOptions;
-	GuiItem* pausemenuButtonSave;
-	GuiItem* pausemenuTextSave;
-	GuiItem* pausemenuButtonLoad;
-	GuiItem* pausemenuTextLoad;
-	GuiItem* pausemenuButtonExit;
-	GuiItem* pausemenuTextExit;
-	bool pauseMenu = false;
-
+	
 	//LogoGui
 	GuiItem* logoTextClick;
 	GuiItem* logoBackground;
@@ -223,13 +185,6 @@ public:
 	bool UiEnabled;
 
 	bool active;
-
-	// Tutorial
-	bool tutorial;
-	j1Timer TutorialTimer;
-
-	int camera_limit_x2;
-	int camera_limit_y2;
 };
 
 #endif // __j1SCENE_H__

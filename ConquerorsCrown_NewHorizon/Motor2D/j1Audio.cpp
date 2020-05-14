@@ -1,4 +1,3 @@
-#include <math.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -27,10 +26,10 @@ j1Audio::~j1Audio()
 bool j1Audio::Awake(pugi::xml_node & config)
 {
 	
-	music_directory = config.child("music").child_value("folder");
+	/*music_directory = config.child("music").child_value("folder");
 	fx_directory = config.child("fx").child_value("folder");
 	volumemusic = config.child("music").child("volumemusic").attribute("value").as_float();
-	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();
+	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();*/
 	
 
 	LOG("Loading Audio Mixer");
@@ -129,6 +128,7 @@ bool j1Audio::Update(float dt) {
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
+	//Mix_VolumeMusic(128 * volumemusic);
 	bool ret = true;
 
 	if(!active)
@@ -174,6 +174,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	}
 
 	LOG("Successfully playing %s", path);
+
 	return ret;
 }
 
@@ -228,15 +229,9 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 
 	if (id > 0 && id <= fx.size())
 	{
-		if (fx[id - 1] != nullptr) 
-		{ 
-			//FxVolume(-1, volumefx, sp_audio);
-			Mix_PlayChannel(channel, fx[id - 1], repeat);
-		}
-		else {
-			LOG("Could not play audio because there is no fx.");
-		}
-
+		if (fx[id - 1] != nullptr) Mix_PlayChannel(channel, fx[id - 1], repeat);
+		else LOG("Could not play audio because there is no fx.");
+		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));
 	}
 
 	return ret;
@@ -267,38 +262,18 @@ bool j1Audio::Load(pugi::xml_node& data)
 	volumefx = data.child("volumefx").attribute("value").as_float();
 	return true;
 }
-void j1Audio::MusicVolume(float vol) {
-
-	volumemusic = vol;
-
-	if (volumemusic >= 1) {
-		volumemusic = 1;
-	}
-	if (volumemusic <= 0) {
-		volumemusic = 0;
-	}
-
+void j1Audio::musicvolume(float value) {
+	volumemusic = value;
 	Mix_VolumeMusic(128 * volumemusic);
 }
 
-void j1Audio::FxVolume(int channel, float vol) {
-	
-	volumefx = vol;
-	
-	if (volumefx >= 1) {
-		volumefx = 1;
-	}
-	if (volumefx <= 0) {
-		volumefx = 0;
-	}
-	Mix_Volume(channel, volumefx*128);
-	//LOG("VOLUME SLIDER: %.2f", vol);
+float j1Audio::fxvolume(float value) {
+	volumefx = value;
+	return volumefx;
 }
 
 void j1Audio::SetChannelVolume(int channel, int volume)
 {
-	//volume_fx = volume_fx * spatial_audio_volume;
-	Mix_Volume(channel, (volumefx * 128));
-	LOG("VOLUME: %i", 128 - Mix_Volume(channel, -1));
+	Mix_Volume(channel, volume);
 }
 

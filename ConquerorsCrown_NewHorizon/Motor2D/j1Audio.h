@@ -47,14 +47,11 @@ public:
 
 	//Load module audio data
 	bool j1Audio::Load(pugi::xml_node& config);
-	void MusicVolume(float vol);
-	void FxVolume(int channel, float value);
+	void musicvolume(float value);
+	float fxvolume(float value);
 	void SetChannelVolume(int channel, int volume);
 
 public:
-	float volumemusic;
-	float volumefx;
-	int sp_audio;
 
 	int construction;
 	int cancel_building;
@@ -80,13 +77,16 @@ public:
 
 	int logo_game_fx;
 	int logo_team_fx;
+
 private:
 
 	_Mix_Music* music = NULL;
 	vector<Mix_Chunk*>	fx;
 	p2SString			music_directory;
 	p2SString			fx_directory;
-	
+	float volumemusic;
+	float volumefx;
+
 	bool musicToFree;
 };
 

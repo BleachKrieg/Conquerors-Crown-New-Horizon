@@ -21,8 +21,6 @@ public:
 		HUMAN_FOOTMAN,
 		HUMAN_GATHERER,
 		ENEMY_TROLL,
-		ENEMY_OGRE,
-		ENEMY_GRUNT,
 	};
 	enum class DynamicState
 	{

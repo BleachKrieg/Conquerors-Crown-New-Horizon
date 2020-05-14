@@ -31,7 +31,6 @@ class EntityRequest;
 class j1FadeToBlack;
 class j1WaveSystem;
 class j1CutsceneManager;
-class j1Tutorial;
 
 class j1App
 {
@@ -117,7 +116,6 @@ public:
 	j1FadeToBlack*		fade;
 	j1WaveSystem*		wave;
 	j1CutsceneManager*	cutscene;
-	j1Tutorial*			tutorial;
 
 	uint32				framerate = 0u;
 	pugi::xml_document	config_file;

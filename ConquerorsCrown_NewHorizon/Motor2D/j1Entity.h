@@ -74,6 +74,8 @@ public:
 	bool to_delete;
 	int body;
 	fPoint speed;
+	int volume;
+	int SFX;
 	entityType type;
 	TeamType	team;
 	int		life_points;
