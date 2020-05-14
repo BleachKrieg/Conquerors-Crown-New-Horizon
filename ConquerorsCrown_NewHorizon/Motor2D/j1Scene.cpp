@@ -18,6 +18,8 @@
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
 #include "j1Tutorial.h"
+#include "FoWManager.h"
+
 
 
 j1Scene::j1Scene() : j1Module()
@@ -839,6 +841,9 @@ bool j1Scene::CreateInGame()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
+	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
+
+
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
@@ -865,6 +870,7 @@ bool j1Scene::CreateButtonsUI()
 
 bool j1Scene::DeleteButtonsUI()
 {
+	//a veces hay crash aqui
 	townHallWoodCostImage->to_delete = true;
 	townHallStoneCostImage->to_delete = true;
 	townHallWoodCostText->to_delete = true;
@@ -1186,7 +1192,7 @@ void j1Scene::TimeToClock()
 
 	string str = mins + ":" + secs;
 
-	ingameTextClock->SetText(str.c_str());
+	//ingameTextClock->SetText(str.c_str());
 }
 
 //Animations

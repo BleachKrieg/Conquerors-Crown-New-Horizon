@@ -10,6 +10,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
+
 
 HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_FOOTMAN)
 {
@@ -39,6 +41,8 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::HUMAN_FOOTMAN;
 
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(5);
 	// TODO ------------------------------------------
 }
 
@@ -93,7 +97,11 @@ bool HumanFootman::Update(float dt)
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
+	fPoint auxPos = position;
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -149,6 +157,8 @@ bool HumanFootman::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

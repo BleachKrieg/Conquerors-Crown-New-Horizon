@@ -136,6 +136,11 @@ bool j1Minimap::Update(float dt) {
 	return true;
 }
 
+bool j1Minimap::PostUpdate(float dt) {
+	
+return true;
+
+}
 bool j1Minimap::CleanUp() {
 	App->tex->UnLoad(texture);
 	texture = nullptr;

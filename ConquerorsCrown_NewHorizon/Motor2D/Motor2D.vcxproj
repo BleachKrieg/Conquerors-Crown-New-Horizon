@@ -78,6 +78,8 @@
   <ItemGroup>
     <ClCompile Include="DynamicEnt.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
+    <ClCompile Include="FoWEntity.cpp" />
+    <ClCompile Include="FoWManager.cpp" />
     <ClCompile Include="GoldMine.cpp" />
     <ClCompile Include="Grunt_Enemy.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
@@ -117,6 +119,9 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="EntityRequest.h" />
+    <ClInclude Include="FoWBitDefs.h" />
+    <ClInclude Include="FoWEntity.h" />
+    <ClInclude Include="FoWManager.h" />
     <ClInclude Include="GoldMine.h" />
     <ClInclude Include="Grunt_Enemy.h" />
     <ClInclude Include="HumanArcher.h" />

@@ -10,6 +10,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
+
 
 HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_GATHERER)
 {
@@ -44,6 +46,8 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	entity_type = DynamicEntityType::HUMAN_GATHERER;
 	work_name = "";
 
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(4);
 	// TODO ------------------------------------------
 }
 
@@ -215,8 +219,12 @@ bool HumanGatherer::Update(float dt)
 	}
 
 	GathererGoTos();
+	fPoint auxPos = position;
 
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -274,6 +282,8 @@ bool HumanGatherer::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

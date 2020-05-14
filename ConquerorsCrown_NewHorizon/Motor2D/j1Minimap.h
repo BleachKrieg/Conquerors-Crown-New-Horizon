@@ -21,6 +21,8 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool PreUpdate(float dt);
 	bool Update(float dt);
+	bool PostUpdate(float dt);
+
 
 	bool CreateMinimap();
 	iPoint WorldToMinimap(int x, int y);
@@ -33,9 +35,9 @@ public:
 	int width;
 	int height;
 	SDL_Texture* texture;
+	float scale;
 
 private:
-	float scale;
 	int map_width;
 	int map_height;
 	int margin;

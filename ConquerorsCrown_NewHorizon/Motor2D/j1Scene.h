@@ -92,6 +92,7 @@ public:
 
 	void GuiInput(GuiItem* guiElement);
 	
+
 private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
