@@ -225,7 +225,6 @@ public:
 	bool active;
 
 	// Tutorial
-	bool tutorial;
 	j1Timer TutorialTimer;
 
 	int camera_limit_x2;

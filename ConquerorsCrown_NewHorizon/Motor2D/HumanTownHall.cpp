@@ -12,6 +12,7 @@
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
+#include "j1Tutorial.h"
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
@@ -595,6 +596,12 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
+
+			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q4)
+			{
+				App->tutorial->ActualState = ST_Tutorial_Q5;
+				App->tutorial->deleteUI(4);
+			}
 		}
 		isSelected = true;
 	}

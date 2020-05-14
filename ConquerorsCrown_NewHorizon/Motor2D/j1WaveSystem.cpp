@@ -84,7 +84,8 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) { 
+	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves && App->scene->current_scene != scenes::tutorial) 
+	{
 		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 		{
 			StartWave(current_wave);

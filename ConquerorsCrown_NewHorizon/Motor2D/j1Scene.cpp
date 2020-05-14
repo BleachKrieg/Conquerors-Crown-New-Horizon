@@ -103,7 +103,6 @@ bool j1Scene::Update(float dt)
 	case scenes::tutorial:
 		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
 		{
-			tutorial = false;
 			App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		}
 		//UI Position update
@@ -320,14 +319,8 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
-		if (TutorialTimer.ReadSec() <= 4.5) 
-		{
-			tutorial = true;
-
-		}
-		
 		//Mouse input for UI buttons
-		/*if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())
 			{
 				if (townHallButton != nullptr) ret = DeleteButtonsUI();
@@ -336,7 +329,7 @@ bool j1Scene::PostUpdate(float dt)
 			{
 				if (townHallButton == nullptr) ret = CreateButtonsUI();
 			}
-		}*/
+		}
 		break;
 	case scenes::ingame:
 
@@ -491,7 +484,7 @@ void j1Scene::DeleteScene() {
 		App->minimap->CleanUp();
 		App->map->CleanUp();
 		DeleteUI();
-		/*App->entity->DeleteAllEntities();*/
+		App->entity->DeleteAllEntities();
 		break;
 	case scenes::ingame:
 		DeleteUI();
@@ -529,9 +522,6 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::tutorial:
 		current_scene = scenes::tutorial;
 		CreateTutorial();
-		/*App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -550;
-		App->render->camera.y = -430;*/
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;

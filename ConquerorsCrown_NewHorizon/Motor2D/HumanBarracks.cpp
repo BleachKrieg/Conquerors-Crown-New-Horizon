@@ -13,6 +13,7 @@
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "j1Audio.h"
+#include "j1Tutorial.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
@@ -345,6 +346,12 @@ void HumanBarracks::checkAnimation(float dt)
 		//LOG("%d", Troop.size());
 		// Finished Animation
 		current_animation = &finishedconst;
+
+		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q8)
+		{
+			App->tutorial->deleteUI(8);
+			App->tutorial->ActualState = ST_Tutorial_Q9;
+		}
 
 		CheckQueue();
 
