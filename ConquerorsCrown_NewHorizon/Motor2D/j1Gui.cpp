@@ -494,7 +494,8 @@ void GuiText::SetText(const char* newtext)
 {
 	if (to_delete == false) {
 		text = newtext;
-		App->tex->UnLoad(texture);
+		//This need TO BE FIXED :D
+		//App->tex->UnLoad(texture);
 		if (text != "") {
 			texture = App->font->Print(text, color, local_font);
 			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
@@ -505,7 +506,8 @@ void GuiText::SetText(const char* newtext)
 		}
 	}
 	else {
-		App->tex->UnLoad(texture);
+		//This TOO :D
+	//	App->tex->UnLoad(texture);
 		texture = nullptr;
 	}
 }

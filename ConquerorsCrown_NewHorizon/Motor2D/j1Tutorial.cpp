@@ -141,13 +141,13 @@ bool j1Tutorial::Update(float dt)
 		}
 
 		//Camera Limits
-		/*if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
 		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
 
 		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }*/
+		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
 		
 		CheckTutorialStep(dt);
 
