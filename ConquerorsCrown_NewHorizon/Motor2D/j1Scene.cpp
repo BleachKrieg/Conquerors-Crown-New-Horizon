@@ -298,7 +298,11 @@ bool j1Scene::Update(float dt)
 		else {
 			//gameClock Update
 			timer = 660 - gameClock.ReadSec();
-			TimeToClock();
+			if (Cooldown.ReadSec() > 1)
+			{
+				TimeToClock();
+				Cooldown.Start();
+			}
 		}
 		break;
 	}
@@ -543,6 +547,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->render->camera.y = -967;
 		App->wave->Start();
 		gameClock.Start();
+		Cooldown.Start();
 		timer = 660;
 		wood = 0u;
 		stone = 0u;

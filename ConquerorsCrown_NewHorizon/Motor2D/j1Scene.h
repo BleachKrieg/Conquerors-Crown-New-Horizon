@@ -216,6 +216,8 @@ public:
 	float speed_defeat = 0.0f;
 
 	j1Timer gameClock;
+	j1Timer Cooldown;
+
 	int timer;
 	string mins;
 	string secs;

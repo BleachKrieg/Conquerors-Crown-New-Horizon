@@ -72,7 +72,7 @@ bool j1Tutorial::Update(float dt)
 
 	if (App->scene->tutorial) 
 	{
-		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		/*if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			App->scene->debug = !App->scene->debug;
 			App->map->blitColliders = !App->map->blitColliders;
@@ -119,7 +119,7 @@ bool j1Tutorial::Update(float dt)
 				App->scene->AddResource("stone", +100);
 				App->scene->AddResource("gold", +100);
 			}
-		}
+		}*/
 		// Camera movement inputs
 			int x, y;
 		App->input->GetMousePosition(x, y);
