@@ -2,18 +2,12 @@
 
 <CutsceneEditor>
  
-  
   <cutscene
     name="CinematicCameraTest">
     <step
       objective="c" x="-2000" y="-2000" vel_x="2" vel_y="2"></step>
     <step
       objective="c" x="-1000" y="-1500" vel_x="2" vel_y="2"></step>
-    <step
-      objective="c" x="-1750" y="-500" vel_x="2" vel_y="2"></step>
-    <step
-      objective="c" x="-1500" y="-2000" vel_x="2" vel_y="2"></step>
-
   </cutscene>
   
 </CutsceneEditor>

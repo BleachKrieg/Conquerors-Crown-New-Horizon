@@ -34,7 +34,7 @@ public:
 	int height;
 	SDL_Texture* texture;
 	bool visible;
-
+	bool input;
 
 private:
 	float scale;

@@ -125,6 +125,8 @@ void j1CutsceneManager::StartCutscene(string name)
 		if (cinematic_camera.active) { cinematic_camera.UpdateStep(); }
 		App->gui->SetGuiVisible(false);
 		App->minimap->visible = false;
+		App->scene->UiEnabled = false;
+		App->minimap->input = false;
 	}
 }
 
@@ -271,6 +273,9 @@ void j1CutsceneManager::FinishCutscene(CutsceneObject& object)
 	if (black_bars.phase == Drawing) { black_bars.phase = FadeOut; }
 	App->gui->SetGuiVisible(true);
 	App->minimap->visible = true;
+	App->scene->UiEnabled = true;
+	App->minimap->input = true;
+
 }
 
 bool j1CutsceneManager::SomethingActive()

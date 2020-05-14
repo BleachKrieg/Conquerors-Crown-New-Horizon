@@ -182,6 +182,7 @@ public:
 	string mins;
 	string secs;
 	bool finish = false;
+	bool UiEnabled;
 
 	bool active;
 };
