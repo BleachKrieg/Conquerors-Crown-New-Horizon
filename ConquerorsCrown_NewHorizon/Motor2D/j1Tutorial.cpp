@@ -43,6 +43,7 @@ bool j1Tutorial::Start()
 {
 	bool ret = true;
 	createUI = true;
+	MinimapActive = false;
 
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
@@ -70,13 +71,15 @@ bool j1Tutorial::Update(float dt)
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
 
-	if (App->scene->tutorial) 
+	if (App->scene->current_scene == scenes::tutorial)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			App->scene->debug = !App->scene->debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}
+
+		// Debug modes
 		if (App->scene->debug)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -120,7 +123,8 @@ bool j1Tutorial::Update(float dt)
 				App->scene->AddResource("gold", +100);
 			}
 		}
-		// Camera movement inputs
+
+		/*// Camera movement inputs
 			int x, y;
 		App->input->GetMousePosition(x, y);
 
@@ -138,7 +142,7 @@ bool j1Tutorial::Update(float dt)
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
-		}
+		}*/
 
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
@@ -163,7 +167,7 @@ bool j1Tutorial::Update(float dt)
 
 void j1Tutorial::CheckTutorialStep(float dt)
 {
-
+	// Step 1
 	if (ActualState == ST_Tutorial_Q1)
 	{
 		if (createUI)
@@ -182,8 +186,149 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
-	
+	// Step 2
+	if (ActualState == ST_Tutorial_Q2)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_2_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Welcome to the Conquerors Crown new horizon tutorial! ", App->font->defaultfont);
+			Question_2_text_2 = App->gui->CreateGuiElement(Types::text, 115, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Here you'll learn the basics of the game and how to play!", App->font->defaultfont);
+			Button_Next_2 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_2->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_2_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		}
+	}
+
+	// Step 3
+	if (ActualState == ST_Tutorial_Q3)
+	{
+		//MinimapActive = true;
+
+		if (createUI)
+		{
+			createUI = false;
+
+			// Create TownHall
+			App->scene->active = true;
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
+			App->scene->active = false;
+
+			Question_3_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Here's your Townhall, the most important building", App->font->defaultfont);
+			Question_3_text_2 = App->gui->CreateGuiElement(Types::text, 115, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Also, there's 3 types of resources: wood, stone and gold", App->font->defaultfont);
+			Button_Next_3 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_3->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_3_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			
+		}
+	}
+
+	// Step 4
+	if (ActualState == ST_Tutorial_Q4)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("gold", 100);
+
+			Question_4_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "We've added you some resources!", App->font->defaultfont);
+			Question_4_text_2 = App->gui->CreateGuiElement(Types::text, 100, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now click the Townhall and create a gatherer clicking on his icon", App->font->defaultfont);
+		}
+	}
+
+	// Step 5
+	if (ActualState == ST_Tutorial_Q5)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_5_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Well done!", App->font->defaultfont);
+			Question_5_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "In order to create buildings and units, you'll need to get more resources", App->font->defaultfont);
+			Button_Next_5 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_5->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_5_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		}
+	}
+
+	// Step 6
+	if (ActualState == ST_Tutorial_Q6)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_6_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "You can send your gatherer to collect resources!", App->font->defaultfont);
+			Question_6_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Click your gatherer and then click on the forest to collect wood", App->font->defaultfont);
+			Button_Next_6 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_6->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_6_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		}
+	}
+
+	// Step 7
+	if (ActualState == ST_Tutorial_Q7)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_7_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "The gatherer will automatically collect the resources and bring them back to the Townhall", App->font->defaultfont);
+			Question_7_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "You can click on the stone to collect it or the mine to collect gold", App->font->defaultfont);
+			Button_Next_7 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_7->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_7_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		}
+	}
+
+	// Step 8
+	if (ActualState == ST_Tutorial_Q8)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_8_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now that you know the basics, try to create a barrack!", App->font->defaultfont);
+			Question_8_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Pro tip: You can create more gatherers to collect more resources", App->font->defaultfont);
+		}
+	}
+
+	// Step 9
+	if (ActualState == ST_Tutorial_Q9)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_9_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Oh no! There's an horde that wants to attack our village!", App->font->defaultfont);
+			Question_9_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Collect resources and recuit some swordman to attack them before they attack you!", App->font->defaultfont);
+			Button_Next_9 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_9->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_9_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		
+			// Spawn enemies
+		}
+	}
+
+	// Step 10
+	if (ActualState == ST_Tutorial_Q10)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			Question_10_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Good job! You've defended the village!", App->font->defaultfont);
+			Question_10_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now you can go to the real fight!", App->font->defaultfont);
+			Button_Next_10 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Next_10->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Next_10_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		}
+	}
 }
+
 // Called each loop iteration
 bool j1Tutorial::PostUpdate(float dt)
 {
@@ -202,36 +347,249 @@ bool j1Tutorial::CleanUp()
 
 void j1Tutorial::GuiInput(GuiItem* guiElement) {
 
+	// Step 1
 	if (guiElement == Button_Yes)
 	{
 
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
-		deleteUI();
+		deleteUI(1);
 
 	}
 	else if (guiElement == Button_No)
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(1);
+		ActualState = ST_Tutorial_Q2;
+	}
 
+	// Step 2
+	if (guiElement == Button_Next_2)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(2);
+		ActualState = ST_Tutorial_Q3;
+	}
+
+	// Step 3
+	if (guiElement == Button_Next_3)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(3);
+		ActualState = ST_Tutorial_Q4;
+	}
+
+	// Step 4
+
+	// Step 5
+	if (guiElement == Button_Next_5)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(5);
+		ActualState = ST_Tutorial_Q6;
+	}
+
+	// Step 6
+	if (guiElement == Button_Next_6)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(6);
+		ActualState = ST_Tutorial_Q7;
+	}
+
+	// Step 7
+	if (guiElement == Button_Next_7)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(7);
+		ActualState = ST_Tutorial_Q8;
+	}
+
+	// Step 8
+
+	// Step 9
+	if (guiElement == Button_Next_9)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(9);
+		ActualState = ST_Tutorial_Q10;
+	}
+
+	// Step 10
+	if (guiElement == Button_Next_10)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		deleteUI(10);
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 	}
 }
 
-bool j1Tutorial::deleteUI() 
+bool j1Tutorial::deleteUI(int step) 
 {
-	if (Button_Yes != nullptr && Button_No != nullptr) 
-	{
-		Question_1_text->to_delete = true;
-		Button_Yes->to_delete = true;
-		Button_No->to_delete = true;
-		Button_No_Text->to_delete = true; 
-		Button_Yes_Text->to_delete = true;
+	createUI = true;
 
-		Button_Yes = nullptr;
-		Button_No = nullptr;
-		Question_1_text = nullptr;
-		Button_No_Text = nullptr;
-		Button_Yes_Text = nullptr;
+	// Step 1
+	if (step == 1)
+	{
+		if (Button_Yes != nullptr && Button_No != nullptr)
+		{
+			Question_1_text->to_delete = true;
+			Button_Yes->to_delete = true;
+			Button_No->to_delete = true;
+			Button_No_Text->to_delete = true;
+			Button_Yes_Text->to_delete = true;
+
+			Button_Yes = nullptr;
+			Button_No = nullptr;
+			Question_1_text = nullptr;
+			Button_No_Text = nullptr;
+			Button_Yes_Text = nullptr;
+		}
+	}
+
+	// Step 2
+	if (step == 2)
+	{
+		if (Button_Next_2 != nullptr)
+		{
+			Question_2_text->to_delete = true;
+			Question_2_text_2->to_delete = true;
+			Button_Next_2->to_delete = true;
+			Button_Next_2_Text->to_delete = true;
+
+			Button_Next_2 = nullptr;
+			Button_Next_2_Text = nullptr;
+			Question_2_text = nullptr;
+			Question_2_text_2 = nullptr;
+		}
+	}
+
+	// Step 3
+	if (step == 3)
+	{
+		if (Button_Next_3 != nullptr)
+		{
+			Question_3_text->to_delete = true;
+			Question_3_text_2->to_delete = true;
+			Button_Next_3->to_delete = true;
+			Button_Next_3_Text->to_delete = true;
+
+			Button_Next_3 = nullptr;
+			Button_Next_3_Text = nullptr;
+			Question_3_text = nullptr;
+			Question_3_text_2 = nullptr;
+		}
+	}
+
+	// Step 4
+	if (step == 4)
+	{
+		if (Question_4_text != nullptr)
+		{
+			Question_4_text->to_delete = true;
+			Question_4_text_2->to_delete = true;
+
+			Question_4_text = nullptr;
+			Question_4_text_2 = nullptr;
+		}
+	}
+
+	// Step 5
+	if (step == 5)
+	{
+		if (Button_Next_5 != nullptr)
+		{
+			Question_5_text->to_delete = true;
+			Question_5_text_2->to_delete = true;
+			Button_Next_5->to_delete = true;
+			Button_Next_5_Text->to_delete = true;
+
+			Button_Next_5 = nullptr;
+			Button_Next_5_Text = nullptr;
+			Question_5_text = nullptr;
+			Question_5_text_2 = nullptr;
+		}
+	}
+
+	// Step 6
+	if (step == 6)
+	{
+		if (Button_Next_6 != nullptr)
+		{
+			Question_6_text->to_delete = true;
+			Question_6_text_2->to_delete = true;
+			Button_Next_6->to_delete = true;
+			Button_Next_6_Text->to_delete = true;
+
+			Button_Next_6 = nullptr;
+			Button_Next_6_Text = nullptr;
+			Question_6_text = nullptr;
+			Question_6_text_2 = nullptr;
+		}
+	}
+
+	// Step 7
+	if (step == 7)
+	{
+		if (Button_Next_7 != nullptr)
+		{
+			Question_7_text->to_delete = true;
+			Question_7_text_2->to_delete = true;
+			Button_Next_7->to_delete = true;
+			Button_Next_7_Text->to_delete = true;
+
+			Button_Next_7 = nullptr;
+			Button_Next_7_Text = nullptr;
+			Question_7_text = nullptr;
+			Question_7_text_2 = nullptr;
+		}
+	}
+
+	// Step 8
+	if (step == 8)
+	{
+		if (Question_8_text != nullptr)
+		{
+			Question_8_text->to_delete = true;
+			Question_8_text_2->to_delete = true;
+
+			Question_8_text = nullptr;
+			Question_8_text_2 = nullptr;
+		}
+	}
+
+	// Step 9
+	if (step == 9)
+	{
+		if (Question_9_text != nullptr)
+		{
+			Question_9_text->to_delete = true;
+			Question_9_text_2->to_delete = true;
+			Button_Next_9->to_delete = true;
+			Button_Next_9_Text->to_delete = true;
+
+			Button_Next_9 = nullptr;
+			Button_Next_9_Text = nullptr;
+			Question_9_text = nullptr;
+			Question_9_text_2 = nullptr;
+		}
+	}
+
+	// Step 10
+	if (step == 10)
+	{
+		if (Question_10_text != nullptr)
+		{
+			Question_10_text->to_delete = true;
+			Question_10_text_2->to_delete = true;
+			Button_Next_10->to_delete = true;
+			Button_Next_10_Text->to_delete = true;
+
+			Button_Next_10 = nullptr;
+			Button_Next_10_Text = nullptr;
+			Question_10_text = nullptr;
+			Question_10_text_2 = nullptr;
+		}
 	}
 
 	return true;

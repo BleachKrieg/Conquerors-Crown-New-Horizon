@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "j1Input.h"
+#include "j1Tutorial.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -97,7 +98,7 @@ bool j1Minimap::PreUpdate(float dt) {
 	int mouse_x, mouse_y;
 
 	//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
-	if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)) && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial))
+	if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)) && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true))
 	{
 		App->input->GetMousePosition(mouse_x, mouse_y);
 		SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };
@@ -127,7 +128,7 @@ bool j1Minimap::Update(float dt) {
 	App->render->DrawQuad(minimap_test_rect, 255, 0, 0, 255,true,false);*/
 
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
-	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial)
+	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true)
 	{
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
