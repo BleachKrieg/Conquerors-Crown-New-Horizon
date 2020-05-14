@@ -5,6 +5,7 @@
 #include "j1Fonts.h"
 #include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
+#include "j1Render.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
 j1Fonts::j1Fonts() : j1Module()
@@ -91,7 +92,8 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, TTF_Font* font)
 	}
 	else
 	{
-		ret = App->tex->LoadSurface(surface);
+		SDL_Texture* texture;
+		ret = texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 		SDL_FreeSurface(surface);
 	}
 

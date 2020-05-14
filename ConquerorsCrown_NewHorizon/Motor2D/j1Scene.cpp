@@ -399,7 +399,7 @@ bool j1Scene::PostUpdate(float dt)
 bool j1Scene::CleanUp()
 {
 	App->map->CleanUp();
-		
+	App->minimap->CleanUp();
 	LOG("Freeing scene");
 
 	return true;
