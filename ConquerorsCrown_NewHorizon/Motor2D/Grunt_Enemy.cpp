@@ -5,56 +5,53 @@
 #include "p2Log.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
-#include "HumanArcher.h"
+#include "Grunt_Enemy.h"
 #include "DynamicEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
-#include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
-#include "FoWManager.h"
 
-HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_ARCHER)
+GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_GRUNT)
 {
-	name.create("human_archer");
+	name.create("enemy_grunt");
+
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 80;
+	life_points = 100;
 	attack_vision = 200;
-	attack_range = 140;
-	time_attack = 1000;
-	attack_damage = 16;
+	attack_range = 30;
+	time_attack = 1400;
+	attack_damage = 12;
 	vision = 26;
 	body = 13;
-	active = true;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
 	to_delete = false;
-	can_attack = true;
 	isSelected = false;
-	selectable = true;
+	active = true;
+	selectable = false;
 	following_target = false;
 	player_order = false;
-	team = TeamType::PLAYER;
-	target_entity = NULL;
+	can_attack = true;
+	team = TeamType::IA;
+	target_entity = nullptr;
 	state = DynamicState::IDLE;
-	entity_type = DynamicEntityType::HUMAN_ARCHER;
+	entity_type = DynamicEntityType::ENEMY_OGRE;
 
-	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
-	visionEntity->SetNewVisionRadius(5);
+
 	// TODO ------------------------------------------
 }
 
-HumanArcher::~HumanArcher() {}
+GruntEnemy::~GruntEnemy() {}
 
-bool HumanArcher::Start()
+bool GruntEnemy::Start()
 {
-
 	list<Animation*>::iterator animations_list;
-	animations_list = App->entity->archer_animations.begin();
+	animations_list = App->entity->grunt_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;
@@ -82,30 +79,46 @@ bool HumanArcher::Start()
 
 	current_animation = &moving_down;
 
+	spawn = nullptr;
+	time = 10;
+	followpath = 0;
+	change_direction = true;
 	return true;
 }
 
-bool HumanArcher::Update(float dt)
+bool GruntEnemy::Update(float dt)
 {
-	BROFILER_CATEGORY("ArcherUpdate", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_GruntEnemy", Profiler::Color::BlanchedAlmond);
 
-	// Speed resetted to 0 each iteration
-	speed = { NULL, NULL };
+	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
-	if (App->scene->debug)
-		life_points = 80;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
-	
-	OrderPath(entity_type);
+
+
 	AttackTarget(entity_type);
-	fPoint auxPos = position;
+
 	Movement(dt);
 
-	if (auxPos != position)
-		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
+	origin = App->map->WorldToMap(position.x, position.y);
 
+	if (target_entity == nullptr)
+	{
+		if (spawn != nullptr)
+		{
+			if (path.empty() && time >= 5)
+			{
+				iPoint target = App->map->WorldToMap(spawn->targetpos.x, spawn->targetpos.y);
+				App->pathfinding->RequestPath(origin, target, this);
+				idletime.Start();
+				followpath = 0;
+				change_direction = true;
+			}
+		}
+
+	}
+	time = idletime.ReadSec();
 	if (life_points <= 0)
 		state = DynamicState::DYING;
 
@@ -114,7 +127,7 @@ bool HumanArcher::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		//current_animation->loop = false;
+		current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -135,33 +148,37 @@ bool HumanArcher::Update(float dt)
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
+		if (App->movement->ai_selected == this)
+			App->movement->ai_selected = nullptr;
 		Death(entity_type);
 		break;
 	}
-	
+
+
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
-	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
-	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+		App->render->Blit(App->entity->enemy_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
 
-	App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	/*	App->render->DrawCircle((int)position.x, (int)position.y, 20, 200, 0, 0, 200);*/
+	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
+		isSelected = false;
+
+	App->render->Blit(App->entity->grunt_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
 
-bool HumanArcher::PostUpdate(float dt)
+bool GruntEnemy::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("Archer_PostUpdate", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("PostUpdate_GruntEnemy", Profiler::Color::BurlyWood)
 
-	return true;
+		return true;
 }
 
-bool HumanArcher::CleanUp()
+bool GruntEnemy::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
-	visionEntity->deleteEntity = true;
-	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

@@ -7,16 +7,16 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "j1Input.h"
+#include "j1Tutorial.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
 
 	texture = nullptr;
 	height = 100;
-	width = 200;
+	width = 100;
 	map_height = 200;
 	scale = 1;
-	width = 100;
 	margin = 0;
 	corner = Corner::TOP_LEFT;
 	minimap_test_rect = { 0,0,4,4 };
@@ -85,7 +85,7 @@ bool j1Minimap::Start() {
 		break;
 	case Corner::BOTTOM_LEFT:
 		position.x = margin;
-		position.y = window_height - height - margin;
+		position.y = window_height - height - margin + 5;
 		break;
 	case Corner::BOTTOM_RIGHT:
 		position.x = window_width - width - margin;
@@ -99,7 +99,7 @@ bool j1Minimap::PreUpdate(float dt) {
 	bool ret = true;
 	int mouse_x, mouse_y;
 
-	if (input) 
+	if (input)		
 	{
 		//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
 		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
@@ -137,16 +137,25 @@ bool j1Minimap::Update(float dt) {
 	App->render->DrawQuad(minimap_test_rect, 255, 0, 0, 255,true,false);*/
 
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
-	SDL_Rect rect = { 0,0,0,0 };
-	iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-	if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
+
+	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true)
+	{
+		SDL_Rect rect = { 0,0,0,0 };
+		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
+		if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
+	}
 
 	return true;
 }
 
+bool j1Minimap::PostUpdate(float dt) {
+	
+return true;
+
+}
 bool j1Minimap::CleanUp() {
 	App->tex->UnLoad(texture);
-//	texture = nullptr;
+	texture = nullptr;
 	return true;
 }
 bool j1Minimap::CreateMinimap() {

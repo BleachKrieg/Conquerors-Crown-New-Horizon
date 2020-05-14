@@ -10,6 +10,8 @@
 #include "Animation.h"
 #include "j1Audio.h"
 #include "SDL_mixer\include\SDL_mixer.h"
+#include "FoWEntity.h"
+
 
 using namespace std;
 
@@ -74,14 +76,14 @@ public:
 	bool to_delete;
 	int body;
 	fPoint speed;
-	int volume;
-	int SFX;
 	entityType type;
 	TeamType	team;
 	int		life_points;
 	vector<iPoint>	path;
 
 	bool deployed = true;
+	FoWEntity* visionEntity = nullptr;
+
 	
 };
 

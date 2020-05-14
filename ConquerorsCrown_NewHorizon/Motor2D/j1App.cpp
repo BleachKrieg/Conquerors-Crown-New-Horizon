@@ -23,6 +23,8 @@
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
 #include "j1CutsceneManager.h"
+#include "j1Tutorial.h"
+#include "FoWManager.h"
 
 
 // Constructor
@@ -41,6 +43,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	minimap = new j1Minimap();
+	fowManager = new FoWManager();
 	entity = new j1EntityManager();
 	requests = new EntityRequest();
 	gui = new  j1Gui();
@@ -50,6 +53,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
 	cutscene = new j1CutsceneManager();
+	tutorial = new j1Tutorial();
 
 
 	// Ordered for awake / Start / Update
@@ -59,12 +63,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(tutorial);
 	AddModule(scene);
 	AddModule(requests);
 	AddModule(movement);
 	AddModule(entity);
 	AddModule(pathfinding);
 	AddModule(wave);
+	AddModule(fowManager);
 	AddModule(minimap);
 	AddModule(gui);
 	AddModule(fade);
@@ -238,11 +244,13 @@ void j1App::FinishUpdate()
 	
 	static char title[256];
 
-	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Tile:%d,%d Camera: %i %i width: %i]",
+
+	/*sprintf_s(title, 256, "Conqueror's Crown: New Horizon [Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Tile:%d,%d Camera: %i %i width: %i]",
 		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
+	*/
+	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u]", prev_last_sec_frame_count);
 
-	
 	App->win->SetTitle(title);
 
 	delaytimer.Start();

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="5" height="3" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="ogre_orc" tilewidth="64" tileheight="64" tilecount="60" columns="10">
+  <image source="../Orc Sprites/orc_ogre.png" width="640" height="384"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="175"/>
+    <frame tileid="10" duration="175"/>
+    <frame tileid="20" duration="175"/>
+    <frame tileid="30" duration="175"/>
+    <frame tileid="40" duration="175"/>
+    <frame tileid="50" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="1">
+   <animation>
+    <frame tileid="1" duration="175"/>
+    <frame tileid="11" duration="175"/>
+    <frame tileid="21" duration="175"/>
+    <frame tileid="31" duration="175"/>
+    <frame tileid="41" duration="175"/>
+    <frame tileid="51" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="2">
+   <animation>
+    <frame tileid="2" duration="175"/>
+    <frame tileid="12" duration="175"/>
+    <frame tileid="22" duration="175"/>
+    <frame tileid="32" duration="175"/>
+    <frame tileid="42" duration="175"/>
+    <frame tileid="52" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="3">
+   <animation>
+    <frame tileid="3" duration="175"/>
+    <frame tileid="13" duration="175"/>
+    <frame tileid="23" duration="175"/>
+    <frame tileid="33" duration="175"/>
+    <frame tileid="43" duration="175"/>
+    <frame tileid="53" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="175"/>
+    <frame tileid="14" duration="175"/>
+    <frame tileid="24" duration="175"/>
+    <frame tileid="34" duration="175"/>
+    <frame tileid="44" duration="175"/>
+    <frame tileid="54" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="5">
+   <animation>
+    <frame tileid="5" duration="175"/>
+    <frame tileid="15" duration="175"/>
+    <frame tileid="25" duration="275"/>
+    <frame tileid="35" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="6">
+   <animation>
+    <frame tileid="6" duration="175"/>
+    <frame tileid="16" duration="175"/>
+    <frame tileid="26" duration="275"/>
+    <frame tileid="36" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="175"/>
+    <frame tileid="17" duration="175"/>
+    <frame tileid="27" duration="275"/>
+    <frame tileid="37" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="8">
+   <animation>
+    <frame tileid="8" duration="175"/>
+    <frame tileid="18" duration="175"/>
+    <frame tileid="28" duration="275"/>
+    <frame tileid="38" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="9">
+   <animation>
+    <frame tileid="9" duration="175"/>
+    <frame tileid="19" duration="175"/>
+    <frame tileid="29" duration="275"/>
+    <frame tileid="39" duration="175"/>
+   </animation>
+  </tile>
+  <tile id="45">
+   <animation>
+    <frame tileid="45" duration="175"/>
+    <frame tileid="46" duration="175"/>
+    <frame tileid="47" duration="275"/>
+    <frame tileid="48" duration="275"/>
+    <frame tileid="49" duration="275"/>
+   </animation>
+  </tile>
+  <tile id="55">
+   <animation>
+    <frame tileid="55" duration="175"/>
+    <frame tileid="56" duration="175"/>
+    <frame tileid="57" duration="275"/>
+    <frame tileid="58" duration="275"/>
+    <frame tileid="59" duration="275"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="4" name="ogre" width="5" height="3">
+  <data encoding="csv">
+1,2,3,4,5,
+6,7,8,9,10,
+56,46,0,0,0
+</data>
+ </layer>
+</map>

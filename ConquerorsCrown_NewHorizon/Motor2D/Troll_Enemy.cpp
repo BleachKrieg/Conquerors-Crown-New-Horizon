@@ -22,7 +22,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	speed = { NULL, NULL };
 	life_points = 100;
 	attack_vision = 200;
-	attack_range = 30;
+	attack_range = 140;
 	time_attack = 1400;
 	attack_damage = 12;
 	vision = 26;
@@ -127,7 +127,7 @@ bool TrollEnemy::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		current_animation->loop = false;
+	//	current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
