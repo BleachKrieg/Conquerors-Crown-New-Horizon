@@ -181,7 +181,7 @@ bool j1Gui::CleanUp()
 		RELEASE(guiElements[i]);
 	}
 	guiElements.clear();
-
+	App->tex->UnLoad(atlas);
 	return true;
 }
 
@@ -486,7 +486,7 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 }
 
 GuiText::~GuiText() {
-
+	SDL_DestroyTexture(texture);
 }
 
 const char* GuiText::GetText() const
@@ -496,10 +496,11 @@ const char* GuiText::GetText() const
 
 void GuiText::SetText(const char* newtext)
 {
-	if (to_delete == false) {
+
 		text = newtext;
 		//This need TO BE FIXED :D
 		//App->tex->UnLoad(texture);
+		SDL_DestroyTexture(texture);
 		if (text != "") {
 			texture = App->font->Print(text, color, local_font);
 			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
@@ -508,12 +509,12 @@ void GuiText::SetText(const char* newtext)
 		{
 			texture = nullptr;
 		}
-	}
-	else {
-		//This TOO :D
-	//	App->tex->UnLoad(texture);
-		texture = nullptr;
-	}
+	
+	//else {
+	//	//This TOO :D
+	////	App->tex->UnLoad(texture);
+	//	texture = nullptr;
+	//}
 }
 
 //-------------------------------------------------------------

@@ -130,13 +130,13 @@ bool FoWManager::Update(float dt)
 	bool ret = true;
 
 	//We update the fowMap only when its needed
-	if (foWMapNeedsRefresh)
+	if (foWMapNeedsRefresh && App->scene->current_scene == scenes::ingame)
 	{
 		UpdateFoWMap();
 		foWMapNeedsRefresh = false;
 	}
-	if(!App->scene->debug)
-	DrawFoWMap();
+	if(!App->scene->debug && App->scene->current_scene == scenes::ingame)
+		DrawFoWMap();
 
 	return ret;
 }

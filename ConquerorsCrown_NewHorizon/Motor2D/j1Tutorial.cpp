@@ -124,7 +124,8 @@ bool j1Tutorial::Update(float dt)
 			}
 		}
 
-		/*// Camera movement inputs
+		// Camera movement inputs
+
 			int x, y;
 		App->input->GetMousePosition(x, y);
 
@@ -142,7 +143,7 @@ bool j1Tutorial::Update(float dt)
 		}
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			App->render->camera.x -= 500 * dt;
-		}*/
+		}
 
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
