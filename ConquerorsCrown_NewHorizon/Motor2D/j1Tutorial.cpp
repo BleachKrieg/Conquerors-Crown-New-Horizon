@@ -196,12 +196,8 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_2_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Welcome to the Conquerors Crown new horizon tutorial! ", App->font->defaultfont);
-			Question_2_text_2 = App->gui->CreateGuiElement(Types::text, 115, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Here you'll learn the basics of the game and how to play!", App->font->defaultfont);
-			Button_Next_2 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_2->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_2_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			
+			CreatePopUpMessage(480, 96, "I'm Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
 	}
 
@@ -217,13 +213,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			App->scene->active = true;
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
 			App->scene->active = false;
-
-			Question_3_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Here's your Townhall, the most important building", App->font->defaultfont);
-			Question_3_text_2 = App->gui->CreateGuiElement(Types::text, 115, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Also, there's 3 types of resources: wood, stone and gold", App->font->defaultfont);
-			Button_Next_3 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_3->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_3_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
-			
+			CreatePopUpMessage(480, 96, " ", "Here's your Townhall,", "the most important building", "Also, there's 3 types of resources:", " wood, stone and gold", " ");
 		}
 	}
 
@@ -236,9 +226,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 
 			App->scene->AddResource("wood", 100);
 			App->scene->AddResource("gold", 100);
-
-			Question_4_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "We've added you some resources!", App->font->defaultfont);
-			Question_4_text_2 = App->gui->CreateGuiElement(Types::text, 100, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now click the Townhall and create a gatherer clicking on his icon", App->font->defaultfont);
+			CreatePopUpMessage(480, 96, " ", "We've added you some resources!", "Now click the Townhall and ", "create a gatherer clicking on ", "his icon ", " ");
 		}
 	}
 
@@ -249,11 +237,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			Question_5_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Well done!", App->font->defaultfont);
-			Question_5_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "In order to create buildings and units, you'll need to get more resources", App->font->defaultfont);
-			Button_Next_5 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_5->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_5_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			CreatePopUpMessage(480, 96, " ", "Well done!", "In order to create buildings ", " and units, you'll need to ", "get more resources ", " ");
 		}
 	}
 
@@ -263,12 +247,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_6_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "You can send your gatherer to collect resources!", App->font->defaultfont);
-			Question_6_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Click your gatherer and then click on the forest to collect wood", App->font->defaultfont);
-			Button_Next_6 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_6->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_6_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			CreatePopUpMessage(480, 96, " ", "You can send your gatherer to ", "collect resources! ", " and units, you'll need to ", "Click your gatherer and then click ", "on the forest to collect wood ");
 		}
 	}
 
@@ -281,12 +260,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_7_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "The gatherer will automatically collect the resources and bring them back to the Townhall", App->font->defaultfont);
-			Question_7_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "You can click on the stone to collect it or the mine to collect gold", App->font->defaultfont);
-			Button_Next_7 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_7->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_7_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			CreatePopUpMessage(480, 96, " ", "The gatherer will automatically collect the  ", " resources and bring them back to the Townhall ", " and units, you'll need to ", "You can click on the stone to collect ", "it or the mine to collect gold");
 		}
 	}
 
@@ -296,9 +270,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_8_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now that you know the basics, try to create a barrack!", App->font->defaultfont);
-			Question_8_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Pro tip: You can create more gatherers to collect more resources", App->font->defaultfont);
+			CreatePopUpMessage(480, 96, " ", "Now that you know the basics  ", "try to create a barrack! ", " and units, you'll need to ", "Pro tip: You can create more gatherers ", " to collect more resources");
 		}
 	}
 
@@ -308,13 +280,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_9_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Oh no! There's an horde that wants to attack our village!", App->font->defaultfont);
-			Question_9_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Collect resources and recuit some swordman to attack them before they attack you!", App->font->defaultfont);
-			Button_Next_9 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_9->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_9_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
-		
+			CreatePopUpMessage(480, 96, " ", "Oh no! There's an horde that wants", "to attack our village!", "Collect resources and recuit some swordman ", "to attack them before they attack you! ", " to collect more resources");	
 			// Spawn enemies
 		}
 	}
@@ -325,13 +291,27 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			Question_10_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Good job! You've defended the village!", App->font->defaultfont);
-			Question_10_text_2 = App->gui->CreateGuiElement(Types::text, 70, -170, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Now you can go to the real fight!", App->font->defaultfont);
-			Button_Next_10 = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Next_10->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Next_10_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+			CreatePopUpMessage(480, 96, " ", "Good job!", "You've defended the village!", "Now you can go to the real fight!", " ", " ");
 		}
+	}
+}
+
+void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
+{
+	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2620, 0, 356, 209 }, App->scene->ingameTopBar);
+	Uther_Image = App->gui->CreateGuiElement(Types::image, 818, 124, { 2573, 343, 497, 368 }, App->scene->ingameTopBar);
+	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, titletext, App->font->smallfont);
+	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text1, App->font->xs_font);
+	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text2, App->font->xs_font);
+	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->xs_font);
+	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
+	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
+
+	if (ActualState != ST_Tutorial_Q4 && ActualState != ST_Tutorial_Q8)
+	{
+		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		PopUpButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		PopUpButton_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
 	}
 }
 
@@ -353,6 +333,7 @@ bool j1Tutorial::CleanUp()
 
 void j1Tutorial::GuiInput(GuiItem* guiElement) {
 
+	
 	// Step 1
 	if (guiElement == Button_Yes)
 	{
@@ -368,66 +349,41 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		deleteUI(1);
 		ActualState = ST_Tutorial_Q2;
 	}
-
-	// Step 2
-	if (guiElement == Button_Next_2)
-	{
+	else if (guiElement == PopUpButton) {
+		deleteUI(0);
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(2);
-		ActualState = ST_Tutorial_Q3;
+
+		if (ActualState == ST_Tutorial_Q2)
+		{
+			ActualState = ST_Tutorial_Q3;
+		}
+		else if (ActualState == ST_Tutorial_Q3)
+		{
+			ActualState = ST_Tutorial_Q4;
+		}
+		else if (ActualState == ST_Tutorial_Q5)
+		{
+			ActualState = ST_Tutorial_Q6;
+		}
+		else if (ActualState == ST_Tutorial_Q6)
+		{
+			ActualState = ST_Tutorial_Q7;
+		}
+		else if (ActualState == ST_Tutorial_Q7)
+		{
+			ActualState = ST_Tutorial_Q8;
+		}
+		else if (ActualState == ST_Tutorial_Q9)
+		{
+			ActualState = ST_Tutorial_Q10;
+		}
+		if(ActualState == ST_Tutorial_Q10)
+		{
+			App->fade->FadeToBlack(scenes::ingame, 2.0f);
+		}
+		createUI = true;
 	}
 
-	// Step 3
-	if (guiElement == Button_Next_3)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(3);
-		ActualState = ST_Tutorial_Q4;
-	}
-
-	// Step 4
-
-	// Step 5
-	if (guiElement == Button_Next_5)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(5);
-		ActualState = ST_Tutorial_Q6;
-	}
-
-	// Step 6
-	if (guiElement == Button_Next_6)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(6);
-		ActualState = ST_Tutorial_Q7;
-	}
-
-	// Step 7
-	if (guiElement == Button_Next_7)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(7);
-		ActualState = ST_Tutorial_Q8;
-	}
-
-	// Step 8
-
-	// Step 9
-	if (guiElement == Button_Next_9)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(9);
-		ActualState = ST_Tutorial_Q10;
-	}
-
-	// Step 10
-	if (guiElement == Button_Next_10)
-	{
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		deleteUI(10);
-		App->fade->FadeToBlack(scenes::ingame, 2.0f);
-	}
 }
 
 bool j1Tutorial::deleteUI(int step) 
@@ -453,150 +409,33 @@ bool j1Tutorial::deleteUI(int step)
 		}
 	}
 
-	// Step 2
-	if (step == 2)
+	//General delete
+	if (step == 0)
 	{
-		if (Button_Next_2 != nullptr)
+		PopUpImage->to_delete = true;
+		Uther_Image->to_delete = true;
+		PopUpTitleText->to_delete = true;
+		PopUpText1->to_delete = true;
+		PopUpText2->to_delete = true;
+		PopUpText3->to_delete = true;
+		PopUpText4->to_delete = true;
+		PopUpText5->to_delete = true;
+
+		if (PopUpButton != nullptr) 
 		{
-			Question_2_text->to_delete = true;
-			Question_2_text_2->to_delete = true;
-			Button_Next_2->to_delete = true;
-			Button_Next_2_Text->to_delete = true;
-
-			Button_Next_2 = nullptr;
-			Button_Next_2_Text = nullptr;
-			Question_2_text = nullptr;
-			Question_2_text_2 = nullptr;
+			PopUpButton->to_delete = true;
+			PopUpButton_Text->to_delete = true;
 		}
+		Uther_Image = nullptr;
+		PopUpImage = nullptr;
+		PopUpTitleText = nullptr;
+		PopUpText1 = nullptr;
+		PopUpText2 = nullptr;
+		PopUpText3 = nullptr;
+		PopUpText4 = nullptr;
+		PopUpText5 = nullptr;
+		PopUpButton = nullptr;
+		PopUpButton_Text = nullptr;
 	}
-
-	// Step 3
-	if (step == 3)
-	{
-		if (Button_Next_3 != nullptr)
-		{
-			Question_3_text->to_delete = true;
-			Question_3_text_2->to_delete = true;
-			Button_Next_3->to_delete = true;
-			Button_Next_3_Text->to_delete = true;
-
-			Button_Next_3 = nullptr;
-			Button_Next_3_Text = nullptr;
-			Question_3_text = nullptr;
-			Question_3_text_2 = nullptr;
-		}
-	}
-
-	// Step 4
-	if (step == 4)
-	{
-		if (Question_4_text != nullptr)
-		{
-			Question_4_text->to_delete = true;
-			Question_4_text_2->to_delete = true;
-
-			Question_4_text = nullptr;
-			Question_4_text_2 = nullptr;
-		}
-	}
-
-	// Step 5
-	if (step == 5)
-	{
-		if (Button_Next_5 != nullptr)
-		{
-			Question_5_text->to_delete = true;
-			Question_5_text_2->to_delete = true;
-			Button_Next_5->to_delete = true;
-			Button_Next_5_Text->to_delete = true;
-
-			Button_Next_5 = nullptr;
-			Button_Next_5_Text = nullptr;
-			Question_5_text = nullptr;
-			Question_5_text_2 = nullptr;
-		}
-	}
-
-	// Step 6
-	if (step == 6)
-	{
-		if (Button_Next_6 != nullptr)
-		{
-			Question_6_text->to_delete = true;
-			Question_6_text_2->to_delete = true;
-			Button_Next_6->to_delete = true;
-			Button_Next_6_Text->to_delete = true;
-
-			Button_Next_6 = nullptr;
-			Button_Next_6_Text = nullptr;
-			Question_6_text = nullptr;
-			Question_6_text_2 = nullptr;
-		}
-	}
-
-	// Step 7
-	if (step == 7)
-	{
-		if (Button_Next_7 != nullptr)
-		{
-			Question_7_text->to_delete = true;
-			Question_7_text_2->to_delete = true;
-			Button_Next_7->to_delete = true;
-			Button_Next_7_Text->to_delete = true;
-
-			Button_Next_7 = nullptr;
-			Button_Next_7_Text = nullptr;
-			Question_7_text = nullptr;
-			Question_7_text_2 = nullptr;
-		}
-	}
-
-	// Step 8
-	if (step == 8)
-	{
-		if (Question_8_text != nullptr)
-		{
-			Question_8_text->to_delete = true;
-			Question_8_text_2->to_delete = true;
-
-			Question_8_text = nullptr;
-			Question_8_text_2 = nullptr;
-		}
-	}
-
-	// Step 9
-	if (step == 9)
-	{
-		if (Question_9_text != nullptr)
-		{
-			Question_9_text->to_delete = true;
-			Question_9_text_2->to_delete = true;
-			Button_Next_9->to_delete = true;
-			Button_Next_9_Text->to_delete = true;
-
-			Button_Next_9 = nullptr;
-			Button_Next_9_Text = nullptr;
-			Question_9_text = nullptr;
-			Question_9_text_2 = nullptr;
-		}
-	}
-
-	// Step 10
-	if (step == 10)
-	{
-		if (Question_10_text != nullptr)
-		{
-			Question_10_text->to_delete = true;
-			Question_10_text_2->to_delete = true;
-			Button_Next_10->to_delete = true;
-			Button_Next_10_Text->to_delete = true;
-
-			Button_Next_10 = nullptr;
-			Button_Next_10_Text = nullptr;
-			Question_10_text = nullptr;
-			Question_10_text_2 = nullptr;
-		}
-	}
-
 	return true;
 }
