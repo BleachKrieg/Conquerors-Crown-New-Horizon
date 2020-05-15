@@ -530,6 +530,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::tutorial:
 		current_scene = scenes::tutorial;
 		CreateTutorial();
+		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;
@@ -556,10 +557,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		break;
 	case scenes::victory:
 		current_scene = scenes::victory;
+		App->audio->PlayMusic("Human/Human_Victory.ogg", 2.0F);
 		CreateVictory();
 		break;
 	case scenes::defeat:
 		current_scene = scenes::defeat;
+		App->audio->PlayMusic("Human/Human_Defeat.ogg", 2.0F);
 		CreateDefeat();
 		break;
 	}
