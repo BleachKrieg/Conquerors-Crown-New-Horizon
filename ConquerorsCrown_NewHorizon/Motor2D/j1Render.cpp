@@ -144,10 +144,13 @@ void j1Render::ResetViewPort()
 bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speedX, float speedY, SDL_RendererFlip flip, float scale, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	//float scale = App->win->GetScale();
+	float winscale = App->win->GetScale();
 
-	//scale *= user_scale;
-
+	scale *= winscale;
+	if (scale != 1)
+	{
+		LOG("%f", scale );
+	}
 	SDL_Rect rect;
 	rect.x = round((int)(camera.x * speedX) + x * scale);
 	rect.y = round((int)(camera.y * speedY) + y * scale);

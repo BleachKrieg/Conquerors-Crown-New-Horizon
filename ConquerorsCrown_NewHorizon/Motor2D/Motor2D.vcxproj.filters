@@ -3,10 +3,8 @@
   <ItemGroup>
     <ClCompile Include="FoWEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
-    <ClCompile Include="Grunt_Enemy.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
-    <ClCompile Include="Ogre_Enemy.cpp" />
     <ClCompile Include="p2Log.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -109,13 +107,17 @@
     <ClCompile Include="Troll_Enemy.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="Grunt_Enemy.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="Ogre_Enemy.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
     <ClInclude Include="FoWEntity.h" />
     <ClInclude Include="FoWManager.h" />
-    <ClInclude Include="Grunt_Enemy.h" />
-    <ClInclude Include="Ogre_Enemy.h" />
     <ClInclude Include="j1App.h" />
     <ClInclude Include="j1Module.h" />
     <ClInclude Include="p2SString.h">
@@ -236,6 +238,12 @@
       <Filter>Entities\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="Troll_Enemy.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Grunt_Enemy.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Ogre_Enemy.h">
       <Filter>Entities\Dynamic</Filter>
     </ClInclude>
   </ItemGroup>
