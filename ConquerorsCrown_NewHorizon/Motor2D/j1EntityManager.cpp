@@ -171,7 +171,109 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
+bool j1EntityManager::Load(pugi::xml_node& data)
+{
+	LOG("load entities here");
+	pugi::xml_node entity;
 
+	//Then we iterate the xml, to find every entity that's been saved
+	for (entity = data.child("Entity"); entity; entity = entity.next_sibling("Entity"))
+	{
+		StaticEnt::StaticEntType static_ID;
+		DynamicEnt::DynamicEntityType dynamic_ID;
+
+		p2SString type(entity.child("type").attribute("movement").as_string());
+
+		if (type == "static")
+		{
+				p2SString static_type(entity.child("type").attribute("name").as_string());
+				if (static_type == "town_hall")
+				{
+					static_ID = StaticEnt::StaticEntType::HumanTownHall;
+					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+				}
+				if (static_type == "human_barracks")
+				{
+					static_ID = StaticEnt::StaticEntType::HumanBarracks;
+					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+				}
+				if (static_type == "gold_mine")
+				{
+					static_ID = StaticEnt::StaticEntType::GoldMine;
+					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+				}
+				if (static_type == "resource")
+				{
+					static_ID = StaticEnt::StaticEntType::Resource;
+				}
+
+		}
+		if (type == "dynamic")
+		{
+				p2SString dynamic_type(entity.child("type").attribute("name").as_string());
+				if (dynamic_type == "enemy_grunt")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
+				}
+				if (dynamic_type == "enemy_ogre")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
+				}
+				if (dynamic_type == "enemy_troll")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
+				}
+				if (dynamic_type == "human_archer")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
+				}
+				if (dynamic_type == "human_footman")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
+				}
+				if (dynamic_type == "human_gatherer")
+				{
+					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
+				}
+				//Once localized an entity, we create it
+				
+			CreateEntity(dynamic_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+		}
+			
+
+			//Once located an entity, we create it
+			//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+		
+	}
+
+	/*p2List_item<j1Entity*>* entities_list = entities.start;
+	while (entities_list) {
+		entities_list->data->Load(entity);
+		entities_list = entities_list->next;
+	}*/
+
+
+	return true;
+}
+
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+	for (int i = 0; i < entities.size(); i++) {
+		if (entities[i]->name.GetString())
+		{
+			pugi::xml_node entity = data.append_child("Entity");
+			entities[i]->Save(entity);
+		}
+	}
+	for (int i = 0; i < resources_ent.size(); i++) {
+		if (resources_ent[i]->name.GetString())
+		{
+			pugi::xml_node entity = data.append_child("Entity");
+			resources_ent[i]->Save(entity);
+		}
+	}
+	return true;
+}
 bool j1EntityManager::DeleteAllEntities()
 {
 

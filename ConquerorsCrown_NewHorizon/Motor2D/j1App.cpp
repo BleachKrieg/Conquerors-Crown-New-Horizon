@@ -389,7 +389,7 @@ void j1App::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list	
-
+	want_to_load = true;
 }
 
 // ---------------------------------------
@@ -435,7 +435,7 @@ bool j1App::LoadGameNow()
 
 		list<j1Module*>::iterator item_list;
 		j1Module* it = NULL;
-
+		ret = true;
 		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
 			it = *item_list;
 			ret = it->Load(root.child(it->name.GetString()));

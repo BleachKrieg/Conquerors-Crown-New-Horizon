@@ -71,7 +71,7 @@ bool j1Scene::Start()
 	timer = 660;
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
-
+	wants_to_load = false;
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
@@ -231,6 +231,20 @@ bool j1Scene::Update(float dt)
 		}
 
 		//Debug input
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->SaveGame();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			if (App->CheckSaveGame()) {
+				
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				//App->LoadGame();
+
+			}
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
@@ -841,8 +855,14 @@ bool j1Scene::CreateInGame()
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 
-
-	LoadTiledEntities();
+	if (!wants_to_load)
+	{
+		LoadTiledEntities();
+	}
+	else {
+		App->LoadGame();
+		wants_to_load = false;
+	}
 
 	if(ret) ret = CreateButtonsUI();
 
