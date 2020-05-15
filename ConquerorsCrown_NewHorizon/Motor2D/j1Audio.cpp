@@ -66,22 +66,23 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	construction = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Construction_Loop_2.wav");
 	cancel_building = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Cancel_Building2.wav");
 	
-	/*select_footman = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
-	select_archer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
-	select_gatherer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");*/
 	go_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Move_2.wav");
 	go_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Move_3.wav");
-	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/peasant/Peasant_Move.wav");
+	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Move.wav");
 	footman_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	archer_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Arrow_Throwing.wav");
 	troll_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Axe_Throwing.wav");
+	grunt_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav"); 
+	ogre_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Heavy_Chop_Metal_3.wav");
 	wood_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
-	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
+	die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
 	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
-	
+	die_grunt = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Grunt/Grunt_Death.wav");
+	die_ogre = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Ogre/Ogre_Death_1.wav");
+
 	click_to_play = App->audio->LoadFx("Assets/Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Assets/Audio/SFX/UI/Click.wav");
 	pause_fx = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause.wav");
