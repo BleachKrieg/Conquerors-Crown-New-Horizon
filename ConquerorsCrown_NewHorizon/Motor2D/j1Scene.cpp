@@ -226,7 +226,7 @@ bool j1Scene::Update(float dt)
 		{
 			if (!pauseMenu) CreatePauseMenu();
 			else DeletePauseMenu();
-
+			App->audio->PlayFx(-1, App->audio->pause_fx, 0);
 			pauseMenu = !pauseMenu;
 		}
 

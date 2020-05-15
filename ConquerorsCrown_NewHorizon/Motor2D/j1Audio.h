@@ -76,7 +76,12 @@ public:
 
 	int click_to_play;
 	int normal_click;
+	int pause_fx;
+
 	int upgrade_complete;
+	int quest_complete;
+	int quest_failed;
+	int tutorial_complete;
 
 	int logo_game_fx;
 	int logo_team_fx;

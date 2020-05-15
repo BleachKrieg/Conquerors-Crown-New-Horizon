@@ -84,7 +84,12 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	
 	click_to_play = App->audio->LoadFx("Assets/Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Assets/Audio/SFX/UI/Click.wav");
+	pause_fx = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause.wav");
+
 	//upgrade_complete = App->audio->LoadFx("Audio/SFX/Humans/Upgrade_Complete_1.wav");
+	quest_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Good_Job.wav");
+	quest_failed = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Failed.wav");
+	tutorial_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Completed.wav");
 	
 	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");
 	logo_team_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Team_SFX.wav");
