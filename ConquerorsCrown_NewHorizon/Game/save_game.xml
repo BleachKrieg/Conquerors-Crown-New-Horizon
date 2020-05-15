@@ -20,44 +20,40 @@
 			<position pos_x="3456" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" />
-			<position pos_x="3296" pos_y="1408" />
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3520" pos_y="1169" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1175" />
+			<position pos_x="3520" pos_y="1142" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1148.19995" />
+			<position pos_x="3520" pos_y="1196" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1201.80005" />
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3314" pos_y="1170" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_footman" />
-			<position pos_x="2853" pos_y="1220" />
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3154" pos_y="1202" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2879.94604" pos_y="1218.5824" />
+			<type movement="static" name="human_barracks" />
+			<position pos_x="2962" pos_y="1266" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="2935" pos_y="1222" />
+			<type movement="static" name="town_hall" />
+			<position pos_x="3602" pos_y="1138" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="enemy_troll" />
-			<position pos_x="3007" pos_y="1518" />
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3250" pos_y="1490" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="enemy_ogre" />
-			<position pos_x="3033" pos_y="1524" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="enemy_grunt" />
-			<position pos_x="3059" pos_y="1526" />
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3346" pos_y="1330" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -5028,7 +5024,7 @@
 			<position pos_x="3296" pos_y="1408" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="mine" />
+			<type movement="static" name="" />
 			<position pos_x="3296" pos_y="1440" />
 		</Entity>
 		<Entity>
@@ -5040,7 +5036,7 @@
 			<position pos_x="3328" pos_y="1408" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="mine" />
+			<type movement="static" name="" />
 			<position pos_x="3328" pos_y="1440" />
 		</Entity>
 		<Entity>
@@ -5048,7 +5044,7 @@
 			<position pos_x="3328" pos_y="1472" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="mine" />
+			<type movement="static" name="°±ª&#04;" />
 			<position pos_x="3360" pos_y="1408" />
 		</Entity>
 		<Entity>
@@ -5058,6 +5054,42 @@
 		<Entity>
 			<type movement="static" name="mine" />
 			<position pos_x="3360" pos_y="1472" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3232" pos_y="1344" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3232" pos_y="1376" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3232" pos_y="1408" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3264" pos_y="1344" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3264" pos_y="1376" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3264" pos_y="1408" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3296" pos_y="1344" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3296" pos_y="1376" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="mine" />
+			<position pos_x="3296" pos_y="1408" />
 		</Entity>
 	</entity_manager>
 	<pathfinding />

@@ -15,6 +15,7 @@
 #include "GoldMine.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
+#include "j1Scene.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -206,7 +207,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				{
 					static_ID = StaticEnt::StaticEntType::Resource;
 				}
-
 		}
 		if (type == "dynamic")
 		{
@@ -245,13 +245,14 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 		
 	}
+	// For load buildings correctly
+	App->scene->active = false;
 
 	/*p2List_item<j1Entity*>* entities_list = entities.start;
 	while (entities_list) {
 		entities_list->data->Load(entity);
 		entities_list = entities_list->next;
 	}*/
-
 
 	return true;
 }

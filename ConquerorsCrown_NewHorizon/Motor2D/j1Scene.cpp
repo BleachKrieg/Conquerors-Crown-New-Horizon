@@ -335,6 +335,7 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate(float dt)
 {
 	bool ret = true;
+
 	switch (current_scene)
 	{
 	case scenes::menu:
@@ -860,6 +861,7 @@ bool j1Scene::CreateInGame()
 		LoadTiledEntities();
 	}
 	else {
+		active = true;
 		App->LoadGame();
 		wants_to_load = false;
 	}
