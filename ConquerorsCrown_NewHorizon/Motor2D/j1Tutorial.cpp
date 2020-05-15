@@ -159,10 +159,6 @@ bool j1Tutorial::Update(float dt)
 		
 		CheckTutorialStep(dt);
 
-		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN)
-		{
-			ActualState = ST_Tutorial_Finished;
-		}
 	}
 
 
@@ -294,6 +290,12 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			CreatePopUpMessage(480, 96, " ", "Good job!", "You've defended the village!", "Now you can go to the real fight!", " ", " ");
 		}
 	}
+	if (ActualState == ST_Tutorial_Finished && App->scene->current_scene == scenes::tutorial)
+	{
+		App->scene->current_scene = scenes::ingame;
+		App->fade->FadeToBlack(scenes::ingame, 2.0f);
+		
+	}
 }
 
 void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
@@ -309,9 +311,8 @@ void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, 
 
 	if (ActualState != ST_Tutorial_Q4 && ActualState != ST_Tutorial_Q8)
 	{
-		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-		PopUpButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-		PopUpButton_Text = App->gui->CreateGuiElement(Types::text, 614, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "-->", App->font->smallfont);
+		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
+		PopUpButton->setRects({ 541, 125, 58, 50 }, { 600, 125, 58, 50 });
 	}
 }
 
@@ -377,9 +378,9 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		{
 			ActualState = ST_Tutorial_Q10;
 		}
-		if(ActualState == ST_Tutorial_Q10)
+		else if(ActualState == ST_Tutorial_Q10)
 		{
-			App->fade->FadeToBlack(scenes::ingame, 2.0f);
+			ActualState = ST_Tutorial_Finished;
 		}
 		createUI = true;
 	}
@@ -424,7 +425,6 @@ bool j1Tutorial::deleteUI(int step)
 		if (PopUpButton != nullptr) 
 		{
 			PopUpButton->to_delete = true;
-			PopUpButton_Text->to_delete = true;
 		}
 		Uther_Image = nullptr;
 		PopUpImage = nullptr;
@@ -435,7 +435,6 @@ bool j1Tutorial::deleteUI(int step)
 		PopUpText4 = nullptr;
 		PopUpText5 = nullptr;
 		PopUpButton = nullptr;
-		PopUpButton_Text = nullptr;
 	}
 	return true;
 }

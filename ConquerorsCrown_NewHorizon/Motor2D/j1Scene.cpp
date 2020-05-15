@@ -322,17 +322,6 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
-		//Mouse input for UI buttons
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-			if (App->entity->IsSomethingSelected())
-			{
-				if (townHallButton != nullptr) ret = DeleteButtonsUI();
-			}
-			else
-			{
-				if (townHallButton == nullptr) ret = CreateButtonsUI();
-			}
-		}
 		break;
 	case scenes::ingame:
 
@@ -632,7 +621,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
-	if (ret) ret = CreateButtonsUI();
+	//if (ret) ret = CreateButtonsUI();
 	
 
 	return ret;
@@ -849,33 +838,33 @@ bool j1Scene::CreateInGame()
 
 bool j1Scene::CreateButtonsUI()
 {
-	townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
-	townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
-	
-	townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
-	townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
-	
+		townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
+		townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
+
+		townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
+		townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
 	return true;
 }
 
 bool j1Scene::DeleteButtonsUI()
 {
-	//a veces hay crash aqui
-	townHallWoodCostImage->to_delete = true;
-	townHallStoneCostImage->to_delete = true;
-	townHallWoodCostText->to_delete = true;
-	townHallStoneCostText->to_delete = true;
-	townHallButton->to_delete = true;
+	//there are crahses sometimes in this code xD
 
-	townHallWoodCostImage = nullptr;
-	townHallStoneCostImage = nullptr;
-	townHallWoodCostText = nullptr;
-	townHallStoneCostText = nullptr;
-	townHallButton = nullptr;
+		townHallWoodCostImage->to_delete = true;
+		townHallStoneCostImage->to_delete = true;
+		townHallWoodCostText->to_delete = true;
+		townHallStoneCostText->to_delete = true;
+		townHallButton->to_delete = true;
 
+		townHallWoodCostImage = nullptr;
+		townHallStoneCostImage = nullptr;
+		townHallWoodCostText = nullptr;
+		townHallStoneCostText = nullptr;
+		townHallButton = nullptr;
+	
 	return true;
 }
 
@@ -1025,6 +1014,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	{
 		//Menu buttons
 		if (guiElement == menuButtonNewGame) {
+			App->tutorial->ActualState = ST_Tutorial_Q1;
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::tutorial, 2.0f);

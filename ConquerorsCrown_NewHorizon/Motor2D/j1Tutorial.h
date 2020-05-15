@@ -76,7 +76,6 @@ public:
 	GuiItem* PopUpText5;
 	GuiItem* PopUpTitleText;
 	GuiItem* PopUpButton;
-	GuiItem* PopUpButton_Text;
 	GuiItem* Uther_Image;
 
 
