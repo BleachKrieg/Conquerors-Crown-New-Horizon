@@ -600,7 +600,7 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q4)
 			{
 				App->tutorial->ActualState = ST_Tutorial_Q5;
-				App->tutorial->deleteUI(4);
+				App->tutorial->deleteUI(0);
 			}
 		}
 		isSelected = true;
