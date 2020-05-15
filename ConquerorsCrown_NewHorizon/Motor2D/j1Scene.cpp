@@ -191,7 +191,7 @@ bool j1Scene::Update(float dt)
 				App->render->camera.y += 500 * dt;
 			}
 
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				App->render->camera.y -= 500 * dt;
 			}
 
@@ -199,7 +199,7 @@ bool j1Scene::Update(float dt)
 				App->render->camera.x += 500 * dt;
 			}
 
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				App->render->camera.x -= 500 * dt;
 			}
 		}
@@ -1070,10 +1070,16 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			if (!fullscreen)
 			{
 				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+				
+	/*			if(current_scene == scenes::ingame || current_scene == scenes::tutorial)
+					App->minimap->Start();*/
 			}
 			else
 			{
-				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_SHOWN);
+				//if (current_scene == scenes::ingame || current_scene == scenes::tutorial)
+				//	//App->minimap->Start();
+
 			}
 
 			fullscreen = !fullscreen;

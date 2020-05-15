@@ -103,6 +103,7 @@ public:
 
 public:
 	bool foWMapNeedsRefresh = false;
+	std::map<unsigned short, uint> bitToTextureTable;
 
 private:
 	//This is where the FoWEntites are stored
@@ -114,7 +115,6 @@ private:
 	SDL_Texture* debugFoWtexture = nullptr;
 	SDL_Texture* minimapFoWtexture = nullptr;
 	//Map that we use to translate bits to Texture Id's
-	std::map<unsigned short, uint> bitToTextureTable;
 
 	uint width;
 	uint height;
