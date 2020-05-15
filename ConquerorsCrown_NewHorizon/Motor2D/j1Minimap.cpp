@@ -8,6 +8,7 @@
 #include "p2Log.h"
 #include "j1Input.h"
 #include "j1Tutorial.h"
+#include "FoWManager.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -21,7 +22,7 @@ j1Minimap::j1Minimap() : j1Module() {
 	corner = Corner::TOP_LEFT;
 	minimap_test_rect = { 0,0,4,4 };
 	visible = true;
-	input = true;
+	input = false;
 }
 
 j1Minimap::~j1Minimap() {
@@ -70,7 +71,7 @@ bool j1Minimap::Start() {
 	//TODO 3: Set this texture as a rendering target and create the minimap
 	LOG("%d",(SDL_SetRenderTarget(App->render->renderer, texture)));
 	CreateMinimap();
-	SDL_SetRenderTarget(App->render->renderer, NULL);
+	SDL_SetRenderTarget(App->render->renderer, nullptr);
 
 	//calculate position depending on the chosen corner
 	switch (corner)
@@ -137,25 +138,32 @@ bool j1Minimap::Update(float dt) {
 	App->render->DrawQuad(minimap_test_rect, 255, 0, 0, 255,true,false);*/
 
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
-
 	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true)
 	{
 		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
-		if (visible) { App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false); }
+		if (visible) 
+		{
+			//Fog of war in minimap
+			SDL_Rect section{ 0, 0, 225, 225 };
+			App->render->Blit(App->fowManager->minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
+			//Camera rectangle in minimap
+			App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+		}
 	}
+	return true;
+}
+
+bool j1Minimap::PostUpdate(float dt) 
+{
 
 	return true;
 }
 
-bool j1Minimap::PostUpdate(float dt) {
-	
-return true;
-
-}
 bool j1Minimap::CleanUp() {
 	App->tex->UnLoad(texture);
 	texture = nullptr;
+	input = false;
 	return true;
 }
 bool j1Minimap::CreateMinimap() {

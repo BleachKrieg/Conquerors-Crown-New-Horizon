@@ -92,8 +92,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, TTF_Font* font)
 	}
 	else
 	{
-		SDL_Texture* texture;
-		ret = texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
+		ret = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 		SDL_FreeSurface(surface);
 	}
 
