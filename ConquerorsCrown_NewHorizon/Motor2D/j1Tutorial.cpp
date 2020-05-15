@@ -44,6 +44,7 @@ bool j1Tutorial::Start()
 	bool ret = true;
 	createUI = true;
 	MinimapActive = false;
+	moveCamera = false;
 
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
@@ -125,24 +126,26 @@ bool j1Tutorial::Update(float dt)
 		}
 
 		// Camera movement inputs
-
-			int x, y;
+		int x, y;
 		App->input->GetMousePosition(x, y);
 
 		App->scene->mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			App->render->camera.y += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			App->render->camera.y -= 500 * dt;
-		}
+		if (moveCamera)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+				App->render->camera.y += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				App->render->camera.y -= 500 * dt;
+			}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-			App->render->camera.x += 500 * dt;
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			App->render->camera.x -= 500 * dt;
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				App->render->camera.x += 500 * dt;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				App->render->camera.x -= 500 * dt;
+			}
 		}
 
 		//Camera Limits
@@ -205,7 +208,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	// Step 3
 	if (ActualState == ST_Tutorial_Q3)
 	{
-		//MinimapActive = true;
 
 		if (createUI)
 		{
@@ -273,6 +275,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	// Step 7
 	if (ActualState == ST_Tutorial_Q7)
 	{
+		MinimapActive = true;
+		moveCamera = true;
+
 		if (createUI)
 		{
 			createUI = false;

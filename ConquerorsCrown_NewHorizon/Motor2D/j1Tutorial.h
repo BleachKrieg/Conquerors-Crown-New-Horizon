@@ -129,6 +129,9 @@ public:
 	// Minimap
 	bool MinimapActive;
 
+	// Camera
+	bool moveCamera;
+
 };
 
 #endif // __j1TUTORIAL_H__
