@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include "p2Log.h"
 #include "GoldMine.h"
+#include "Emiter.h"
+#include "ParticleSystem.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 
@@ -171,7 +173,23 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
+ParticleSystem* j1EntityManager::CreateParticleSys(int posx, int posy)
+{
+	ParticleSystem* particleSystem = new ParticleSystem(posx, posy);
+	SDL_Rect rect = { 0, 0, 10, 400 };
+	SDL_Rect rect2 = { 0, 0, 550, 10 };
 
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
+	anim.Reset();
+	Emiter emiter(posx, posy, 0, 2, 0, -5, 0, 0, 0, 1, 5, 0, 50, 1, nullptr, App->tex->Load("Assets/textures/particles/redParticle.png"), anim, true);
+
+	particleSystem->PushEmiter(emiter);
+	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	entities.push_back(ret);
+
+	return particleSystem;
+}
 bool j1EntityManager::DeleteAllEntities()
 {
 

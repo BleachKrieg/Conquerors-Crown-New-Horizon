@@ -113,6 +113,15 @@
     <ClCompile Include="Ogre_Enemy.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="Emiter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
@@ -246,6 +255,15 @@
     <ClInclude Include="Ogre_Enemy.h">
       <Filter>Entities\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="Emiter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Classes">
@@ -274,6 +292,9 @@
     </Filter>
     <Filter Include="Entities\Static">
       <UniqueIdentifier>{95177c3e-480e-487e-b6a1-c97f71a986c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{6bc08275-bf8c-4b1b-961e-d85df31a3ca8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

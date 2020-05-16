@@ -14,6 +14,7 @@
 using namespace std;
 
 struct SDL_Texture;
+class ParticleSystem;
 
 class j1EntityManager : public j1Module
 {
@@ -43,6 +44,8 @@ public:
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
 	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
+
+	ParticleSystem* CreateParticleSys( int posx = 0, int posy = 0);
 
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
