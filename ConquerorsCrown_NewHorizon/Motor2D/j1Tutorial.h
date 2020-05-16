@@ -16,6 +16,7 @@ class GuiItem;
 
 enum Tutorial_states
 {
+	ST_Tutorial_Q0,
 	ST_Tutorial_Q1,
 	ST_Tutorial_Q2,
 	ST_Tutorial_Q3,
@@ -63,6 +64,7 @@ public:
 	bool deleteUI(int step);
 
 	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
+
 public:
 
 	Tutorial_states ActualState;
@@ -78,8 +80,6 @@ public:
 	GuiItem* PopUpButton;
 	GuiItem* Uther_Image;
 
-
-
 	// Step_1
 	GuiItem* Question_1_text;
 	GuiItem* Button_Yes;
@@ -87,16 +87,16 @@ public:
 	GuiItem* Button_No;
 	GuiItem* Button_No_Text;
 
-
 	bool createUI;
 
-	iPoint	 ingameUIPosition;
+	iPoint ingameUIPosition;
 
 	// Minimap
 	bool MinimapActive;
 
 	// Camera
 	bool moveCamera;
+
 
 };
 

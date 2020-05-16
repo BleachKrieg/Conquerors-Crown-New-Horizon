@@ -17,6 +17,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1Tutorial.h"
+#include "j1CutsceneManager.h"
 
 
 j1Tutorial::j1Tutorial() : j1Module()
@@ -44,7 +45,7 @@ bool j1Tutorial::Start()
 	bool ret = true;
 	createUI = true;
 	MinimapActive = false;
-	moveCamera = false;
+	moveCamera = true;
 
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
@@ -52,7 +53,7 @@ bool j1Tutorial::Start()
 	Button_No_Text = nullptr;
 	Question_1_text = nullptr;
 
-	ActualState = ST_Tutorial_Q1;
+	ActualState = ST_Tutorial_Q0;
 
 	return ret;
 }
@@ -71,7 +72,7 @@ bool j1Tutorial::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
-
+	//LOG("%i, %i", App->render->camera.x, App->render->camera.y);
 	if (App->scene->current_scene == scenes::tutorial)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -158,7 +159,6 @@ bool j1Tutorial::Update(float dt)
 		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
 		
 		CheckTutorialStep(dt);
-
 	}
 
 
@@ -167,6 +167,19 @@ bool j1Tutorial::Update(float dt)
 
 void j1Tutorial::CheckTutorialStep(float dt)
 {
+	if (ActualState == ST_Tutorial_Q0)
+	{
+
+		App->cutscene->StartCutscene("Tutorial1");
+		
+
+		if (App->render->camera.x == -428 && App->render->camera.y == -339) 
+		{
+			ActualState = ST_Tutorial_Q1;
+		}
+		
+	}
+
 	// Step 1
 	if (ActualState == ST_Tutorial_Q1)
 	{
@@ -207,7 +220,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 
 			// Create TownHall
 			App->scene->active = true;
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 835, 725);
 			App->scene->active = false;
 			CreatePopUpMessage(480, 96, " ", "Here's your Townhall,", "the most important building", "Also, there's 3 types of resources:", " wood, stone and gold", " ");
 		}
