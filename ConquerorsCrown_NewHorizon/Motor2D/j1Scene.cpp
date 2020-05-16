@@ -203,11 +203,6 @@ bool j1Scene::Update(float dt)
 				App->render->camera.x -= 500 * dt;
 			}
 		}
-
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-			CreatePopUpMessage(20, 46, "Test Title", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text");
-		}
-
 		//Camera Limits
 		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
@@ -327,17 +322,6 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
-		//Mouse input for UI buttons
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-			if (App->entity->IsSomethingSelected())
-			{
-				if (townHallButton != nullptr) ret = DeleteButtonsUI();
-			}
-			else
-			{
-				if (townHallButton == nullptr) ret = CreateButtonsUI();
-			}
-		}
 		break;
 	case scenes::ingame:
 
@@ -640,7 +624,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
-	if (ret) ret = CreateButtonsUI();
+	//if (ret) ret = CreateButtonsUI();
 	
 
 	return ret;
@@ -857,33 +841,33 @@ bool j1Scene::CreateInGame()
 
 bool j1Scene::CreateButtonsUI()
 {
-	townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
-	townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
-	
-	townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
-	townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
-	
+		townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
+		townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
+
+		townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
+		townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
 	return true;
 }
 
 bool j1Scene::DeleteButtonsUI()
 {
-	//a veces hay crash aqui
-	townHallWoodCostImage->to_delete = true;
-	townHallStoneCostImage->to_delete = true;
-	townHallWoodCostText->to_delete = true;
-	townHallStoneCostText->to_delete = true;
-	townHallButton->to_delete = true;
+	//there are crahses sometimes in this code xD
 
-	townHallWoodCostImage = nullptr;
-	townHallStoneCostImage = nullptr;
-	townHallWoodCostText = nullptr;
-	townHallStoneCostText = nullptr;
-	townHallButton = nullptr;
+		townHallWoodCostImage->to_delete = true;
+		townHallStoneCostImage->to_delete = true;
+		townHallWoodCostText->to_delete = true;
+		townHallStoneCostText->to_delete = true;
+		townHallButton->to_delete = true;
 
+		townHallWoodCostImage = nullptr;
+		townHallStoneCostImage = nullptr;
+		townHallWoodCostText = nullptr;
+		townHallStoneCostText = nullptr;
+		townHallButton = nullptr;
+	
 	return true;
 }
 
@@ -1033,6 +1017,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	{
 		//Menu buttons
 		if (guiElement == menuButtonNewGame) {
+			App->tutorial->ActualState = ST_Tutorial_Q1;
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::tutorial, 2.0f);
@@ -1093,16 +1078,6 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 
 			pauseMenu = !pauseMenu;
 		}
-		else if (guiElement == PopUpButton) {
-			PopUpImage->to_delete = true;
-			PopUpTitleText->to_delete = true;
-			PopUpText1->to_delete = true;
-			PopUpText2->to_delete = true;
-			PopUpText3->to_delete = true;
-			PopUpText4->to_delete = true;
-			PopUpText5->to_delete = true;
-			PopUpButton->to_delete = true;
-		}
 		else if (guiElement == townHallButton) {
 			App->audio->PlayFx(-1, App->audio->normal_click, 0);
 			if (!Building_preview && !App->entity->IsSomethingSelected())
@@ -1151,19 +1126,6 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 	}
-}
-
-void j1Scene::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
-{
-	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2620, 0, 266, 209 }, ingameTopBar);
-	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
-	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text1, App->font->xs_font);
-	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text2, App->font->xs_font);
-	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text3, App->font->xs_font);
-	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 222, y + 8, { 2590, 0, 30, 30 }, ingameTopBar, this);
-	PopUpButton->setRects({ 2560, 0, 30, 30 }, { 2229, 0, 30, 30 });
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 

@@ -102,7 +102,7 @@ bool j1Minimap::PreUpdate(float dt) {
 	if (input)		
 	{
 		//TODO 7: Move the camera when the player clicks on the minimap or scrolls the mouse on it while holding the left button
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT))
+		if (((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)) && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true))
 		{
 			App->input->GetMousePosition(mouse_x, mouse_y);
 			SDL_Rect minimap = { App->minimap->position.x, App->minimap->position.y, App->minimap->width, App->minimap->height };

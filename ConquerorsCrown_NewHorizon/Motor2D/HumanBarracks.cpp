@@ -349,7 +349,7 @@ void HumanBarracks::checkAnimation(float dt)
 
 		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q8)
 		{
-			App->tutorial->deleteUI(8);
+			App->tutorial->deleteUI(0);
 			App->tutorial->ActualState = ST_Tutorial_Q9;
 		}
 

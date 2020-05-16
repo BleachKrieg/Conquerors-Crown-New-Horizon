@@ -601,7 +601,7 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			{
 				App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 				App->tutorial->ActualState = ST_Tutorial_Q5;
-				App->tutorial->deleteUI(4);
+				App->tutorial->deleteUI(0);
 			}
 		}
 		isSelected = true;
