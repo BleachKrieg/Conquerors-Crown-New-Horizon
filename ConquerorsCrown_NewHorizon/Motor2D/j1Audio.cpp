@@ -78,7 +78,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
-	die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
+	die_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
 	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	die_grunt = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Grunt/Grunt_Death.wav");
 	die_ogre = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Ogre/Ogre_Death_1.wav");
