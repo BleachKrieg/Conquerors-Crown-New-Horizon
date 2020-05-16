@@ -90,7 +90,6 @@ public:
 public:
 
 	CutsceneObject	cinematic_camera;
-	CutsceneObject	camera;
 	BlackBars black_bars;
 
 	pugi::xml_document data;
