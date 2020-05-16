@@ -15,6 +15,7 @@ class GuiItem;
 
 enum Tutorial_states
 {
+	ST_Tutorial_Q0,
 	ST_Tutorial_Q1,
 	ST_Tutorial_Q2,
 	ST_Tutorial_Q3,

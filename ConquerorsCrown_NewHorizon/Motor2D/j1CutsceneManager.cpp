@@ -42,6 +42,7 @@ bool j1CutsceneManager::Start()
 	cutsceneManager = data.document_element();
 
 	cinematic_camera.active = false;
+	camera.active = false;
 
 	LOG("Starting Cutscene Manager");
 
@@ -51,11 +52,16 @@ bool j1CutsceneManager::Start()
 // Called each loop iteration
 bool j1CutsceneManager::Update(float dt)
 {
-	if (cinematic_camera.active) 
+
+	if (cinematic_camera.active)
 	{
 		DoCutscene(cinematic_camera, App->render->camera_pos);
 	}
 
+	if (camera.active)
+	{
+		DoCutscene(camera, App->render->camera_pos);
+	}
 	return true;
 }
 
@@ -142,13 +148,20 @@ bool j1CutsceneManager::LoadSteps(pugi::xml_node node)
 		s->speed.x = step.attribute("vel_x").as_int();
 		s->speed.y = step.attribute("vel_y").as_int();
 
-		if (s->objective == "c")
+		if (s->objective == "camera")
+		{
+			camera.steps.push_front(*s);
+			camera.active = true;
+		}
+
+		if (s->objective == "cinematic_camera")
 		{
 			cinematic_camera.steps.push_front(*s);
 			cinematic_camera.active = true;
+			if (black_bars.phase == None) { black_bars.phase = FadeIn; }
 		}
 	}
-	if (black_bars.phase == None) { black_bars.phase = FadeIn; }
+
 	delete s;
 
 	return true;
@@ -275,7 +288,6 @@ void j1CutsceneManager::FinishCutscene(CutsceneObject& object)
 	App->minimap->visible = true;
 	App->scene->UiEnabled = true;
 	App->minimap->input = true;
-
 }
 
 bool j1CutsceneManager::SomethingActive()

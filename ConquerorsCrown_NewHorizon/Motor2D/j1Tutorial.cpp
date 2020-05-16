@@ -17,6 +17,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1Tutorial.h"
+#include "j1CutsceneManager.h"
 
 
 j1Tutorial::j1Tutorial() : j1Module()
@@ -52,7 +53,7 @@ bool j1Tutorial::Start()
 	Button_No_Text = nullptr;
 	Question_1_text = nullptr;
 
-	ActualState = ST_Tutorial_Q1;
+	ActualState = ST_Tutorial_Q0;
 
 	return ret;
 }
@@ -161,12 +162,31 @@ bool j1Tutorial::Update(float dt)
 
 	}
 
+	LOG("%i, %i", App->render->camera.x, App->render->camera.y);
+
 
 	return true;
 }
 
 void j1Tutorial::CheckTutorialStep(float dt)
 {
+	// Step 0
+	if (ActualState == ST_Tutorial_Q0)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			App->cutscene->StartCutscene("Tutorial1");
+		}
+
+		if (App->render->camera.x == -428 && App->render->camera.y == -339)
+		{
+			createUI = true;
+			ActualState = ST_Tutorial_Q1;
+		}
+	}
+
 	// Step 1
 	if (ActualState == ST_Tutorial_Q1)
 	{
@@ -221,7 +241,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 
 			// Create TownHall
 			App->scene->active = true;
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 820, 720);
 			App->scene->active = false;
 
 			CreatePopUpMessage(480, 96, "Uther", "Here's your Townhall, the", "most important building.", "Here you can recuit gatherers,", "units that are made to collect", "resources!");

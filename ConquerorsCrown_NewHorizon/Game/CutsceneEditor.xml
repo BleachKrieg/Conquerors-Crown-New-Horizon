@@ -9,5 +9,19 @@
     <step
       objective="c" x="-1000" y="-1500" vel_x="2" vel_y="2"></step>
   </cutscene>
+
+  <cutscene
+    name="Tutorial1">
+    <step
+      objective="cinematic_camera" x="-428" y="-339" vel_x="1" vel_y="2"></step>
+  </cutscene>
+
+  <cutscene
+    name="Tutorial2">
+    <step
+      objective="camera" x="-2000" y="-2000" vel_x="2" vel_y="2"></step>
+    <step
+      objective="camera" x="-1000" y="-1500" vel_x="2" vel_y="2"></step>
+  </cutscene>
   
 </CutsceneEditor>

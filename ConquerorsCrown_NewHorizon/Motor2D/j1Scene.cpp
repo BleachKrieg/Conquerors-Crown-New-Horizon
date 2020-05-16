@@ -518,6 +518,8 @@ void j1Scene::CreateScene(scenes next_scene) {
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;
+		App->render->camera.x = 0;
+		App->render->camera.y = -1136;
 		finish = false;
 		break;
 	case scenes::ingame:
@@ -1017,7 +1019,8 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	{
 		//Menu buttons
 		if (guiElement == menuButtonNewGame) {
-			App->tutorial->ActualState = ST_Tutorial_Q1;
+			
+			App->tutorial->ActualState = ST_Tutorial_Q0;
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::tutorial, 2.0f);
