@@ -193,7 +193,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 			
-			CreatePopUpMessage(480, 96, "I'm Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
+			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
 	}
 
@@ -205,11 +205,10 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			// Create TownHall
-			App->scene->active = true;
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
-			App->scene->active = false;
-			CreatePopUpMessage(480, 96, " ", "Here's your Townhall,", "the most important building", "Also, there's 3 types of resources:", " wood, stone and gold", " ");
+			CreatePopUpMessage(480, 105, "Uther", "In this game you have 3 types of", "resources: gold, wood and stone.", "With this materials you can", "construct buildings or recuit", "troops.");
+			Arrow_1 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_2 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_3 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -220,9 +219,12 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			App->scene->AddResource("wood", 100);
-			App->scene->AddResource("gold", 100);
-			CreatePopUpMessage(480, 96, " ", "We've added you some resources!", "Now click the Townhall and ", "create a gatherer clicking on ", "his icon ", " ");
+			// Create TownHall
+			App->scene->active = true;
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
+			App->scene->active = false;
+
+			CreatePopUpMessage(480, 96, "Uther", "Here's your Townhall, the", "most important building.", "Here you can recuit gatherers,", "units that are made to collect", "resources!");
 		}
 	}
 
@@ -233,7 +235,10 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			CreatePopUpMessage(480, 96, " ", "Well done!", "In order to create buildings ", " and units, you'll need to ", "get more resources ", " ");
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("gold", 100);
+			CreatePopUpMessage(480, 96, "Uther", "We've added you some resources!", "Now, click the Townhall and", "create a gatherer clicking", "his icon.", " ");
+			Arrow_4 = App->gui->CreateGuiElement(Types::image, 260, 150, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -243,20 +248,18 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, " ", "You can send your gatherer to ", "collect resources! ", " and units, you'll need to ", "Click your gatherer and then click ", "on the forest to collect wood ");
+			CreatePopUpMessage(480, 96, "Uther", "Good job!", "In order to create buildings and", "units, you'll need to get more", "resources!", " ");
 		}
 	}
 
 	// Step 7
 	if (ActualState == ST_Tutorial_Q7)
 	{
-		MinimapActive = true;
-		moveCamera = true;
 
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, " ", "The gatherer will automatically collect the  ", " resources and bring them back to the Townhall ", " and units, you'll need to ", "You can click on the stone to collect ", "it or the mine to collect gold");
+			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "click on it and then click", "on the resource you want to", "collect.");
 		}
 	}
 
@@ -266,7 +269,10 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, " ", "Now that you know the basics  ", "try to create a barrack! ", " and units, you'll need to ", "Pro tip: You can create more gatherers ", " to collect more resources");
+			CreatePopUpMessage(480, 96, "Uther", "If you click on the trees, the", "gatherer will collect wood, on", "the rock for stone and on the", "mine for gold.", " ");
+			Arrow_5 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_6 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_7 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -276,25 +282,38 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, " ", "Oh no! There's an horde that wants", "to attack our village!", "Collect resources and recuit some swordman ", "to attack them before they attack you! ", " to collect more resources");	
-			// Spawn enemies
+			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack fom the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
 		}
 	}
 
 	// Step 10
 	if (ActualState == ST_Tutorial_Q10)
 	{
+
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, " ", "Good job!", "You've defended the village!", "Now you can go to the real fight!", " ", " ");
+			CreatePopUpMessage(480, 96, "Uther", "Well done!", "Now create a swordman to", "defend yourself from enemies!", "Pro tip: Upgrade the barrack", "to recuit different units.");
 		}
 	}
+
+	// Step 11
+	if (ActualState == ST_Tutorial_Q11)
+	{
+		MinimapActive = true;
+		moveCamera = true;
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
+		}
+	}
+
 	if (ActualState == ST_Tutorial_Finished && App->scene->current_scene == scenes::tutorial)
 	{
 		App->scene->current_scene = scenes::ingame;
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
-		
 	}
 }
 
@@ -309,7 +328,7 @@ void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, 
 	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
 	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
 
-	if (ActualState != ST_Tutorial_Q4 && ActualState != ST_Tutorial_Q8)
+	if (ActualState != ST_Tutorial_Q5)
 	{
 		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
 		PopUpButton->setRects({ 541, 125, 58, 50 }, { 600, 125, 58, 50 });
@@ -362,9 +381,9 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		{
 			ActualState = ST_Tutorial_Q4;
 		}
-		else if (ActualState == ST_Tutorial_Q5)
+		else if (ActualState == ST_Tutorial_Q4)
 		{
-			ActualState = ST_Tutorial_Q6;
+			ActualState = ST_Tutorial_Q5;
 		}
 		else if (ActualState == ST_Tutorial_Q6)
 		{
@@ -374,9 +393,25 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		{
 			ActualState = ST_Tutorial_Q8;
 		}
+		else if (ActualState == ST_Tutorial_Q8)
+		{
+			ActualState = ST_Tutorial_Q9;
+		}
 		else if (ActualState == ST_Tutorial_Q9)
 		{
-			ActualState = ST_Tutorial_Q10;
+			ActualState = ST_Tutorial_Q9_1;
+		}
+		else if (ActualState == ST_Tutorial_Q10)
+		{
+			ActualState = ST_Tutorial_Q10_1;
+		}
+		else if (ActualState == ST_Tutorial_Q11)
+		{
+			ActualState = ST_Tutorial_Q11_1;
+		}
+		else if (ActualState == ST_Tutorial_Q12)
+		{
+			ActualState = ST_Tutorial_Q13;
 		}
 		else if(ActualState == ST_Tutorial_Q10)
 		{
@@ -426,6 +461,7 @@ bool j1Tutorial::deleteUI(int step)
 		{
 			PopUpButton->to_delete = true;
 		}
+
 		Uther_Image = nullptr;
 		PopUpImage = nullptr;
 		PopUpTitleText = nullptr;
@@ -435,6 +471,25 @@ bool j1Tutorial::deleteUI(int step)
 		PopUpText4 = nullptr;
 		PopUpText5 = nullptr;
 		PopUpButton = nullptr;
+
+		if (ActualState == ST_Tutorial_Q3)
+		{
+			Arrow_1->to_delete = true;
+			Arrow_1 = nullptr;
+			Arrow_2->to_delete = true;
+			Arrow_2 = nullptr;
+			Arrow_3->to_delete = true;
+			Arrow_3 = nullptr;
+		}
+		if (ActualState == ST_Tutorial_Q8)
+		{
+			Arrow_5->to_delete = true;
+			Arrow_5 = nullptr;
+			Arrow_6->to_delete = true;
+			Arrow_6 = nullptr;
+			Arrow_7->to_delete = true;
+			Arrow_7 = nullptr;
+		}
 	}
 	return true;
 }

@@ -7,7 +7,6 @@
 #include "SDL/include/SDL.h"
 #include "j1Timer.h"
 
-
 struct SDL_Texture;
 class j1Entity;
 class DynamicEnt;
@@ -25,7 +24,17 @@ enum Tutorial_states
 	ST_Tutorial_Q7,
 	ST_Tutorial_Q8,
 	ST_Tutorial_Q9,
+	ST_Tutorial_Q9_1,
 	ST_Tutorial_Q10,
+	ST_Tutorial_Q10_1,
+	ST_Tutorial_Q11,
+	ST_Tutorial_Q11_1,
+	ST_Tutorial_Q12,
+	ST_Tutorial_Q13,
+	ST_Tutorial_Q14,
+	ST_Tutorial_Q15,
+	ST_Tutorial_Q16,
+	ST_Tutorial_Q17,
 	ST_Tutorial_Finished
 };
 
@@ -78,8 +87,6 @@ public:
 	GuiItem* PopUpButton;
 	GuiItem* Uther_Image;
 
-
-
 	// Step_1
 	GuiItem* Question_1_text;
 	GuiItem* Button_Yes;
@@ -87,6 +94,15 @@ public:
 	GuiItem* Button_No;
 	GuiItem* Button_No_Text;
 
+	// Arrows
+	GuiItem* Arrow_1;
+	GuiItem* Arrow_2;
+	GuiItem* Arrow_3;
+	GuiItem* Arrow_4;
+	GuiItem* Arrow_5;
+	GuiItem* Arrow_5_1;
+	GuiItem* Arrow_6;
+	GuiItem* Arrow_7;
 
 	bool createUI;
 
@@ -97,7 +113,6 @@ public:
 
 	// Camera
 	bool moveCamera;
-
 };
 
 #endif // __j1TUTORIAL_H__
