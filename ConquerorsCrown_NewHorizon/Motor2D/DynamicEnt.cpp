@@ -186,21 +186,13 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 							App->entity->max_audio_attacks++;
 
 						}
+						
 						if (entity_type == DynamicEntityType::ENEMY_TROLL) {
-							SpatialAudio(5, App->audio->troll_attack, position.x, position.y);
+							SpatialAudio(4, App->audio->troll_attack, position.x, position.y);
 							App->entity->max_audio_attacks++;
 
 						}
-						if (entity_type == DynamicEntityType::ENEMY_GRUNT) {
-							SpatialAudio(6, App->audio->grunt_attack, position.x, position.y);
-							App->entity->max_audio_attacks++;
-
-						}
-						if (entity_type == DynamicEntityType::ENEMY_OGRE) {
-							SpatialAudio(7, App->audio->ogre_attack, position.x, position.y);
-							App->entity->max_audio_attacks++;
-
-						}
+						
 					}
 					
 				}
@@ -472,24 +464,18 @@ void DynamicEnt::Death(DynamicEntityType entity_type)
 	death_counter++;
 	if (death_counter == 2) {
 		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
-			SpatialAudio(8, App->audio->die_archer, position.x, position.y);
+			SpatialAudio(6, App->audio->die_archer, position.x, position.y);
 
 		}
 		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
-			SpatialAudio(8, App->audio->die_footman, position.x, position.y);
+			SpatialAudio(7, App->audio->die_footman, position.x, position.y);
 		}
-		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
+		/*if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
 			SpatialAudio(8, App->audio->die_gatherer, position.x, position.y);
-		}
+		}*/
 		if (entity_type == DynamicEntityType::ENEMY_TROLL) {
-			SpatialAudio(8, App->audio->die_troll, position.x, position.y);
-		}	
-		if (entity_type == DynamicEntityType::ENEMY_GRUNT) {
-			SpatialAudio(8, App->audio->die_grunt, position.x, position.y);
-		}
-		if (entity_type == DynamicEntityType::ENEMY_OGRE) {
-			SpatialAudio(8, App->audio->die_ogre, position.x, position.y);
-		}
+			SpatialAudio(9, App->audio->die_troll, position.x, position.y);
+		}		
 	}
 //	LOG("DEATH: %i", death_counter);
 	if (current_animation->Finished() == true) { to_delete = true; }
