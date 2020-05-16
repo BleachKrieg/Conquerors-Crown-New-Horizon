@@ -58,25 +58,31 @@ public:
 
 	int construction;
 	int cancel_building;
-	int select_footman;
-	int select_archer;
-	int select_gatherer;
 	int go_footman;
 	int go_archer;
 	int go_gatherer;
 	int footman_attack;
 	int archer_attack;
 	int troll_attack;
+	int grunt_attack;
+	int ogre_attack;
 	int wood_gatherer;
 	int mine_gatherer;
 	int die_footman;
 	int die_archer;
 	int die_gatherer;
 	int die_troll;
+	int die_grunt;
+	int die_ogre;
 
 	int click_to_play;
 	int normal_click;
+	int pause_fx;
+
 	int upgrade_complete;
+	int quest_complete;
+	int quest_failed;
+	int tutorial_complete;
 
 	int logo_game_fx;
 	int logo_team_fx;

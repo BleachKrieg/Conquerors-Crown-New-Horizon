@@ -41,7 +41,7 @@ GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	team = TeamType::IA;
 	target_entity = nullptr;
 	state = DynamicState::IDLE;
-	entity_type = DynamicEntityType::ENEMY_OGRE;
+	entity_type = DynamicEntityType::ENEMY_GRUNT;
 
 
 	// TODO ------------------------------------------

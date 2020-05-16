@@ -599,6 +599,7 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 
 			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q4)
 			{
+				App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 				App->tutorial->ActualState = ST_Tutorial_Q5;
 				App->tutorial->deleteUI(0);
 			}
