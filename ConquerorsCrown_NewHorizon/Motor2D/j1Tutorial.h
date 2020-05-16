@@ -28,7 +28,6 @@ enum Tutorial_states
 	ST_Tutorial_Q10,
 	ST_Tutorial_Q10_1,
 	ST_Tutorial_Q11,
-	ST_Tutorial_Q11_1,
 	ST_Tutorial_Q12,
 	ST_Tutorial_Q13,
 	ST_Tutorial_Q14,

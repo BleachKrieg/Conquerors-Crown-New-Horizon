@@ -300,13 +300,68 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	// Step 11
 	if (ActualState == ST_Tutorial_Q11)
 	{
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
+		}
+	}
+
+	// Step 12
+	if (ActualState == ST_Tutorial_Q12)
+	{
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's sending an", "hord towards us!", "Quick, recuit more swordmans", "and defend our village!", " ");
+		}
+	}
+
+	// Step 13
+	if (ActualState == ST_Tutorial_Q13)
+	{
 		MinimapActive = true;
 		moveCamera = true;
 
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
+			CreatePopUpMessage(480, 96, "Uther", "You can click on the minimap ", "or use the WASD keys in", "order to move around the ", "map and see if the", "horde is close to us!");
+		}
+	}
+
+	// Step 14
+	if (ActualState == ST_Tutorial_Q14)
+	{
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Uther", "NOW", "FIGHT", "FOR THE ALLIANCE!", " ", " ");
+		}
+	}
+
+	// Step 15
+	if (ActualState == ST_Tutorial_Q15)
+	{
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Gul'dan", "I'll be back...", " ", " ", " ", " ");
+		}
+	}
+
+	// Step 16
+	if (ActualState == ST_Tutorial_Q16)
+	{
+
+		if (createUI)
+		{
+			createUI = false;
+			CreatePopUpMessage(480, 96, "Uther", "Well done, you're our hero!", "Now go to the new lands", "and fight more orcs!", " ", " ");
 		}
 	}
 
@@ -320,11 +375,26 @@ void j1Tutorial::CheckTutorialStep(float dt)
 void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
 {
 	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2620, 0, 356, 209 }, App->scene->ingameTopBar);
-	Uther_Image = App->gui->CreateGuiElement(Types::image, 818, 124, { 2573, 343, 497, 368 }, App->scene->ingameTopBar);
+	if (ActualState != ST_Tutorial_Q11 && ActualState != ST_Tutorial_Q15)
+	{
+		Uther_Image = App->gui->CreateGuiElement(Types::image, 818, 124, { 2573, 343, 497, 368 }, App->scene->ingameTopBar);
+	}
+	else //Guldan image
+	{
+		Uther_Image = App->gui->CreateGuiElement(Types::image, 876, 62, { 2898, 804, 412, 416 }, App->scene->ingameTopBar);
+	}
 	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, titletext, App->font->smallfont);
 	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text1, App->font->xs_font);
 	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text2, App->font->xs_font);
-	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->xs_font);
+	
+	if (ActualState != ST_Tutorial_Q14)
+	{
+		PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->xs_font);
+	} 
+	else
+	{
+		PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->defaultfont);
+	}
 	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
 	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
 
@@ -407,13 +477,25 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		}
 		else if (ActualState == ST_Tutorial_Q11)
 		{
-			ActualState = ST_Tutorial_Q11_1;
+			ActualState = ST_Tutorial_Q12;
 		}
 		else if (ActualState == ST_Tutorial_Q12)
 		{
 			ActualState = ST_Tutorial_Q13;
 		}
-		else if(ActualState == ST_Tutorial_Q10)
+		else if (ActualState == ST_Tutorial_Q13)
+		{
+			ActualState = ST_Tutorial_Q14;
+		}
+		else if (ActualState == ST_Tutorial_Q14)
+		{
+			ActualState = ST_Tutorial_Q15;
+		}
+		else if (ActualState == ST_Tutorial_Q15)
+		{
+			ActualState = ST_Tutorial_Q16;
+		}
+		else if(ActualState == ST_Tutorial_Q16)
 		{
 			ActualState = ST_Tutorial_Finished;
 		}
