@@ -333,9 +333,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 			CreatePopUpMessage(480, 96, "Uther", "If you click on the trees, the", "gatherer will collect wood, on", "the rock for stone and on the", "mine for gold.", " ");
-			Arrow_5 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
-			Arrow_6 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
-			Arrow_7 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_5 = App->gui->CreateGuiElement(Types::image, 120, 290, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_6 = App->gui->CreateGuiElement(Types::image, 850, 100, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_7 = App->gui->CreateGuiElement(Types::image, 800, 360, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
