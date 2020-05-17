@@ -221,7 +221,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			createUI = true;
 			ActualState = ST_Tutorial_Q1_1;
 		}
-		LOG("%i, %i", App->scene->mouse_position.x, App->scene->mouse_position.y);
 	}
 
 	// Step 1
@@ -230,8 +229,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			App->cutscene->StartCutscene("Tutorial2");
 		}
 
 		if (App->render->camera.x == -576 && App->render->camera.y == -281)
@@ -366,12 +363,15 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	// Step 11
 	if (ActualState == ST_Tutorial_Q11)
 	{
-
 		if (createUI)
 		{
 			createUI = false;
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
+
+			App->cutscene->StartCutscene("Tutorial3");
 		}
+
+
 	}
 
 	// Step 12
