@@ -143,9 +143,12 @@ bool j1Minimap::Update(float dt) {
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		if (visible) 
 		{
-			//Fog of war in minimap
-			SDL_Rect section{ 0, 0, 225, 225 };
-			App->render->Blit(App->fowManager->minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
+			if (App->scene->current_scene == scenes::ingame && App->tutorial->MinimapActive == false)
+			{
+				//Fog of war in minimap
+				SDL_Rect section{ 0, 0, 225, 225 };
+				App->render->Blit(App->fowManager->minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
+			}
 			//Camera rectangle in minimap
 			App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
 		}
