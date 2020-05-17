@@ -103,7 +103,8 @@ bool j1EntityManager::Update(float dt)
 		mine->mine_lights = MINE_LIGHTS::LIGHTS_ON;
 	if (!lights && mine != nullptr)
 		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
-	
+
+	LOG("entities: %d", entities.size());
 	return true;
 }
 
@@ -186,6 +187,7 @@ ParticleSystem* j1EntityManager::CreateParticleSys(int posx, int posy)
 
 	particleSystem->PushEmiter(emiter);
 	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	ret->to_delete = false;
 	entities.push_back(ret);
 
 	return particleSystem;
