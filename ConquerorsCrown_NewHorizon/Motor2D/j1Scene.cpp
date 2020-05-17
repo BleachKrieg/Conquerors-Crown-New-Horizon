@@ -272,8 +272,8 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 			{
 				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", +100);
-				App->scene->AddResource("gold", +100);
+				App->scene->AddResource("stone", 100);
+				App->scene->AddResource("gold", 100);
 			}
 		}
 

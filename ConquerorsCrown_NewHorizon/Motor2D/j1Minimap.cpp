@@ -140,7 +140,6 @@ bool j1Minimap::Update(float dt) {
 	//TODO 4.2: Using WorldToMinimap create a white rect which represents the area that the camera records of the world onto the minimap 
 	if (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial && App->tutorial->MinimapActive == true)
 	{
-		SDL_Rect rect = { 0,0,0,0 };
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		if (visible) 
 		{
