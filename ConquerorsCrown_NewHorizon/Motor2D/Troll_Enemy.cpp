@@ -22,7 +22,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 80;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1400;
