@@ -100,6 +100,9 @@ private:
 	SDL_Texture* victoryLogo;
 	SDL_Texture* defeatLogo;
 	SDL_Texture* teamLogoSheet;
+	SDL_Texture* video_texture;
+	SDL_Texture* videologo_tex;
+	Animation* loader;
 	Animation* current_animation = nullptr;
 	Animation logo;
 	Animation team_logo;
@@ -220,12 +223,16 @@ public:
 	string mins;
 	string secs;
 	bool finish = false;
+	bool loop = false;
+	float last_dt;
 
 	bool active;
 
 	// Tutorial
 	bool tutorial;
 	j1Timer TutorialTimer;
+
+	int intro_video;
 
 	int camera_limit_x2;
 	int camera_limit_y2;

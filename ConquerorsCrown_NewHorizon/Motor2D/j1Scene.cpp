@@ -18,7 +18,7 @@
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
 #include "j1Tutorial.h"
-
+#include "j1Video.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -69,6 +69,10 @@ bool j1Scene::Start()
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
 
+	App->audio->PlayFx(1, App->audio->intro_fx, 0);
+	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+	loop = true;
+
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
@@ -92,6 +96,7 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 	
+	last_dt = dt;
 
 	switch (current_scene) 
 	{
@@ -351,7 +356,7 @@ bool j1Scene::PostUpdate(float dt)
 		}
 		break;
 	case scenes::logo:
-		if (logoTimer.ReadSec() <= 4.5) {
+		/*if (logoTimer.ReadSec() <= 4.5) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
@@ -375,7 +380,37 @@ bool j1Scene::PostUpdate(float dt)
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 			alpha -= 5;
 			if (alpha < 0) { alpha = 0; }
+		}*/
+
+		//video
+		if (intro_video != 0)
+		{
+			video_texture = App->video->UpdateVideo(intro_video);
+
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(intro_video) == 0)
+			{
+				App->video->DestroyVideo(intro_video);
+				intro_video = 0;
+			}
 		}
+
+
+		if (intro_video == 0 && loop)
+		{
+			intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+
+
+		}
+
+		if (!loop)
+		{
+
+			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
+
 		break;
 
 	case scenes::victory:
@@ -392,6 +427,8 @@ bool j1Scene::PostUpdate(float dt)
 
 	}
 
+	
+
 	return ret;
 }
 
@@ -399,10 +436,16 @@ bool j1Scene::PostUpdate(float dt)
 bool j1Scene::CleanUp()
 {
 	App->map->CleanUp();
+	bool ret = true;
+	ret = App->tex->UnLoad(video_texture);
+	ret = App->tex->UnLoad(videologo_tex);
+	loader = nullptr;
+
+	
 		
 	LOG("Freeing scene");
 
-	return true;
+	return ret;
 }
 bool j1Scene::Load(pugi::xml_node& data)
 {
@@ -881,6 +924,12 @@ bool j1Scene::DeleteButtonsUI()
 }
 
 bool j1Scene::CreateLogo() {
+	//video
+	App->audio->PlayFx(1, App->audio->intro_fx, 0);
+	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+
+	loop = true;
+
 	//Reseting camera to (0,0) position
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
