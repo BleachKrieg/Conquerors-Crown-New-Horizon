@@ -355,7 +355,7 @@ bool j1Scene::PostUpdate(float dt)
 		}
 		break;
 	case scenes::logo:
-		if (logoTimer.ReadSec() <= 4.5) {
+		if (logoTimer.ReadSec() <= 6.5) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
@@ -388,11 +388,11 @@ bool j1Scene::PostUpdate(float dt)
 
 			}
 		}
-		else if (logoTimer.ReadSec() <= 5.5) {
+		else if (logoTimer.ReadSec() <= 7.0) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
-			App->render->Blit(video_texture, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			//App->render->Blit(video_texture, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 
 			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
