@@ -414,6 +414,13 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
+	if (ActualState == ST_Tutorial_Q14_1)
+	{
+		if (App->entity->ai_dyn_ent.empty()) 
+		{
+			ActualState = ST_Tutorial_Q15;
+		}
+	}
 	// Step 15
 	if (ActualState == ST_Tutorial_Q15)
 	{
@@ -567,7 +574,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		}
 		else if (ActualState == ST_Tutorial_Q14)
 		{
-			ActualState = ST_Tutorial_Q15;
+			ActualState = ST_Tutorial_Q14_1;
 		}
 		else if (ActualState == ST_Tutorial_Q15)
 		{
