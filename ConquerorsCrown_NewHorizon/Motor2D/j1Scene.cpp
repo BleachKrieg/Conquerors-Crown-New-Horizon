@@ -204,13 +204,13 @@ bool j1Scene::Update(float dt)
 			}
 		}
 		//Camera Limits
-		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+		if (App->render->camera.x > 0) App->render->camera.x = 0;
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
-		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
+		if (App->render->camera.x < camera_limit_x) App->render->camera.x = camera_limit_x;
 
-		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
+		if (App->render->camera.y > 0) App->render->camera.y = 0;
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		if (App->render->camera.y < camera_limit_y) App->render->camera.y = camera_limit_y;
 		
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
@@ -272,8 +272,8 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 			{
 				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", +100);
-				App->scene->AddResource("gold", +100);
+				App->scene->AddResource("stone", 100);
+				App->scene->AddResource("gold", 100);
 			}
 		}
 
@@ -530,6 +530,7 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
+		App->minimap->input = true;
 		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
@@ -1152,15 +1153,15 @@ void j1Scene::AddResource(char* typeResource, int quantity)
 	switch (i) {
 	case 1:
 		gold += quantity;
-		ingameTextGold->SetText(to_string(gold).c_str());
+		ingameTextGold->SetText(to_string(gold));
 		break;
 	case 2:
 		wood += quantity;
-		ingameTextWood->SetText(to_string(wood).c_str());
+		ingameTextWood->SetText(to_string(wood));
 		break;
 	case 3:
 		stone += quantity;
-		ingameTextStone->SetText(to_string(stone).c_str());
+		ingameTextStone->SetText(to_string(stone));
 		break;
 	case 0:
 		LOG("The parameter in AddResource is not correct.");
@@ -1179,7 +1180,7 @@ void j1Scene::TimeToClock()
 
 	string str = mins + ":" + secs;
 
-	ingameTextClock->SetText(str.c_str());
+	ingameTextClock->SetText(str);
 }
 
 //Animations

@@ -48,10 +48,10 @@ public:
 	}
 	virtual void setSliderPos(float) {
 	}
-	virtual void SetText(const char*) {
+	virtual void SetText(string) {
 	}
 	
-	virtual const char* GetText() const {
+	virtual string GetText() const {
 		return "none";
 	}
 	virtual GuiItem* GetInputText() const {
@@ -103,11 +103,11 @@ public:
 private:
 	SDL_Color color;
 	_TTF_Font* local_font;
-	const char *text;
+	string text;
 
 public:
-	const char* GetText() const;
-	void SetText(const char*);
+	string GetText() const;
+	void SetText(string);
 };
 
 class GuiButton : public GuiItem
