@@ -260,16 +260,16 @@ void j1WaveSystem::StartWave(int wave)
 
 	if (wave_ongoing == false) {
 		if (wave == 1) { trolls = 12; ogres = 0; grunts = 0; }
-		else if (wave == 5) { trolls = 0; ogres = 12; grunts = 0; }
+		else if (wave == 5) { trolls = 0; ogres = 15; grunts = 0; }
 		else if (wave == 2) {
 			int max_trolls, max_grunts;
 			trolls = grunts = ogres = 0;
 			do {
 				max_trolls = wave_value / troll_value;
-				trolls = trolls + rand() % max_trolls + 1;
+				if (max_trolls > 0) { trolls = trolls + rand() % max_trolls + 1; }
 				wave_value -= trolls * troll_value;
 				max_grunts = wave_value / grunt_value;
-				grunts = grunts + rand() % max_grunts + 1;
+				if (max_grunts > 0) { grunts = grunts + rand() % max_grunts + 1; }
 				wave_value -= grunts * grunt_value;
 			} while (wave_value >= grunt_value);
 		}
@@ -278,13 +278,13 @@ void j1WaveSystem::StartWave(int wave)
 			trolls = grunts = ogres = 0;
 			do {
 				max_trolls = wave_value / troll_value;
-				trolls = trolls + rand() % max_trolls + 1;
+				if (max_trolls > 0) { trolls = trolls + rand() % max_trolls + 1; }
 				wave_value -= trolls * troll_value;
 				max_grunts = wave_value / grunt_value;
-				grunts = grunts + rand() % max_grunts + 1;
+				if (max_grunts > 0) { grunts = grunts + rand() % max_grunts + 1; }
 				wave_value -= grunts * grunt_value;
 				max_ogres = wave_value / ogre_value;
-				ogres = ogres + rand() % max_ogres + 1;
+				if (max_ogres > 0) { ogres = ogres + rand() % max_ogres + 1; }
 				wave_value -= ogres * ogre_value;
 				LOG("Value: %i, Trolls: %i, Grunts: %i, Ogres %i", wave_value, trolls, grunts, ogres);
 			} while (wave_value >= grunt_value);
