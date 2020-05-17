@@ -610,7 +610,7 @@ bool j1Scene::CreateTutorial()
 	}
 	//Creating minimap
 	if (ret) ret = App->minimap->Start();
-
+	
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
@@ -626,6 +626,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
+	LoadTiledEntities();
 	//if (ret) ret = CreateButtonsUI();
 	
 

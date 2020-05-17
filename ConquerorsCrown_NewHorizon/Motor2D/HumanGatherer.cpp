@@ -145,7 +145,7 @@ bool HumanGatherer::Update(float dt)
 			
 			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
-		if (!found && App->input->screen_click)
+		if (!found && App->input->screen_click && work_state != WORK_STATE::GO_TO_TOWNHALL)
 		{
 			OrderPath(entity_type);
 			inv_size = 0;
