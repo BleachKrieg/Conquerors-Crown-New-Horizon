@@ -103,6 +103,9 @@ public:
 
 public:
 	bool foWMapNeedsRefresh = false;
+
+	SDL_Texture* minimapFoWtexture = nullptr;
+
 	std::map<unsigned short, uint> bitToTextureTable;
 
 private:
@@ -113,7 +116,7 @@ private:
 
 	SDL_Texture* smoothFoWtexture = nullptr;
 	SDL_Texture* debugFoWtexture = nullptr;
-	SDL_Texture* minimapFoWtexture = nullptr;
+	//SDL_Texture* minimapFoWtexture = nullptr;
 	//Map that we use to translate bits to Texture Id's
 
 	uint width;

@@ -2,9 +2,9 @@
 This is the Vertical Slice from the team BleachKrieg for the subject of project 2 in UPC,CITM
 
 ## Repository
-https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon
+<https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon>
 
-## Team:
+## Team
 - Pol de la Torre Solé https://github.com/polf780.
 
 - Marc Palma Turón https://github.com/marcpt98.
