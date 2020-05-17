@@ -260,8 +260,6 @@ void HumanBarracks::checkAnimation(float dt)
 			}
 		}
 
-		//SpatialAudio(1, App->audio->construction, position.x, position.y);
-
 		actualState = ST_BARRACK_FINISHED;
 	}
 
@@ -308,7 +306,6 @@ void HumanBarracks::checkAnimation(float dt)
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
-		//	Mix_HaltChannel(-1);
 			SpatialAudio(1, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			team = TeamType::PLAYER;
@@ -532,6 +529,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//Timer for the upgrade
 		if (upgrade_timer.ReadSec() >= first_upgrade_time )
 		{
+			App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
 			if (creation_barrack_bar != nullptr)
 			{
 				creation_barrack_bar->to_delete = true;
