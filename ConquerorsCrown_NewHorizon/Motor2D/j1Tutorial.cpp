@@ -440,6 +440,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	{
 		App->scene->current_scene = scenes::ingame;
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
+
+		MinimapActive = false;
+		moveCamera = false;
 	}
 }
 

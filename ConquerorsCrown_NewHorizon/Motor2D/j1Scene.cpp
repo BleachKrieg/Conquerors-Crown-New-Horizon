@@ -487,6 +487,7 @@ void j1Scene::DeleteScene() {
 		App->entity->DeleteAllEntities();
 		App->minimap->CleanUp();
 		App->map->CleanUp();
+		App->fowManager->DeleteFoWMap();
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
@@ -796,6 +797,11 @@ bool j1Scene::DeleteOptions()
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
+
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
 	current_level = "First level design.tmx";
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
