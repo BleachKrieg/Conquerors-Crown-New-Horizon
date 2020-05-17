@@ -84,7 +84,9 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves && App->scene->current_scene != scenes::tutorial) 
+	if(App->scene->current_scene == scenes::ingame)
+	{ 
+	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
 	{
 		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 		{
@@ -211,7 +213,7 @@ bool j1WaveSystem::Update(float dt)
 			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
 		}
 	}
-
+	}
 	return ret;
 }
 

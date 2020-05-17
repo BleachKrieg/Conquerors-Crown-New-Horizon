@@ -7,7 +7,6 @@
 #include "SDL/include/SDL.h"
 #include "j1Timer.h"
 
-
 struct SDL_Texture;
 class j1Entity;
 class DynamicEnt;
@@ -25,7 +24,16 @@ enum Tutorial_states
 	ST_Tutorial_Q7,
 	ST_Tutorial_Q8,
 	ST_Tutorial_Q9,
+	ST_Tutorial_Q9_1,
 	ST_Tutorial_Q10,
+	ST_Tutorial_Q10_1,
+	ST_Tutorial_Q11,
+	ST_Tutorial_Q12,
+	ST_Tutorial_Q13,
+	ST_Tutorial_Q14,
+	ST_Tutorial_Q15,
+	ST_Tutorial_Q16,
+	ST_Tutorial_Q17,
 	ST_Tutorial_Finished
 };
 
@@ -61,9 +69,22 @@ public:
 	void GuiInput(GuiItem*);
 
 	bool deleteUI(int step);
+
+	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
 public:
 
 	Tutorial_states ActualState;
+
+	//Pop_up creator
+	GuiItem* PopUpImage;
+	GuiItem* PopUpText1;
+	GuiItem* PopUpText2;
+	GuiItem* PopUpText3;
+	GuiItem* PopUpText4;
+	GuiItem* PopUpText5;
+	GuiItem* PopUpTitleText;
+	GuiItem* PopUpButton;
+	GuiItem* Uther_Image;
 
 	// Step_1
 	GuiItem* Question_1_text;
@@ -72,55 +93,15 @@ public:
 	GuiItem* Button_No;
 	GuiItem* Button_No_Text;
 
-	// Step_2
-	GuiItem* Question_2_text;
-	GuiItem* Question_2_text_2;
-	GuiItem* Button_Next_2;
-	GuiItem* Button_Next_2_Text;
-
-	// Step_3
-	GuiItem* Question_3_text;
-	GuiItem* Question_3_text_2;
-	GuiItem* Button_Next_3;
-	GuiItem* Button_Next_3_Text;
-
-	// Step_4
-	GuiItem* Question_4_text;
-	GuiItem* Question_4_text_2;
-
-	// Step_5
-	GuiItem* Question_5_text;
-	GuiItem* Question_5_text_2;
-	GuiItem* Button_Next_5;
-	GuiItem* Button_Next_5_Text;
-
-	// Step_6
-	GuiItem* Question_6_text;
-	GuiItem* Question_6_text_2;
-	GuiItem* Button_Next_6;
-	GuiItem* Button_Next_6_Text;
-
-	// Step_7
-	GuiItem* Question_7_text;
-	GuiItem* Question_7_text_2;
-	GuiItem* Button_Next_7;
-	GuiItem* Button_Next_7_Text;
-
-	// Step_8
-	GuiItem* Question_8_text;
-	GuiItem* Question_8_text_2;
-
-	// Step_9
-	GuiItem* Question_9_text;
-	GuiItem* Question_9_text_2;
-	GuiItem* Button_Next_9;
-	GuiItem* Button_Next_9_Text;
-
-	// Step_10
-	GuiItem* Question_10_text;
-	GuiItem* Question_10_text_2;
-	GuiItem* Button_Next_10;
-	GuiItem* Button_Next_10_Text;
+	// Arrows
+	GuiItem* Arrow_1;
+	GuiItem* Arrow_2;
+	GuiItem* Arrow_3;
+	GuiItem* Arrow_4;
+	GuiItem* Arrow_5;
+	GuiItem* Arrow_5_1;
+	GuiItem* Arrow_6;
+	GuiItem* Arrow_7;
 
 	bool createUI;
 
@@ -129,6 +110,8 @@ public:
 	// Minimap
 	bool MinimapActive;
 
+	// Camera
+	bool moveCamera;
 };
 
 #endif // __j1TUTORIAL_H__

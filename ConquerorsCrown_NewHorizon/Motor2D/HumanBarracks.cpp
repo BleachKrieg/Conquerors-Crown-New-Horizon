@@ -347,10 +347,10 @@ void HumanBarracks::checkAnimation(float dt)
 		// Finished Animation
 		current_animation = &finishedconst;
 
-		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q8)
+		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q9_1)
 		{
-			App->tutorial->deleteUI(8);
-			App->tutorial->ActualState = ST_Tutorial_Q9;
+			App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+			App->tutorial->ActualState = ST_Tutorial_Q10;
 		}
 
 		CheckQueue();
@@ -573,6 +573,13 @@ void HumanBarracks::CheckQueue()
 				Searchtile(map);
 				randomrespawn = rand() % 10 + 10;
 				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+				
+				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
+				{
+					App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+					App->tutorial->ActualState = ST_Tutorial_Q11;
+				}
+				
 				if (Troop[i]->image != nullptr)
 				{
 					Troop[i]->image->to_delete = true;

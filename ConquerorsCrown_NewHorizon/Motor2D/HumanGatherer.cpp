@@ -103,7 +103,7 @@ bool HumanGatherer::Update(float dt)
 	if (App->scene->debug)
 		life_points = 80;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)

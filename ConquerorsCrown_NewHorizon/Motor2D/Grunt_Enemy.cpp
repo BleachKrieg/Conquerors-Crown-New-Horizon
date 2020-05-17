@@ -11,6 +11,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "J1GroupMov.h"
+#include "FoWManager.h"
 #include <math.h>
 
 GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_GRUNT)
@@ -40,7 +41,7 @@ GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	team = TeamType::IA;
 	target_entity = nullptr;
 	state = DynamicState::IDLE;
-	entity_type = DynamicEntityType::ENEMY_OGRE;
+	entity_type = DynamicEntityType::ENEMY_GRUNT;
 
 
 	// TODO ------------------------------------------
@@ -164,6 +165,30 @@ bool GruntEnemy::Update(float dt)
 	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
 		isSelected = false;
 
+	iPoint worldDrawPos, screenPos;
+	worldDrawPos = { (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2) };
+	iPoint mapPos =	App->map->WorldToMap((int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2));
+
+
+	FoWDataStruct* tileInfo = App->fowManager->GetFoWTileState({ mapPos.x, mapPos.y });
+	int fogId = -1;
+	int shroudId = -1;
+
+	if (tileInfo != nullptr)
+	{
+
+		if (App->fowManager->bitToTextureTable.find(tileInfo->tileFogBits) != App->fowManager->bitToTextureTable.end())
+		{
+			fogId = App->fowManager->bitToTextureTable[tileInfo->tileFogBits];
+		}
+
+		if (App->fowManager->bitToTextureTable.find(tileInfo->tileShroudBits) != App->fowManager->bitToTextureTable.end())
+		{
+			shroudId = App->fowManager->bitToTextureTable[tileInfo->tileShroudBits];
+		}
+
+	}
+	if(fogId == -1 && shroudId == -1 || App->scene->debug)
 	App->render->Blit(App->entity->grunt_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
