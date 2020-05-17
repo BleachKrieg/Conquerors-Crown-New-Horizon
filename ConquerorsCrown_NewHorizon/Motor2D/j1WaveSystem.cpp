@@ -65,7 +65,7 @@ bool j1WaveSystem::Start()
 	spawn2->target = nullptr;
 	spawn3->target = nullptr;
 
-	next_wave = 15;
+	next_wave = 90;
 	spawn_counter = 0;
 	troll_counter = 0;
 	grunt_counter = 0;
@@ -363,7 +363,7 @@ void j1WaveSystem::FinishWave()
 	current_wave++;
 	wave_ongoing = false;
 	wave_ended.Start();
-	next_wave = 90;
+	//next_wave = 90;
 	spawn_counter = 0;
 	troll_counter = 0;
 	grunt_counter = 0;
