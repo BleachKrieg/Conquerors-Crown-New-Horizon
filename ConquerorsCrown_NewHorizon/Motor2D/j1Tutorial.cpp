@@ -368,10 +368,15 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			createUI = false;
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
 
-			App->cutscene->StartCutscene("Tutorial3");
+			App->cutscene->StartCutscene("Tutorial2");
 		}
 
-
+		if (App->render->camera.x == -570 && App->render->camera.y == -280)
+		{
+			deleteUI(0);
+			createUI = true;
+			ActualState = ST_Tutorial_Q12;
+		}
 	}
 
 	// Step 12
@@ -381,7 +386,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's sending an", "hord towards us!", "Quick, recuit more swordmans", "and defend our village!", " ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
@@ -464,7 +469,7 @@ void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, 
 	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
 	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
 
-	if (ActualState != ST_Tutorial_Q5)
+	if (ActualState != ST_Tutorial_Q5 && ActualState != ST_Tutorial_Q11)
 	{
 		PopUpButton = App->gui->CreateGuiElement(Types::button, 770, -194, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
 		PopUpButton->setRects({ 541, 125, 58, 50 }, { 600, 125, 58, 50 });

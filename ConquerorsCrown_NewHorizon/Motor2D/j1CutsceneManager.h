@@ -75,11 +75,11 @@ public:
 	bool LoadSteps(pugi::xml_node node);
 
 	//Make the objective of the step move to the desired position
-	void DoCutscene(CutsceneObject& character, iPoint& objective_position);
+	void DoCutscene(CutsceneObject& character, iPoint& objective_position, float dt);
 
 	//Update positions
 	void Movement(Step& step, iPoint& objective_position);
-	void CameraMovement(Step& step);
+	void CameraMovement(Step& step, float dt);
 
 	//Finish the cutscene
 	void FinishCutscene(CutsceneObject& character);
