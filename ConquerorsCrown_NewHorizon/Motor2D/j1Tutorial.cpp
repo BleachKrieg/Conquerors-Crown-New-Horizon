@@ -149,14 +149,19 @@ bool j1Tutorial::Update(float dt)
 			}
 		}
 
-		//Camera Limits
-		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
-		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
-		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
 
-		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
-		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		if(ActualState != ST_Tutorial_Q0 && ActualState != ST_Tutorial_Q1)
+		{
+			//Camera Limits
+			if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+			int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
+			if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
+
+			if (App->render->camera.y > 0) { App->render->camera.y = 0; }
+			int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
+			if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		}
+		
 		
 		CheckTutorialStep(dt);
 
@@ -177,13 +182,15 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			App->cutscene->StartCutscene("Tutorial1");
-		}
+			Button_Yes = App->gui->CreateGuiElement(Types::button, 400, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_Yes->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_Yes_Text = App->gui->CreateGuiElement(Types::text, 404, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "YES", App->font->smallfont);
 
-		if (App->render->camera.x == -428 && App->render->camera.y == -339)
-		{
-			createUI = true;
-			ActualState = ST_Tutorial_Q1;
+			Button_No = App->gui->CreateGuiElement(Types::button, 800, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+			Button_No->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+			Button_No_Text = App->gui->CreateGuiElement(Types::text, 812, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "NO", App->font->smallfont);
+
+			Question_1_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Greetings fellow stranger, do you want to skip the tutorial ?", App->font->defaultfont);
 		}
 	}
 
@@ -194,15 +201,43 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			Button_Yes = App->gui->CreateGuiElement(Types::button, 400, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_Yes->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_Yes_Text = App->gui->CreateGuiElement(Types::text, 404, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "YES", App->font->smallfont);
+			App->cutscene->StartCutscene("Tutorial1");
+			
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 400, 1282 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 491, 1278 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 547, 1295 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 700, 1260 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { 710, 1094 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 607, 1085 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { 524, 1087 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 444, 1063 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 700, 1063 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 650, 1053 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { 405, 1105 });
+		}
 
-			Button_No = App->gui->CreateGuiElement(Types::button, 800, -100, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-			Button_No->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-			Button_No_Text = App->gui->CreateGuiElement(Types::text, 812, -85, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "NO", App->font->smallfont);
+		if (App->render->camera.x == -42 && App->render->camera.y == -601)
+		{
+			createUI = true;
+			ActualState = ST_Tutorial_Q1_1;
+		}
+		LOG("%i, %i", App->scene->mouse_position.x, App->scene->mouse_position.y);
+	}
 
-			Question_1_text = App->gui->CreateGuiElement(Types::text, 115, -210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "Greetings fellow stranger, do you want to skip the tutorial ?", App->font->defaultfont);
+	// Step 1
+	if (ActualState == ST_Tutorial_Q1_1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			App->cutscene->StartCutscene("Tutorial2");
+		}
+
+		if (App->render->camera.x == -576 && App->render->camera.y == -281)
+		{
+			createUI = true;
+			ActualState = ST_Tutorial_Q2;
 		}
 	}
 
@@ -217,6 +252,17 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
+	// Step 2.5
+	if (ActualState == ST_Tutorial_Q2_1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			CreatePopUpMessage(480, 96, "Uther", "You have just saw how our", "troops were killed by those", "orcs, we won't still here with", "folded arms! Let's act!", " ");
+		}
+	}
+
 	// Step 3
 	if (ActualState == ST_Tutorial_Q3)
 	{
@@ -225,7 +271,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			CreatePopUpMessage(480, 105, "Uther", "In this game you have 3 types of", "resources: gold, wood and stone.", "With this materials you can", "construct buildings or recuit", "troops.");
+			CreatePopUpMessage(480, 96, "Uther", "In this game you have 3 types of", "resources: gold, wood and stone.", "With this materials you can", "construct buildings or recuit", "troops.");
 			Arrow_1 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 			Arrow_2 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 			Arrow_3 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
@@ -241,7 +287,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 
 			// Create TownHall
 			App->scene->active = true;
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 820, 720);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 995, 600);
 			App->scene->active = false;
 
 			CreatePopUpMessage(480, 96, "Uther", "Here's your Townhall, the", "most important building.", "Here you can recuit gatherers,", "units that are made to collect", "resources!");
@@ -258,7 +304,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			App->scene->AddResource("wood", 100);
 			App->scene->AddResource("gold", 100);
 			CreatePopUpMessage(480, 96, "Uther", "We've added you some resources!", "Now, click the Townhall and", "create a gatherer clicking", "his icon.", " ");
-			Arrow_4 = App->gui->CreateGuiElement(Types::image, 260, 150, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_4 = App->gui->CreateGuiElement(Types::image, 400, 180, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -343,14 +389,14 @@ void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, 
 	Uther_Image = App->gui->CreateGuiElement(Types::image, 818, 124, { 2573, 343, 497, 368 }, App->scene->ingameTopBar);
 	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, titletext, App->font->smallfont);
 	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text1, App->font->xs_font);
-	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text2, App->font->xs_font);
-	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->xs_font);
-	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
+	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 74, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text2, App->font->xs_font);
+	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 103, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text3, App->font->xs_font);
+	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 132, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
+	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 161, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
 
 	if (ActualState != ST_Tutorial_Q5)
 	{
-		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
+		PopUpButton = App->gui->CreateGuiElement(Types::button, 770, -194, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
 		PopUpButton->setRects({ 541, 125, 58, 50 }, { 600, 125, 58, 50 });
 	}
 }
@@ -387,13 +433,17 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		deleteUI(1);
-		ActualState = ST_Tutorial_Q2;
+		ActualState = ST_Tutorial_Q1;
 	}
 	else if (guiElement == PopUpButton) {
 		deleteUI(0);
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 
 		if (ActualState == ST_Tutorial_Q2)
+		{
+			ActualState = ST_Tutorial_Q2_1;
+		}
+		else if (ActualState == ST_Tutorial_Q2_1)
 		{
 			ActualState = ST_Tutorial_Q3;
 		}
@@ -439,7 +489,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		}
 		createUI = true;
 	}
-
+	
 }
 
 bool j1Tutorial::deleteUI(int step) 

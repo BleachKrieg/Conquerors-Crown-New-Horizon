@@ -17,7 +17,9 @@ enum Tutorial_states
 {
 	ST_Tutorial_Q0,
 	ST_Tutorial_Q1,
+	ST_Tutorial_Q1_1,
 	ST_Tutorial_Q2,
+	ST_Tutorial_Q2_1,
 	ST_Tutorial_Q3,
 	ST_Tutorial_Q4,
 	ST_Tutorial_Q5,
