@@ -84,7 +84,6 @@ public:
 	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
 
 	void LogoPushbacks();
-	void TeamLogoPushbacks();
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
@@ -95,11 +94,9 @@ public:
 private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
-	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
 	SDL_Texture* victoryLogo;
 	SDL_Texture* defeatLogo;
-	SDL_Texture* teamLogoSheet;
 	SDL_Texture* video_texture;
 	SDL_Texture* videologo_tex;
 	Animation* loader;

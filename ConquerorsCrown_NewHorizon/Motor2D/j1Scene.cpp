@@ -46,7 +46,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
-	teamLogoSheet_file_name = config.child("team_logo").attribute("file").as_string("");
 	fullscreen = false;
 	
 	return ret;
@@ -70,7 +69,7 @@ bool j1Scene::Start()
 	optionsMenu = false;
 
 	App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
@@ -356,17 +355,44 @@ bool j1Scene::PostUpdate(float dt)
 		}
 		break;
 	case scenes::logo:
-		/*if (logoTimer.ReadSec() <= 4.5) {
+		if (logoTimer.ReadSec() <= 4.5) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
-			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			//video
+			if (intro_video != 0)
+			{
+				video_texture = App->video->UpdateVideo(intro_video);
+
+				App->render->Blit(video_texture, 0, 0);
+
+				if (App->video->IsPlaying(intro_video) == 0)
+				{
+					App->video->DestroyVideo(intro_video);
+					intro_video = 0;
+				}
+			}
+
+
+			if (intro_video == 0 && loop)
+			{
+				intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+
+
+			}
+
+			if (!loop)
+			{
+
+				App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+			}
 		}
 		else if (logoTimer.ReadSec() <= 5.5) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
-			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			App->render->Blit(video_texture, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 
 			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
@@ -380,36 +406,9 @@ bool j1Scene::PostUpdate(float dt)
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 			alpha -= 5;
 			if (alpha < 0) { alpha = 0; }
-		}*/
-
-		//video
-		if (intro_video != 0)
-		{
-			video_texture = App->video->UpdateVideo(intro_video);
-
-			App->render->Blit(video_texture, 0, 0);
-
-			if (App->video->IsPlaying(intro_video) == 0)
-			{
-				App->video->DestroyVideo(intro_video);
-				intro_video = 0;
-			}
 		}
 
-
-		if (intro_video == 0 && loop)
-		{
-			intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
-
-
-		}
-
-		if (!loop)
-		{
-
-			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
-
-		}
+		
 
 		break;
 
@@ -934,9 +933,6 @@ bool j1Scene::CreateLogo() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	teamLogoSheet = App->tex->Load(teamLogoSheet_file_name.GetString());
-
-	TeamLogoPushbacks();
 
 	teamLogoBackground.x = 0;
 	teamLogoBackground.y = 0;
@@ -1065,7 +1061,7 @@ bool j1Scene::DeleteUI()
 	defeatTextClick = nullptr;
 
 	if (logoSheet != nullptr) App->tex->UnLoad(logoSheet);
-	if (teamLogoSheet != nullptr) App->tex->UnLoad(teamLogoSheet);
+
 	return true;
 }
 
@@ -1266,35 +1262,6 @@ void j1Scene::LogoPushbacks() {
 	logo.loop = false;
 }
 
-void j1Scene::TeamLogoPushbacks() {
-
-	team_logo.PushBack({ 0, 875, 10, 10 }, 0.02f, 0, 0, 0, 0);
-	team_logo.PushBack({0, 0, 259, 423}, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 286, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 572, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 858, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1144, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1430, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1716, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2002, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2288, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2574, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2860, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3146, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3432, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3718, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 0, 445, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 286, 445, 259, 423 }, 0.15f, 510, 148, 0, 0);
-	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.3f, 0, 0, 0, 0);
-	team_logo.PushBack({ 1879, 445, 1280, 720 }, 0.5f, 0, 0, 0, 0);
-	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.25f, 0, 0, 0, 0);
-	team_logo.PushBack({ 0, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 1311, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 2622, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 3335, 445, 712, 720 }, 0.2f, 356, 0, 0, 0);
-
-	team_logo.loop = false;
-}
 
 
 void j1Scene::UpdateCameraPosition(int speed) 
