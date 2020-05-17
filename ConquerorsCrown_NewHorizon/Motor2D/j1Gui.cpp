@@ -199,22 +199,19 @@ void j1Gui::DeleteGuiElement()
 
 	for (int i = 0; i < guiElements.size(); i++)
 	{
-
 		if (guiElements[i] != nullptr) {
 			if (guiElements[i]->parent != nullptr && guiElements[i]->parent->to_delete == true)
 			{
 				guiElements[i]->to_delete = true;
 			}
 		}
-	}
-	for (int i = 0; i < guiElements.size(); i++)
-	{
+
 		if (guiElements[i]->to_delete == true)
 		{
-				if (guiElements[i]->texture != nullptr) guiElements[i]->SetText("");
-				guiElements.erase(guiElements.begin() + i);
-				i--;
-			
+			if (guiElements[i]->type == Types::text) guiElements[i]->SetText("");
+			guiElements.erase(guiElements.begin() + i);
+			i--;
+
 		}
 	}
 }
@@ -481,8 +478,8 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 	textureRect = texrect;
 	color = SDL_Color{ 255,255,255 };
 	CallBack = callback;
-	texture = App->font->Print(text, color, local_font);
-	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
+	texture = App->font->Print(text.c_str(), color, local_font);
+	App->font->CalcSize(text.c_str(), textureRect.w, textureRect.h, local_font);
 	to_delete = false;
 	visible = true;
 }
@@ -491,26 +488,25 @@ GuiText::~GuiText() {
 	SDL_DestroyTexture(texture);
 }
 
-const char* GuiText::GetText() const
+string GuiText::GetText() const
 {
 	return text;
 }
 
-void GuiText::SetText(const char* newtext)
+void GuiText::SetText(string newtext)
 {
-
-		text = newtext;
-		//This need TO BE FIXED :D
-		//App->tex->UnLoad(texture);
-		SDL_DestroyTexture(texture);
-		if (text != "") {
-			texture = App->font->Print(text, color, local_font);
-			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
-		}
-		else 
-		{
-			texture = nullptr;
-		}
+	text = newtext;
+	//This need TO BE FIXED :D
+	//App->tex->UnLoad(texture);
+	SDL_DestroyTexture(texture);
+	if (text != "") {
+		texture = App->font->Print(text.c_str(), color, local_font);
+		App->font->CalcSize(text.c_str(), textureRect.w, textureRect.h, local_font);
+	}
+	else
+	{
+		texture = nullptr;
+	}
 	
 	//else {
 	//	//This TOO :D

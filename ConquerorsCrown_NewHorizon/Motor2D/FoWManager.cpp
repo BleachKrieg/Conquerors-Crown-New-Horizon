@@ -10,7 +10,7 @@
 
 FoWManager::FoWManager()
 {
-
+	name.create("fowManager");
 }
 
 
@@ -138,6 +138,12 @@ bool FoWManager::Update(float dt)
 	if(!App->scene->debug && App->scene->current_scene == scenes::ingame)
 		DrawFoWMap();
 
+	//if (App->scene->current_scene == scenes::ingame && !App->scene->debug)
+	//{
+	//	SDL_Rect section{ 0, 0, 225, 225 };
+	//	App->render->Blit(minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
+	//}
+
 	return ret;
 }
 
@@ -145,11 +151,8 @@ bool FoWManager::Update(float dt)
 bool FoWManager::PostUpdate(float dt)
 {
 	bool ret = true;
-	if (App->scene->current_scene == scenes::ingame && !App->scene->debug)
-	{
-		SDL_Rect section{ 0, 0, 225, 225 };
-		App->render->Blit(minimapFoWtexture, -App->render->camera.x + 15, -App->render->camera.y + 485, &section);
-	}
+
+
 
 	return ret;
 }
