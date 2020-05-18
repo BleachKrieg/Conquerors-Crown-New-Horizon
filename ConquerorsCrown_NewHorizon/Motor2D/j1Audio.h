@@ -77,7 +77,8 @@ public:
 
 	int click_to_play;
 	int normal_click;
-	int pause_fx;
+	int pause_fx_in;
+	int pause_fx_out;
 
 	int upgrade_complete;
 	int quest_complete;

@@ -87,7 +87,11 @@ bool HumanGatherer::Start()
 	++animations_list;
 	attacking_down = **animations_list;
 	++animations_list;
-
+	death_up = **animations_list;
+	++animations_list;
+	death_down = **animations_list;
+	++animations_list;
+	
 	current_animation = &moving_down;
 	return true;
 }
@@ -256,7 +260,7 @@ bool HumanGatherer::Update(float dt)
 		break;
 	case DynamicState::DYING:
 		Death(entity_type);
-		to_delete = true;
+		//to_delete = true;
 		break;
 	}
 

@@ -428,6 +428,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 			CreatePopUpMessage(480, 96, "Gul'dan", "I'll be back...", " ", " ", " ", " ");
 		}
 	}
@@ -439,6 +440,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->tutorial_complete, 0);
 			CreatePopUpMessage(480, 96, "Uther", "Well done, you're our hero!", "Now go to the new lands", "and fight more orcs!", " ", " ");
 		}
 	}

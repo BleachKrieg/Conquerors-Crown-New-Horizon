@@ -78,16 +78,17 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
-	die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
+	die_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
 	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	die_grunt = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Grunt/Grunt_Death.wav");
 	die_ogre = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Ogre/Ogre_Death_1.wav");
 
 	click_to_play = App->audio->LoadFx("Assets/Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Assets/Audio/SFX/UI/Click.wav");
-	pause_fx = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause.wav");
+	pause_fx_in = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_In.wav");
+	pause_fx_out = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_Out.wav");
 
-	//upgrade_complete = App->audio->LoadFx("Audio/SFX/Humans/Upgrade_Complete_1.wav");
+	upgrade_complete = App->audio->LoadFx("Assets/Audio/SFX/Humans/Upgrade_Complete_1.wav");
 	quest_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Good_Job.wav");
 	quest_failed = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Failed.wav");
 	tutorial_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Completed.wav");
