@@ -22,11 +22,11 @@ OgreEnemy::OgreEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_O
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 300;
 	attack_vision = 200;
 	attack_range = 30;
 	time_attack = 1400;
-	attack_damage = 12;
+	attack_damage = 20;
 	vision = 26;
 	body = 13;
 	position.x = posx;

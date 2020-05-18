@@ -42,6 +42,7 @@ bool j1CutsceneManager::Start()
 	cutsceneManager = data.document_element();
 
 	cinematic_camera.active = false;
+	camera.active = false;
 
 	LOG("Starting Cutscene Manager");
 
@@ -51,11 +52,16 @@ bool j1CutsceneManager::Start()
 // Called each loop iteration
 bool j1CutsceneManager::Update(float dt)
 {
-	if (cinematic_camera.active) 
+
+	if (cinematic_camera.active)
 	{
-		DoCutscene(cinematic_camera, App->render->camera_pos);
+		DoCutscene(cinematic_camera, App->render->camera_pos, dt);
 	}
 
+	if (camera.active)
+	{
+		DoCutscene(camera, App->render->camera_pos, dt);
+	}
 	return true;
 }
 
@@ -122,11 +128,22 @@ void j1CutsceneManager::StartCutscene(string name)
 				LoadSteps(cutscene);
 			}
 		}
-		if (cinematic_camera.active) { cinematic_camera.UpdateStep(); }
-		App->gui->SetGuiVisible(false);
-		App->minimap->visible = false;
-		App->scene->UiEnabled = false;
-		App->minimap->input = false;
+		if (cinematic_camera.active) 
+		{
+			cinematic_camera.UpdateStep();
+			App->gui->SetGuiVisible(false);
+			App->minimap->visible = false;
+			App->scene->UiEnabled = false;
+			App->minimap->input = false;
+		}
+
+		if (camera.active) 
+		{ 
+			camera.UpdateStep(); 
+			App->scene->UiEnabled = false;
+			App->minimap->input = false;
+		}
+
 	}
 }
 
@@ -142,26 +159,33 @@ bool j1CutsceneManager::LoadSteps(pugi::xml_node node)
 		s->speed.x = step.attribute("vel_x").as_int();
 		s->speed.y = step.attribute("vel_y").as_int();
 
-		if (s->objective == "c")
+		if (s->objective == "camera")
+		{
+			camera.steps.push_front(*s);
+			camera.active = true;
+		}
+
+		if (s->objective == "cinematic_camera")
 		{
 			cinematic_camera.steps.push_front(*s);
 			cinematic_camera.active = true;
+			if (black_bars.phase == None) { black_bars.phase = FadeIn; }
 		}
 	}
-	if (black_bars.phase == None) { black_bars.phase = FadeIn; }
+
 	delete s;
 
 	return true;
 }
 
-void j1CutsceneManager::DoCutscene(CutsceneObject& object, iPoint& objective_position)
+void j1CutsceneManager::DoCutscene(CutsceneObject& object, iPoint& objective_position, float dt)
 {
-	LOG("DOING A CUTSCENE");
+
 	Step step = object.current_step;
 
 	if (object.active)
 	{
-		CameraMovement(step);
+		CameraMovement(step, dt); 
 
 		if (step.position == object.steps.front().position)
 		{
@@ -213,13 +237,13 @@ void j1CutsceneManager::Movement(Step& step, iPoint& objective_position)
 	}
 }
 
-void j1CutsceneManager::CameraMovement(Step& step)
+void j1CutsceneManager::CameraMovement(Step& step, float dt)
 {
 	if (step.position.x > App->render->camera.x)
 	{
 		if (step.position.x - App->render->camera.x > step.speed.x)
 		{
-			App->render->camera.x += step.speed.x;
+			App->render->camera.x += step.speed.x * dt * 60;
 		}
 		else { App->render->camera.x++; }
 	}
@@ -228,7 +252,7 @@ void j1CutsceneManager::CameraMovement(Step& step)
 	{
 		if (App->render->camera.x - step.position.x > step.speed.x)
 		{
-			App->render->camera.x -= step.speed.x;
+			App->render->camera.x -= step.speed.x * dt * 60;
 		}
 		else { App->render->camera.x--; }
 	}
@@ -237,7 +261,7 @@ void j1CutsceneManager::CameraMovement(Step& step)
 	{
 		if (step.position.y - App->render->camera.y > step.speed.y)
 		{
-			App->render->camera.y += step.speed.y;
+			App->render->camera.y += step.speed.y * dt * 60;
 		}
 		else { App->render->camera.y++; }
 	}
@@ -246,7 +270,7 @@ void j1CutsceneManager::CameraMovement(Step& step)
 	{
 		if (App->render->camera.y - step.position.y > step.speed.y)
 		{
-			App->render->camera.y -= step.speed.y;
+			App->render->camera.y -= step.speed.y * dt * 60;
 		}
 		else { App->render->camera.y--; }
 	}
@@ -275,7 +299,6 @@ void j1CutsceneManager::FinishCutscene(CutsceneObject& object)
 	App->minimap->visible = true;
 	App->scene->UiEnabled = true;
 	App->minimap->input = true;
-
 }
 
 bool j1CutsceneManager::SomethingActive()

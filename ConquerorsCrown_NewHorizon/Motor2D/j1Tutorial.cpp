@@ -17,6 +17,7 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1Tutorial.h"
+#include "j1CutsceneManager.h"
 
 
 j1Tutorial::j1Tutorial() : j1Module()
@@ -52,7 +53,7 @@ bool j1Tutorial::Start()
 	Button_No_Text = nullptr;
 	Question_1_text = nullptr;
 
-	ActualState = ST_Tutorial_Q1;
+	ActualState = ST_Tutorial_Q0;
 
 	return ret;
 }
@@ -148,18 +149,25 @@ bool j1Tutorial::Update(float dt)
 			}
 		}
 
-		//Camera Limits
-		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
-		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
-		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
 
-		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
-		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		if(ActualState != ST_Tutorial_Q0 && ActualState != ST_Tutorial_Q1)
+		{
+			//Camera Limits
+			if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+			int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
+			if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
+
+			if (App->render->camera.y > 0) { App->render->camera.y = 0; }
+			int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
+			if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		}
+		
 		
 		CheckTutorialStep(dt);
 
 	}
+
+	LOG("%i, %i", App->render->camera.x, App->render->camera.y);
 
 
 	return true;
@@ -167,8 +175,8 @@ bool j1Tutorial::Update(float dt)
 
 void j1Tutorial::CheckTutorialStep(float dt)
 {
-	// Step 1
-	if (ActualState == ST_Tutorial_Q1)
+	// Step 0
+	if (ActualState == ST_Tutorial_Q0)
 	{
 		if (createUI)
 		{
@@ -186,6 +194,50 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
+	// Step 1
+	if (ActualState == ST_Tutorial_Q1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			App->cutscene->StartCutscene("Tutorial1");
+			
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 400, 1282 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 491, 1278 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 547, 1295 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { 700, 1260 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { 710, 1094 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 607, 1085 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { 524, 1087 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 444, 1063 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 700, 1063 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { 650, 1053 });
+			App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { 405, 1105 });
+		}
+
+		if (App->render->camera.x == -42 && App->render->camera.y == -601)
+		{
+			createUI = true;
+			ActualState = ST_Tutorial_Q1_1;
+		}
+	}
+
+	// Step 1
+	if (ActualState == ST_Tutorial_Q1_1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+		}
+
+		if (App->render->camera.x == -576 && App->render->camera.y == -281)
+		{
+			createUI = true;
+			ActualState = ST_Tutorial_Q2;
+		}
+	}
+
 	// Step 2
 	if (ActualState == ST_Tutorial_Q2)
 	{
@@ -197,6 +249,17 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
+	// Step 2.5
+	if (ActualState == ST_Tutorial_Q2_1)
+	{
+		if (createUI)
+		{
+			createUI = false;
+
+			CreatePopUpMessage(480, 96, "Uther", "You have just saw how our", "troops were killed by those", "orcs, we won't still here with", "folded arms! Let's act!", " ");
+		}
+	}
+
 	// Step 3
 	if (ActualState == ST_Tutorial_Q3)
 	{
@@ -205,7 +268,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 
-			CreatePopUpMessage(480, 105, "Uther", "In this game you have 3 types of", "resources: gold, wood and stone.", "With this materials you can", "construct buildings or recuit", "troops.");
+			CreatePopUpMessage(480, 96, "Uther", "In this game you have 3 types of", "resources: gold, wood and stone.", "With this materials you can", "construct buildings or recuit", "troops.");
 			Arrow_1 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 			Arrow_2 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 			Arrow_3 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
@@ -221,7 +284,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 
 			// Create TownHall
 			App->scene->active = true;
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 280, 270);
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 995, 600);
 			App->scene->active = false;
 
 			CreatePopUpMessage(480, 96, "Uther", "Here's your Townhall, the", "most important building.", "Here you can recuit gatherers,", "units that are made to collect", "resources!");
@@ -238,7 +301,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			App->scene->AddResource("wood", 100);
 			App->scene->AddResource("gold", 100);
 			CreatePopUpMessage(480, 96, "Uther", "We've added you some resources!", "Now, click the Townhall and", "create a gatherer clicking", "his icon.", " ");
-			Arrow_4 = App->gui->CreateGuiElement(Types::image, 260, 150, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_4 = App->gui->CreateGuiElement(Types::image, 400, 180, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -270,9 +333,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		{
 			createUI = false;
 			CreatePopUpMessage(480, 96, "Uther", "If you click on the trees, the", "gatherer will collect wood, on", "the rock for stone and on the", "mine for gold.", " ");
-			Arrow_5 = App->gui->CreateGuiElement(Types::image, 685, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
-			Arrow_6 = App->gui->CreateGuiElement(Types::image, 823, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
-			Arrow_7 = App->gui->CreateGuiElement(Types::image, 965, 40, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_5 = App->gui->CreateGuiElement(Types::image, 120, 290, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_6 = App->gui->CreateGuiElement(Types::image, 850, 100, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_7 = App->gui->CreateGuiElement(Types::image, 800, 360, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -300,11 +363,19 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	// Step 11
 	if (ActualState == ST_Tutorial_Q11)
 	{
-
 		if (createUI)
 		{
 			createUI = false;
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
+
+			App->cutscene->StartCutscene("Tutorial2");
+		}
+
+		if (App->render->camera.x == -570 && App->render->camera.y == -280)
+		{
+			deleteUI(0);
+			createUI = true;
+			ActualState = ST_Tutorial_Q12;
 		}
 	}
 
@@ -315,7 +386,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's sending an", "hord towards us!", "Quick, recuit more swordmans", "and defend our village!", " ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
@@ -343,6 +414,13 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		}
 	}
 
+	if (ActualState == ST_Tutorial_Q14_1)
+	{
+		if (App->entity->ai_dyn_ent.empty()) 
+		{
+			ActualState = ST_Tutorial_Q15;
+		}
+	}
 	// Step 15
 	if (ActualState == ST_Tutorial_Q15)
 	{
@@ -369,6 +447,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	{
 		App->scene->current_scene = scenes::ingame;
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
+
+		MinimapActive = false;
+		moveCamera = false;
 	}
 }
 
@@ -398,9 +479,9 @@ void j1Tutorial::CreatePopUpMessage(int x, int y, char* titletext, char* text1, 
 	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text4, App->font->xs_font);
 	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, text5, App->font->xs_font);
 
-	if (ActualState != ST_Tutorial_Q5)
+	if (ActualState != ST_Tutorial_Q5 && ActualState != ST_Tutorial_Q11)
 	{
-		PopUpButton = App->gui->CreateGuiElement(Types::button, 600, -100, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
+		PopUpButton = App->gui->CreateGuiElement(Types::button, 770, -194, { 483, 126, 56, 48 }, App->scene->ingameUI, this, NULL);
 		PopUpButton->setRects({ 541, 125, 58, 50 }, { 600, 125, 58, 50 });
 	}
 }
@@ -437,13 +518,17 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	{
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		deleteUI(1);
-		ActualState = ST_Tutorial_Q2;
+		ActualState = ST_Tutorial_Q1;
 	}
 	else if (guiElement == PopUpButton) {
 		deleteUI(0);
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 
 		if (ActualState == ST_Tutorial_Q2)
+		{
+			ActualState = ST_Tutorial_Q2_1;
+		}
+		else if (ActualState == ST_Tutorial_Q2_1)
 		{
 			ActualState = ST_Tutorial_Q3;
 		}
@@ -489,7 +574,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		}
 		else if (ActualState == ST_Tutorial_Q14)
 		{
-			ActualState = ST_Tutorial_Q15;
+			ActualState = ST_Tutorial_Q14_1;
 		}
 		else if (ActualState == ST_Tutorial_Q15)
 		{
@@ -501,7 +586,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 		}
 		createUI = true;
 	}
-
+	
 }
 
 bool j1Tutorial::deleteUI(int step) 

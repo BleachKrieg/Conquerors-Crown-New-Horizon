@@ -450,6 +450,10 @@ void j1Scene::LoadTiledEntities() {
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
+						case 422:
+							if (current_scene == scenes::tutorial) {
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
 						{
@@ -490,6 +494,7 @@ void j1Scene::DeleteScene() {
 		App->entity->DeleteAllEntities();
 		App->minimap->CleanUp();
 		App->map->CleanUp();
+		App->fowManager->DeleteFoWMap();
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
@@ -525,6 +530,8 @@ void j1Scene::CreateScene(scenes next_scene) {
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;
+		App->render->camera.x = 0;
+		App->render->camera.y = -1136;
 		finish = false;
 		break;
 	case scenes::ingame:
@@ -616,7 +623,7 @@ bool j1Scene::CreateTutorial()
 	}
 	//Creating minimap
 	if (ret) ret = App->minimap->Start();
-
+	
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
@@ -632,6 +639,7 @@ bool j1Scene::CreateTutorial()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
+	LoadTiledEntities();
 	//if (ret) ret = CreateButtonsUI();
 	
 
@@ -797,6 +805,11 @@ bool j1Scene::DeleteOptions()
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
+
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
 	current_level = "First level design.tmx";
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
@@ -1025,7 +1038,8 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	{
 		//Menu buttons
 		if (guiElement == menuButtonNewGame) {
-			App->tutorial->ActualState = ST_Tutorial_Q1;
+			
+			App->tutorial->ActualState = ST_Tutorial_Q0;
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->audio->PauseMusic(1.0f);
 			App->fade->FadeToBlack(scenes::tutorial, 2.0f);
