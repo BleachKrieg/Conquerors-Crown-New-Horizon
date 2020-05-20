@@ -220,17 +220,19 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			if (!pauseMenu) {
-				//App->audio->MusicVolume(0.2);
 				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+				App->audio->MusicVolume(0.2);
+				LOG("ENTRA");
 				CreatePauseMenu();
 			}
 			else {
-				//App->audio->MusicVolume(optionsFxSlider->returnSliderPos());
 				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
 				DeletePauseMenu();
 			}
 			pauseMenu = !pauseMenu;
 		}
+
+		
 
 		//Debug input
 
