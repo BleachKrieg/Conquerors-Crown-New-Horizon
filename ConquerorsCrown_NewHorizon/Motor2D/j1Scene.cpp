@@ -222,7 +222,6 @@ bool j1Scene::Update(float dt)
 			if (!pauseMenu) {
 				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
 				App->audio->MusicVolume(0.2);
-				LOG("ENTRA");
 				CreatePauseMenu();
 			}
 			else {
