@@ -48,10 +48,10 @@ public:
 	}
 	virtual void setSliderPos(float) {
 	}
-	virtual void SetText(const char*) {
+	virtual void SetText(string) {
 	}
 	
-	virtual const char* GetText() const {
+	virtual string GetText() const {
 		return "none";
 	}
 	virtual GuiItem* GetInputText() const {
@@ -83,6 +83,7 @@ public:
 	bool isDynamic;
 	bool follow;
 	bool delayBlit;
+	bool visible;
 };
 
 class GuiImage: public GuiItem
@@ -102,11 +103,11 @@ public:
 private:
 	SDL_Color color;
 	_TTF_Font* local_font;
-	const char *text;
+	string text;
 
 public:
-	const char* GetText() const;
-	void SetText(const char*);
+	string GetText() const;
+	void SetText(string);
 };
 
 class GuiButton : public GuiItem
@@ -205,6 +206,8 @@ public:
 	SDL_Texture* GetAtlas() const;
 	
 	GuiItem* CreateGuiElement(Types type, int x, int y, SDL_Rect, GuiItem* parentnode = NULL, j1Module* callback = nullptr, char* text = "", _TTF_Font* font = nullptr);
+
+	void SetGuiVisible(bool is_visible);
 
 public:
 	bool buttonPressed;

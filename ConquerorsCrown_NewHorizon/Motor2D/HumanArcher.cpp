@@ -13,6 +13,7 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
 
 HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_ARCHER)
 {
@@ -42,6 +43,8 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::HUMAN_ARCHER;
 
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(5);
 	// TODO ------------------------------------------
 }
 
@@ -97,7 +100,11 @@ bool HumanArcher::Update(float dt)
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
+	fPoint auxPos = position;
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -107,7 +114,7 @@ bool HumanArcher::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		current_animation->loop = false;
+		//current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -153,6 +160,8 @@ bool HumanArcher::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

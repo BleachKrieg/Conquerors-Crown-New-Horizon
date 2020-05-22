@@ -111,7 +111,7 @@ bool j1Gui::Update(float dt)
 			guiElements[i]->Input();
 
 		guiElements[i]->GetScreenPos(x, y);
-		if (!guiElements[i]->delayBlit)
+		if (!guiElements[i]->delayBlit && guiElements[i]->visible)
 		{
 			if (guiElements[i]->type == Types::text)
 			{
@@ -181,7 +181,7 @@ bool j1Gui::CleanUp()
 		RELEASE(guiElements[i]);
 	}
 	guiElements.clear();
-
+	App->tex->UnLoad(atlas);
 	return true;
 }
 
@@ -199,22 +199,19 @@ void j1Gui::DeleteGuiElement()
 
 	for (int i = 0; i < guiElements.size(); i++)
 	{
-
 		if (guiElements[i] != nullptr) {
 			if (guiElements[i]->parent != nullptr && guiElements[i]->parent->to_delete == true)
 			{
 				guiElements[i]->to_delete = true;
 			}
 		}
-	}
-	for (int i = 0; i < guiElements.size(); i++)
-	{
+
 		if (guiElements[i]->to_delete == true)
 		{
-				if (guiElements[i]->texture != nullptr) guiElements[i]->SetText("");
-				guiElements.erase(guiElements.begin() + i);
-				i--;
-			
+			if (guiElements[i]->type == Types::text) guiElements[i]->SetText("");
+			guiElements.erase(guiElements.begin() + i);
+			i--;
+
 		}
 	}
 }
@@ -459,6 +456,7 @@ GuiImage::GuiImage(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem
 	follow = false;
 	CallBack = callback;
 	to_delete = false;
+	visible = true;
 }
 
 GuiImage::~GuiImage() {
@@ -480,40 +478,41 @@ GuiText::GuiText(int x, int y, SDL_Rect texrect,  char* inputtext, _TTF_Font* fo
 	textureRect = texrect;
 	color = SDL_Color{ 255,255,255 };
 	CallBack = callback;
-	texture = App->font->Print(text, color, local_font);
-	App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
+	texture = App->font->Print(text.c_str(), color, local_font);
+	App->font->CalcSize(text.c_str(), textureRect.w, textureRect.h, local_font);
 	to_delete = false;
+	visible = true;
 }
 
 GuiText::~GuiText() {
-
+	SDL_DestroyTexture(texture);
 }
 
-const char* GuiText::GetText() const
+string GuiText::GetText() const
 {
 	return text;
 }
 
-void GuiText::SetText(const char* newtext)
+void GuiText::SetText(string newtext)
 {
-	if (to_delete == false) {
-		text = newtext;
-		//This need TO BE FIXED :D
-		//App->tex->UnLoad(texture);
-		if (text != "") {
-			texture = App->font->Print(text, color, local_font);
-			App->font->CalcSize(text, textureRect.w, textureRect.h, local_font);
-		}
-		else 
-		{
-			texture = nullptr;
-		}
+	text = newtext;
+	//This need TO BE FIXED :D
+	//App->tex->UnLoad(texture);
+	SDL_DestroyTexture(texture);
+	if (text != "") {
+		texture = App->font->Print(text.c_str(), color, local_font);
+		App->font->CalcSize(text.c_str(), textureRect.w, textureRect.h, local_font);
 	}
-	else {
-		//This TOO :D
-	//	App->tex->UnLoad(texture);
+	else
+	{
 		texture = nullptr;
 	}
+	
+	//else {
+	//	//This TOO :D
+	////	App->tex->UnLoad(texture);
+	//	texture = nullptr;
+	//}
 }
 
 //-------------------------------------------------------------
@@ -531,6 +530,7 @@ GuiButton::GuiButton(int x, int y, SDL_Rect idle_rect, j1Module* callback) : Gui
 	focus = false;
 	CallBack = callback;
 	to_delete = false;
+	visible = true;
 }
 
 GuiButton::~GuiButton() {
@@ -557,7 +557,7 @@ InputText::InputText(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	focus = false;
 	CallBack = callback;
 	delayBlit = false;
-
+	visible = true;
 	to_delete = false;
 
 	image = App->gui->CreateGuiElement(Types::image, 0, 0, { 444, 661, 244, 65 }, this);
@@ -594,6 +594,7 @@ GuiSlider::GuiSlider(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiIt
 	ScrollThumb->delayBlit = false;
 	to_delete = false;
 	delayBlit = false;
+	visible = true;
 }
 
 GuiSlider::~GuiSlider() {
@@ -702,6 +703,7 @@ GuiBar::GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback) : GuiItem() {
 	delayBlit = false;
 	value = 0.0f;
 	updateBar(value);
+	visible = true;
 }
 GuiBar::~GuiBar() {
 
@@ -718,4 +720,15 @@ void GuiBar::ReturnChilds(GuiItem * bgPointer, GuiItem * fillPointer)
 {
 	bgPointer = background;
 	fillPointer = fill;
+}
+
+void j1Gui::SetGuiVisible(bool visibility)
+{
+	for (int i = 0; i < guiElements.size(); i++)
+	{
+		if (guiElements[i] != nullptr)
+		{
+			guiElements[i]->visible = visibility;
+		}
+	}
 }

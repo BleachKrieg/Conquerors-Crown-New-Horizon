@@ -262,6 +262,7 @@ void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animati
 			set->PushBack(TileSetData.GetAnimRect(frame.attribute("tileid").as_int()), (frame.attribute("duration").as_float()) / 2000, frame.attribute("pivotx").as_int(), frame.attribute("pivoty").as_int(), 0, 0);
 			LOG("Animation %d, %f, %d, %d", frame.attribute("tileid").as_int(), (frame.attribute("duration").as_float()) / 1000, frame.attribute("pivotx").as_int(), frame.attribute("pivoty").as_int());
 		}
+		set->loop = true;
 		animations.push_back(set);
 	}
 }

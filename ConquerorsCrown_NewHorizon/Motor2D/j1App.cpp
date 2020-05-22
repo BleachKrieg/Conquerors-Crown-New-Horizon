@@ -16,14 +16,16 @@
 #include "j1Entity.h"
 #include "j1Pathfinding.h"
 #include "J1GroupMov.h"
+#include "j1Minimap.h"
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "EntityRequest.h"
-#include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "j1Video.h"
+#include "FoWManager.h"
 
 
 // Constructor
@@ -42,6 +44,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	minimap = new j1Minimap();
+	fowManager = new FoWManager();
 	entity = new j1EntityManager();
 	requests = new EntityRequest();
 	gui = new  j1Gui();
@@ -50,6 +53,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	movement = new j1GroupMov();
 	fade = new j1FadeToBlack();
 	wave = new j1WaveSystem();
+	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
 	video = new j1Video();
 
@@ -68,12 +72,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(pathfinding);
 	AddModule(wave);
+	AddModule(fowManager);
 	AddModule(minimap);
 	AddModule(gui);
 	AddModule(fade);
 	AddModule(font);
 	AddModule(video);
-	
+	AddModule(cutscene);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -242,11 +247,13 @@ void j1App::FinishUpdate()
 	
 	static char title[256];
 
-	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Tile:%d,%d Camera: %i %i width: %i]",
+
+	/*sprintf_s(title, 256, "Conqueror's Crown: New Horizon [Time since startup: %.3f FPS:%02u Av.FPS: %.2f Last Frame Ms: %02u Cap:%s Vsync: %s Tile:%d,%d Camera: %i %i width: %i]",
 		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
+	*/
+	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u]", prev_last_sec_frame_count);
 
-	
 	App->win->SetTitle(title);
 
 	delaytimer.Start();

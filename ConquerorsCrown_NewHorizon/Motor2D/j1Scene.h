@@ -81,7 +81,6 @@ public:
 	//InGameUI functions
 	bool CreateButtonsUI();
 	bool DeleteButtonsUI();
-	void CreatePopUpMessage(int x, int y, char* titletext = "", char* text1 = "", char* text2 = "", char* text3 = "", char* text4 = "", char* text5 = "");
 
 	void LogoPushbacks();
 	void LoadTiledEntities();
@@ -91,6 +90,7 @@ public:
 
 	void GuiInput(GuiItem* guiElement);
 	
+
 private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
@@ -146,14 +146,7 @@ public:
 	GuiItem* ingameTextStone;
 	GuiItem* ingameTextClock;
 	GuiItem* ingameTextWave;
-	GuiItem* PopUpImage;
-	GuiItem* PopUpText1;
-	GuiItem* PopUpText2;
-	GuiItem* PopUpText3;
-	GuiItem* PopUpText4; 
-	GuiItem* PopUpText5;
-	GuiItem* PopUpTitleText;
-	GuiItem* PopUpButton;
+
 
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
@@ -216,17 +209,22 @@ public:
 	float speed_defeat = 0.0f;
 
 	j1Timer gameClock;
+	j1Timer Cooldown;
+
 	int timer;
 	string mins;
 	string secs;
 	bool finish = false;
+
 	bool loop = false;
 	float last_dt;
+
+	bool UiEnabled;
+
 
 	bool active;
 
 	// Tutorial
-	bool tutorial;
 	j1Timer TutorialTimer;
 
 	int intro_video;

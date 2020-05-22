@@ -13,6 +13,7 @@
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "j1Audio.h"
+#include "j1Tutorial.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
@@ -259,8 +260,6 @@ void HumanBarracks::checkAnimation(float dt)
 			}
 		}
 
-		//SpatialAudio(1, App->audio->construction, position.x, position.y);
-
 		actualState = ST_BARRACK_FINISHED;
 	}
 
@@ -307,7 +306,6 @@ void HumanBarracks::checkAnimation(float dt)
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
-		//	Mix_HaltChannel(-1);
 			SpatialAudio(1, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			team = TeamType::PLAYER;
@@ -345,6 +343,12 @@ void HumanBarracks::checkAnimation(float dt)
 		//LOG("%d", Troop.size());
 		// Finished Animation
 		current_animation = &finishedconst;
+
+		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q9_1)
+		{
+			App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+			App->tutorial->ActualState = ST_Tutorial_Q10;
+		}
 
 		CheckQueue();
 
@@ -525,6 +529,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//Timer for the upgrade
 		if (upgrade_timer.ReadSec() >= first_upgrade_time )
 		{
+			App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
 			if (creation_barrack_bar != nullptr)
 			{
 				creation_barrack_bar->to_delete = true;
@@ -566,6 +571,13 @@ void HumanBarracks::CheckQueue()
 				Searchtile(map);
 				randomrespawn = rand() % 10 + 10;
 				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+				
+				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
+				{
+					App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+					App->tutorial->ActualState = ST_Tutorial_Q11;
+				}
+				
 				if (Troop[i]->image != nullptr)
 				{
 					Troop[i]->image->to_delete = true;

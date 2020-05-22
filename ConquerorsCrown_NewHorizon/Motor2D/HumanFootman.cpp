@@ -10,6 +10,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
+
 
 HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_FOOTMAN)
 {
@@ -39,6 +41,8 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::HUMAN_FOOTMAN;
 
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(5);
 	// TODO ------------------------------------------
 }
 
@@ -88,12 +92,16 @@ bool HumanFootman::Update(float dt)
 	if (App->scene->debug)
 		life_points = 100;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
+	fPoint auxPos = position;
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -103,7 +111,7 @@ bool HumanFootman::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		current_animation->loop = false;
+		//current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -149,6 +157,8 @@ bool HumanFootman::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

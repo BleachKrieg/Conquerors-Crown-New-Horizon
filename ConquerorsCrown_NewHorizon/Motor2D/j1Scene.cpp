@@ -17,8 +17,11 @@
 #include "j1Minimap.h"
 #include "j1FadeToBlack.h"
 #include "j1WaveSystem.h"
+#include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "j1Video.h"
+#include "FoWManager.h"
+
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -27,6 +30,7 @@ j1Scene::j1Scene() : j1Module()
 	Building_preview = false;
 	active = false;
 	logo_team_sfx_counter = 0;
+	UiEnabled = true;
 }
 
 // Destructor
@@ -105,7 +109,6 @@ bool j1Scene::Update(float dt)
 	case scenes::tutorial:
 		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
 		{
-			tutorial = false;
 			App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		}
 		//UI Position update
@@ -187,34 +190,32 @@ bool j1Scene::Update(float dt)
 
 		mouse_position = App->render->ScreenToWorld(x, y);
 
-		if (!pauseMenu)
+		if (!pauseMenu && App->cutscene->cinematic_camera.active == false)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 				App->render->camera.y += 500 * dt;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				App->render->camera.y -= 500 * dt;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 				App->render->camera.x += 500 * dt;
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 				App->render->camera.x -= 500 * dt;
 			}
 		}
-
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-			CreatePopUpMessage(20, 46, "Test Title", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text", "sample text sample text");
-		}
-
 		//Camera Limits
-		if (App->render->camera.x > 0) { App->render->camera.x = 0; }
+		if (App->render->camera.x > 0) App->render->camera.x = 0;
 		int camera_limit_x = (-1 * App->map->data.width * App->map->data.tile_width) + App->render->camera.w;
-		if (App->render->camera.x < camera_limit_x) { App->render->camera.x = camera_limit_x; }
+		if (App->render->camera.x < camera_limit_x) App->render->camera.x = camera_limit_x;
 
-		if (App->render->camera.y > 0) { App->render->camera.y = 0; }
+		if (App->render->camera.y > 0) App->render->camera.y = 0;
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
-		if (App->render->camera.y < camera_limit_y) { App->render->camera.y = camera_limit_y; }
+		if (App->render->camera.y < camera_limit_y) App->render->camera.y = camera_limit_y;
 		
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
@@ -223,9 +224,16 @@ bool j1Scene::Update(float dt)
 		//Pause Menu
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
-			if (!pauseMenu) CreatePauseMenu();
-			else DeletePauseMenu();
-
+			if (!pauseMenu) {
+				//App->audio->MusicVolume(0.2);
+				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+				CreatePauseMenu();
+			}
+			else {
+				//App->audio->MusicVolume(optionsFxSlider->returnSliderPos());
+				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
+				DeletePauseMenu();
+			}
 			pauseMenu = !pauseMenu;
 		}
 
@@ -276,8 +284,8 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
 			{
 				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", +100);
-				App->scene->AddResource("gold", +100);
+				App->scene->AddResource("stone", 100);
+				App->scene->AddResource("gold", 100);
 			}
 			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 				App->fade->FadeToBlack(scenes::defeat, 2.0f);
@@ -308,7 +316,11 @@ bool j1Scene::Update(float dt)
 		else {
 			//gameClock Update
 			timer = 660 - gameClock.ReadSec();
-			TimeToClock();
+			if (Cooldown.ReadSec() > 1)
+			{
+				TimeToClock();
+				Cooldown.Start();
+			}
 		}
 		break;
 	}
@@ -338,23 +350,6 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
-		if (TutorialTimer.ReadSec() <= 4.5) 
-		{
-			tutorial = true;
-
-		}
-		
-		//Mouse input for UI buttons
-		/*if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-			if (App->entity->IsSomethingSelected())
-			{
-				if (townHallButton != nullptr) ret = DeleteButtonsUI();
-			}
-			else
-			{
-				if (townHallButton == nullptr) ret = CreateButtonsUI();
-			}
-		}*/
 		break;
 	case scenes::ingame:
 
@@ -515,8 +510,8 @@ bool j1Scene::CleanUp()
 	ret = App->tex->UnLoad(videologo_tex);
 	loader = nullptr;
 
-	
-		
+	App->minimap->CleanUp();
+
 	LOG("Freeing scene");
 
 	return ret;
@@ -573,6 +568,10 @@ void j1Scene::LoadTiledEntities() {
 							active = true;
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, pos.x, pos.y);
 							break;
+						case 422:
+							if (current_scene == scenes::tutorial) {
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
 						{
@@ -606,13 +605,14 @@ void j1Scene::DeleteScene() {
 		App->minimap->CleanUp();
 		App->map->CleanUp();
 		DeleteUI();
-		/*App->entity->DeleteAllEntities();*/
+		App->entity->DeleteAllEntities();
 		break;
 	case scenes::ingame:
 		DeleteUI();
 		App->entity->DeleteAllEntities();
 		App->minimap->CleanUp();
 		App->map->CleanUp();
+		App->fowManager->DeleteFoWMap();
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
@@ -644,22 +644,24 @@ void j1Scene::CreateScene(scenes next_scene) {
 	case scenes::tutorial:
 		current_scene = scenes::tutorial;
 		CreateTutorial();
-		/*App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -550;
-		App->render->camera.y = -430;*/
+		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
 		wood = 0u;
 		stone = 0u;
 		gold = 0u;
+		App->render->camera.x = 0;
+		App->render->camera.y = -1136;
 		finish = false;
 		break;
 	case scenes::ingame:
 		current_scene = scenes::ingame;
 		CreateInGame();
+		App->minimap->input = true;
 		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
 		App->render->camera.x = -2830;
 		App->render->camera.y = -967;
 		App->wave->Start();
 		gameClock.Start();
+		Cooldown.Start();
 		timer = 660;
 		wood = 0u;
 		stone = 0u;
@@ -672,10 +674,12 @@ void j1Scene::CreateScene(scenes next_scene) {
 		break;
 	case scenes::victory:
 		current_scene = scenes::victory;
+		App->audio->PlayMusic("Human/Human_Victory.ogg", 2.0F);
 		CreateVictory();
 		break;
 	case scenes::defeat:
 		current_scene = scenes::defeat;
+		App->audio->PlayMusic("Human/Human_Defeat.ogg", 2.0F);
 		CreateDefeat();
 		break;
 	}
@@ -737,13 +741,12 @@ bool j1Scene::CreateTutorial()
 	}
 	//Creating minimap
 	if (ret) ret = App->minimap->Start();
-
+	
 	//Loading UI
 	SDL_Rect downRect = { 0, 222, 1280, 278 };
 	SDL_Rect topRect = { 0, 0, 1280, 49 };
 	ingameUI = App->gui->CreateGuiElement(Types::image, 0, 442, downRect);
 	ingameTopBar = App->gui->CreateGuiElement(Types::image, 0, -442, topRect, ingameUI);
-
 	ingameButtonMenu = App->gui->CreateGuiElement(Types::button, 100, 3, { 0, 150, 138, 30 }, ingameTopBar, this, NULL);
 	ingameButtonMenu->setRects({ 139, 150, 138, 30 }, { 0, 181, 138, 30 });
 	ingameTextMenu = App->gui->CreateGuiElement(Types::text, 33, 4, { 0, 0, 138, 30 }, ingameButtonMenu, nullptr, "Menu", App->font->smallfont);
@@ -754,7 +757,8 @@ bool j1Scene::CreateTutorial()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
-	if (ret) ret = CreateButtonsUI();
+	LoadTiledEntities();
+	//if (ret) ret = CreateButtonsUI();
 	
 
 	return ret;
@@ -919,6 +923,11 @@ bool j1Scene::DeleteOptions()
 bool j1Scene::CreateInGame() 
 {
 	bool ret = true;
+
+	//Reseting camera to (0,0) position
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
+
 	current_level = "First level design.tmx";
 	//Loading the map
 	if (App->map->Load(current_level.GetString()) == true)
@@ -956,6 +965,9 @@ bool j1Scene::CreateInGame()
 	ingameTextClock = App->gui->CreateGuiElement(Types::text, 475, 7, { 0, 0, 138, 30 }, ingameTopBar, nullptr, "00:00", App->font->smallfont);
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
+	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
+
+
 	LoadTiledEntities();
 
 	if(ret) ret = CreateButtonsUI();
@@ -968,32 +980,33 @@ bool j1Scene::CreateInGame()
 
 bool j1Scene::CreateButtonsUI()
 {
-	townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
-	townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
-	
-	townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
-	townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
-	townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
-	
+		townHallButton = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, ingameUI, this, NULL);
+		townHallButton->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		townHallImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1092, 49, 46, 38 }, townHallButton, nullptr, NULL);
+
+		townHallWoodCostImage = App->gui->CreateGuiElement(Types::image, 990, 150, { 832, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallStoneCostImage = App->gui->CreateGuiElement(Types::image, 990, 180, { 974, 5, 85, 26 }, ingameUI, nullptr, NULL);
+		townHallWoodCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallWoodCostImage, nullptr, "200", App->font->smallfont);
+		townHallStoneCostText = App->gui->CreateGuiElement(Types::text, 30, 0, { 0, 0, 138, 30 }, townHallStoneCostImage, nullptr, "300", App->font->smallfont);
 	return true;
 }
 
 bool j1Scene::DeleteButtonsUI()
 {
-	townHallWoodCostImage->to_delete = true;
-	townHallStoneCostImage->to_delete = true;
-	townHallWoodCostText->to_delete = true;
-	townHallStoneCostText->to_delete = true;
-	townHallButton->to_delete = true;
+	//there are crahses sometimes in this code xD
 
-	townHallWoodCostImage = nullptr;
-	townHallStoneCostImage = nullptr;
-	townHallWoodCostText = nullptr;
-	townHallStoneCostText = nullptr;
-	townHallButton = nullptr;
+		townHallWoodCostImage->to_delete = true;
+		townHallStoneCostImage->to_delete = true;
+		townHallWoodCostText->to_delete = true;
+		townHallStoneCostText->to_delete = true;
+		townHallButton->to_delete = true;
 
+		townHallWoodCostImage = nullptr;
+		townHallStoneCostImage = nullptr;
+		townHallWoodCostText = nullptr;
+		townHallStoneCostText = nullptr;
+		townHallButton = nullptr;
+	
 	return true;
 }
 
@@ -1140,133 +1153,113 @@ bool j1Scene::DeleteUI()
 	return true;
 }
 
+
 void j1Scene::GuiInput(GuiItem* guiElement) {
-	//Menu buttons
-	if (guiElement == menuButtonNewGame) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->audio->PauseMusic(1.0f);
-		App->fade->FadeToBlack(scenes::tutorial, 2.0f);
-		//tutorial = true;
-	}
-	else if (guiElement == menuButtonExit) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->quitGame = true;
-	}
-	else if (guiElement == menuButtonLoadGame) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-	}
-	else if (guiElement == menuButtonOptions) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		if (optionsMenu) DeleteOptions();
-		else CreateOptions();
-		optionsMenu = !optionsMenu;
-	}
-
-	//Options Button
-	if (guiElement == optionsButtonClose) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		DeleteOptions();
-		optionsMenu = false;
-	}
-	else if (guiElement == optionsMusicSlider) {
-		App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
-	}
-	else if (guiElement == optionsFxSlider) {
-		App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
-	}
-	else if (guiElement == optionsButtonFullScreen) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-
-		if (!fullscreen) 
-		{
-			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+	if (UiEnabled)
+	{
+		//Menu buttons
+		if (guiElement == menuButtonNewGame) {
+			
+			App->tutorial->ActualState = ST_Tutorial_Q0;
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->audio->PauseMusic(1.0f);
+			App->fade->FadeToBlack(scenes::tutorial, 2.0f);
+			//tutorial = true;
 		}
-		else 
-		{
-			SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_RESIZABLE);
+		else if (guiElement == menuButtonExit) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->quitGame = true;
+		}
+		else if (guiElement == menuButtonLoadGame) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+		}
+		else if (guiElement == menuButtonOptions) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (optionsMenu) DeleteOptions();
+			else CreateOptions();
+			optionsMenu = !optionsMenu;
 		}
 
-		fullscreen = !fullscreen;
-	}
-
-	//InGame Buttons
-	if (guiElement == ingameButtonMenu) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		if (!pauseMenu) CreatePauseMenu();
-		else DeletePauseMenu();
-
-		pauseMenu = !pauseMenu;
-	}
-	else if (guiElement == PopUpButton) {
-		PopUpImage->to_delete = true;
-		PopUpTitleText->to_delete = true;
-		PopUpText1->to_delete = true;
-		PopUpText2->to_delete = true;
-		PopUpText3->to_delete = true;
-		PopUpText4->to_delete = true;
-		PopUpText5->to_delete = true;
-		PopUpButton->to_delete = true;
-	}
-	else if (guiElement == townHallButton) {
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-		if (!Building_preview && !App->entity->IsSomethingSelected())
-		{
-			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
-			Building_preview = true;
+		//Options Button
+		if (guiElement == optionsButtonClose) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			DeleteOptions();
+			optionsMenu = false;
 		}
-	}
+		else if (guiElement == optionsMusicSlider) {
+			App->audio->MusicVolume(optionsMusicSlider->returnSliderPos());
+		}
+		else if (guiElement == optionsFxSlider) {
+			App->audio->FxVolume(-1, optionsFxSlider->returnSliderPos());
+		}
+		else if (guiElement == optionsButtonFullScreen) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 
-	//Pause Menu Buttons
-	if (guiElement == pausemenuButtonResume) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		pauseMenu = false;
-		DeletePauseMenu();
-	}
-	else if (guiElement == pausemenuButtonSave) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//save
-	}
-	else if (guiElement == pausemenuButtonLoad) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//load
-	}
-	else if (guiElement == pausemenuButtonOptions) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		//options
-		CreateOptions();
-		optionsMenu = true;
-	}
-	else if (guiElement == pausemenuButtonExit) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		DeletePauseMenu();
-		pauseMenu = false;
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
-	}
+			if (!fullscreen)
+			{
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_FULLSCREEN);
+				
+	/*			if(current_scene == scenes::ingame || current_scene == scenes::tutorial)
+					App->minimap->Start();*/
+			}
+			else
+			{
+				SDL_SetWindowFullscreen(App->win->window, SDL_WINDOW_SHOWN);
+				//if (current_scene == scenes::ingame || current_scene == scenes::tutorial)
+				//	//App->minimap->Start();
 
-	//Victory Buttons
-	/*if (guiElement == victoryButtonContinue) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
+			}
+
+			fullscreen = !fullscreen;
+		}
+
+		//InGame Buttons
+		if (guiElement == ingameButtonMenu) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (!pauseMenu) CreatePauseMenu();
+			else DeletePauseMenu();
+
+			pauseMenu = !pauseMenu;
+		}
+		else if (guiElement == townHallButton) {
+			App->audio->PlayFx(-1, App->audio->normal_click, 0);
+			if (!Building_preview && !App->entity->IsSomethingSelected())
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+		}
+
+		//Pause Menu Buttons
+		if (guiElement == pausemenuButtonResume) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			pauseMenu = false;
+			DeletePauseMenu();
+		}
+		else if (guiElement == pausemenuButtonSave) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//save
+		}
+		else if (guiElement == pausemenuButtonLoad) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//load
+		}
+		else if (guiElement == pausemenuButtonOptions) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			//options
+			CreateOptions();
+			optionsMenu = true;
+		}
+		else if (guiElement == pausemenuButtonExit) {
+			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			DeletePauseMenu();
+			pauseMenu = false;
+			App->fade->FadeToBlack(scenes::menu, 2.0f);
+		}
+
+
+		
 	}
-
-	//Defeat Buttons
-	if (guiElement == defeatButtonContinue) {
-		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
-		App->fade->FadeToBlack(scenes::menu, 2.0f);
-	}*/
-}
-
-void j1Scene::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
-{
-	PopUpImage = App->gui->CreateGuiElement(Types::image, x, y, { 2295, 775, 266, 209 }, ingameTopBar);
-	PopUpTitleText = App->gui->CreateGuiElement(Types::text, x + 10, y + 10, { 0, 0, 138, 30 }, ingameTopBar, nullptr, titletext, App->font->smallfont);
-	PopUpText1 = App->gui->CreateGuiElement(Types::text, x + 10, y + 45, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text1, App->font->xs_font);
-	PopUpText2 = App->gui->CreateGuiElement(Types::text, x + 10, y + 75, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text2, App->font->xs_font);
-	PopUpText3 = App->gui->CreateGuiElement(Types::text, x + 10, y + 105, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text3, App->font->xs_font);
-	PopUpText4 = App->gui->CreateGuiElement(Types::text, x + 10, y + 135, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpText5 = App->gui->CreateGuiElement(Types::text, x + 10, y + 165, { 0, 0, 138, 30 }, ingameTopBar, nullptr, text4, App->font->xs_font);
-	PopUpButton = App->gui->CreateGuiElement(Types::button, x + 222, y + 8, { 2263, 751, 30, 30 }, ingameTopBar, this);
-	PopUpButton->setRects({ 2229, 751, 30, 30 }, { 2229, 751, 30, 30 });
 }
 
 void j1Scene::AddResource(char* typeResource, int quantity) 
@@ -1279,15 +1272,15 @@ void j1Scene::AddResource(char* typeResource, int quantity)
 	switch (i) {
 	case 1:
 		gold += quantity;
-		ingameTextGold->SetText(to_string(gold).c_str());
+		ingameTextGold->SetText(to_string(gold));
 		break;
 	case 2:
 		wood += quantity;
-		ingameTextWood->SetText(to_string(wood).c_str());
+		ingameTextWood->SetText(to_string(wood));
 		break;
 	case 3:
 		stone += quantity;
-		ingameTextStone->SetText(to_string(stone).c_str());
+		ingameTextStone->SetText(to_string(stone));
 		break;
 	case 0:
 		LOG("The parameter in AddResource is not correct.");
@@ -1306,7 +1299,7 @@ void j1Scene::TimeToClock()
 
 	string str = mins + ":" + secs;
 
-	ingameTextClock->SetText(str.c_str());
+	ingameTextClock->SetText(str);
 }
 
 //Animations

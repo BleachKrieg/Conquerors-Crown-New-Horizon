@@ -67,8 +67,15 @@ bool j1WaveSystem::Start()
 
 	next_wave = 90;
 	spawn_counter = 0;
+	troll_counter = 0;
+	grunt_counter = 0;
+	ogre_counter = 0;
 	wave_ongoing = false;
 	max_waves = 7;
+
+	troll_value = 15;
+	grunt_value = 10;
+	ogre_value = 30;
 
 	return ret;
 }
@@ -84,7 +91,10 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) { 
+	if(App->scene->current_scene == scenes::ingame)
+	{ 
+	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
+	{
 		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 		{
 			StartWave(current_wave);
@@ -210,7 +220,7 @@ bool j1WaveSystem::Update(float dt)
 			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
 		}
 	}
-
+	}
 	return ret;
 }
 
@@ -244,55 +254,159 @@ bool j1WaveSystem::Save(pugi::xml_node& data) const
 void j1WaveSystem::StartWave(int wave)
 {
 	
-	int total_spawns = 2 + 9 * wave;
+	//int total_spawns = 2 + 9 * wave;
+
+	int wave_value = 30 + 80 * wave;
+
+	if (wave_ongoing == false) {
+		if (wave == 1) { trolls = 12; ogres = 0; grunts = 0; }
+		else if (wave == 5) { trolls = 0; ogres = 15; grunts = 0; }
+		else if (wave == 2) {
+			int max_trolls, max_grunts;
+			trolls = grunts = ogres = 0;
+			do {
+				max_trolls = wave_value / troll_value;
+				if (max_trolls > 0) { trolls = trolls + rand() % max_trolls + 1; }
+				wave_value -= trolls * troll_value;
+				max_grunts = wave_value / grunt_value;
+				if (max_grunts > 0) { grunts = grunts + rand() % max_grunts + 1; }
+				wave_value -= grunts * grunt_value;
+			} while (wave_value >= grunt_value);
+		}
+		else {
+			int max_trolls, max_grunts, max_ogres;
+			trolls = grunts = ogres = 0;
+			do {
+				max_trolls = wave_value / troll_value;
+				if (max_trolls > 0) { trolls = trolls + rand() % max_trolls + 1; }
+				wave_value -= trolls * troll_value;
+				max_grunts = wave_value / grunt_value;
+				if (max_grunts > 0) { grunts = grunts + rand() % max_grunts + 1; }
+				wave_value -= grunts * grunt_value;
+				max_ogres = wave_value / ogre_value;
+				if (max_ogres > 0) { ogres = ogres + rand() % max_ogres + 1; }
+				wave_value -= ogres * ogre_value;
+				LOG("Value: %i, Trolls: %i, Grunts: %i, Ogres %i", wave_value, trolls, grunts, ogres);
+			} while (wave_value >= grunt_value);
+		}
+	}
+	int total_spawns = trolls + ogres + grunts;
+
 	wave_ongoing = true;
 	spawn_cooldown.Start();
-	int spawns = 3;
+
+	int spawns;
+	if ((total_spawns - spawn_counter) >= 3) { spawns = 3; }
+	else { spawns = (total_spawns - spawn_counter); }
 	spawn_counter += spawns;
 
 	for (int i = 1; i <= spawns; i++) {
 		if (i % 3 == 1)
 		{
-			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn1->position.x, spawn1->position.y);
-			temp->spawn = spawn1;
-			
-			for (uint i = 0; i < spawn1->path.size(); ++i)
-			{
-				iPoint point(spawn1->path.at(i).x, spawn1->path.at(i).y);
-				temp->path.push_back( point );
-			}
+			bool enemy_spawned = false;
+			do {
+				int r = rand() % 3 + 1;
+				switch (r) {
+				case 1:
+					if (troll_counter < trolls) { SpawnTroll(spawn1); troll_counter++; enemy_spawned = true; }
+					break;
+				case 2:
+					if (grunt_counter < grunts) { SpawnGrunt(spawn1); grunt_counter++; enemy_spawned = true; }
+					break;
+				case 3:
+					if (ogre_counter < ogres) { SpawnOgre(spawn1); ogre_counter++; enemy_spawned = true; }
+					break;
+				}
+			} while (enemy_spawned == false);
 		}
 		else if (i % 3 == 2) {
-			TrollEnemy* temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn2->position.x, spawn2->position.y);
-			temp->spawn = spawn2;	
-			for (uint i = 0; i < spawn2->path.size(); ++i)
-			{
-				iPoint point(spawn2->path.at(i).x, spawn2->path.at(i).y);
-				temp->path.push_back( point );
-			}
+			bool enemy_spawned = false;
+			do {
+				int r = rand() % 3 + 1;
+				switch (r) {
+				case 1:
+					if (troll_counter < trolls) { SpawnTroll(spawn2); troll_counter++; enemy_spawned = true; }
+					break;
+				case 2:
+					if (grunt_counter < grunts) { SpawnGrunt(spawn2); grunt_counter++; enemy_spawned = true; }
+					break;
+				case 3:
+					if (ogre_counter < ogres) { SpawnOgre(spawn2); ogre_counter++; enemy_spawned = true; }
+					break;
+				}
+			} while (enemy_spawned == false);
 		}																													
 		else if (i % 3 == 0) {																								
-			TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn3->position.x, spawn3->position.y);
-			temp->spawn = spawn3;
-			for (uint i = 0; i < spawn3->path.size(); ++i)
-			{
-				iPoint point(spawn3->path.at(i).x, spawn3->path.at(i).y);
-				temp->path.push_back( point );
-			}
+			bool enemy_spawned = false;
+			do {
+				int r = rand() % 3 + 1;
+				switch (r) {
+				case 1:
+					if (troll_counter < trolls) { SpawnTroll(spawn3); troll_counter++; enemy_spawned = true; }
+					break;
+				case 2:
+					if (grunt_counter < grunts) { SpawnGrunt(spawn3); grunt_counter++; enemy_spawned = true; }
+					break;
+				case 3:
+					if (ogre_counter < ogres) { SpawnOgre(spawn3); ogre_counter++; enemy_spawned = true; }
+					break;
+				}
+			} while (enemy_spawned == false);
 		}
 	}
 
 	if (spawn_counter >= total_spawns) { FinishWave(); }
 }
 
-
 void j1WaveSystem::FinishWave()
 {
 	current_wave++;
 	wave_ongoing = false;
 	wave_ended.Start();
-	//next_wave = 120;
+	//next_wave = 90;
 	spawn_counter = 0;
+	troll_counter = 0;
+	grunt_counter = 0;
+	ogre_counter = 0;
 	if (App->scene->ingameTextWave != nullptr)
 		App->scene->ingameTextWave->SetText(to_string(current_wave - 1).c_str());
+}
+
+bool j1WaveSystem::SpawnTroll(SpawnPoint* spawn)
+{
+	TrollEnemy*	temp = (TrollEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, spawn->position.x, spawn->position.y);
+	temp->spawn = spawn;
+
+	for (uint i = 0; i < spawn->path.size(); ++i)
+	{
+		iPoint point(spawn->path.at(i).x, spawn->path.at(i).y);
+		temp->path.push_back(point);
+	}
+	return true;
+}
+
+bool j1WaveSystem::SpawnOgre(SpawnPoint* spawn)
+{
+	OgreEnemy*	temp = (OgreEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_OGRE, spawn->position.x, spawn->position.y);
+	temp->spawn = spawn;
+
+	for (uint i = 0; i < spawn->path.size(); ++i)
+	{
+		iPoint point(spawn->path.at(i).x, spawn->path.at(i).y);
+		temp->path.push_back(point);
+	}
+	return true;
+}
+
+bool j1WaveSystem::SpawnGrunt(SpawnPoint* spawn)
+{
+	GruntEnemy*	temp = (GruntEnemy*)App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_GRUNT, spawn->position.x, spawn->position.y);
+	temp->spawn = spawn;
+
+	for (uint i = 0; i < spawn->path.size(); ++i)
+	{
+		iPoint point(spawn->path.at(i).x, spawn->path.at(i).y);
+		temp->path.push_back(point);
+	}
+	return true;
 }

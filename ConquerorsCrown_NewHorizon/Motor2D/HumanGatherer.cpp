@@ -10,6 +10,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
+
 
 HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_GATHERER)
 {
@@ -44,6 +46,8 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	entity_type = DynamicEntityType::HUMAN_GATHERER;
 	work_name = "";
 
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(4);
 	// TODO ------------------------------------------
 }
 
@@ -83,7 +87,11 @@ bool HumanGatherer::Start()
 	++animations_list;
 	attacking_down = **animations_list;
 	++animations_list;
-
+	death_up = **animations_list;
+	++animations_list;
+	death_down = **animations_list;
+	++animations_list;
+	
 	current_animation = &moving_down;
 	return true;
 }
@@ -99,7 +107,7 @@ bool HumanGatherer::Update(float dt)
 	if (App->scene->debug)
 		life_points = 80;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)
@@ -141,7 +149,7 @@ bool HumanGatherer::Update(float dt)
 			
 			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
-		if (!found && App->input->screen_click)
+		if (!found && App->input->screen_click && work_state != WORK_STATE::GO_TO_TOWNHALL)
 		{
 			OrderPath(entity_type);
 			inv_size = 0;
@@ -215,8 +223,12 @@ bool HumanGatherer::Update(float dt)
 	}
 
 	GathererGoTos();
+	fPoint auxPos = position;
 
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -226,7 +238,7 @@ bool HumanGatherer::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		current_animation->loop = false;
+	//	current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -248,7 +260,7 @@ bool HumanGatherer::Update(float dt)
 		break;
 	case DynamicState::DYING:
 		Death(entity_type);
-		to_delete = true;
+		//to_delete = true;
 		break;
 	}
 
@@ -274,6 +286,8 @@ bool HumanGatherer::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;
