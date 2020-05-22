@@ -60,7 +60,7 @@ bool j1EntityManager::Start()
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
-
+	arrow = App->tex->Load("Assets/textures/particles/redParticle.png");
 	max_audio_attacks = 0;
 	timer.Start();
 
@@ -76,8 +76,13 @@ bool j1EntityManager::CleanUp()
 		entities[i]->CleanUp();
 		RELEASE(entities[i]);
 	}
+	for (int i = 0; i < particles.size(); i++) {
 
+		particles[i]->CleanUp();
+		RELEASE(particles[i]);
+	}
 	entities.clear();
+	particles.clear();
 
 	return true;
 }
@@ -104,7 +109,12 @@ bool j1EntityManager::Update(float dt)
 	if (!lights && mine != nullptr)
 		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 
-	LOG("entities: %d", entities.size());
+	for (int i = 0; i < particles.size(); i++) {
+
+		particles[i]->Update(dt);
+	}
+	/*LOG("entitites: %d", entities.size());
+	LOG("particles: %d", particles.size());*/
 	return true;
 }
 
@@ -122,6 +132,18 @@ bool j1EntityManager::PostUpdate(float dt)
 		else
 		{
 			entities[i]->PostUpdate();
+		}
+	}
+
+	for (int i = 0; i < particles.size(); i++) {
+		if (particles[i]->to_delete == true)
+		{
+			DeleteParticles(i, particles[i]);
+			i--;
+		}
+		else
+		{
+			particles[i]->PostUpdate();
 		}
 	}
 
@@ -174,24 +196,17 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
-ParticleSystem* j1EntityManager::CreateParticleSys(int posx, int posy)
+ParticleSystem* j1EntityManager::CreateParticleSys( int posx, int posy)
 {
 	ParticleSystem* particleSystem = new ParticleSystem(posx, posy);
-	SDL_Rect rect = { 0, 0, 10, 400 };
-	SDL_Rect rect2 = { 0, 0, 550, 10 };
 
-	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
-	anim.Reset();
-	Emiter emiter(posx, posy, 0, 2, 0, -5, 0, 0, 0, 1, 5, 0, 50, 1, nullptr, App->tex->Load("Assets/textures/particles/redParticle.png"), anim, true);
-
-	particleSystem->PushEmiter(emiter);
 	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
 	ret->to_delete = false;
-	entities.push_back(ret);
+	particles.push_back(ret);
 
 	return particleSystem;
 }
+
 bool j1EntityManager::DeleteAllEntities()
 {
 
@@ -203,6 +218,11 @@ bool j1EntityManager::DeleteAllEntities()
 		resources_ent[i]->to_delete = true;
 		resources_ent[i]->CleanUp();
 	}
+
+	for (int i = 0; i < particles.size(); i++) {
+		particles[i]->to_delete = true;
+	}
+
 	return true;
 }
 
@@ -248,6 +268,16 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 	RELEASE(entity);
 
 
+
+	return true;
+}
+
+bool j1EntityManager::DeleteParticles(int id, j1Entity* entity)
+{
+
+	particles.erase(particles.begin() + id);
+	entity->CleanUp();
+	RELEASE(entity);
 
 	return true;
 }

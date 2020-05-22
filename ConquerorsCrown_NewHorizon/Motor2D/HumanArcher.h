@@ -27,7 +27,8 @@ public:
 
 	// Clean
 	bool CleanUp();
-
+private:
+	ParticleSystem* particleSystem = nullptr;
 };
 
 #endif // !__HUMANARCHER_H__

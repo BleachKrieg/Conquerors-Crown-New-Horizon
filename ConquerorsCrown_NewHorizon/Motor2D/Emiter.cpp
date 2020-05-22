@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "Particle.h"
 #include "math.h"
+#include "p2Log.h"
 
 Emiter::Emiter(std::vector<float>& position, std::vector<float>& particleSpeed, std::vector<int>& particleVariationSpeed,
 	std::vector<float>& particleAcceleration, std::vector<int>& particleVariationAcceleration, float particleAngularSpeed,
@@ -175,7 +176,6 @@ void Emiter::Update(float dt) {
 	{
 		ThrowParticles();
 	}
-
 	int numParticles = particleVector.size();
 
 
@@ -266,6 +266,11 @@ float Emiter::GeneratePosY()
 		return position[1];
 }
 
+void Emiter::SetSpeed(float x, float y)
+{
+	particleSpeed[0] = x;
+	particleSpeed[1] = y;
+}
 
 float Emiter::GenerateSpeedX()
 {

@@ -20,6 +20,12 @@ ParticleSystem::~ParticleSystem()
 	emiterVector.clear();
 }
 
+bool ParticleSystem::CleanUp()
+{
+	emiterVector.clear();
+
+	return true;
+}
 
 bool ParticleSystem::Update(float dt)
 {
@@ -29,6 +35,7 @@ bool ParticleSystem::Update(float dt)
 	{
 		emiterVector[i].Update(dt);
 	}
+	LOG("emiters: %d", numEmiters);
 	return true;
 }
 

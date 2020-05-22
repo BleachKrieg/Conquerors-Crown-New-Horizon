@@ -82,7 +82,7 @@ bool j1Tutorial::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
+			//App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
 		}
 
 		// Debug modes

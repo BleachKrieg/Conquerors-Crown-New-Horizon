@@ -145,14 +145,14 @@ void Particle::Update(float dt)
 	{
 		Move(dt);
 		CheckLife(dt);
+		Draw(dt);
 	}
 }
 
 
 void Particle::PostUpdate(float dt)
 {
-	if (active)
-		Draw(dt);
+	
 }
 
 

@@ -29,6 +29,7 @@ public:
 
 	void Activate();
 	void Desactivate();
+	void SetSpeed(float x, float y);
 
 private:
 	void Start();
@@ -38,7 +39,7 @@ private:
 	//Generate functions, used in ThrowParticles
 	float GeneratePosX();
 	float GeneratePosY();
-
+	
 	float GenerateSpeedX();
 	float GenerateSpeedY();
 	
@@ -46,6 +47,7 @@ private:
 	float GenerateAccelerationY();
 
 	float GenerateAngularSpeed();
+
 
 private:
 	std::vector<float> position;

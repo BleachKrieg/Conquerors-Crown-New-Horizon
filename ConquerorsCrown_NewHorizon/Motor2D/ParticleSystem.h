@@ -16,6 +16,7 @@ public:
 
 	bool Update(float dt);
 	bool PostUpdate(float dt);
+	bool CleanUp();
 
 	void Desactivate();
 	void Activate();
@@ -23,6 +24,7 @@ public:
 	bool IsActive();
 
 	void Move(int x, int y);
+	
 
 private:
 	std::vector<Emiter> emiterVector;
