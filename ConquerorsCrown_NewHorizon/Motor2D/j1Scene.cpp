@@ -147,7 +147,7 @@ bool j1Scene::Update(float dt)
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 
-		if (scale_victory < 0.005)
+		/*if (scale_victory < 0.005)
 		{
 			scale_victory = scale_victory + 0.0001;
 		}
@@ -158,7 +158,7 @@ bool j1Scene::Update(float dt)
 				speed_victory -= 0.00002;
 			}
 			scale_victory = scale_victory + speed_victory;
-		}
+		}*/
 
 		break;
 	case scenes::defeat:
@@ -166,7 +166,7 @@ bool j1Scene::Update(float dt)
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 
-		if (scale_defeat < 0.005)
+		/*if (scale_defeat < 0.005)
 		{
 			scale_defeat = scale_defeat + 0.0001;
 		}
@@ -177,7 +177,7 @@ bool j1Scene::Update(float dt)
 				speed_defeat -= 0.00002;
 			}
 			scale_defeat = scale_defeat + speed_defeat;
-		}
+		}*/
 
 		break;
 	case scenes::ingame:
@@ -279,6 +279,12 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", +100);
 				App->scene->AddResource("gold", +100);
 			}
+			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+				App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+				App->fade->FadeToBlack(scenes::victory, 2.0f);
+			}*/
 		}
 
 		//Draw the map
@@ -306,7 +312,17 @@ bool j1Scene::Update(float dt)
 		}
 		break;
 	}
+
+
+	// testing winlose scenes
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		App->fade->FadeToBlack(scenes::defeat, 2.0f);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+		App->fade->FadeToBlack(scenes::victory, 2.0f);
+	}
 	
+
 	//App->render->Blit(debug_tex, p.x, p.y);
 
 	return true;
@@ -414,13 +430,72 @@ bool j1Scene::PostUpdate(float dt)
 
 	case scenes::victory:
 		
-		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+		//App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+
+		//video
+		if (intro_video != 0)
+		{
+			video_texture = App->video->UpdateVideo(intro_video);
+
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(intro_video) == 0)
+			{
+				App->video->DestroyVideo(intro_video);
+				intro_video = 0;
+			}
+		}
+
+
+		if (intro_video == 0 && loop)
+		{
+			intro_video = App->video->Load("Assets/video/victory.ogv", App->render->renderer);
+
+
+		}
+
+		if (!loop)
+		{
+
+			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
 
 		break;
 
 	case scenes::defeat:
 		
-		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+		//App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+
+		//video
+		if (intro_video != 0)
+		{
+			video_texture = App->video->UpdateVideo(intro_video);
+
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(intro_video) == 0)
+			{
+				App->video->DestroyVideo(intro_video);
+				intro_video = 0;
+			}
+		}
+
+
+		if (intro_video == 0 && loop)
+		{
+			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
+
+
+		}
+
+		if (!loop)
+		{
+
+			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
+
 
 		break;
 
@@ -963,7 +1038,7 @@ bool j1Scene::CreateVictory() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	scale_victory = 0.0f;
+	/*scale_victory = 0.0f;
 	speed_victory = 0.005f;
 
 	victoryLogo = App->tex->Load("Assets/textures/gui/VictorySheet.png");
@@ -981,7 +1056,7 @@ bool j1Scene::CreateVictory() {
 	
 
 	//uncomment that to use text and not button to continue
-	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
 	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Victory.ogg", 2.0F);
@@ -995,7 +1070,7 @@ bool j1Scene::CreateDefeat() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	scale_defeat = 0.0f;
+	/*scale_defeat = 0.0f;
 	speed_defeat = 0.005f;
 
 	defeatLogo = App->tex->Load("Assets/textures/gui/DefeatSheet.png");
@@ -1012,7 +1087,7 @@ bool j1Scene::CreateDefeat() {
 	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
 
 	//uncomment that to use text and not button to continue
-	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
 	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
@@ -1169,7 +1244,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	}
 
 	//Victory Buttons
-	if (guiElement == victoryButtonContinue) {
+	/*if (guiElement == victoryButtonContinue) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
 	}
@@ -1178,7 +1253,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 	if (guiElement == defeatButtonContinue) {
 		App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 		App->fade->FadeToBlack(scenes::menu, 2.0f);
-	}
+	}*/
 }
 
 void j1Scene::CreatePopUpMessage(int x, int y, char* titletext, char* text1, char* text2, char* text3, char* text4, char* text5)
