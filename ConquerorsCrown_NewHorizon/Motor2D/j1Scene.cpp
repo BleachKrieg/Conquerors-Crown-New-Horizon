@@ -876,7 +876,8 @@ bool j1Scene::CreateButtonsUI()
 bool j1Scene::DeleteButtonsUI()
 {
 	//there are crahses sometimes in this code xD
-
+	if (townHallWoodCostImage != nullptr) 
+	{
 		townHallWoodCostImage->to_delete = true;
 		townHallStoneCostImage->to_delete = true;
 		townHallWoodCostText->to_delete = true;
@@ -888,7 +889,7 @@ bool j1Scene::DeleteButtonsUI()
 		townHallWoodCostText = nullptr;
 		townHallStoneCostText = nullptr;
 		townHallButton = nullptr;
-	
+	}
 	return true;
 }
 
