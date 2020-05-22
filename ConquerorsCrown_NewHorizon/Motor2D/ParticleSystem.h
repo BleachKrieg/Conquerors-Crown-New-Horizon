@@ -25,9 +25,9 @@ public:
 
 	void Move(int x, int y);
 	
-
-private:
 	std::vector<Emiter> emiterVector;
+private:
+	
 	std::vector<float>	position;
 
 	bool active;

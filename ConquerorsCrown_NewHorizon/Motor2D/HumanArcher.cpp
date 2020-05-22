@@ -88,6 +88,11 @@ bool HumanArcher::Start()
 
 
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
+	anim.Reset();
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 5, 2, nullptr, App->entity->arrow, anim, true);
+	particleSystem->PushEmiter(emiter);
 	particleSystem->Desactivate();
 
 
@@ -154,17 +159,34 @@ bool HumanArcher::Update(float dt)
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
-				particleSystem->CleanUp();
-				Animation anim;
-				anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
-				anim.Reset();
-				fPoint speed{ 0, 0 };
+				//particleSystem->CleanUp();
+				
+			/*	fPoint speed{ 0, 0 };
 				if (target_entity->position.x > position.x)
 					speed.x = 2;
 				else if (target_entity->position.x < position.x)
-					speed.x = -2;
-				Emiter emiter(position.x, position.y, speed.x, speed.y, NULL, NULL, 0, 0, 0, 0, 0, 0, 5, 2, nullptr, App->entity->arrow, anim, true);
-				particleSystem->PushEmiter(emiter);
+					speed.x = -2;*/
+
+				float xvec, yvec;
+				iPoint destiny = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+				iPoint origin = App->map->WorldToMap(position.x + 15, position.y + 15);
+				iPoint vec(destiny.x - origin.x, destiny.y - origin.y);
+
+			/*	angle = -(-90 + atan2(vec.x, vec.y) * 180 / 3.14159265);*/
+				yvec = (vec.y / sqrt(pow(vec.x, 2) + pow(vec.y, 2)));
+				xvec = (vec.x / sqrt(pow(vec.x, 2) + pow(vec.y, 2)));
+
+
+				
+
+				xvec = xvec * 10;
+				yvec = yvec * 10;
+
+				if( particleSystem->emiterVector.size() > 0)
+				particleSystem->emiterVector[0].SetSpeed(xvec, yvec);
+
+			
+
 			}
 			
 		}

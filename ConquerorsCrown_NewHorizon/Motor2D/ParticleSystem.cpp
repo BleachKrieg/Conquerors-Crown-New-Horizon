@@ -35,7 +35,6 @@ bool ParticleSystem::Update(float dt)
 	{
 		emiterVector[i].Update(dt);
 	}
-	LOG("emiters: %d", numEmiters);
 	return true;
 }
 
