@@ -12,7 +12,6 @@
 #include "j1Pathfinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
-#include "j1Tutorial.h"
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
@@ -341,23 +340,13 @@ void HumanTownHall::checkAnimation(float dt)
 		{
 			timer_queue = timer_queue - 1 * dt;
 		}
-		
-		if (isSelected == true && App->tutorial->ActualState != ST_Tutorial_Q4)
+		if (isSelected == true)
 		{
-			
 			if (createUI)
 			{
 				createUI = false;
 				CreateTownHallUI();
 				ImageSelected();
-
-				// Tutorial
-				if (App->tutorial->ActualState == ST_Tutorial_Q5)
-				{
-					App->tutorial->Arrow_4->to_delete = true;
-					App->tutorial->Arrow_4 = nullptr;
-					App->tutorial->Arrow_5 = App->gui->CreateGuiElement(Types::image, 1005, 450, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
-				}
 			}
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
@@ -453,17 +442,6 @@ void HumanTownHall::CheckQueue()
 			Searchtile(map);
 			int randomrespawn = rand() % 10 + 10;
 			App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::GATHERER, { respawn.x +randomrespawn, respawn.y+randomrespawn });
-			
-			// Tutorial
-			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q5)
-			{
-				App->tutorial->Arrow_5_1->to_delete = true;
-				App->tutorial->Arrow_5_1 = nullptr;
-				App->audio->PlayFx(-1, App->audio->quest_complete, 0);
-				App->tutorial->ActualState = ST_Tutorial_Q6;
-				App->tutorial->deleteUI(0);
-			}
-			
 			if (Troop[i]->image != nullptr)
 			{
 				Troop[i]->image->to_delete = true;
@@ -617,14 +595,6 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 		if (App->scene->wood >= 100 && App->scene->gold >= 100 || App->scene->debug == true) {
 			create_gatherer = true;
-
-			// Tutorial
-			if (App->tutorial->ActualState == ST_Tutorial_Q5)
-			{
-				App->tutorial->Arrow_5->to_delete = true;
-				App->tutorial->Arrow_5 = nullptr;
-				App->tutorial->Arrow_5_1 = App->gui->CreateGuiElement(Types::image, 830, 455, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
-			}
 		}
 		isSelected = true;
 	}

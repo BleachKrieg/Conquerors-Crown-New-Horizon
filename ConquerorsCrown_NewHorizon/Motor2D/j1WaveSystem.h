@@ -7,8 +7,6 @@
 #include "p2Point.h"
 #include "j1Timer.h"
 #include "Troll_Enemy.h"
-#include "Ogre_Enemy.h"
-#include "Grunt_Enemy.h"
 
 
 struct SpawnPoint
@@ -50,9 +48,6 @@ public:
 
 	void StartWave(int wave);
 	void FinishWave();
-	bool SpawnTroll(SpawnPoint* spawn);
-	bool SpawnOgre(SpawnPoint* spawn);
-	bool SpawnGrunt(SpawnPoint* spawn);
 
 public:
 	int current_wave;
@@ -62,15 +57,6 @@ public:
 	bool wave_ongoing;
 	j1Timer wave_ended;
 	j1Timer spawn_cooldown;
-	int trolls;
-	int ogres;
-	int grunts;
-	int troll_counter;
-	int ogre_counter;
-	int grunt_counter;
-	int troll_value;
-	int grunt_value;
-	int ogre_value;
 
 	SpawnPoint* spawn1;
 	SpawnPoint* spawn2;

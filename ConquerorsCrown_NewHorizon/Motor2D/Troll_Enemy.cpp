@@ -11,8 +11,6 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "J1GroupMov.h"
-#include "FoWManager.h"
-
 #include <math.h>
 
 TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_TROLL)
@@ -22,7 +20,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 80;
+	life_points = 100;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1400;
@@ -129,7 +127,7 @@ bool TrollEnemy::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-	//	current_animation->loop = false;
+		current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -166,28 +164,6 @@ bool TrollEnemy::Update(float dt)
 	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
 		isSelected = false;
 
-	iPoint worldDrawPos, screenPos;
-	worldDrawPos = { (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2) };
-	iPoint mapPos = App->map->WorldToMap((int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2));
-	FoWDataStruct* tileInfo = App->fowManager->GetFoWTileState({ mapPos.x, mapPos.y });
-	int fogId = -1;
-	int shroudId = -1;
-
-	if (tileInfo != nullptr)
-	{
-
-		if (App->fowManager->bitToTextureTable.find(tileInfo->tileFogBits) != App->fowManager->bitToTextureTable.end())
-		{
-			fogId = App->fowManager->bitToTextureTable[tileInfo->tileFogBits];
-		}
-
-		if (App->fowManager->bitToTextureTable.find(tileInfo->tileShroudBits) != App->fowManager->bitToTextureTable.end())
-		{
-			shroudId = App->fowManager->bitToTextureTable[tileInfo->tileShroudBits];
-		}
-
-	}
-	if (fogId == -1 && shroudId == -1 || App->scene->debug)
 	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }

@@ -94,7 +94,6 @@ bool j1Textures::UnLoad(SDL_Texture* texture)
 		{
 			SDL_DestroyTexture(texture);
 			textures.remove(texture);
-			LOG("Textures count %d", textures.size());
 			return true;
 		}
 	}

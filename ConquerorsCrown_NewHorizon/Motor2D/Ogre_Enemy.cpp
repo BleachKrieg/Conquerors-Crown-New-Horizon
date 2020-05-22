@@ -11,8 +11,6 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "J1GroupMov.h"
-#include "FoWManager.h"
-
 #include <math.h>
 
 OgreEnemy::OgreEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_OGRE)
@@ -22,11 +20,11 @@ OgreEnemy::OgreEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_O
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 300;
+	life_points = 100;
 	attack_vision = 200;
 	attack_range = 30;
 	time_attack = 1400;
-	attack_damage = 20;
+	attack_damage = 12;
 	vision = 26;
 	body = 13;
 	position.x = posx;
@@ -166,29 +164,6 @@ bool OgreEnemy::Update(float dt)
 	if (isSelected && App->movement->ai_selected != this && App->movement->ai_selected != nullptr)
 		isSelected = false;
 
-	iPoint worldDrawPos, screenPos;
-	worldDrawPos = { (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2) };
-	iPoint mapPos = App->map->WorldToMap((int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2));
-
-	FoWDataStruct* tileInfo = App->fowManager->GetFoWTileState({ mapPos.x, mapPos.y });
-	int fogId = -1;
-	int shroudId = -1;
-
-	if (tileInfo != nullptr)
-	{
-
-		if (App->fowManager->bitToTextureTable.find(tileInfo->tileFogBits) != App->fowManager->bitToTextureTable.end())
-		{
-			fogId = App->fowManager->bitToTextureTable[tileInfo->tileFogBits];
-		}
-
-		if (App->fowManager->bitToTextureTable.find(tileInfo->tileShroudBits) != App->fowManager->bitToTextureTable.end())
-		{
-			shroudId = App->fowManager->bitToTextureTable[tileInfo->tileShroudBits];
-		}
-
-	}
-	if (fogId == -1 && shroudId == -1 || App->scene->debug)
 	App->render->Blit(App->entity->ogre_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	return true;
 }
