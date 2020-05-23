@@ -108,7 +108,9 @@ float Particle::GetLife() {
 	return life;
 }
 
-
+void Particle::SetLife(float newLife) {
+	originalLife = newLife;
+}
 SDL_Texture* Particle::GetTexture() {
 	return texture;
 }

@@ -91,7 +91,7 @@ bool HumanArcher::Start()
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 5, 2, nullptr, App->entity->arrow, anim, true);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, true);
 	particleSystem->PushEmiter(emiter);
 	particleSystem->Desactivate();
 
@@ -167,24 +167,39 @@ bool HumanArcher::Update(float dt)
 				else if (target_entity->position.x < position.x)
 					speed.x = -2;*/
 
-				float xvec, yvec;
+				float xvec, yvec, ProjTime = 1;
 				iPoint destiny = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
-				iPoint origin = App->map->WorldToMap(position.x + 15, position.y + 15);
-				iPoint vec(destiny.x - origin.x, destiny.y - origin.y);
-
-			/*	angle = -(-90 + atan2(vec.x, vec.y) * 180 / 3.14159265);*/
-				yvec = (vec.y / sqrt(pow(vec.x, 2) + pow(vec.y, 2)));
-				xvec = (vec.x / sqrt(pow(vec.x, 2) + pow(vec.y, 2)));
-
-
+				iPoint start = App->map->WorldToMap(position.x + 15, position.y + 15);
 				
 
-				xvec = xvec * 10;
-				yvec = yvec * 10;
+				fPoint vec(destiny.x - start.x, destiny.y - start.y);
 
-				if( particleSystem->emiterVector.size() > 0)
-				particleSystem->emiterVector[0].SetSpeed(xvec, yvec);
+			/*	angle = -(-90 + atan2(vec.x, vec.y) * 180 / 3.14159265);*/
+				float norm = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+				yvec = (vec.y / norm);
+				xvec = (vec.x / norm);
 
+				
+				xvec *= 3;
+				yvec *= 3;
+				if (norm > 0)
+				{
+					if (abs(xvec) > abs(yvec))
+						ProjTime = norm / abs(xvec);
+					else
+						ProjTime = norm / abs(yvec);
+					ProjTime *= 0.4;
+				}
+				else {
+					ProjTime = 1;
+				}
+			
+				if (particleSystem->emiterVector.size() > 0)
+				{
+					particleSystem->emiterVector[0].SetSpeed(xvec, yvec);
+					particleSystem->emiterVector[0].SetMaxTime(ProjTime);
+				}
+			
 			
 
 			}

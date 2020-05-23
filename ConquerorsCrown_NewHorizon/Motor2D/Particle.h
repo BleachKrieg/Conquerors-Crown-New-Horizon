@@ -24,7 +24,7 @@ public:
 	
 	float GetAngle();
 	float GetAngularSpeed();
-
+	void SetLife(float NewLife);
 	float GetLife();
 	SDL_Texture* GetTexture();
 

@@ -30,6 +30,7 @@ public:
 	void Activate();
 	void Desactivate();
 	void SetSpeed(float x, float y);
+	void SetMaxTime(float NewTime);
 
 private:
 	void Start();

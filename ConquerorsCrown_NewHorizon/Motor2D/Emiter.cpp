@@ -226,6 +226,7 @@ void Emiter::ThrowParticles() {
 
 			if (particleVector[i].Activate())
 			{
+				particleVector[i].SetLife(particlesLifeTime);
 				particleVector[i].Reset(GeneratePosX(), GeneratePosY(), GenerateSpeedX(), GenerateSpeedY(), GenerateAccelerationX(), GenerateAccelerationY(), GenerateAngularSpeed());
 				emited++;
 			}
@@ -270,6 +271,24 @@ void Emiter::SetSpeed(float x, float y)
 {
 	particleSpeed[0] = x;
 	particleSpeed[1] = y;
+}
+
+void Emiter::SetMaxTime(float NewTime)
+{
+	particlesLifeTime = NewTime;
+	/*particleVector.clear();
+
+	particlesPerFrame = particlesRate * 16 / 1000;
+
+	int maxParticles = particlesRate * particlesLifeTime + 1;
+
+	particleVector.reserve(maxParticles);
+
+	for (int i = 0; i < maxParticles; i++)
+	{
+		CreateParticle();
+	}*/
+
 }
 
 float Emiter::GenerateSpeedX()
