@@ -37,24 +37,34 @@ bool DynamicEnt::CleanUp()
 void DynamicEnt::CheckCollisions(fPoint* speed)
 {
 	iPoint coord;
-	
+	fPoint relSpeed = { speed->x, speed->y };
+	float variance = 2;
+	if (speed->x < 0)
+		relSpeed.x -= variance;
+	if (speed->x > 0)
+		relSpeed.x += variance;
+	if (speed->y < 0)
+		relSpeed.y -= variance;
+	if (speed->y > 0)
+		relSpeed.y += variance;
+
 	list<MapLayer*>::iterator Layer_list;
 	MapLayer* layer;
-
 
 	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
 	{
 		layer = *Layer_list;
 		if (layer->returnPropValue("Navigation") == 1) {
-			coord = App->map->WorldToMap((int)(position.x + speed->x), (int)position.y);
+			coord = App->map->WorldToMap((int)(position.x + relSpeed.x), (int)position.y);
 			if (layer->Get(coord.x, coord.y) != 0) speed->x = 0;
 
-			coord = App->map->WorldToMap((int)position.x, (int)(position.y + speed->y));
+			coord = App->map->WorldToMap((int)position.x, (int)(position.y + relSpeed.y));
 			if (layer->Get(coord.x, coord.y) != 0) speed->y = 0;
 
 		}
 	}
 }
+
 
 void DynamicEnt::OrderPath(DynamicEntityType type)
 {

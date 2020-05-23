@@ -157,6 +157,7 @@ bool j1Tutorial::Update(float dt)
 		}
 	}
 
+	/*LOG("%i, %i", App->render->camera.x, App->render->camera.y);*/
 
 	return true;
 }
