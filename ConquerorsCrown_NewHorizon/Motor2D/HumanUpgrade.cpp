@@ -244,8 +244,8 @@ void Human_Upgrade::checkAnimation(float dt)
 		{
 			if (App->scene->debug == false)
 			{
-				App->scene->AddResource("wood", -999);
-				App->scene->AddResource("stone", -999);
+				App->scene->AddResource("wood", -900);
+				App->scene->AddResource("stone", -900);
 			}
 			//Mix_HaltChannel(-1);
 			App->scene->Building_preview = false;

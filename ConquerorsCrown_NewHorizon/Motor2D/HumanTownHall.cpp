@@ -668,7 +668,7 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 	}
 
 	if (guiElement == Button_Create_Lab) {
-		if (App->scene->wood >= 1000 && App->scene->stone >= 2000 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		if (App->scene->wood >= 900 && App->scene->stone >= 900 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, App->scene->mouse_position.x, App->scene->mouse_position.y);
 			App->scene->Building_preview = true;
