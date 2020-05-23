@@ -124,7 +124,7 @@ bool j1Scene::Update(float dt)
 		if (logoTimer.ReadSec() <= 5.5) {
 			current_animation = &team_logo;
 			logo_team_sfx_counter++;
-			if (logo_team_sfx_counter == 120) {
+			if (logo_team_sfx_counter == 150) {
 				App->audio->PlayFx(2, App->audio->logo_team_fx, 0);
 			}
 
@@ -134,7 +134,7 @@ bool j1Scene::Update(float dt)
 			logo_team_sfx_counter = 0;
 			current_animation = &logo;
 			logoTextTimer++;
-			if (logoTextTimer == 20) {
+			if (logoTextTimer == 88) {
 				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
 	//		LOG("Logo text timer: %i", logoTextTimer);
@@ -466,7 +466,7 @@ bool j1Scene::PostUpdate(float dt)
 	case scenes::defeat:
 		
 		//App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
-
+		LOG("LOGO TIMER: %.1f", logoTimer.ReadSec());
 		//video
 		if (intro_video != 0)
 		{
@@ -1059,7 +1059,7 @@ bool j1Scene::CreateVictory() {
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
-	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Victory.ogg", 2.0F);
+	App->audio->PlayMusic("Human/Human_Victory.ogg", 2.0F);
 
 
 	return true;
@@ -1090,7 +1090,7 @@ bool j1Scene::CreateDefeat() {
 	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
-	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+	App->audio->PlayMusic("Human/Human_Defeat.ogg", 2.0F);
 
 	return true;
 }
