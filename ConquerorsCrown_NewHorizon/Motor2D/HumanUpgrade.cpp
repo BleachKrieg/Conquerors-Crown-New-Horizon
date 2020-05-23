@@ -73,6 +73,10 @@ bool Human_Upgrade::Start()
 	Upgrading_swordman = false;
 	creation_Upgrade_bar = nullptr;
 	creation_Upgrade_bar_archer = nullptr;
+	Swordman_Upgrade = false;
+	Archer_Upgrade = false;
+	time_bar_start = false;
+	Upgrading_Archer = false;
 	return true;
 }
 
@@ -491,7 +495,6 @@ void Human_Upgrade::GuiInput(GuiItem* guiElement) {
 			Upgrading_swordman = true;
 			Swordman_Upgrade = true;
 		}
-		//isSelected = true;
 	}
 	else if (guiElement == Button_Create_Archer)
 	{
@@ -500,7 +503,6 @@ void Human_Upgrade::GuiInput(GuiItem* guiElement) {
 			Archer_Upgrade = true;
 			Upgrading_Archer = true;
 		}
-		isSelected = true;
 	}
 
 }
