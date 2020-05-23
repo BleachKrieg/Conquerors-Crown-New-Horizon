@@ -71,6 +71,8 @@ bool Human_Upgrade::Start()
 	creation_barrack_bar = nullptr;
 	deployed = false;
 	Upgrading_swordman = false;
+	creation_Upgrade_bar = nullptr;
+	creation_Upgrade_bar_archer = nullptr;
 	return true;
 }
 
