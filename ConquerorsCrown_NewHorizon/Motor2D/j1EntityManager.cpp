@@ -122,6 +122,15 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 	}
 
+	for (int i = 0; i < resources_ent.size(); i++) {
+		if (resources_ent[i]->to_delete == true)
+		{
+			RELEASE(resources_ent[i]);
+			resources_ent.erase(resources_ent.begin() + i);
+			i--;
+		}
+	}
+
 		return true;
 }
 

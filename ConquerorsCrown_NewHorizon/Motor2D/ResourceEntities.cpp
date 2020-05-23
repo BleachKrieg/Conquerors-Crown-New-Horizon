@@ -36,6 +36,6 @@ bool ResourceEntity::CleanUp()
 {
 	iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y);
 	App->pathfinding->ChangeWalkability(pos, 1);
-	ResourceEntity::~ResourceEntity();
+	
 	return true;
 }
