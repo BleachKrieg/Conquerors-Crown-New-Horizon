@@ -21,6 +21,7 @@ public:
 		HumanTownHall,
 		Resource,
 		GoldMine,
+		enemy_barrack
 	};
 
 	// Constructor

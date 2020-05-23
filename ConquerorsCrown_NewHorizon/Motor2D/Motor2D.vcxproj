@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DynamicEnt.cpp" />
+    <ClCompile Include="EnemyBarracks.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="FoWEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
@@ -119,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="EnemyBarracks.h" />
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="FoWBitDefs.h" />
     <ClInclude Include="FoWEntity.h" />
