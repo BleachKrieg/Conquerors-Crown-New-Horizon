@@ -113,6 +113,9 @@
     <ClCompile Include="Ogre_Enemy.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="HumanUpgrade.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="Ogre_Enemy.h">
       <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanUpgrade.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
