@@ -109,6 +109,12 @@ public:
 	GuiItem* Lab_wood_cost;
 	GuiItem* Lab_Text_Wood;
 
+	//UI Wall
+	GuiItem* Button_Create_Wall;
+	GuiItem* Wall_Image;
+	GuiItem* Wall_stone_cost;
+	GuiItem* Wall_Text_stone;
+
 	//UI Progress Bar
 	GuiItem* creation_TownHall_bar;
 
