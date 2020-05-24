@@ -71,6 +71,11 @@ bool HumanTownHall::Start()
 	Lab_Text_stone = nullptr;
 	Lab_wood_cost = nullptr;
 	Lab_Text_Wood = nullptr;
+	Button_Create_Wall = nullptr;
+	Wall_Image = nullptr;
+	Wall_stone_cost = nullptr;
+	Wall_Text_stone = nullptr;
+
 	deployed = false;
 	return true;
 }
@@ -583,6 +588,12 @@ void HumanTownHall::CreateTownHallUI()
 	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1085, 140, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
 	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1115, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
 
+	Button_Create_Wall = App->gui->CreateGuiElement(Types::button, 1000, 200, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Wall->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	Wall_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Wall, nullptr, NULL);
+	Wall_stone_cost = App->gui->CreateGuiElement(Types::image, 1070, 215, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Wall_Text_stone = App->gui->CreateGuiElement(Types::text, 1100, 215, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+
 	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
@@ -639,6 +650,18 @@ void HumanTownHall::DeleteTownHallUI()
 		Lab_wood_cost = nullptr;
 		Lab_Text_Wood = nullptr;
 	}
+	if (Button_Create_Wall != nullptr)
+	{
+		Button_Create_Wall->to_delete = true;
+		Wall_Image->to_delete = true;
+		Wall_stone_cost->to_delete = true;
+		Wall_Text_stone->to_delete = true;
+
+		Button_Create_Wall = nullptr;
+		Wall_Image = nullptr;
+		Wall_stone_cost = nullptr;
+		Wall_Text_stone = nullptr;
+	}
 }
 
 
@@ -671,6 +694,15 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 		if (App->scene->wood >= 900 && App->scene->stone >= 900 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->Building_preview = true;
+		}
+	}
+
+	if (guiElement == Button_Create_Wall) {
+		if (App->scene->stone >= 100 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		{
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->wall_create = true;
 			App->scene->Building_preview = true;
 		}
 	}

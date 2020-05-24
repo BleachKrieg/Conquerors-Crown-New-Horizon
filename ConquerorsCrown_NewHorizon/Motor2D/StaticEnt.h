@@ -20,6 +20,7 @@ public:
 		HumanBarracks,
 		HumanTownHall,
 		HumanUpgrade,
+		HumanWall,
 		Resource,
 		GoldMine,
 	};

@@ -117,6 +117,7 @@
     <ClCompile Include="StaticEnt.cpp" />
     <ClCompile Include="HumanBarracks.cpp" />
     <ClCompile Include="Troll_Enemy.cpp" />
+    <ClCompile Include="HumanWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="StaticEnt.h" />
     <ClInclude Include="HumanBarracks.h" />
     <ClInclude Include="Troll_Enemy.h" />
+    <ClInclude Include="HumanWall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

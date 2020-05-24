@@ -145,7 +145,12 @@ bool HumanArcher::Update(float dt)
 	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
 	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 
-	App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	if (life_points > 80 && attack_damage > 16)
+	{
+		App->render->Blit(App->entity->arch_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else { App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
+
 	return true;
 }
 
