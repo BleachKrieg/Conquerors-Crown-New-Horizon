@@ -76,6 +76,10 @@ bool j1Scene::Start()
 	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
+	Upgrade_Sowrdman = false;
+	stats_upgrade_swordman = 1;
+	Upgrade_Archer = false;
+	stats_upgrade_Archer = 1;
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
 	App->audio->PlayMusic("Warcraft_II_Logo_Music.ogg");
@@ -237,6 +241,23 @@ bool j1Scene::Update(float dt)
 			pauseMenu = !pauseMenu;
 		}
 
+		if (Upgrade_Sowrdman == true)
+		{
+			stats_upgrade_swordman = 2.f;
+		}
+		else
+		{
+			stats_upgrade_swordman = 1.f;
+		}
+
+		if(Upgrade_Archer == true)
+		{
+			stats_upgrade_Archer = 2.f;
+		}
+		else
+		{
+			stats_upgrade_Archer = 1.f;
+		}
 		//Debug input
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
@@ -293,6 +314,11 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
 				App->fade->FadeToBlack(scenes::victory, 2.0f);
 			}*/
+			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
 		}
 
 		//Draw the map
@@ -641,6 +667,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::tutorial:
+		Upgrade_Archer = false;
+		stats_upgrade_Archer = 1.f;
+		Upgrade_Sowrdman = false;
+		stats_upgrade_swordman = 1;
 		current_scene = scenes::tutorial;
 		CreateTutorial();
 		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
@@ -652,6 +682,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		finish = false;
 		break;
 	case scenes::ingame:
+		Upgrade_Archer = false;
+		stats_upgrade_Archer = 1.f;
+		Upgrade_Sowrdman = false;
+		stats_upgrade_swordman = 1;
 		current_scene = scenes::ingame;
 		CreateInGame();
 		App->minimap->input = true;
@@ -991,7 +1025,8 @@ bool j1Scene::CreateButtonsUI()
 bool j1Scene::DeleteButtonsUI()
 {
 	//there are crahses sometimes in this code xD
-
+	if (townHallWoodCostImage != nullptr) 
+	{
 		townHallWoodCostImage->to_delete = true;
 		townHallStoneCostImage->to_delete = true;
 		townHallWoodCostText->to_delete = true;
@@ -1003,7 +1038,7 @@ bool j1Scene::DeleteButtonsUI()
 		townHallWoodCostText = nullptr;
 		townHallStoneCostText = nullptr;
 		townHallButton = nullptr;
-	
+	}
 	return true;
 }
 

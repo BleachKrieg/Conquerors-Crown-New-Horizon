@@ -118,6 +118,8 @@
     </ClCompile>
     <ClCompile Include="theoraplay.cpp">
       <Filter>Tools\theoraplay</Filter>
+    <ClCompile Include="HumanUpgrade.cpp">
+      <Filter>Entities\Static</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +262,8 @@
     </ClInclude>
     <ClInclude Include="theoraplay_cvtrgb.h">
       <Filter>Tools\theoraplay</Filter>
+    <ClInclude Include="HumanUpgrade.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

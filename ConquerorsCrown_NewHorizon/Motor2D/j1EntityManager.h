@@ -73,6 +73,8 @@ public:
 
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;
+	SDL_Texture* foot_man_tex2 = nullptr;
+	SDL_Texture* arch_man_tex2 = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
 	SDL_Texture* troll_tex = nullptr;
 	SDL_Texture* ally_sel_tex = nullptr;

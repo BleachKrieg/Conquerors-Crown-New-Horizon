@@ -346,6 +346,16 @@ void HumanBarracks::checkAnimation(float dt)
 
 		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q9_1)
 		{
+			if (App->tutorial->mision1 != nullptr && App->tutorial->mision1_Text != nullptr && App->tutorial->mision1_Text_2 != nullptr)
+			{
+				App->tutorial->mision1->to_delete = true;
+				App->tutorial->mision1_Text->to_delete = true;
+				App->tutorial->mision1_Text_2->to_delete = true;
+
+				App->tutorial->mision1 = nullptr;
+				App->tutorial->mision1_Text = nullptr;
+				App->tutorial->mision1_Text_2 = nullptr;
+			}
 			App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 			App->tutorial->ActualState = ST_Tutorial_Q10;
 		}
@@ -574,6 +584,16 @@ void HumanBarracks::CheckQueue()
 				
 				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
 				{
+					if (App->tutorial->mision2 != nullptr && App->tutorial->mision2_Text != nullptr && App->tutorial->mision2_Text_2 != nullptr)
+					{
+						App->tutorial->mision2->to_delete = true;
+						App->tutorial->mision2_Text->to_delete = true;
+						App->tutorial->mision2_Text_2->to_delete = true;
+
+						App->tutorial->mision2 = nullptr;
+						App->tutorial->mision2_Text = nullptr;
+						App->tutorial->mision2_Text_2 = nullptr;
+					}
 					App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 					App->tutorial->ActualState = ST_Tutorial_Q11;
 				}

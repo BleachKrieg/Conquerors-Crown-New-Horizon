@@ -19,11 +19,11 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 100 * App->scene->stats_upgrade_swordman;
 	attack_vision = 200;
 	attack_range = 30;
 	time_attack = 1000;
-	attack_damage = 12;
+	attack_damage = 12 * App->scene->stats_upgrade_swordman;
 	vision = 26;
 	body = 13;
 	position.x = posx;
@@ -141,7 +141,13 @@ bool HumanFootman::Update(float dt)
 	if (isSelected)
 		App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 15), (int)(position.y)-10);
 		//App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-	App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w/2), (int)(position.y - (*r).h/2), r, 1.0f, 1.0f, orientation);
+	
+	if (life_points > 100 && attack_damage > 12)
+	{
+		App->render->Blit(App->entity->foot_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else { App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
+
 	return true;
 }
 

@@ -107,6 +107,19 @@ public:
 	GuiItem* Arrow_6;
 	GuiItem* Arrow_7;
 
+	//Misions UI
+	GuiItem* mision1;
+	GuiItem* mision1_Text;
+	GuiItem* mision1_Text_2;
+
+	GuiItem* mision2;
+	GuiItem* mision2_Text;
+	GuiItem* mision2_Text_2;
+
+	GuiItem* mision3;
+	GuiItem* mision3_Text;
+	GuiItem* mision3_Text_2;
+
 	bool createUI;
 
 	iPoint	 ingameUIPosition;
