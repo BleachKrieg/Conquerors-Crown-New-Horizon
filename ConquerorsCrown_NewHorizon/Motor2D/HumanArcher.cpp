@@ -21,11 +21,11 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 80;
+	life_points = 80 * App->scene->stats_upgrade_Archer;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1000;
-	attack_damage = 16;
+	attack_damage = 16 * App->scene->stats_upgrade_Archer;
 	vision = 26;
 	body = 13;
 	active = true;

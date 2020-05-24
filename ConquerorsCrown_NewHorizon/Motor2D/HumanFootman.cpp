@@ -19,11 +19,11 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 100;
+	life_points = 100 * App->scene->stats_upgrade_swordman;
 	attack_vision = 200;
 	attack_range = 30;
 	time_attack = 1000;
-	attack_damage = 12;
+	attack_damage = 12 * App->scene->stats_upgrade_swordman;
 	vision = 26;
 	body = 13;
 	position.x = posx;

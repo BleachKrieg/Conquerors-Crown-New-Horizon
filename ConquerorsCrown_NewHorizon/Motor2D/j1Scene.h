@@ -221,9 +221,14 @@ public:
 
 	// Tutorial
 	j1Timer TutorialTimer;
-
 	int camera_limit_x2;
 	int camera_limit_y2;
+
+	//Upgrade_Swordman
+	bool Upgrade_Sowrdman;
+	float stats_upgrade_swordman;
+	bool Upgrade_Archer;
+	float stats_upgrade_Archer;
 };
 
 #endif // __j1SCENE_H__
