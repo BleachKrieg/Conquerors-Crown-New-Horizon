@@ -124,6 +124,25 @@ bool HumanGatherer::Update(float dt)
 			bool loop = true;
 			SDL_Rect r;
 			inv_size = 0;
+			for (int i = 0; i < App->entity->mines.size() && loop; ++i)
+			{
+				it = App->entity->mines[i];
+
+				r = it->GetAnimation()->GetCurrentSize();
+				r.x = it->position.x;
+				r.y = it->position.y;
+				r.w /= 3;
+				r.h /= 3;
+				if (origin.x > (it->position.x - r.w) && origin.x < (it->position.x + r.w) && origin.y >(it->position.y - r.h) && origin.y < (it->position.y + r.h))
+				{
+					work_space = it;
+					loop = false;
+					found = true;
+					work_state = WORK_STATE::GO_TO_WORK;
+					work_name = it->name;
+					work_time = App->entity->mines_time;
+				}
+			}
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
 			{
 				it = App->entity->resources_ent[i];
@@ -138,8 +157,6 @@ bool HumanGatherer::Update(float dt)
 					found = true;
 					work_state = WORK_STATE::GO_TO_WORK;
 					work_name = it->name;
-					if (work_name == "mine")
-						work_time = App->entity->mines_time;
 					if (work_name == "quarry")
 						work_time = App->entity->quarries_time;
 					if (work_name == "tree")
@@ -167,7 +184,6 @@ bool HumanGatherer::Update(float dt)
 			target_entity = nullptr;
 			if (work_name == "mine")
 			{
-				App->entity->lights = true;
 				to_blit = false;
 				isSelected = false;
 			}
@@ -182,7 +198,7 @@ bool HumanGatherer::Update(float dt)
 			path.clear();
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
-			if (work_name == "mine")
+			if (work_name == "gold_mine")
 				App->scene->AddResource("gold", inv_size);
 			if (work_name == "quarry")
 				App->scene->AddResource("stone", inv_size);
@@ -195,9 +211,8 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
-		if (work_name == "mine") 
+		if (work_name == "gold_mine") 
 		{
-			App->entity->lights = true;
 			isSelected = false;
 		}
 		state = DynamicState::INTERACTING;

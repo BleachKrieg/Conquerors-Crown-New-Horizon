@@ -30,7 +30,6 @@ GoldMine::~GoldMine() {}
 bool GoldMine::Start()
 {
 	mine_lights = LIGHTS_OFF;
-	App->entity->mine = this;
 	iPoint pos = { (int)position.x, (int)position.y };
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	iPoint tempPos = pos;
@@ -41,7 +40,6 @@ bool GoldMine::Start()
 		{
 			tempPos.x = pos.x + i;
 			tempPos.y = pos.y + j;
-			App->entity->CreateStaticEntity(StaticEntType::Resource, position.x + (32 * i), position.y + (32 * j), 2u);
 			App->pathfinding->ChangeWalkability(tempPos, 1);
 		}
 	}
@@ -62,17 +60,6 @@ bool GoldMine::Update(float dt)
 	}
 	r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
-
-	if (App->scene->debug)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				App->render->DrawQuad(SDL_Rect{ int(position.x + (32 * i)), int(position.y + (32 * j)), 32, 32 }, 255, 255, 0, 100);
-			}
-		}
-	}
 
 	return true;
 }
