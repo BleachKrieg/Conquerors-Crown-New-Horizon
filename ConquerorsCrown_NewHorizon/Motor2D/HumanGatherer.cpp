@@ -55,15 +55,7 @@ HumanGatherer::~HumanGatherer() {}
 
 bool HumanGatherer::Start()
 {
-	bool found = false;
-	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
-	{
-		if (App->entity->player_stat_ent[i]->name == "town_hall")
-		{
-			town_hall = App->entity->player_stat_ent[i];
-			found = true;
-		}
-	}
+	AssignTownHall();
 
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->gatherer_animations.begin();
@@ -115,6 +107,7 @@ bool HumanGatherer::Update(float dt)
 		bool found = false;
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
+			CheckTownHall();
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
 			iPoint pos;
@@ -180,6 +173,7 @@ bool HumanGatherer::Update(float dt)
 		target_entity = work_space;
 		if (position.DistanceTo(work_space->position) <= 100 && path.size() == 0)
 		{
+			CheckTownHall();
 			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
@@ -196,6 +190,7 @@ bool HumanGatherer::Update(float dt)
 	{
 		if (position.DistanceTo(town_hall->position) <= 200 && path.size() == 0)
 		{
+			CheckTownHall();
 			path.clear();
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
@@ -214,7 +209,6 @@ bool HumanGatherer::Update(float dt)
 	{
 		if (work_name == "gold_mine") 
 		{
-
 			isSelected = false;
 		}
 		state = DynamicState::INTERACTING;
@@ -227,6 +221,7 @@ bool HumanGatherer::Update(float dt)
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
 			to_blit = true;
 			selectable = true;
+			CheckTownHall();
 		}
 		else {
 			if (chop_time >= 70 && work_name=="tree") {
@@ -308,4 +303,48 @@ bool HumanGatherer::CleanUp()
 	path.clear();
 	name.Clear();
 	return true;
+}
+
+void HumanGatherer::CheckTownHall()
+{
+	bool loop = true;
+	if (town_hall != nullptr)
+	{
+		for (uint i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
+		{
+			if (town_hall == App->entity->player_stat_ent[i])
+			{
+				loop = false;
+			}
+		}
+		if (loop)
+			town_hall = nullptr;
+	}
+	if (town_hall == nullptr)
+		AssignTownHall();
+}
+
+void HumanGatherer::AssignTownHall()
+{
+	bool found = false;
+	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
+	{
+		if (App->entity->player_stat_ent[i]->name == "town_hall")
+		{
+			town_hall = App->entity->player_stat_ent[i];
+			found = true;
+		}
+	}
+	if (!found)
+	{
+		work_state = WORK_STATE::NONE;
+		work_name = "";
+		work_time = 0;
+		path.clear();
+		state = DynamicState::IDLE;
+		to_blit = true;
+		work_space = nullptr;
+		target_entity = nullptr;
+		inv_size = 0;
+	}
 }
