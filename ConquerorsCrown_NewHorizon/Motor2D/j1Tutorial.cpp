@@ -52,6 +52,15 @@ bool j1Tutorial::Start()
 	Button_No = nullptr;
 	Button_No_Text = nullptr;
 	Question_1_text = nullptr;
+	mision1 = nullptr;
+	mision1_Text = nullptr;
+	mision1_Text_2 = nullptr;
+	mision2 = nullptr;
+	mision2_Text = nullptr;
+	mision2_Text_2 = nullptr;
+	mision3 = nullptr;
+	mision3_Text = nullptr;
+	mision3_Text_2 = nullptr;
 
 	ActualState = ST_Tutorial_Q0;
 
@@ -335,7 +344,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 			CreatePopUpMessage(480, 96, "Uther", "If you click on the trees, the", "gatherer will collect wood, on", "the rock for stone and on the", "mine for gold.", " ");
 			Arrow_5 = App->gui->CreateGuiElement(Types::image, 120, 290, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 			Arrow_6 = App->gui->CreateGuiElement(Types::image, 850, 100, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
-			Arrow_7 = App->gui->CreateGuiElement(Types::image, 800, 360, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
+			Arrow_7 = App->gui->CreateGuiElement(Types::image, 770, 360, { 2608, 212, 45, 64 }, App->scene->ingameTopBar);
 		}
 	}
 
@@ -418,6 +427,16 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	{
 		if (App->entity->ai_dyn_ent.empty()) 
 		{
+			if (mision3 != nullptr && mision3_Text != nullptr && mision3_Text_2 != nullptr)
+			{
+				mision3->to_delete = true;
+				mision3_Text->to_delete = true;
+				mision3_Text_2->to_delete = true;
+
+				mision3 = nullptr;
+				mision3_Text = nullptr;
+				mision3_Text_2 = nullptr;
+			}
 			ActualState = ST_Tutorial_Q15;
 		}
 	}
@@ -658,6 +677,25 @@ bool j1Tutorial::deleteUI(int step)
 			Arrow_6 = nullptr;
 			Arrow_7->to_delete = true;
 			Arrow_7 = nullptr;
+		}
+		
+		if (ActualState == ST_Tutorial_Q9)
+		{
+			mision1 = App->gui->CreateGuiElement(Types::image, 923, 38, { 2620, 0, 356, 209 }, App->scene->ingameTopBar);
+			mision1_Text = App->gui->CreateGuiElement(Types::text, 950, 44, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "> > New Quest < <", App->font->defaultfont);
+			mision1_Text_2 = App->gui->CreateGuiElement(Types::text, 933, 98, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "- Create a Barrack", App->font->smallfont);
+		}
+		if (ActualState == ST_Tutorial_Q10)
+		{
+			mision2 = App->gui->CreateGuiElement(Types::image, 923, 38, { 2620, 0, 356, 209 }, App->scene->ingameTopBar);
+			mision2_Text = App->gui->CreateGuiElement(Types::text, 950, 44, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "> > New Quest < <", App->font->defaultfont);
+			mision2_Text_2 = App->gui->CreateGuiElement(Types::text, 933, 98, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "- Create a Swordman", App->font->smallfont);
+		}
+		if (ActualState == ST_Tutorial_Q14)
+		{
+			mision3 = App->gui->CreateGuiElement(Types::image, 923, 38, { 2620, 0, 356, 209 }, App->scene->ingameTopBar);
+			mision3_Text = App->gui->CreateGuiElement(Types::text, 950, 44, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "> > New Quest < <", App->font->defaultfont);
+			mision3_Text_2 = App->gui->CreateGuiElement(Types::text, 933, 98, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "- Defeat the enemy horde", App->font->smallfont);
 		}
 	}
 	return true;
