@@ -119,6 +119,7 @@
     <ClCompile Include="HumanBarracks.cpp" />
     <ClCompile Include="theoraplay.cpp" />
     <ClCompile Include="Troll_Enemy.cpp" />
+    <ClCompile Include="HumanWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="theoraplay.h" />
     <ClInclude Include="theoraplay_cvtrgb.h" />
     <ClInclude Include="Troll_Enemy.h" />
+    <ClInclude Include="HumanWall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

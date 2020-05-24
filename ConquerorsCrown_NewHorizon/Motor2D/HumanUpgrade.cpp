@@ -246,7 +246,7 @@ void Human_Upgrade::checkAnimation(float dt)
 	{
 		current_animation = &finishedconst;
 
-		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click/* && App->scene->wood >= 100 && App->scene->stone >= 200 */|| (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->scene->debug == true)
+		if ((App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->input->screen_click && App->scene->wood >= 900 && App->scene->stone >= 900 || (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) && canbuild == true && App->scene->debug == true)
 		{
 			if (App->scene->debug == false)
 			{

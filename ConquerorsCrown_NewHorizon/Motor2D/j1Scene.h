@@ -234,6 +234,9 @@ public:
 	float stats_upgrade_swordman;
 	bool Upgrade_Archer;
 	float stats_upgrade_Archer;
+
+	// Wall
+	bool wall_create;
 };
 
 #endif // __j1SCENE_H__

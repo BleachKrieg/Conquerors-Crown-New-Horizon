@@ -121,6 +121,9 @@
     <ClCompile Include="HumanUpgrade.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="HumanWall.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
@@ -263,6 +266,9 @@
     <ClInclude Include="theoraplay_cvtrgb.h">
       <Filter>Tools\theoraplay</Filter>
     <ClInclude Include="HumanUpgrade.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanWall.h">
       <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>

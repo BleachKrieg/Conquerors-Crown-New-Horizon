@@ -79,6 +79,7 @@ bool j1Scene::Start()
 	Upgrade_Sowrdman = false;
 	stats_upgrade_swordman = 1;
 	Upgrade_Archer = false;
+	wall_create = false;
 	stats_upgrade_Archer = 1;
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -319,6 +320,17 @@ bool j1Scene::Update(float dt)
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
+			if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+		}
+
+		if (stone >= 100 && wall_create == true && !Building_preview)
+		{
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
+			Building_preview = true;
 		}
 
 		//Draw the map
