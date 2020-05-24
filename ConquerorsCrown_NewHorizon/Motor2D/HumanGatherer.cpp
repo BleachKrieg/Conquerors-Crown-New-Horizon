@@ -129,11 +129,11 @@ bool HumanGatherer::Update(float dt)
 				it = App->entity->mines[i];
 
 				r = it->GetAnimation()->GetCurrentSize();
-				r.x = it->position.x;
-				r.y = it->position.y;
-				r.w /= 3;
-				r.h /= 3;
-				if (origin.x > (it->position.x - r.w) && origin.x < (it->position.x + r.w) && origin.y >(it->position.y - r.h) && origin.y < (it->position.y + r.h))
+				r.x = it->position.x + 64;
+				r.y = it->position.y + 64;
+				r.w /= 2;
+				r.h /= 2;
+				if (pos.x > (r.x - r.w - 12) && pos.x < (r.x + r.w) && pos.y >(r.y - r.h - 12) && pos.y < (r.y + r.h - 24))
 				{
 					work_space = it;
 					loop = false;
@@ -141,6 +141,7 @@ bool HumanGatherer::Update(float dt)
 					work_state = WORK_STATE::GO_TO_WORK;
 					work_name = it->name;
 					work_time = App->entity->mines_time;
+					App->render->DrawQuad(r, 255, 255, 0, 255);
 				}
 			}
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
@@ -182,7 +183,7 @@ bool HumanGatherer::Update(float dt)
 			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
-			if (work_name == "mine")
+			if (work_name == "gold_mine")
 			{
 				to_blit = false;
 				isSelected = false;
@@ -213,6 +214,7 @@ bool HumanGatherer::Update(float dt)
 	{
 		if (work_name == "gold_mine") 
 		{
+
 			isSelected = false;
 		}
 		state = DynamicState::INTERACTING;
