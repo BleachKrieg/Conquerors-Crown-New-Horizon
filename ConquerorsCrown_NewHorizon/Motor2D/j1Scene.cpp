@@ -349,6 +349,10 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", 100);
 				App->scene->AddResource("gold", 100);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+			}
+
 			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 				App->fade->FadeToBlack(scenes::defeat, 2.0f);
 			}
@@ -371,6 +375,10 @@ bool j1Scene::Update(float dt)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
+
+			if(App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+
 		}
 
 		//Draw the map
@@ -1071,6 +1079,7 @@ bool j1Scene::CreateInGame()
 
 	if(ret) ret = CreateButtonsUI();
 
+	App->wave->CreateSpawnBuildings();
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
 

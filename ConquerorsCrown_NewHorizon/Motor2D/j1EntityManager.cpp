@@ -11,6 +11,7 @@
 #include "Ogre_Enemy.h"
 #include "Grunt_Enemy.h"
 #include "ResourceEntities.h"
+#include "EnemyBarracks.h"
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
@@ -173,6 +174,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); mines.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 

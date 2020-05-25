@@ -23,6 +23,7 @@ public:
 		HumanWall,
 		Resource,
 		GoldMine,
+		enemy_barrack
 	};
 
 	// Constructor

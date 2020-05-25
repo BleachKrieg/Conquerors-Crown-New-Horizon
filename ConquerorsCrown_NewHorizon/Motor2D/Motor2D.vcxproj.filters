@@ -124,6 +124,9 @@
     <ClCompile Include="HumanWall.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyBarracks.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
@@ -269,6 +272,9 @@
       <Filter>Entities\Static</Filter>
     </ClInclude>
     <ClInclude Include="HumanWall.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBarracks.h">
       <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
