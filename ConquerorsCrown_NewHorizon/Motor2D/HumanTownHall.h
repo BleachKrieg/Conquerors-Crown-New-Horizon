@@ -65,7 +65,6 @@ public:
 
 	// Stats
 	int attackrange;
-	int collrange;
 
 	// Queue
 	float timer_queue;
