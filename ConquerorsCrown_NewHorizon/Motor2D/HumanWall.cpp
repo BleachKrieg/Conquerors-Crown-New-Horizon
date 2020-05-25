@@ -73,14 +73,14 @@ bool Human_Wall::Update(float dt)
 	if (App->scene->debug && actualState != ST_WALL_PREVIEW)
 	{
 
-		App->render->DrawQuad({ (int)position.x -16, (int)position.y - 16, 32, 32 }, 200, 0, 0, 200, false);
+	//	App->render->DrawQuad({ (int)position.x -16, (int)position.y - 16, 32, 32 }, 200, 0, 0, 200, false);
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
 
 		tempPos = App->map->MapToWorld(tempPos.x, tempPos.y);
-		App->render->DrawQuad({ (int)(position.x - 16), (int)(position.y - 16), 32, 32 }, 200, 0, 0, 50);
+	//	App->render->DrawQuad({ (int)(position.x - 16), (int)(position.y - 16), 32, 32 }, 200, 0, 0, 50);
 	}
 
 	//Final blit

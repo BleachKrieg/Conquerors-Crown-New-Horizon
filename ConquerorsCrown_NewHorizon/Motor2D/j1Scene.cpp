@@ -21,6 +21,7 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "J1GroupMov.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -219,6 +220,19 @@ bool j1Scene::Update(float dt)
 		break;
 	case scenes::ingame:
 		//Camera movement inputs
+		if (App->movement->portrait_entity != nullptr)
+		{
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				LOG("imprimir town_hall");
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				LOG("imprimir human_archer");
+			}
+		}
+		
+
 		int x, y;
 		App->input->GetMousePosition(x, y);
 
@@ -407,11 +421,11 @@ bool j1Scene::Update(float dt)
 	}
 	
 	// testing winlose scenes
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && debug) {
 		App->fade->FadeToBlack(scenes::defeat, 2.0f);
 		win_lose_counter = 0;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN && debug) {
 		App->fade->FadeToBlack(scenes::victory, 2.0f);
 		win_lose_counter = 0;
 	}
@@ -682,20 +696,34 @@ void j1Scene::DeleteScene() {
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
+
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::victory:
-		App->tex->UnLoad(victoryLogo);
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::defeat:
-		App->tex->UnLoad(defeatLogo);
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;

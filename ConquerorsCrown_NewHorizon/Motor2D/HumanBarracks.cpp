@@ -132,7 +132,7 @@ bool HumanBarracks::Update(float dt)
 		//App->render->DrawCircle(position.x, position.y, vision, 0, 0, 200);
 		//App->render->DrawCircle(position.x, position.y, collrange, 200, 200, 0);
 		//App->render->DrawCircle(position.x, position.y, body, 0, 0, 200);
-		App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
+	//	App->render->DrawQuad({ (int)position.x - 50, (int)position.y - 50, 100, 100 }, 200, 0, 0, 200, false);
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -145,7 +145,7 @@ bool HumanBarracks::Update(float dt)
 				tempPos.x = pos.x + i;
 				tempPos.y = pos.y + j;
 				tempPos = App->map->MapToWorld(tempPos.x, tempPos.y);
-				App->render->DrawQuad({ (int)(position.x + i * 32), (int)(position.y + j * 32), 32, 32 }, 200, 0, 0, 50);
+		//		App->render->DrawQuad({ (int)(position.x + i * 32), (int)(position.y + j * 32), 32, 32 }, 200, 0, 0, 50);
 			}
 		}
 
