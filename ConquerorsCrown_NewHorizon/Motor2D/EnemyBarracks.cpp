@@ -21,7 +21,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	collrange = 25;
+	collrange = 50;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
@@ -69,8 +69,7 @@ bool EnemyBarracks::Update(float dt)
 
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x, (int)position.y, r, 1.0f, 1.0f);
-	App->render->DrawQuad({ (int)position.x, (int)position.y, 20, 20 }, 200, 0, 0);
+	App->render->Blit(App->entity->building, (int)position.x - 45, (int)position.y - 45, r, 1.0f, 1.0f);
 
 
 	return true;

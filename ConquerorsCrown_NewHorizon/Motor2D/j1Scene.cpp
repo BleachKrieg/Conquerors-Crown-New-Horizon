@@ -857,6 +857,7 @@ bool j1Scene::CreateInGame()
 
 	if(ret) ret = CreateButtonsUI();
 
+	App->wave->CreateSpawnBuildings();
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
 

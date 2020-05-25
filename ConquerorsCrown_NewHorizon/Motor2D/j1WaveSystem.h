@@ -17,6 +17,7 @@ struct SpawnPoint
 	j1Entity*	target;
 	fPoint		targetpos;
 	vector<iPoint>	path;
+	j1Entity*	bulding;
 };
 
 class j1WaveSystem : public j1Module {
@@ -48,6 +49,8 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	bool CreateSpawnBuildings();
+
 	void StartWave(int wave);
 	void FinishWave();
 	bool SpawnTroll(SpawnPoint* spawn);
@@ -71,6 +74,7 @@ public:
 	int troll_value;
 	int grunt_value;
 	int ogre_value;
+	int spawn_buildings;
 
 	SpawnPoint* spawn1;
 	SpawnPoint* spawn2;
