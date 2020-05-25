@@ -135,7 +135,6 @@ bool HumanGatherer::Update(float dt)
 					work_state = WORK_STATE::GO_TO_WORK;
 					work_name = it->name;
 					work_time = App->entity->mines_time;
-					App->render->DrawQuad(r, 255, 255, 0, 255);
 				}
 			}
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
