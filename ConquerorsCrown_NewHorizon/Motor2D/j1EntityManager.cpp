@@ -36,6 +36,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	pause = false;
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
@@ -89,14 +90,18 @@ bool j1EntityManager::Update(float dt)
 
 	Mix_AllocateChannels(20);
 
+	if (pause) {
+		dt = 0;
+	}
+
 	if(timer.ReadMs() > 200)
 	{
 		max_audio_attacks = 0;
 		timer.Start();
 	}
 
-	for (int i = 0; i < entities.size(); i++) {
-		
+	for (int i = 0; i < entities.size(); i++) 
+	{		
 		entities[i]->Update(dt);
 	}
 	
@@ -116,6 +121,9 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 		else
 		{
+			if (pause) {
+				dt = 0;
+			}
 			entities[i]->PostUpdate();
 		}
 	}
@@ -195,64 +203,63 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		if (type == "static")
 		{
-				p2SString static_type(entity.child("type").attribute("name").as_string());
-				if (static_type == "town_hall")
-				{
-					static_ID = StaticEnt::StaticEntType::HumanTownHall;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "human_barracks")
-				{
-					static_ID = StaticEnt::StaticEntType::HumanBarracks;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "gold_mine")
-				{
-					static_ID = StaticEnt::StaticEntType::GoldMine;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "resource")
-				{
-					static_ID = StaticEnt::StaticEntType::Resource;
-				}
+			p2SString static_type(entity.child("type").attribute("name").as_string());
+			if (static_type == "town_hall")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanTownHall;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "human_barracks")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanBarracks;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "gold_mine")
+			{
+				static_ID = StaticEnt::StaticEntType::GoldMine;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "resource")
+			{
+				static_ID = StaticEnt::StaticEntType::Resource;
+			}
 		}
 		if (type == "dynamic")
 		{
-				p2SString dynamic_type(entity.child("type").attribute("name").as_string());
-				if (dynamic_type == "enemy_grunt")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
-				}
-				if (dynamic_type == "enemy_ogre")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
-				}
-				if (dynamic_type == "enemy_troll")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
-				}
-				if (dynamic_type == "human_archer")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
-				}
-				if (dynamic_type == "human_footman")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
-				}
-				if (dynamic_type == "human_gatherer")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
-				}
-				//Once localized an entity, we create it
-				
+			p2SString dynamic_type(entity.child("type").attribute("name").as_string());
+			if (dynamic_type == "enemy_grunt")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
+			}
+			if (dynamic_type == "enemy_ogre")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
+			}
+			if (dynamic_type == "enemy_troll")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
+			}
+			if (dynamic_type == "human_archer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
+			}
+			if (dynamic_type == "human_footman")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
+			}
+			if (dynamic_type == "human_gatherer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
+			}
+			//Once localized an entity, we create it
+
 			CreateEntity(dynamic_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 		}
-			
 
-			//Once located an entity, we create it
-			//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-		
+		//Once located an entity, we create it
+		//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 	}
+
 	// For load buildings correctly
 	App->scene->active = false;
 
@@ -261,7 +268,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		entities_list->data->Load(entity);
 		entities_list = entities_list->next;
 	}*/
-
+	
 	return true;
 }
 

@@ -419,14 +419,16 @@ void DynamicEnt::Movement(float dt)
 		if(team == TeamType::PLAYER)
 			speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
 		else
-	speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
+		speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
 	
 		speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
 	CheckCollisions(&speed);
 
-	position.y += 60 * dt * speed.y;
-	position.x += 60 * dt * speed.x;
+
+		position.y += 60 * dt * speed.y;
+		position.x += 60 * dt * speed.x;
+
 }
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)

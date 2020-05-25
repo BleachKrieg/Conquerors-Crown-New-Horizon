@@ -259,12 +259,10 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			if (!pauseMenu) {
-				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
-				App->audio->MusicVolume(0.2);
+
 				CreatePauseMenu();
 			}
 			else {
-				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
 				DeletePauseMenu();
 			}
 			pauseMenu = !pauseMenu;
@@ -847,8 +845,14 @@ bool j1Scene::CreateTutorial()
 
 bool j1Scene::CreatePauseMenu() 
 {
-	if(pausemenuBackground == nullptr)
+
+
+	if (pausemenuBackground == nullptr) {
+		App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+		App->audio->MusicVolume(0.2f);
 		pausemenuBackground = App->gui->CreateGuiElement(Types::image, 347, -342, { 2292, 731, 586, 483 }, ingameUI);
+	}
+
 
 	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
 	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
@@ -870,10 +874,15 @@ bool j1Scene::CreatePauseMenu()
 	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
 
+	App->entity->pause = true;
+
 	return true;
 }
 
 bool j1Scene::DeletePauseMenu() {
+
+	App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
+	App->audio->MusicVolume(1.0f);
 	if (optionsMenu)
 	{
 		DeleteOptions();
@@ -885,6 +894,8 @@ bool j1Scene::DeletePauseMenu() {
 
 	pausemenuBackground->to_delete = true;
 	pausemenuBackground = nullptr;
+
+	App->entity->pause = false;
 
 	return true;
 }
