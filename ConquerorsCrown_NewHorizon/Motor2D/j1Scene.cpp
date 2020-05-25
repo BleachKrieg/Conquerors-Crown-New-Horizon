@@ -159,18 +159,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 265) {
-			App->audio->PlayFx(1, App->audio->crown_fx, 0);
-		}
-		if (win_lose_counter == 325) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 370) {
-			App->audio->PlayFx(1, App->audio->warcry_fx, 0);
-		}
-		LOG("Victory counter: %i", win_lose_counter);
+		
 
 		/*if (scale_victory < 0.005)
 		{
@@ -190,19 +179,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 260) {
-			App->audio->PlayFx(1, App->audio->skull_fx, 0);
-		}
-		if (win_lose_counter == 340) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 380) {
-			App->audio->PlayFx(1, App->audio->horn_fx, 0);
-		}
-		LOG("Defeat counter: %i", win_lose_counter);
-
+		
 		/*if (scale_defeat < 0.005)
 		{
 			scale_defeat = scale_defeat + 0.0001;
@@ -890,7 +867,7 @@ bool j1Scene::CreatePauseMenu()
 bool j1Scene::DeletePauseMenu() {
 
 	App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
-	App->audio->MusicVolume(1.0f);
+	//App->audio->MusicVolume(1.0f);
 	if (optionsMenu)
 	{
 		DeleteOptions();
