@@ -159,7 +159,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 		float distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
 
 		//if (!following_target && distance > (attack_range * attack_range))
-		if (!following_target && !player_order && distance >= attack_range + target_entity->body)
+		if (!following_target && !player_order && distance >= attack_range + target_entity->coll_range)
 		{
 			current_time = timer.ReadMs();
 			following_target = true;
@@ -171,7 +171,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 
 		// Finish attack
 
-		if (distance < attack_range + target_entity->body)
+		if (distance < attack_range + target_entity->coll_range)
 		{
 			state = DynamicState::INTERACTING;
 

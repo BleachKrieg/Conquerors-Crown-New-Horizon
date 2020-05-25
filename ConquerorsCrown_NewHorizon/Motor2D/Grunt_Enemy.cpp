@@ -28,6 +28,7 @@ GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	attack_damage = 12;
 	vision = 26;
 	body = 13;
+	coll_range = 13;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;

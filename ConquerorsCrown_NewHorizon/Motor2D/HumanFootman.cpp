@@ -26,6 +26,7 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	attack_damage = 12 * App->scene->stats_upgrade_swordman;
 	vision = 26;
 	body = 13;
+	coll_range = 13;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;

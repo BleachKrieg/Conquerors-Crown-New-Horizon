@@ -21,7 +21,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	collrange = 25;
+	coll_range = 50;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
