@@ -25,7 +25,6 @@
 #include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
-#include "j1Video.h"
 
 
 // Constructor
@@ -55,7 +54,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	wave = new j1WaveSystem();
 	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
-	video = new j1Video();
 
 
 	// Ordered for awake / Start / Update
@@ -78,7 +76,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade);
 	AddModule(font);
 	AddModule(cutscene);
-	AddModule(video);
 
 	// render last to swap buffer
 	AddModule(render);

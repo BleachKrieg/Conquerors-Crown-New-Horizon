@@ -95,12 +95,6 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	
 	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");
 	logo_team_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Team_SFX.wav");
-	crown_fx = App->audio->LoadFx("Assets/Audio/SFX/Win_Lose/Crown_Victory.wav");
-	axe_fx = App->audio->LoadFx("Assets/Audio/SFX/Win_Lose/Axe_Defeat.wav");
-	warcry_fx = App->audio->LoadFx("Assets/Audio/SFX/Win_Lose/Warcry_Victory.wav");
-	skull_fx = App->audio->LoadFx("Assets/Audio/SFX/Win_Lose/Skull_Victory.wav");
-	horn_fx = App->audio->LoadFx("Assets/Audio/SFX/Win_Lose/Horn_Defeat.wav");
-
 	return ret;
 }
 

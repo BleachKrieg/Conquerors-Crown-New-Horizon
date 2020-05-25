@@ -87,12 +87,6 @@ public:
 
 	int logo_game_fx;
 	int logo_team_fx;
-	int crown_fx;
-	int axe_fx;
-	int warcry_fx;
-	int skull_fx;
-	int horn_fx;
-
 private:
 
 	_Mix_Music* music = NULL;
