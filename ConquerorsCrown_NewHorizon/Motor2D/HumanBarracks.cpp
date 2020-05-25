@@ -17,7 +17,7 @@
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
-	name.create("test_1");
+	name.create("human_barracks");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;

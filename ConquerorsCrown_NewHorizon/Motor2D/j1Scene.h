@@ -108,6 +108,7 @@ private:
 	j1Timer logoTimer;
 	int alpha;
 	iPoint speed;
+	bool wants_to_load = false;
 
 public:
 	p2SString current_level;
