@@ -56,15 +56,7 @@ HumanGatherer::~HumanGatherer() {}
 
 bool HumanGatherer::Start()
 {
-	bool found = false;
-	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
-	{
-		if (App->entity->player_stat_ent[i]->name == "town_hall")
-		{
-			town_hall = App->entity->player_stat_ent[i];
-			found = true;
-		}
-	}
+	AssignTownHall();
 
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->gatherer_animations.begin();
@@ -116,6 +108,7 @@ bool HumanGatherer::Update(float dt)
 		bool found = false;
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
+			CheckTownHall();
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
 			iPoint pos;
@@ -125,6 +118,26 @@ bool HumanGatherer::Update(float dt)
 			bool loop = true;
 			SDL_Rect r;
 			inv_size = 0;
+			for (int i = 0; i < App->entity->mines.size() && loop; ++i)
+			{
+				it = App->entity->mines[i];
+
+				r = it->GetAnimation()->GetCurrentSize();
+				r.x = it->position.x + 64;
+				r.y = it->position.y + 64;
+				r.w /= 2;
+				r.h /= 2;
+				if (pos.x > (r.x - r.w - 12) && pos.x < (r.x + r.w) && pos.y >(r.y - r.h - 12) && pos.y < (r.y + r.h - 24))
+				{
+					work_space = it;
+					loop = false;
+					found = true;
+					work_state = WORK_STATE::GO_TO_WORK;
+					work_name = it->name;
+					work_time = App->entity->mines_time;
+					App->render->DrawQuad(r, 255, 255, 0, 255);
+				}
+			}
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
 			{
 				it = App->entity->resources_ent[i];
@@ -139,8 +152,6 @@ bool HumanGatherer::Update(float dt)
 					found = true;
 					work_state = WORK_STATE::GO_TO_WORK;
 					work_name = it->name;
-					if (work_name == "mine")
-						work_time = App->entity->mines_time;
 					if (work_name == "quarry")
 						work_time = App->entity->quarries_time;
 					if (work_name == "tree")
@@ -163,12 +174,12 @@ bool HumanGatherer::Update(float dt)
 		target_entity = work_space;
 		if (position.DistanceTo(work_space->position) <= 100 && path.size() == 0)
 		{
+			CheckTownHall();
 			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
-			if (work_name == "mine")
+			if (work_name == "gold_mine")
 			{
-				App->entity->lights = true;
 				to_blit = false;
 				isSelected = false;
 			}
@@ -180,10 +191,11 @@ bool HumanGatherer::Update(float dt)
 	{
 		if (position.DistanceTo(town_hall->position) <= 200 && path.size() == 0)
 		{
+			CheckTownHall();
 			path.clear();
 			work_state = WORK_STATE::GO_TO_WORK;
 			target_entity = work_space;
-			if (work_name == "mine")
+			if (work_name == "gold_mine")
 				App->scene->AddResource("gold", inv_size);
 			if (work_name == "quarry")
 				App->scene->AddResource("stone", inv_size);
@@ -196,9 +208,8 @@ bool HumanGatherer::Update(float dt)
 	}
 	if (work_state == WORK_STATE::WORKING)
 	{
-		if (work_name == "mine") 
+		if (work_name == "gold_mine") 
 		{
-			App->entity->lights = true;
 			isSelected = false;
 		}
 		state = DynamicState::INTERACTING;
@@ -211,6 +222,7 @@ bool HumanGatherer::Update(float dt)
 			work_state = WORK_STATE::GO_TO_TOWNHALL;
 			to_blit = true;
 			selectable = true;
+			CheckTownHall();
 		}
 		else {
 			if (chop_time >= 70 && work_name=="tree") {
@@ -292,4 +304,48 @@ bool HumanGatherer::CleanUp()
 	path.clear();
 	name.Clear();
 	return true;
+}
+
+void HumanGatherer::CheckTownHall()
+{
+	bool loop = true;
+	if (town_hall != nullptr)
+	{
+		for (uint i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
+		{
+			if (town_hall == App->entity->player_stat_ent[i])
+			{
+				loop = false;
+			}
+		}
+		if (loop)
+			town_hall = nullptr;
+	}
+	if (town_hall == nullptr)
+		AssignTownHall();
+}
+
+void HumanGatherer::AssignTownHall()
+{
+	bool found = false;
+	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
+	{
+		if (App->entity->player_stat_ent[i]->name == "town_hall")
+		{
+			town_hall = App->entity->player_stat_ent[i];
+			found = true;
+		}
+	}
+	if (!found)
+	{
+		work_state = WORK_STATE::NONE;
+		work_name = "";
+		work_time = 0;
+		path.clear();
+		state = DynamicState::IDLE;
+		to_blit = true;
+		work_space = nullptr;
+		target_entity = nullptr;
+		inv_size = 0;
+	}
 }
