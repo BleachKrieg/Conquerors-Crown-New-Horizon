@@ -95,6 +95,8 @@ private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
+	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
 	SDL_Texture* video_texture;
 	SDL_Texture* videologo_tex;
 	Animation* current_animation = nullptr;
