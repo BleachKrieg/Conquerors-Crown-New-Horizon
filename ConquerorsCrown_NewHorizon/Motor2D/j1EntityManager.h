@@ -102,8 +102,6 @@ public:
 	SDL_Texture* building = nullptr;
 	SDL_Texture* miscs = nullptr;
 
-
-	bool lights;
 	bool pause;
 	// Load entities textures
 };

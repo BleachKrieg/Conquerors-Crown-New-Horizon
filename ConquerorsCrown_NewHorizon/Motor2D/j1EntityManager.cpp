@@ -36,7 +36,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	lights = false;
 	pause = false;
 	trees_time = 10000;
 	quarries_time = 10000;
@@ -91,18 +90,18 @@ bool j1EntityManager::Update(float dt)
 
 	Mix_AllocateChannels(20);
 
+	if (pause) {
+		dt = 0;
+	}
+
 	if(timer.ReadMs() > 200)
 	{
 		max_audio_attacks = 0;
 		timer.Start();
 	}
 
-	lights = false;
 	for (int i = 0; i < entities.size(); i++) 
-	{
-		if (pause) {
-			dt = 0;
-		}		
+	{		
 		entities[i]->Update(dt);
 	}
 	
@@ -122,6 +121,9 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 		else
 		{
+			if (pause) {
+				dt = 0;
+			}
 			entities[i]->PostUpdate();
 		}
 	}
@@ -254,20 +256,19 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			CreateEntity(dynamic_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 		}
 
-
 		//Once located an entity, we create it
 		//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-
-
-		// For load buildings correctly
-		App->scene->active = false;
-
-		/*p2List_item<j1Entity*>* entities_list = entities.start;
-		while (entities_list) {
-			entities_list->data->Load(entity);
-			entities_list = entities_list->next;
-		}*/
 	}
+
+	// For load buildings correctly
+	App->scene->active = false;
+
+	/*p2List_item<j1Entity*>* entities_list = entities.start;
+	while (entities_list) {
+		entities_list->data->Load(entity);
+		entities_list = entities_list->next;
+	}*/
+	
 	return true;
 }
 
