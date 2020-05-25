@@ -21,6 +21,7 @@ Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 	position.y = posy;
 	vision = 20;
 	body = 15;
+	coll_range = 25;
 	active = true;
 	selectable = true;
 	isSelected = false;

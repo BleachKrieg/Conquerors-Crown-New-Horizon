@@ -28,6 +28,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	attack_damage = 16 * App->scene->stats_upgrade_Archer;
 	vision = 26;
 	body = 13;
+	coll_range = 13;
 	active = true;
 	position.x = posx;
 	position.y = posy;

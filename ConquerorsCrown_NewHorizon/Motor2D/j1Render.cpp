@@ -149,7 +149,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	scale *= winscale;
 	if (scale != 1)
 	{
-		LOG("%f", scale );
+//		LOG("%f", scale );
 	}
 	SDL_Rect rect;
 	rect.x = round((int)(camera.x * speedX) + x * scale);
