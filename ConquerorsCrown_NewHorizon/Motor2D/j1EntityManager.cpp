@@ -60,7 +60,9 @@ bool j1EntityManager::Start()
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
-	arrow = App->tex->Load("Assets/textures/particles/redParticle.png");
+	//arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
+	arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
+
 	max_audio_attacks = 0;
 	timer.Start();
 
@@ -83,6 +85,18 @@ bool j1EntityManager::CleanUp()
 	}
 	entities.clear();
 	particles.clear();
+
+	App->tex->UnLoad(miscs);
+	App->tex->UnLoad(arrow);
+	App->tex->UnLoad(building);
+	App->tex->UnLoad(grunt_tex);
+	App->tex->UnLoad(ogre_tex);
+	App->tex->UnLoad(enemy_sel_tex);
+	App->tex->UnLoad(ally_sel_tex);
+	App->tex->UnLoad(troll_tex);
+	App->tex->UnLoad(gather_man_tex);
+	App->tex->UnLoad(arch_man_tex);
+	App->tex->UnLoad(foot_man_tex);
 
 	return true;
 }

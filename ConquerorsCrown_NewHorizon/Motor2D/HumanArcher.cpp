@@ -85,8 +85,6 @@ bool HumanArcher::Start()
 	current_animation = &moving_down;
 
 	
-
-
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
 	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
@@ -159,14 +157,7 @@ bool HumanArcher::Update(float dt)
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
-				//particleSystem->CleanUp();
-				
-			/*	fPoint speed{ 0, 0 };
-				if (target_entity->position.x > position.x)
-					speed.x = 2;
-				else if (target_entity->position.x < position.x)
-					speed.x = -2;*/
-
+			}
 				float xvec, yvec, ProjTime = 1;
 				iPoint destiny = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
 				iPoint start = App->map->WorldToMap(position.x + 15, position.y + 15);
@@ -174,7 +165,6 @@ bool HumanArcher::Update(float dt)
 
 				fPoint vec(destiny.x - start.x, destiny.y - start.y);
 
-			/*	angle = -(-90 + atan2(vec.x, vec.y) * 180 / 3.14159265);*/
 				float norm = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
 				yvec = (vec.y / norm);
 				xvec = (vec.x / norm);
@@ -200,9 +190,6 @@ bool HumanArcher::Update(float dt)
 					particleSystem->emiterVector[0].SetMaxTime(ProjTime);
 				}
 			
-			
-
-			}
 			
 		}
 		break;
