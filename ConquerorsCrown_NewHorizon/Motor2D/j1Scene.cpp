@@ -30,8 +30,7 @@ j1Scene::j1Scene() : j1Module()
 	Building_preview = false;
 	active = false;
 	logo_team_sfx_counter = 0;
-	victory_counter = 0;
-	defeat_counter = 0;
+	win_lose_counter = 0;
 	UiEnabled = true;
 }
 
@@ -156,12 +155,18 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		victory_counter++;
+		win_lose_counter++;
 
-		if (victory_counter == 300) {
+		if (win_lose_counter == 265) {
 			App->audio->PlayFx(1, App->audio->crown_fx, 0);
 		}
-		LOG("Victory counter: %i", victory_counter);
+		if (win_lose_counter == 325) {
+			App->audio->PlayFx(1, App->audio->axe_fx, 0);
+		}
+		if (win_lose_counter == 370) {
+			App->audio->PlayFx(1, App->audio->warcry_fx, 0);
+		}
+		LOG("Victory counter: %i", win_lose_counter);
 
 		/*if (scale_victory < 0.005)
 		{
@@ -181,12 +186,18 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		defeat_counter++;
+		win_lose_counter++;
 
-		if (defeat_counter == 300) {
+		if (win_lose_counter == 260) {
 			App->audio->PlayFx(1, App->audio->skull_fx, 0);
 		}
-		LOG("Defeat counter: %i", defeat_counter);
+		if (win_lose_counter == 340) {
+			App->audio->PlayFx(1, App->audio->axe_fx, 0);
+		}
+		if (win_lose_counter == 380) {
+			App->audio->PlayFx(1, App->audio->horn_fx, 0);
+		}
+		LOG("Defeat counter: %i", win_lose_counter);
 
 		/*if (scale_defeat < 0.005)
 		{
@@ -356,14 +367,14 @@ bool j1Scene::Update(float dt)
 		if (timer <= 0 && !finish)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
-			defeat_counter = 0;
+			win_lose_counter = 0;
 			finish = true;
 		}
 		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
 		{
 			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
-			victory_counter = 0;
+			win_lose_counter = 0;
 			finish = true;
 		}
 		else {
@@ -381,11 +392,11 @@ bool j1Scene::Update(float dt)
 	// testing winlose scenes
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 		App->fade->FadeToBlack(scenes::defeat, 2.0f);
-		defeat_counter = 0;
+		win_lose_counter = 0;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
 		App->fade->FadeToBlack(scenes::victory, 2.0f);
-		victory_counter = 0;
+		win_lose_counter = 0;
 	}
 
 	//App->render->Blit(debug_tex, p.x, p.y);

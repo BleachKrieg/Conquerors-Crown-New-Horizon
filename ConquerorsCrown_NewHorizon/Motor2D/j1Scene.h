@@ -105,8 +105,7 @@ private:
 	Animation team_logo;
 	int logoTextTimer;
 	int logo_team_sfx_counter;
-	int victory_counter;
-	int defeat_counter;
+	int win_lose_counter;
 	j1Timer logoTimer;
 	int alpha;
 	iPoint speed;
