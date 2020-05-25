@@ -272,6 +272,7 @@ void j1WaveSystem::StartWave(int wave)
 	int wave_value = 30 + 80 * wave;
 	if (spawn_buildings == 2) { wave_value = wave_value - 20 * wave; }
 	else if (spawn_buildings == 1) { wave_value = wave_value - 60 * wave; }
+	else if (spawn_buildings == 0) { wave_value = 0; }
 
 	if (wave_ongoing == false) {
 		if (wave == 1) {
