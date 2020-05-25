@@ -44,6 +44,8 @@ public:
 
 	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
 
+	void PauseResumeEntities();
+
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
 	bool DeleteAllEntities();
@@ -97,7 +99,7 @@ public:
 	SDL_Texture* miscs = nullptr;
 
 	bool lights;
-
+	bool pause;
 	// Load entities textures
 };
 

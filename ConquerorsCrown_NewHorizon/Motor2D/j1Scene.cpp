@@ -671,6 +671,8 @@ bool j1Scene::CreatePauseMenu()
 	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
 
+	App->entity->pause = true;
+
 	return true;
 }
 
@@ -686,6 +688,8 @@ bool j1Scene::DeletePauseMenu() {
 
 	pausemenuBackground->to_delete = true;
 	pausemenuBackground = nullptr;
+
+	App->entity->pause = false;
 
 	return true;
 }

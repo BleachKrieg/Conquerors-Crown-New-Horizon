@@ -35,6 +35,7 @@ bool j1EntityManager::Start()
 {
 	mine = nullptr;
 	lights = false;
+	pause = false;
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
@@ -93,8 +94,11 @@ bool j1EntityManager::Update(float dt)
 	}
 
 	lights = false;
-	for (int i = 0; i < entities.size(); i++) {
-		
+	for (int i = 0; i < entities.size(); i++) 
+	{
+		if (pause) {
+			dt = 0;
+		}
 		entities[i]->Update(dt);
 	}
 	if (lights && mine != nullptr)
@@ -171,6 +175,13 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
+void j1EntityManager::PauseResumeEntities() 
+{
+	for (int i = 0; i < entities.size(); i++) 
+	{
+
+	}
+}
 
 bool j1EntityManager::DeleteAllEntities()
 {
