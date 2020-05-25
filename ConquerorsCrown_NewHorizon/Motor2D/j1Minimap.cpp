@@ -9,6 +9,7 @@
 #include "j1Input.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
+#include "j1EntityManager.h"
 
 j1Minimap::j1Minimap() : j1Module() {
 	name.create("minimap");
@@ -143,7 +144,31 @@ bool j1Minimap::Update(float dt) {
 		iPoint rect_position = WorldToMinimap(-App->render->camera.x, -App->render->camera.y);
 		if (visible) 
 		{
-			if (App->scene->current_scene == scenes::ingame && App->tutorial->MinimapActive == false)
+					
+			for (int i = 0; i < App->entity->ai_dyn_ent.size(); i++) {
+				SDL_Rect rect{ App->entity->ai_dyn_ent[i]->position.x, App->entity->ai_dyn_ent[i]->position.y, 2, 2 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 255, 0, 0, 255, true, false);
+			}
+			for (int i = 0; i < App->entity->player_dyn_ent.size(); i++) {
+				SDL_Rect rect{ App->entity->player_dyn_ent[i]->position.x, App->entity->player_dyn_ent[i]->position.y, 2, 2 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 0, 255, 0, 255, true, false);
+			}
+
+			for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
+				SDL_Rect rect{ App->entity->player_stat_ent[i]->position.x, App->entity->player_stat_ent[i]->position.y, 4, 4 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 0, 255, 0, 255, true, false);
+			}
+
+			if (App->scene->current_scene == scenes::ingame && App->tutorial->MinimapActive == false && !App->scene->debug)
 			{
 				//Fog of war in minimap
 				SDL_Rect section{ 0, 0, 225, 225 };
@@ -151,6 +176,7 @@ bool j1Minimap::Update(float dt) {
 			}
 			//Camera rectangle in minimap
 			App->render->DrawQuad({ rect_position.x, rect_position.y, (int)(App->render->camera.w * scale),(int)(App->render->camera.h * scale) }, 255, 255, 255, 255, false, false);
+
 		}
 	}
 	return true;

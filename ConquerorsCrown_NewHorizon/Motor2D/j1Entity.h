@@ -75,6 +75,7 @@ public:
 	fPoint position;
 	bool to_delete;
 	int body;
+	int coll_range;
 	fPoint speed;
 	entityType type;
 	TeamType	team;

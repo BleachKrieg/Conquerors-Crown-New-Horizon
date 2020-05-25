@@ -28,6 +28,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	vision = 26;
 	inv_size = 0;
 	body = 13;
+	coll_range = 13;
 	chop_time = 0;
 	position.x = posx;
 	position.y = posy;
@@ -47,7 +48,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	work_name = "";
 
 	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
-	visionEntity->SetNewVisionRadius(4);
+	visionEntity->SetNewVisionRadius(5);
 	// TODO ------------------------------------------
 }
 
