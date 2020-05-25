@@ -326,7 +326,7 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", 100);
 				App->scene->AddResource("gold", 100);
 			}
-			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
 			}
 
