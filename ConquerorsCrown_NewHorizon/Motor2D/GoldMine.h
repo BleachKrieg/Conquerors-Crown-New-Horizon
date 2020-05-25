@@ -32,9 +32,14 @@ public:
 
 	MINE_LIGHTS mine_lights;
 
+	bool has_limit;
+
+	uint GetExtractionLimit();
+
 private:
 	Animation no_light_mine;
 	Animation light_mine;
+	uint extraction_limit;
 };
 
 #endif // !__GOLDMINE_H__

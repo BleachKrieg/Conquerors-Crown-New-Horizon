@@ -22,6 +22,7 @@ GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 	active = true;
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
+	has_limit = true;
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
 	isSelected = false;
 }
@@ -31,6 +32,8 @@ GoldMine::~GoldMine() {}
 bool GoldMine::Start()
 {
 	mine_lights = LIGHTS_OFF;
+	has_limit = true;
+	extraction_limit = 20;
 	iPoint pos = { (int)position.x, (int)position.y };
 	pos = App->map->WorldToMap(pos.x, pos.y);
 	iPoint tempPos = pos;
@@ -76,4 +79,9 @@ bool GoldMine::CleanUp()
 {
 
 	return true;
+}
+
+uint GoldMine::GetExtractionLimit()
+{
+	return extraction_limit;
 }
