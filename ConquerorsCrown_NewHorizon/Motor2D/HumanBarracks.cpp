@@ -14,10 +14,11 @@
 #include "j1Fonts.h"
 #include "j1Audio.h"
 #include "j1Tutorial.h"
+#include "FoWManager.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
-	name.create("test_1");
+	name.create("human_barracks");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
@@ -50,9 +51,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	life_points = 100;
 	createUI = false;
 	Barrack_Upgraded = false;
-	
-
-
+	visionEntity = nullptr;
 }
 
 HumanBarracks::~HumanBarracks()
@@ -83,6 +82,7 @@ bool HumanBarracks::Start()
 	Archer_gold_cost = nullptr;
 	Archer_Text_Gold = nullptr;
 	creation_barrack_bar = nullptr;
+	visionEntity = nullptr;
 	deployed = false;
 
 	return true;
@@ -186,6 +186,8 @@ bool HumanBarracks::CleanUp()
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
+		visionEntity->deleteEntity = true;
+		App->fowManager->foWMapNeedsRefresh = true;
 
 		for (int i = -1; i < 2; i++)
 		{
@@ -245,6 +247,14 @@ void HumanBarracks::checkAnimation(float dt)
 		world.x = position.x;
 		world.y = position.y;  
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -326,6 +336,14 @@ void HumanBarracks::checkAnimation(float dt)
 		creation_barrack_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
 
 		if (timer.ReadSec() >= construction_time)
 		{

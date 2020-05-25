@@ -13,6 +13,7 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1Tutorial.h"
+#include "FoWManager.h"
 
 HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::HumanTownHall)
 {
@@ -31,6 +32,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	create_gatherer = false;
 	selectable_buildings = true;
 	time_bar_start = false;
+	visionEntity = nullptr;
 	construction_time = 3;
 	time_FX_barracks = 1;
 	timer_queue = 0;
@@ -75,6 +77,7 @@ bool HumanTownHall::Start()
 	Wall_Image = nullptr;
 	Wall_stone_cost = nullptr;
 	Wall_Text_stone = nullptr;
+	visionEntity = nullptr;
 
 	deployed = false;
 	return true;
@@ -177,6 +180,8 @@ bool HumanTownHall::CleanUp()
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
+		visionEntity->deleteEntity = true;
+		App->fowManager->foWMapNeedsRefresh = true;
 
 		for (int i = -1; i < 2; i++)
 		{
@@ -239,8 +244,15 @@ void HumanTownHall::checkAnimation(float dt)
 		team = TeamType::PLAYER;
 		world.x = position.x;
 		world.y = position.y;
-		
 
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
+		
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
@@ -324,6 +336,15 @@ void HumanTownHall::checkAnimation(float dt)
 		creation_TownHall_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+			LOG("FOG OF WAR");
+		}
 
 		if (timer.ReadSec() >= construction_time)
 		{

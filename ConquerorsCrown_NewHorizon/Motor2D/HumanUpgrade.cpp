@@ -15,6 +15,7 @@
 #include "j1Audio.h"
 #include "j1Tutorial.h"
 #include "HumanUpgrade.h"
+#include "FoWManager.h"
 
 Human_Upgrade::Human_Upgrade(int posx, int posy) : StaticEnt(StaticEntType::HumanUpgrade)
 {
@@ -40,6 +41,7 @@ Human_Upgrade::Human_Upgrade(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	actualState = ST_UPGRADE_PREVIEW;
 	life_points = 100;
 	createUI = false;
+	visionEntity = nullptr;
 }
 
 Human_Upgrade::~Human_Upgrade()
@@ -78,6 +80,7 @@ bool Human_Upgrade::Start()
 	Archer_Upgrade = false;
 	time_bar_start = false;
 	Upgrading_Archer = false;
+	visionEntity = nullptr;
 	return true;
 }
 
@@ -167,6 +170,9 @@ bool Human_Upgrade::CleanUp()
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
 
+		visionEntity->deleteEntity = true;
+		App->fowManager->foWMapNeedsRefresh = true;
+
 		for (int i = -1; i < 2; i++)
 		{
 			for (int j = -1; j < 2; j++)
@@ -225,6 +231,14 @@ void Human_Upgrade::checkAnimation(float dt)
 		world.x = position.x;
 		world.y = position.y;
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -306,6 +320,14 @@ void Human_Upgrade::checkAnimation(float dt)
 		creation_barrack_bar->updateBar(bar_prog);
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
 
 		if (timer.ReadSec() >= construction_time)
 		{

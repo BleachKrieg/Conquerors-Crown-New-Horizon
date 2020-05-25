@@ -12,7 +12,7 @@
 #include <vector>
 
 j1GroupMov::j1GroupMov() {
-	name.create("entity");
+	name.create("group_movement");
 }
 
 

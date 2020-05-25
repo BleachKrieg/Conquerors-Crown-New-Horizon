@@ -45,6 +45,10 @@ public:
 
 	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
 
+	bool Load(pugi::xml_node&);
+
+	bool Save(pugi::xml_node&)const;
+
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
 	bool DeleteAllEntities();

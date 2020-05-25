@@ -31,6 +31,7 @@ class j1WaveSystem;
 class j1CutsceneManager;
 class j1Tutorial;
 class FoWManager;
+class j1Video;
 
 class j1App
 {
@@ -118,6 +119,7 @@ public:
 	j1CutsceneManager* cutscene;
 	FoWManager*			fowManager = NULL;
 	j1Tutorial*			tutorial = NULL;
+	j1Video*			video = NULL;
 
 
 

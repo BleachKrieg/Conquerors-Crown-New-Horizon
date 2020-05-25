@@ -28,6 +28,40 @@ bool j1Entity::CleanUp()
 	return true;
 }
 
+
+bool j1Entity::Load(pugi::xml_node& data) {
+	return true;
+}
+
+bool j1Entity::Save(pugi::xml_node& data) const {
+	data.append_child("type");
+	data.append_child("position");
+	switch (type)
+	{
+	case  entityType::NO_TYPE:
+		data.child("type").append_attribute("movement") = "none";
+		data.child("type").append_attribute("name") = name.GetString();
+		break;
+	case  entityType::STATIC:
+		data.child("type").append_attribute("movement") = "static";
+		data.child("type").append_attribute("name") = name.GetString();
+		break;
+	case  entityType::DYNAMIC:
+		data.child("type").append_attribute("movement") = "dynamic";
+		data.child("type").append_attribute("name") = name.GetString();
+		break;
+	}
+		
+	
+	data.child("position").append_attribute("pos_x") = position.x;
+	data.child("position").append_attribute("pos_y") = position.y;
+	
+
+
+	
+	return true;
+}
+
 SDL_Rect TileSetEntity::GetAnimRect(int id) const
 {
 	int relative_id = id;
