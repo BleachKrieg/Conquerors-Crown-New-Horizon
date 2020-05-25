@@ -343,7 +343,7 @@ void HumanTownHall::checkAnimation(float dt)
 			iPoint pos = { (int)position.x, (int)position.y };
 			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
 			visionEntity->SetNewVisionRadius(5);
-			
+			LOG("FOG OF WAR");
 		}
 
 		if (timer.ReadSec() >= construction_time)
