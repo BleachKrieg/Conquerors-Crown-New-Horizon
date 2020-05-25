@@ -25,6 +25,7 @@
 #include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
+#include "j1Video.h"
 
 
 // Constructor
@@ -54,6 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	wave = new j1WaveSystem();
 	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
+	video = new j1Video();
 
 
 	// Ordered for awake / Start / Update
@@ -76,6 +78,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fade);
 	AddModule(font);
 	AddModule(cutscene);
+	AddModule(video);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -389,7 +392,7 @@ void j1App::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list	
-
+	want_to_load = true;
 }
 
 // ---------------------------------------
@@ -435,7 +438,7 @@ bool j1App::LoadGameNow()
 
 		list<j1Module*>::iterator item_list;
 		j1Module* it = NULL;
-
+		ret = true;
 		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
 			it = *item_list;
 			ret = it->Load(root.child(it->name.GetString()));

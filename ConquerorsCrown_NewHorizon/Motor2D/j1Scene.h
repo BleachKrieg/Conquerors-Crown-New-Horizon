@@ -83,7 +83,6 @@ public:
 	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
-	void TeamLogoPushbacks();
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
@@ -95,19 +94,20 @@ public:
 private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
-	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
-	SDL_Texture* victoryLogo;
-	SDL_Texture* defeatLogo;
-	SDL_Texture* teamLogoSheet;
+	SDL_Texture* video_texture;
+	SDL_Texture* videologo_tex;
 	Animation* current_animation = nullptr;
+	Animation* loader;
 	Animation logo;
 	Animation team_logo;
 	int logoTextTimer;
 	int logo_team_sfx_counter;
+	int win_lose_counter;
 	j1Timer logoTimer;
 	int alpha;
 	iPoint speed;
+	bool wants_to_load = false;
 
 public:
 	p2SString current_level;
@@ -216,10 +216,15 @@ public:
 	string secs;
 	bool finish = false;
 	bool UiEnabled;
+	bool loop = false;
+	float last_dt;
+	int intro_video;
+
 
 	bool active;
 
 	// Tutorial
+	bool tutorial;
 	j1Timer TutorialTimer;
 	int camera_limit_x2;
 	int camera_limit_y2;

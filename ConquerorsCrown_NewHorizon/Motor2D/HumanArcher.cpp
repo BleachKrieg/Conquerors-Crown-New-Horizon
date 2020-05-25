@@ -22,6 +22,7 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 80 * App->scene->stats_upgrade_Archer;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1000;
@@ -94,7 +95,7 @@ bool HumanArcher::Update(float dt)
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
 	if (App->scene->debug)
-		life_points = 80;
+		life_points = life_points;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
@@ -146,7 +147,7 @@ bool HumanArcher::Update(float dt)
 	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
 	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 
-	if (life_points > 80 && attack_damage > 16)
+	if (attack_damage > 16)
 	{
 		App->render->Blit(App->entity->arch_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	}

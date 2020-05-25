@@ -10,7 +10,8 @@
 
 FoWManager::FoWManager()
 {
-	name.create("fowManager");
+
+	name.create("FoWManager");
 }
 
 
@@ -110,7 +111,7 @@ bool FoWManager::PreUpdate(float dt)
 	}
 
 	//debug input handling
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		ResetFoWMap();
 		MapNeedsUpdate();
@@ -119,7 +120,7 @@ bool FoWManager::PreUpdate(float dt)
 	{
 		debugMode = !debugMode;
 		MapNeedsUpdate();
-	}
+	}*/
 
 	return ret;
 }
