@@ -664,20 +664,35 @@ void j1Scene::DeleteScene() {
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
+
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::victory:
-		App->tex->UnLoad(victoryLogo);
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::defeat:
-		App->tex->UnLoad(defeatLogo);
+		if (intro_video != 0)
+		{
+			App->video->DestroyVideo(intro_video);
+			intro_video = 0;
+		}
+
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
