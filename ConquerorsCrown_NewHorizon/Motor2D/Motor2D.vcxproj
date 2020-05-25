@@ -105,6 +105,7 @@
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1Tutorial.cpp" />
+    <ClCompile Include="j1Video.cpp" />
     <ClCompile Include="j1WaveSystem.cpp" />
     <ClCompile Include="Ogre_Enemy.cpp" />
     <ClCompile Include="p2Log.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="ResourceEntities.cpp" />
     <ClCompile Include="StaticEnt.cpp" />
     <ClCompile Include="HumanBarracks.cpp" />
+    <ClCompile Include="theoraplay.cpp" />
     <ClCompile Include="Troll_Enemy.cpp" />
     <ClCompile Include="HumanWall.cpp" />
   </ItemGroup>
@@ -147,6 +149,7 @@
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1Tutorial.h" />
     <ClInclude Include="j1Url.h" />
+    <ClInclude Include="j1Video.h" />
     <ClInclude Include="j1WaveSystem.h" />
     <ClInclude Include="j1Audio.h" />
     <ClInclude Include="j1Input.h" />
@@ -167,6 +170,8 @@
     <ClInclude Include="ResourceEntities.h" />
     <ClInclude Include="StaticEnt.h" />
     <ClInclude Include="HumanBarracks.h" />
+    <ClInclude Include="theoraplay.h" />
+    <ClInclude Include="theoraplay_cvtrgb.h" />
     <ClInclude Include="Troll_Enemy.h" />
     <ClInclude Include="HumanWall.h" />
   </ItemGroup>
