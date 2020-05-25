@@ -8,6 +8,7 @@
 #include "GoldMine.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
+#include "GoldMine.h"
 #include "StaticEnt.h"
 #include <list>
 
@@ -44,7 +45,9 @@ public:
 
 	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
 
-	void PauseResumeEntities();
+	bool Load(pugi::xml_node&);
+
+	bool Save(pugi::xml_node&)const;
 
 	// Delete an entity
 	bool j1EntityManager::DeleteEntity(int id, j1Entity* entity);
@@ -64,8 +67,7 @@ public:
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
-
-	GoldMine* mine;
+	vector<j1Entity*> mines;
 
 	// Task times --------------------
 	uint trees_time;
@@ -75,6 +77,8 @@ public:
 
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;
+	SDL_Texture* foot_man_tex2 = nullptr;
+	SDL_Texture* arch_man_tex2 = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
 	SDL_Texture* troll_tex = nullptr;
 	SDL_Texture* ally_sel_tex = nullptr;
@@ -97,6 +101,7 @@ public:
 
 	SDL_Texture* building = nullptr;
 	SDL_Texture* miscs = nullptr;
+
 
 	bool lights;
 	bool pause;

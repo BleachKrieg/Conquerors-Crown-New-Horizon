@@ -9,9 +9,7 @@
 ResourceEntity::ResourceEntity(int posx, int posy, uint enter_type) : StaticEnt(StaticEntType::Resource)
 {
 	type = (RESOURCE_ENTITY_TYPE)enter_type;
-	if (type == RESOURCE_ENTITY_TYPE::MINE)
-		name.create("mine");
-	else if (type == RESOURCE_ENTITY_TYPE::QUARRY)
+	if (type == RESOURCE_ENTITY_TYPE::QUARRY)
 		name.create("quarry");
 	else if (type == RESOURCE_ENTITY_TYPE::TREE)
 		name.create("tree");
@@ -36,6 +34,5 @@ bool ResourceEntity::CleanUp()
 {
 	iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y);
 	App->pathfinding->ChangeWalkability(pos, 1);
-	ResourceEntity::~ResourceEntity();
 	return true;
 }

@@ -65,7 +65,6 @@ public:
 
 	// Stats
 	int attackrange;
-	int collrange;
 
 	// Queue
 	float timer_queue;
@@ -100,6 +99,20 @@ public:
 	GuiItem* Barrack_Text_stone;
 	GuiItem* Barrack_wood_cost;
 	GuiItem* Barrack_Text_Wood;
+
+	//UI lab
+	GuiItem* Button_Create_Lab;
+	GuiItem* Lab_Image;
+	GuiItem* Lab_stone_cost;
+	GuiItem* Lab_Text_stone;
+	GuiItem* Lab_wood_cost;
+	GuiItem* Lab_Text_Wood;
+
+	//UI Wall
+	GuiItem* Button_Create_Wall;
+	GuiItem* Wall_Image;
+	GuiItem* Wall_stone_cost;
+	GuiItem* Wall_Text_stone;
 
 	//UI Progress Bar
 	GuiItem* creation_TownHall_bar;

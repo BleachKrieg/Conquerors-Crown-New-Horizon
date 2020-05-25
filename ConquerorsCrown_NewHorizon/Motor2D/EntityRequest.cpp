@@ -11,7 +11,7 @@
 
 EntityRequest::EntityRequest()
 {
-	name.create("entity request");
+	name.create("entity_request");
 }
 
 EntityRequest::~EntityRequest()

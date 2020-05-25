@@ -2,6 +2,8 @@
 #include "j1Entity.h"
 #include "HumanBarracks.h"
 #include "HumanTownHall.h"
+#include "HumanUpgrade.h"
+#include "HumanWall.h"
 #include "HumanFootman.h"
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
@@ -15,6 +17,7 @@
 #include "GoldMine.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
+#include "j1Scene.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -33,7 +36,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	mine = nullptr;
 	lights = false;
 	pause = false;
 	trees_time = 10000;
@@ -42,6 +44,8 @@ bool j1EntityManager::Start()
 
 	foot_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_archer.png");
+	foot_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_footman_2.png");
+	arch_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_archer_2.png");
 	gather_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_gatherer.png");
 	troll_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_troll.png");
 	ally_sel_tex = App->tex->Load("Assets/textures/units/selection_ally.png");
@@ -98,13 +102,9 @@ bool j1EntityManager::Update(float dt)
 	{
 		if (pause) {
 			dt = 0;
-		}
+		}		
 		entities[i]->Update(dt);
 	}
-	if (lights && mine != nullptr)
-		mine->mine_lights = MINE_LIGHTS::LIGHTS_ON;
-	if (!lights && mine != nullptr)
-		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	
 	return true;
 }
@@ -123,6 +123,15 @@ bool j1EntityManager::PostUpdate(float dt)
 		else
 		{
 			entities[i]->PostUpdate();
+		}
+	}
+
+	for (int i = 0; i < resources_ent.size(); i++) {
+		if (resources_ent[i]->to_delete == true)
+		{
+			RELEASE(resources_ent[i]);
+			resources_ent.erase(resources_ent.begin() + i);
+			i--;
 		}
 	}
 
@@ -159,7 +168,9 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	{
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
-	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); break;
+	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); mines.push_back(ret); break;
+	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -175,14 +186,109 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	return ret;
 }
 
-void j1EntityManager::PauseResumeEntities() 
+bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	for (int i = 0; i < entities.size(); i++) 
-	{
+	LOG("load entities here");
+	pugi::xml_node entity;
 
+	//Then we iterate the xml, to find every entity that's been saved
+	for (entity = data.child("Entity"); entity; entity = entity.next_sibling("Entity"))
+	{
+		StaticEnt::StaticEntType static_ID;
+		DynamicEnt::DynamicEntityType dynamic_ID;
+
+		p2SString type(entity.child("type").attribute("movement").as_string());
+
+		if (type == "static")
+		{
+			p2SString static_type(entity.child("type").attribute("name").as_string());
+			if (static_type == "town_hall")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanTownHall;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "human_barracks")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanBarracks;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "gold_mine")
+			{
+				static_ID = StaticEnt::StaticEntType::GoldMine;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "resource")
+			{
+				static_ID = StaticEnt::StaticEntType::Resource;
+			}
+		}
+		if (type == "dynamic")
+		{
+			p2SString dynamic_type(entity.child("type").attribute("name").as_string());
+			if (dynamic_type == "enemy_grunt")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
+			}
+			if (dynamic_type == "enemy_ogre")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
+			}
+			if (dynamic_type == "enemy_troll")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
+			}
+			if (dynamic_type == "human_archer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
+			}
+			if (dynamic_type == "human_footman")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
+			}
+			if (dynamic_type == "human_gatherer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
+			}
+			//Once localized an entity, we create it
+
+			CreateEntity(dynamic_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+		}
+
+
+		//Once located an entity, we create it
+		//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+
+
+		// For load buildings correctly
+		App->scene->active = false;
+
+		/*p2List_item<j1Entity*>* entities_list = entities.start;
+		while (entities_list) {
+			entities_list->data->Load(entity);
+			entities_list = entities_list->next;
+		}*/
 	}
+	return true;
 }
 
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+	for (int i = 0; i < entities.size(); i++) {
+		if (entities[i]->name.GetString())
+		{
+			pugi::xml_node entity = data.append_child("Entity");
+			entities[i]->Save(entity);
+		}
+	}
+	for (int i = 0; i < resources_ent.size(); i++) {
+		if (resources_ent[i]->name.GetString())
+		{
+			pugi::xml_node entity = data.append_child("Entity");
+			resources_ent[i]->Save(entity);
+		}
+	}
+	return true;
+}
 bool j1EntityManager::DeleteAllEntities()
 {
 
@@ -222,6 +328,8 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 		switch (entity->team)
 		{
 		case j1Entity::TeamType::NO_TYPE:
+			if (!mines.empty())
+				mines.erase(std::find(mines.begin(), mines.end() + 1, entity));
 			break;
 		case j1Entity::TeamType::PLAYER:
 			if (!player_stat_ent.empty())

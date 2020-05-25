@@ -20,6 +20,7 @@
 #include "j1CutsceneManager.h"
 #include "j1Tutorial.h"
 #include "FoWManager.h"
+#include "j1Video.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -29,6 +30,7 @@ j1Scene::j1Scene() : j1Module()
 	Building_preview = false;
 	active = false;
 	logo_team_sfx_counter = 0;
+	win_lose_counter = 0;
 	UiEnabled = true;
 }
 
@@ -49,7 +51,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
-	teamLogoSheet_file_name = config.child("team_logo").attribute("file").as_string("");
 	fullscreen = false;
 	
 	return ret;
@@ -71,6 +72,19 @@ bool j1Scene::Start()
 	timer = 660;
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
+
+	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
+	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+	loop = true;
+
+	Upgrade_Sowrdman = false;
+	stats_upgrade_swordman = 1;
+	Upgrade_Archer = false;
+	wall_create = false;
+	stats_upgrade_Archer = 1;
+
+	wants_to_load = false;
+
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -95,6 +109,7 @@ bool j1Scene::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 	
+	last_dt = dt;
 
 	switch (current_scene) 
 	{
@@ -122,7 +137,7 @@ bool j1Scene::Update(float dt)
 		if (logoTimer.ReadSec() <= 5.5) {
 			current_animation = &team_logo;
 			logo_team_sfx_counter++;
-			if (logo_team_sfx_counter == 120) {
+			if (logo_team_sfx_counter == 150) {
 				App->audio->PlayFx(2, App->audio->logo_team_fx, 0);
 			}
 
@@ -132,7 +147,7 @@ bool j1Scene::Update(float dt)
 			logo_team_sfx_counter = 0;
 			current_animation = &logo;
 			logoTextTimer++;
-			if (logoTextTimer == 20) {
+			if (logoTextTimer == 88) {
 				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
 	//		LOG("Logo text timer: %i", logoTextTimer);
@@ -144,8 +159,20 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
+		win_lose_counter++;
 
-		if (scale_victory < 0.005)
+		if (win_lose_counter == 265) {
+			App->audio->PlayFx(1, App->audio->crown_fx, 0);
+		}
+		if (win_lose_counter == 325) {
+			App->audio->PlayFx(1, App->audio->axe_fx, 0);
+		}
+		if (win_lose_counter == 370) {
+			App->audio->PlayFx(1, App->audio->warcry_fx, 0);
+		}
+		LOG("Victory counter: %i", win_lose_counter);
+
+		/*if (scale_victory < 0.005)
 		{
 			scale_victory = scale_victory + 0.0001;
 		}
@@ -156,15 +183,27 @@ bool j1Scene::Update(float dt)
 				speed_victory -= 0.00002;
 			}
 			scale_victory = scale_victory + speed_victory;
-		}
+		}*/
 
 		break;
 	case scenes::defeat:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
+		win_lose_counter++;
 
-		if (scale_defeat < 0.005)
+		if (win_lose_counter == 260) {
+			App->audio->PlayFx(1, App->audio->skull_fx, 0);
+		}
+		if (win_lose_counter == 340) {
+			App->audio->PlayFx(1, App->audio->axe_fx, 0);
+		}
+		if (win_lose_counter == 380) {
+			App->audio->PlayFx(1, App->audio->horn_fx, 0);
+		}
+		LOG("Defeat counter: %i", win_lose_counter);
+
+		/*if (scale_defeat < 0.005)
 		{
 			scale_defeat = scale_defeat + 0.0001;
 		}
@@ -175,7 +214,7 @@ bool j1Scene::Update(float dt)
 				speed_defeat -= 0.00002;
 			}
 			scale_defeat = scale_defeat + speed_defeat;
-		}
+		}*/
 
 		break;
 	case scenes::ingame:
@@ -220,19 +259,49 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			if (!pauseMenu) {
-				//App->audio->MusicVolume(0.2);
 				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+				App->audio->MusicVolume(0.2);
 				CreatePauseMenu();
 			}
 			else {
-				//App->audio->MusicVolume(optionsFxSlider->returnSliderPos());
 				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
 				DeletePauseMenu();
 			}
 			pauseMenu = !pauseMenu;
 		}
 
+		if (Upgrade_Sowrdman == true)
+		{
+			stats_upgrade_swordman = 2.f;
+		}
+		else
+		{
+			stats_upgrade_swordman = 1.f;
+		}
+
+		if(Upgrade_Archer == true)
+		{
+			stats_upgrade_Archer = 2.f;
+		}
+		else
+		{
+			stats_upgrade_Archer = 1.f;
+		}
 		//Debug input
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->SaveGame();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			if (App->CheckSaveGame()) {
+				
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				//App->LoadGame();
+
+			}
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) 
 		{
@@ -282,6 +351,28 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", 100);
 				App->scene->AddResource("gold", 100);
 			}
+			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+				App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+				App->fade->FadeToBlack(scenes::victory, 2.0f);
+			}*/
+			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+		}
+
+		if (stone >= 100 && wall_create == true && !Building_preview)
+		{
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
+			Building_preview = true;
 		}
 
 		//Draw the map
@@ -293,13 +384,14 @@ bool j1Scene::Update(float dt)
 		if (timer <= 0 && !finish)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			win_lose_counter = 0;
 			finish = true;
 		}
 		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
 		{
 			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
-
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			win_lose_counter = 0;
 			finish = true;
 		}
 		else {
@@ -314,6 +406,16 @@ bool j1Scene::Update(float dt)
 		break;
 	}
 	
+	// testing winlose scenes
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+		App->fade->FadeToBlack(scenes::defeat, 2.0f);
+		win_lose_counter = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+		App->fade->FadeToBlack(scenes::victory, 2.0f);
+		win_lose_counter = 0;
+	}
+
 	//App->render->Blit(debug_tex, p.x, p.y);
 
 	return true;
@@ -323,6 +425,7 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate(float dt)
 {
 	bool ret = true;
+
 	switch (current_scene)
 	{
 	case scenes::menu:
@@ -345,17 +448,44 @@ bool j1Scene::PostUpdate(float dt)
 		}
 		break;
 	case scenes::logo:
-		if (logoTimer.ReadSec() <= 4.5) {
+		if (logoTimer.ReadSec() <= 6.5) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
-			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			//video
+			if (intro_video != 0)
+			{
+				video_texture = App->video->UpdateVideo(intro_video);
+
+				App->render->Blit(video_texture, 0, 0);
+
+				if (App->video->IsPlaying(intro_video) == 0)
+				{
+					App->video->DestroyVideo(intro_video);
+					intro_video = 0;
+				}
+			}
+
+
+			if (intro_video == 0 && loop)
+			{
+				intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+
+
+			}
+
+			if (!loop)
+			{
+
+				App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+			}
 		}
-		else if (logoTimer.ReadSec() <= 5.5) {
+		else if (logoTimer.ReadSec() <= 7.0) {
 			SDL_SetRenderDrawColor(App->render->renderer, 20, 20, 20, 255);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 
-			App->render->Blit(teamLogoSheet, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
+			//App->render->Blit(video_texture, current_animation->pivotx[current_animation->returnCurrentFrame()], current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
 
 			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
@@ -364,7 +494,7 @@ bool j1Scene::PostUpdate(float dt)
 		}
 		else {
 			App->render->Blit(logoSheet, 220 + current_animation->pivotx[current_animation->returnCurrentFrame()], 200 + current_animation->pivoty[current_animation->returnCurrentFrame()], &(current_animation->GetCurrentFrame(dt)));
-			
+
 			SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, alpha);
 			SDL_RenderFillRect(App->render->renderer, &teamLogoBackground);
 			alpha -= 5;
@@ -373,17 +503,67 @@ bool j1Scene::PostUpdate(float dt)
 		break;
 
 	case scenes::victory:
-		
-		App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+		//App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
+		//video
+		if (intro_video != 0)
+		{
+			video_texture = App->video->UpdateVideo(intro_video);
 
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(intro_video) == 0)
+			{
+				App->video->DestroyVideo(intro_video);
+				intro_video = 0;
+			}
+		}
+
+
+		if (intro_video == 0 && loop)
+		{
+			intro_video = App->video->Load("Assets/video/victory.ogv", App->render->renderer);
+
+
+		}
+
+		if (!loop)
+		{
+
+			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
 		break;
 
 	case scenes::defeat:
-		
-		App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+		//App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
+		//video
+		if (intro_video != 0)
+		{
+			video_texture = App->video->UpdateVideo(intro_video);
 
+			App->render->Blit(video_texture, 0, 0);
+
+			if (App->video->IsPlaying(intro_video) == 0)
+			{
+				App->video->DestroyVideo(intro_video);
+				intro_video = 0;
+			}
+		}
+
+		if (intro_video == 0 && loop)
+		{
+			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
+
+
+		}
+
+		if (!loop)
+		{
+
+			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
+
+		}
 		break;
-
 	}
 
 	return ret;
@@ -393,10 +573,14 @@ bool j1Scene::PostUpdate(float dt)
 bool j1Scene::CleanUp()
 {
 	App->map->CleanUp();
+	bool ret = true;
+	ret = App->tex->UnLoad(video_texture);
+	ret = App->tex->UnLoad(videologo_tex);
+	loader = nullptr;
 	App->minimap->CleanUp();
 	LOG("Freeing scene");
 
-	return true;
+	return ret;
 }
 bool j1Scene::Load(pugi::xml_node& data)
 {
@@ -461,7 +645,7 @@ void j1Scene::LoadTiledEntities() {
 						}
 						if (tile_id >= 374 && tile_id <= 376)
 						{
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 3u);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 2u);
 						}
 					}
 				}
@@ -498,14 +682,23 @@ void j1Scene::DeleteScene() {
 		App->wave->wave_ongoing = false;
 		break;
 	case scenes::logo:
+		App->tex->UnLoad(video_texture);
+		App->tex->UnLoad(videologo_tex);
+		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::victory:
 		App->tex->UnLoad(victoryLogo);
+		App->tex->UnLoad(video_texture);
+		App->tex->UnLoad(videologo_tex);
+		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::defeat:
 		App->tex->UnLoad(defeatLogo);
+		App->tex->UnLoad(video_texture);
+		App->tex->UnLoad(videologo_tex);
+		loader = nullptr;
 		DeleteUI();
 		break;
 
@@ -524,6 +717,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::tutorial:
+		Upgrade_Archer = false;
+		stats_upgrade_Archer = 1.f;
+		Upgrade_Sowrdman = false;
+		stats_upgrade_swordman = 1;
 		current_scene = scenes::tutorial;
 		CreateTutorial();
 		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
@@ -535,6 +732,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		finish = false;
 		break;
 	case scenes::ingame:
+		Upgrade_Archer = false;
+		stats_upgrade_Archer = 1.f;
+		Upgrade_Sowrdman = false;
+		stats_upgrade_swordman = 1;
 		current_scene = scenes::ingame;
 		CreateInGame();
 		App->minimap->input = true;
@@ -556,12 +757,10 @@ void j1Scene::CreateScene(scenes next_scene) {
 		break;
 	case scenes::victory:
 		current_scene = scenes::victory;
-		App->audio->PlayMusic("Human/Human_Victory.ogg", 2.0F);
 		CreateVictory();
 		break;
 	case scenes::defeat:
 		current_scene = scenes::defeat;
-		App->audio->PlayMusic("Human/Human_Defeat.ogg", 2.0F);
 		CreateDefeat();
 		break;
 	}
@@ -853,8 +1052,15 @@ bool j1Scene::CreateInGame()
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 
-
-	LoadTiledEntities();
+	if (!wants_to_load)
+	{
+		LoadTiledEntities();
+	}
+	else {
+		active = true;
+		App->LoadGame();
+		wants_to_load = false;
+	}
 
 	if(ret) ret = CreateButtonsUI();
 
@@ -898,13 +1104,15 @@ bool j1Scene::DeleteButtonsUI()
 }
 
 bool j1Scene::CreateLogo() {
+
+	//video
+	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
+	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+
+	loop = true;
 	//Reseting camera to (0,0) position
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
-
-	teamLogoSheet = App->tex->Load(teamLogoSheet_file_name.GetString());
-
-	TeamLogoPushbacks();
 
 	teamLogoBackground.x = 0;
 	teamLogoBackground.y = 0;
@@ -935,7 +1143,7 @@ bool j1Scene::CreateVictory() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	scale_victory = 0.0f;
+	/*scale_victory = 0.0f;
 	speed_victory = 0.005f;
 
 	victoryLogo = App->tex->Load("Assets/textures/gui/VictorySheet.png");
@@ -953,10 +1161,10 @@ bool j1Scene::CreateVictory() {
 	
 
 	//uncomment that to use text and not button to continue
-	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
-	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Victory.ogg", 2.0F);
+	App->audio->PlayMusic("Human/Human_Victory.ogg", 2.0F);
 
 
 	return true;
@@ -967,7 +1175,7 @@ bool j1Scene::CreateDefeat() {
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	scale_defeat = 0.0f;
+	/*scale_defeat = 0.0f;
 	speed_defeat = 0.005f;
 
 	defeatLogo = App->tex->Load("Assets/textures/gui/DefeatSheet.png");
@@ -984,10 +1192,10 @@ bool j1Scene::CreateDefeat() {
 	defeatTextContinue = App->gui->CreateGuiElement(Types::text, 75, 4, { 0, 0, 138, 30 }, defeatButtonContinue, nullptr, "Continue");
 
 	//uncomment that to use text and not button to continue
-	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");
+	//victoryTextClick = App->gui->CreateGuiElement(Types::text, 450, 520, { 0, 0, 138, 30 }, victoryBackground, nullptr, "Press X to continue..");*/
 
 	//victory music
-	App->audio->PlayMusic("Assets/Audio/Music/Human/Human_Defeat.ogg", 2.0F);
+	App->audio->PlayMusic("Human/Human_Defeat.ogg", 2.0F);
 
 	return true;
 }
@@ -1033,7 +1241,7 @@ bool j1Scene::DeleteUI()
 	defeatTextClick = nullptr;
 
 	if (logoSheet != nullptr) App->tex->UnLoad(logoSheet);
-	if (teamLogoSheet != nullptr) App->tex->UnLoad(teamLogoSheet);
+
 	return true;
 }
 
@@ -1141,7 +1349,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 
-		//Victory Buttons
+		/*//Victory Buttons
 		if (guiElement == victoryButtonContinue) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
@@ -1151,7 +1359,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		if (guiElement == defeatButtonContinue) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
-		}
+		}*/
 	}
 }
 
@@ -1222,37 +1430,6 @@ void j1Scene::LogoPushbacks() {
 
 	logo.loop = false;
 }
-
-void j1Scene::TeamLogoPushbacks() {
-
-	team_logo.PushBack({ 0, 875, 10, 10 }, 0.02f, 0, 0, 0, 0);
-	team_logo.PushBack({0, 0, 259, 423}, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 286, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 572, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 858, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1144, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1430, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 1716, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2002, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2288, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2574, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 2860, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3146, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3432, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 3718, 0, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 0, 445, 259, 423 }, 0.35f, 510, 148, 0, 0);
-	team_logo.PushBack({ 286, 445, 259, 423 }, 0.15f, 510, 148, 0, 0);
-	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.3f, 0, 0, 0, 0);
-	team_logo.PushBack({ 1879, 445, 1280, 720 }, 0.5f, 0, 0, 0, 0);
-	team_logo.PushBack({ 572, 445, 1280, 720 }, 0.25f, 0, 0, 0, 0);
-	team_logo.PushBack({ 0, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 1311, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 2622, 1187, 1280, 720 }, 0.4f, 0, 0, 0, 0);
-	team_logo.PushBack({ 3335, 445, 712, 720 }, 0.2f, 356, 0, 0, 0);
-
-	team_logo.loop = false;
-}
-
 
 void j1Scene::UpdateCameraPosition(int speed) 
 {

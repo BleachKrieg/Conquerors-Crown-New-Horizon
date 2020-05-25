@@ -113,6 +113,17 @@
     <ClCompile Include="Ogre_Enemy.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="j1Video.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.cpp">
+      <Filter>Tools\theoraplay</Filter>
+    <ClCompile Include="HumanUpgrade.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanWall.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FoWBitDefs.h" />
@@ -246,6 +257,20 @@
     <ClInclude Include="Ogre_Enemy.h">
       <Filter>Entities\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="j1Video.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Tools\theoraplay</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>Tools\theoraplay</Filter>
+    <ClInclude Include="HumanUpgrade.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanWall.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Classes">
@@ -274,6 +299,9 @@
     </Filter>
     <Filter Include="Entities\Static">
       <UniqueIdentifier>{95177c3e-480e-487e-b6a1-c97f71a986c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\theoraplay">
+      <UniqueIdentifier>{16103d2a-8b63-44a1-99c9-337e20080dcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

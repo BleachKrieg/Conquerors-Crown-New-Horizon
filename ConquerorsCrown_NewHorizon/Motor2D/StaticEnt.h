@@ -19,6 +19,8 @@ public:
 		NO_TYPE,
 		HumanBarracks,
 		HumanTownHall,
+		HumanUpgrade,
+		HumanWall,
 		Resource,
 		GoldMine,
 	};
