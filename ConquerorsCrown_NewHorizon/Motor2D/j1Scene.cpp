@@ -30,6 +30,8 @@ j1Scene::j1Scene() : j1Module()
 	Building_preview = false;
 	active = false;
 	logo_team_sfx_counter = 0;
+	victory_counter = 0;
+	defeat_counter = 0;
 	UiEnabled = true;
 }
 
@@ -154,6 +156,12 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
+		victory_counter++;
+
+		if (victory_counter == 300) {
+			App->audio->PlayFx(1, App->audio->crown_fx, 0);
+		}
+		LOG("Victory counter: %i", victory_counter);
 
 		/*if (scale_victory < 0.005)
 		{
@@ -173,6 +181,12 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
+		defeat_counter++;
+
+		if (defeat_counter == 300) {
+			App->audio->PlayFx(1, App->audio->skull_fx, 0);
+		}
+		LOG("Defeat counter: %i", defeat_counter);
 
 		/*if (scale_defeat < 0.005)
 		{
@@ -342,13 +356,14 @@ bool j1Scene::Update(float dt)
 		if (timer <= 0 && !finish)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			defeat_counter = 0;
 			finish = true;
 		}
 		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
 		{
 			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
-
 			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			victory_counter = 0;
 			finish = true;
 		}
 		else {
@@ -366,9 +381,11 @@ bool j1Scene::Update(float dt)
 	// testing winlose scenes
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 		App->fade->FadeToBlack(scenes::defeat, 2.0f);
+		defeat_counter = 0;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
 		App->fade->FadeToBlack(scenes::victory, 2.0f);
+		victory_counter = 0;
 	}
 
 	//App->render->Blit(debug_tex, p.x, p.y);
@@ -457,9 +474,7 @@ bool j1Scene::PostUpdate(float dt)
 		break;
 
 	case scenes::victory:
-		
 		//App->render->Blit(victoryLogo, ((App->render->camera.w/2)/ scale_victory)-(App->scene->rect_victory.w*scale_victory), ((App->render->camera.h / 2) / scale_victory) - (rect_victory.h*scale_victory) - 150, &rect_victory, 1.0f, 1.0f, SDL_FLIP_NONE, scale_victory);
-
 		//video
 		if (intro_video != 0)
 		{
@@ -488,13 +503,10 @@ bool j1Scene::PostUpdate(float dt)
 			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 		}
-
 		break;
 
 	case scenes::defeat:
-		
 		//App->render->Blit(defeatLogo, ((App->render->camera.w / 2) / scale_defeat) - (rect_defeat.w*scale_defeat), ((App->render->camera.h / 2) / scale_defeat) - (rect_defeat.h*scale_defeat) - 150, &rect_defeat, 1.0f, 1.0f, SDL_FLIP_NONE, scale_defeat);
-		LOG("LOGO TIMER: %.1f", logoTimer.ReadSec());
 		//video
 		if (intro_video != 0)
 		{
@@ -509,7 +521,6 @@ bool j1Scene::PostUpdate(float dt)
 			}
 		}
 
-
 		if (intro_video == 0 && loop)
 		{
 			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
@@ -523,9 +534,7 @@ bool j1Scene::PostUpdate(float dt)
 			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 		}
-
 		break;
-
 	}
 
 	return ret;
