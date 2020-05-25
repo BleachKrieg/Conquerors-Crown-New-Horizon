@@ -8,6 +8,7 @@
 #include "GoldMine.h"
 #include "j1Entity.h"
 #include "DynamicEnt.h"
+#include "GoldMine.h"
 #include "StaticEnt.h"
 #include <list>
 
@@ -62,8 +63,7 @@ public:
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
-
-	GoldMine* mine;
+	vector<j1Entity*> mines;
 
 	// Task times --------------------
 	uint trees_time;
@@ -97,8 +97,6 @@ public:
 
 	SDL_Texture* building = nullptr;
 	SDL_Texture* miscs = nullptr;
-
-	bool lights;
 
 	// Load entities textures
 };

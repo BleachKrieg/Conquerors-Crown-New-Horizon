@@ -35,8 +35,6 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	mine = nullptr;
-	lights = false;
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
@@ -96,15 +94,10 @@ bool j1EntityManager::Update(float dt)
 		timer.Start();
 	}
 
-	lights = false;
 	for (int i = 0; i < entities.size(); i++) {
 		
 		entities[i]->Update(dt);
 	}
-	if (lights && mine != nullptr)
-		mine->mine_lights = MINE_LIGHTS::LIGHTS_ON;
-	if (!lights && mine != nullptr)
-		mine->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	
 	return true;
 }
@@ -123,6 +116,15 @@ bool j1EntityManager::PostUpdate(float dt)
 		else
 		{
 			entities[i]->PostUpdate();
+		}
+	}
+
+	for (int i = 0; i < resources_ent.size(); i++) {
+		if (resources_ent[i]->to_delete == true)
+		{
+			RELEASE(resources_ent[i]);
+			resources_ent.erase(resources_ent.begin() + i);
+			i--;
 		}
 	}
 
@@ -160,8 +162,8 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); mines.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
-	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -217,6 +219,8 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 		switch (entity->team)
 		{
 		case j1Entity::TeamType::NO_TYPE:
+			if (!mines.empty())
+				mines.erase(std::find(mines.begin(), mines.end() + 1, entity));
 			break;
 		case j1Entity::TeamType::PLAYER:
 			if (!player_stat_ent.empty())

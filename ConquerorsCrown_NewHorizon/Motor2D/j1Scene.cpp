@@ -497,7 +497,7 @@ void j1Scene::LoadTiledEntities() {
 						}
 						if (tile_id >= 374 && tile_id <= 376)
 						{
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 3u);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Resource, pos.x, pos.y, 2u);
 						}
 					}
 				}

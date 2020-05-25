@@ -37,6 +37,10 @@ public:
 
 	bool CleanUp();
 
+	void CheckTownHall();
+
+	void AssignTownHall();
+
 private:
 	j1Entity* town_hall;
 	j1Entity* work_space;

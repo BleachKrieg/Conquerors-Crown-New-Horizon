@@ -25,7 +25,6 @@ public:
 	{
 		NONE,
 		TREE,
-		MINE,
 		QUARRY,
 	};
 
