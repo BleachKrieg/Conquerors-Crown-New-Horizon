@@ -45,6 +45,9 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 
 	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
 	visionEntity->SetNewVisionRadius(5);
+
+	speed_modifier = 1;
+
 	// TODO ------------------------------------------
 }
 

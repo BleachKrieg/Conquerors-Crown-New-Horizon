@@ -7,6 +7,7 @@
 #include "HumanFootman.h"
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
+#include "HumanKnight.h"
 #include "Troll_Enemy.h"
 #include "Ogre_Enemy.h"
 #include "Grunt_Enemy.h"
@@ -47,6 +48,7 @@ bool j1EntityManager::Start()
 	foot_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_footman_2.png");
 	arch_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_archer_2.png");
 	gather_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_gatherer.png");
+	knight_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_knight.png");
 	troll_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_troll.png");
 	ally_sel_tex = App->tex->Load("Assets/textures/units/selection_ally.png");
 	enemy_sel_tex = App->tex->Load("Assets/textures/units/selection_enemy.png");
@@ -57,6 +59,7 @@ bool j1EntityManager::Start()
 	LoadAnimations("Assets/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
@@ -150,6 +153,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	case DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN: ret = new HumanFootman(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_ARCHER: ret = new HumanArcher(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_GATHERER: ret = new HumanGatherer(posx, posy); player_dyn_ent.push_back(ret); break;
+	case DynamicEnt::DynamicEntityType::HUMAN_KNIGHT: ret = new HumanKnight(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_OGRE: ret = new OgreEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_GRUNT: ret = new GruntEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
@@ -254,6 +258,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (dynamic_type == "human_footman")
 			{
 				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
+			}
+			if (dynamic_type == "human_knight")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_KNIGHT;
 			}
 			if (dynamic_type == "human_gatherer")
 			{

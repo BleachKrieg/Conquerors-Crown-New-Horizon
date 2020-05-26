@@ -416,15 +416,14 @@ void DynamicEnt::Movement(float dt)
 		}
 
 	
-		if(team == TeamType::PLAYER)
-			speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-		else
-		speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	
+		
+		speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
 		speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
-	CheckCollisions(&speed);
+		speed.x *= speed_modifier;
+		speed.y *= speed_modifier;
 
+		CheckCollisions(&speed);
 
 		position.y += 60 * dt * speed.y;
 		position.x += 60 * dt * speed.x;
@@ -464,10 +463,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				}
 			}
 			else {
-				/*if (target_entity == it && !player_order)
+				if (target_entity == it && !player_order)
 				{
 					target_entity = NULL;
-				}*/
+				}
 			}
 			if(it->type == entityType::DYNAMIC)
 			if (distance < vision + it->body)

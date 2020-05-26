@@ -136,6 +136,9 @@
     <ClCompile Include="j1Tutorial.cpp">
       <Filter>Maps and scenes</Filter>
     </ClCompile>
+    <ClCompile Include="HumanKnight.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicEnt.h">
@@ -296,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="j1Tutorial.h">
       <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanKnight.h">
+      <Filter>Entities\Dynamic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

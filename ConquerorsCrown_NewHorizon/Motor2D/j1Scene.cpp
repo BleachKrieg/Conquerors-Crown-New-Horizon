@@ -290,6 +290,10 @@ bool j1Scene::Update(float dt)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
 			}
+			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
+			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
@@ -537,12 +541,10 @@ bool j1Scene::PostUpdate(float dt)
 		{
 			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
 
-
 		}
 
 		if (!loop)
 		{
-
 			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 		}
