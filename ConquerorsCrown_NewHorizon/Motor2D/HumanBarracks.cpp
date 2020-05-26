@@ -598,8 +598,8 @@ void HumanBarracks::CheckQueue()
 			case 1:
 				Searchtile(map);
 				randomrespawn = rand() % 10 + 10;
-				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
-				
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+	
 				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
 				{
 					if (App->tutorial->mision2 != nullptr && App->tutorial->mision2_Text != nullptr && App->tutorial->mision2_Text_2 != nullptr)

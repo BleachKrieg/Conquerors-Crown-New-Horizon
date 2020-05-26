@@ -19,12 +19,12 @@ HumanKnight::HumanKnight(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 200 * App->scene->stats_upgrade_swordman;
+	life_points = 200;
 	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 30;
 	time_attack = 1000;
-	attack_damage = 24 * App->scene->stats_upgrade_swordman;
+	attack_damage = 24;
 	vision = 26;
 	body = 13;
 	coll_range = 13;

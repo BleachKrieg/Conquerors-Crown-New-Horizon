@@ -73,15 +73,15 @@ bool j1Scene::Start()
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
 
+	upgrade_swordman = 0;
+	upgrade_archer = 0;
+	upgrade_knight = 0;
+
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
-	Upgrade_Sowrdman = false;
-	stats_upgrade_swordman = 1;
-	Upgrade_Archer = false;
 	wall_create = false;
-	stats_upgrade_Archer = 1;
 
 	wants_to_load = false;
 
@@ -245,23 +245,6 @@ bool j1Scene::Update(float dt)
 			pauseMenu = !pauseMenu;
 		}
 
-		if (Upgrade_Sowrdman == true)
-		{
-			stats_upgrade_swordman = 2.f;
-		}
-		else
-		{
-			stats_upgrade_swordman = 1.f;
-		}
-
-		if(Upgrade_Archer == true)
-		{
-			stats_upgrade_Archer = 2.f;
-		}
-		else
-		{
-			stats_upgrade_Archer = 1.f;
-		}
 		//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
@@ -723,10 +706,9 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::tutorial:
-		Upgrade_Archer = false;
-		stats_upgrade_Archer = 1.f;
-		Upgrade_Sowrdman = false;
-		stats_upgrade_swordman = 1;
+		upgrade_swordman = 0;
+		upgrade_archer = 0;
+		upgrade_knight = 0;
 		current_scene = scenes::tutorial;
 		CreateTutorial();
 		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
@@ -738,10 +720,9 @@ void j1Scene::CreateScene(scenes next_scene) {
 		finish = false;
 		break;
 	case scenes::ingame:
-		Upgrade_Archer = false;
-		stats_upgrade_Archer = 1.f;
-		Upgrade_Sowrdman = false;
-		stats_upgrade_swordman = 1;
+		upgrade_swordman = 0;
+		upgrade_archer = 0;
+		upgrade_knight = 0;
 		current_scene = scenes::ingame;
 		CreateInGame();
 		App->minimap->input = true;

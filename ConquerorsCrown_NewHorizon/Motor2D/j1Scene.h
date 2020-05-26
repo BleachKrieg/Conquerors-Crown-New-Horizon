@@ -233,17 +233,12 @@ public:
 	int camera_limit_y2;
 
 	//Upgrade_Swordman
-	bool Upgrade_Sowrdman;
-	float stats_upgrade_swordman;
-	bool Upgrade_Archer;
-	float stats_upgrade_Archer;
-
-	// Wall
-	bool wall_create;
-
 	int upgrade_swordman;
 	int upgrade_archer;
 	int upgrade_knight;
+
+	// Wall
+	bool wall_create;
 };
 
 #endif // __j1SCENE_H__

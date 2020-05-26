@@ -384,10 +384,18 @@ void Human_Upgrade::checkAnimation(float dt)
 		}
 		else
 		{
-			if (Button_Upgrade_Footman != nullptr && createUI == false)
+			if (createUI == false)
 			{
-				DeleteUpgradeUI();
-				createUI = true;
+				if (Button_Upgrade_Footman != nullptr)
+				{
+					DeleteUpgradeUI();
+					createUI = true;
+				}
+				else if (Button_Create_Archer != nullptr)
+				{
+					DeleteUpgradeUI();
+					createUI = true;
+				}
 			}
 		}
 	}
@@ -418,6 +426,7 @@ void Human_Upgrade::checkAnimation(float dt)
 				{
 					creation_Upgrade_bar->to_delete = true;
 				}
+
 				actualState = ST_UPGRADE_FINISHED;
 				createUI = true;
 			}
@@ -428,7 +437,7 @@ void Human_Upgrade::checkAnimation(float dt)
 			float upgrade_bar = (upgrade_timer2.ReadSec() * 100) / 10;
 			creation_Upgrade_bar_archer->updateBar(upgrade_bar);
 			time_bar_start = false;
-			if (Button_Upgrade_Footman != nullptr)
+			if (Button_Create_Archer != nullptr)
 			{
 				DeleteUpgradeUI();
 			}
@@ -456,55 +465,66 @@ void Human_Upgrade::checkAnimation(float dt)
 void Human_Upgrade::CreateUpgradeUI()
 {
 
-
-	Button_Upgrade_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-	Button_Upgrade_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 49, 46, 38 }, Button_Upgrade_Footman, nullptr, NULL);
-	Swordman_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Swordman_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
-	Swordman_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	if (App->scene->upgrade_swordman <= 1)
+	{
+		Button_Upgrade_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Upgrade_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 49, 46, 38 }, Button_Upgrade_Footman, nullptr, NULL);
+		Swordman_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Swordman_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+		Swordman_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	}
 	
-	Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-	Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 49, 46, 38 }, Button_Create_Archer, nullptr, NULL);
-	Archer_gold_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Archer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
-	Archer_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	if (App->scene->upgrade_archer <= 1)
+	{
+		Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 49, 46, 38 }, Button_Create_Archer, nullptr, NULL);
+		Archer_gold_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Archer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+		Archer_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	}
 	
 }
 
 void Human_Upgrade::DeleteUpgradeUI()
 {
-	if (Button_Upgrade_Footman != nullptr)
+	if (App->scene->upgrade_swordman <= 1)
 	{
-		Button_Upgrade_Footman->to_delete = true;
-		Swordman_gold_cost->to_delete = true;
-		Swordman_Text_Gold->to_delete = true;
-		Swordman_stone_cost->to_delete = true;
-		Swordman_Text_stone->to_delete = true;
+		if (Button_Upgrade_Footman != nullptr)
+		{
+			Button_Upgrade_Footman->to_delete = true;
+			Swordman_gold_cost->to_delete = true;
+			Swordman_Text_Gold->to_delete = true;
+			Swordman_stone_cost->to_delete = true;
+			Swordman_Text_stone->to_delete = true;
 
-		Swordman_gold_cost = nullptr;
-		Swordman_Text_Gold = nullptr;
-		Swordman_stone_cost = nullptr;
-		Swordman_Text_stone = nullptr;
-		Button_Upgrade_Footman = nullptr;
+			Swordman_gold_cost = nullptr;
+			Swordman_Text_Gold = nullptr;
+			Swordman_stone_cost = nullptr;
+			Swordman_Text_stone = nullptr;
+			Button_Upgrade_Footman = nullptr;
+		}
 	}
 
-	if (Button_Create_Archer != nullptr)
+	if (App->scene->upgrade_archer <= 1)
 	{
-		Button_Create_Archer->to_delete = true;
-		Archer_stone_cost->to_delete = true;
-		Archer_Text_stone->to_delete = true;
-		Archer_gold_cost->to_delete = true;
-		Archer_Text_Gold->to_delete = true;
+		if (Button_Create_Archer != nullptr)
+		{
+			Button_Create_Archer->to_delete = true;
+			Archer_stone_cost->to_delete = true;
+			Archer_Text_stone->to_delete = true;
+			Archer_gold_cost->to_delete = true;
+			Archer_Text_Gold->to_delete = true;
 
-		Archer_gold_cost = nullptr;
-		Archer_Text_Gold = nullptr;
-		Archer_stone_cost = nullptr;
-		Archer_Text_stone = nullptr;
-		Button_Create_Archer = nullptr;
+			Archer_gold_cost = nullptr;
+			Archer_Text_Gold = nullptr;
+			Archer_stone_cost = nullptr;
+			Archer_Text_stone = nullptr;
+			Button_Create_Archer = nullptr;
+		}
 	}
 }
 
