@@ -61,8 +61,10 @@ public:
 	int go_footman;
 	int go_archer;
 	int go_gatherer;
+	int go_knight;
 	int footman_attack;
 	int archer_attack;
+	int knight_attack;
 	int troll_attack;
 	int grunt_attack;
 	int ogre_attack;
@@ -70,6 +72,7 @@ public:
 	int mine_gatherer;
 	int die_footman;
 	int die_archer;
+	int die_knight;
 	int die_gatherer;
 	int die_troll;
 	int die_grunt;

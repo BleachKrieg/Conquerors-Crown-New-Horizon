@@ -68,7 +68,7 @@ bool HumanTownHall::Start()
 	creation_TownHall_bar = nullptr;
 	Gatherer_Text_stone = nullptr;
 	Gatherer_Text_Gold = nullptr;
-	Button_Create_Lab;
+	Button_Create_Lab = nullptr;
 	Lab_Image = nullptr;
 	Lab_stone_cost = nullptr;
 	Lab_Text_stone = nullptr;
