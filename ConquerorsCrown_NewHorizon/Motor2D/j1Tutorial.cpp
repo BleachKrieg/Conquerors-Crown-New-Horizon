@@ -133,6 +133,8 @@ bool j1Tutorial::Update(float dt)
 				App->scene->AddResource("stone", +100);
 				App->scene->AddResource("gold", +100);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, App->scene->mouse_position.x, App->scene->mouse_position.y);
 		}
 
 		// Camera movement inputs

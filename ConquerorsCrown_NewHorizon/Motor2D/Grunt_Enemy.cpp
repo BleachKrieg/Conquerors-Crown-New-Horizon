@@ -43,7 +43,7 @@ GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	target_entity = nullptr;
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::ENEMY_GRUNT;
-
+	speed_modifier = 0.7;
 
 	// TODO ------------------------------------------
 }

@@ -45,6 +45,7 @@ OgreEnemy::OgreEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY_O
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::ENEMY_OGRE;
 
+	speed_modifier = 0.6;
 
 	// TODO ------------------------------------------
 }

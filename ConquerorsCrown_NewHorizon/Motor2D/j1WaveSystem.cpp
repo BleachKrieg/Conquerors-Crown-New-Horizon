@@ -38,7 +38,6 @@ bool j1WaveSystem::Awake(pugi::xml_node& config)
 	pugi::xml_node wave;
 	spawn1 = new SpawnPoint();
 	spawn2 = new SpawnPoint();
-
 	spawn3 = new SpawnPoint();
 
 	spawn1->position.x = config.child("spawnpoints").child("spawnpoint1").attribute("x").as_int();
@@ -76,6 +75,7 @@ bool j1WaveSystem::Start()
 	troll_value = 15;
 	grunt_value = 10;
 	ogre_value = 30;
+	spawn_buildings = 0;
 
 	return ret;
 }
@@ -93,133 +93,146 @@ bool j1WaveSystem::Update(float dt)
 	//wave_ongoing = true;
 	if(App->scene->current_scene == scenes::ingame)
 	{ 
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
-	{
-		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+		if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
 		{
-			StartWave(current_wave);
+			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+			{
+				StartWave(current_wave);
+			}
 		}
-	}
-	else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
-	{
-		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+		else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
 		{
-			StartWave(current_wave);
+			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+			{
+				StartWave(current_wave);
+			}
 		}
-	}
 
 
-	if ((spawn1->target == nullptr || spawn2->target == nullptr || spawn3->target == nullptr))
-	{
-		if(!App->entity->player_stat_ent.empty())
+		if ((spawn1->target == nullptr || spawn2->target == nullptr || spawn3->target == nullptr))
 		{
-			spawn1->target = nullptr;
-			spawn2->target = nullptr;
-			spawn3->target = nullptr;
-
-			int dis_to_1, dis_to_2, dis_to_3;
-			dis_to_1 = dis_to_2 = dis_to_3 = 0;
-
-			for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
-				if (App->entity->player_stat_ent[i]->deployed == false)
-					continue;
-				fPoint vec1, vec2, vec3;
-				vec1 = { App->entity->player_stat_ent[i]->position.x - spawn1->position.x,  App->entity->player_stat_ent[i]->position.y - spawn1->position.y };
-				vec2 = { App->entity->player_stat_ent[i]->position.x - spawn2->position.x,  App->entity->player_stat_ent[i]->position.y - spawn2->position.y };
-				vec3 = { App->entity->player_stat_ent[i]->position.x - spawn3->position.x,  App->entity->player_stat_ent[i]->position.y - spawn3->position.y };
-				int norm1, norm2, norm3;
-				norm1 = sqrt(pow((vec1.x), 2) + pow((vec1.y), 2));
-				norm2 = sqrt(pow((vec2.x), 2) + pow((vec2.y), 2));
-				norm3 = sqrt(pow((vec3.x), 2) + pow((vec3.y), 2));
-
-				if (dis_to_1 == 0 || dis_to_1 > norm1)
-				{
-					dis_to_1 = norm1;
-					spawn1->target = App->entity->player_stat_ent[i];
-					spawn1->targetpos = spawn1->target->position;
-				}
-				if (dis_to_2 == 0 || dis_to_2 > norm2)
-				{
-					dis_to_2 = norm2;
-					spawn2->target = App->entity->player_stat_ent[i];
-					spawn2->targetpos = spawn2->target->position;
-				}
-				if (dis_to_3 == 0 || dis_to_3 > norm3)
-				{
-					dis_to_3 = norm3;
-					spawn3->target = App->entity->player_stat_ent[i];
-					spawn3->targetpos = spawn3->target->position;
-
-				}
-
-			}
-			
-			if (dis_to_1 > 0)
+			if(!App->entity->player_stat_ent.empty())
 			{
-				iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
-				iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+				spawn1->target = nullptr;
+				spawn2->target = nullptr;
+				spawn3->target = nullptr;
+
+				int dis_to_1, dis_to_2, dis_to_3;
+				dis_to_1 = dis_to_2 = dis_to_3 = 0;
+
+				for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
+					if (App->entity->player_stat_ent[i]->deployed == false)
+						continue;
+					fPoint vec1, vec2, vec3;
+					vec1 = { App->entity->player_stat_ent[i]->position.x - spawn1->position.x,  App->entity->player_stat_ent[i]->position.y - spawn1->position.y };
+					vec2 = { App->entity->player_stat_ent[i]->position.x - spawn2->position.x,  App->entity->player_stat_ent[i]->position.y - spawn2->position.y };
+					vec3 = { App->entity->player_stat_ent[i]->position.x - spawn3->position.x,  App->entity->player_stat_ent[i]->position.y - spawn3->position.y };
+					int norm1, norm2, norm3;
+					norm1 = sqrt(pow((vec1.x), 2) + pow((vec1.y), 2));
+					norm2 = sqrt(pow((vec2.x), 2) + pow((vec2.y), 2));
+					norm3 = sqrt(pow((vec3.x), 2) + pow((vec3.y), 2));
+
+					if (dis_to_1 == 0 || dis_to_1 > norm1)
+					{
+						dis_to_1 = norm1;
+						spawn1->target = App->entity->player_stat_ent[i];
+						spawn1->targetpos = spawn1->target->position;
+					}
+					if (dis_to_2 == 0 || dis_to_2 > norm2)
+					{
+						dis_to_2 = norm2;
+						spawn2->target = App->entity->player_stat_ent[i];
+						spawn2->targetpos = spawn2->target->position;
+					}
+					if (dis_to_3 == 0 || dis_to_3 > norm3)
+					{
+						dis_to_3 = norm3;
+						spawn3->target = App->entity->player_stat_ent[i];
+						spawn3->targetpos = spawn3->target->position;
+
+					}
+
+				}
+				
+				if (dis_to_1 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
+					iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+				}
+				if (dis_to_2 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
+					iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
+				}
+				if (dis_to_3 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
+					iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
+				}
 			}
-			if (dis_to_2 > 0)
-			{
-				iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
-				iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
-			}
-			if (dis_to_3 > 0)
-			{
-				iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
-				iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
-			}
+		}
+		else 
+		{
+			if (spawn1->target->life_points <= 0)spawn1->target = nullptr;
+			if (spawn2->target->life_points <= 0)spawn2->target = nullptr;
+			if (spawn3->target->life_points <= 0)spawn3->target = nullptr;
+
 		}
 		
-	}
-	else 
-	{
-		if (spawn1->target->life_points <= 0)spawn1->target = nullptr;
-		if (spawn2->target->life_points <= 0)spawn2->target = nullptr;
-		if (spawn3->target->life_points <= 0)spawn3->target = nullptr;
-
-	}
-	
-	if (App->scene->debug == true)
-	{
-		App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
-		App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
-		App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
-	}
-
-
-	for (uint i = 0; i < spawn1->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
-		if (App->scene->debug)
+		if (App->scene->debug == true)
 		{
-			
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
+			App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
+			App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
 		}
-	}
 
-	for (uint i = 0; i < spawn2->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
-		if (App->scene->debug)
+
+		for (uint i = 0; i < spawn1->path.size(); ++i)
 		{
-
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
+			if (App->scene->debug)
+			{
+				
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
 		}
-	}
 
-	for (uint i = 0; i < spawn3->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
-		if (App->scene->debug)
+		for (uint i = 0; i < spawn2->path.size(); ++i)
 		{
+			iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
+			if (App->scene->debug)
+			{
 
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
 		}
-	}
+
+		for (uint i = 0; i < spawn3->path.size(); ++i)
+		{
+			iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
+			if (App->scene->debug)
+			{
+
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
+		}
+
+		if (spawn1->bulding->life_points <= 0 && spawn2->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0)
+		{
+			spawn_buildings = 0;
+		}
+		else if ((spawn1->bulding->life_points <= 0 && spawn2->bulding->life_points <= 0) || (spawn1->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0) || (spawn2->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0))
+		{
+			spawn_buildings = 1;
+		}
+		else if (spawn1->bulding->life_points || spawn2->bulding->life_points <= 0 || spawn3->bulding->life_points <= 0)
+		{
+			spawn_buildings = 2;
+		}
+		else { spawn_buildings = 3; }
 	}
 	return ret;
 }
@@ -257,10 +270,24 @@ void j1WaveSystem::StartWave(int wave)
 	//int total_spawns = 2 + 9 * wave;
 
 	int wave_value = 30 + 80 * wave;
+	if (spawn_buildings == 2) { wave_value = wave_value - 20 * wave; }
+	else if (spawn_buildings == 1) { wave_value = wave_value - 60 * wave; }
+	else if (spawn_buildings == 0) { wave_value = 0; }
 
 	if (wave_ongoing == false) {
-		if (wave == 1) { trolls = 12; ogres = 0; grunts = 0; }
-		else if (wave == 5) { trolls = 0; ogres = 15; grunts = 0; }
+		if (wave == 1) {
+			trolls = 12; ogres = 0; grunts = 0;
+			if (spawn_buildings == 3) { trolls = 12; ogres = 0; grunts = 0; }
+			else if (spawn_buildings == 2) { trolls = 10; ogres = 0; grunts = 0; }
+			else if (spawn_buildings == 1) { trolls = 8; ogres = 0; grunts = 0; }
+			else { trolls = 0; ogres = 0; grunts = 0; }
+		}
+		else if (wave == 5) { 
+			if (spawn_buildings == 3) { trolls = 0; ogres = 15; grunts = 0; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 12; grunts = 0; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 9; grunts = 0; }
+			else { trolls = 0; ogres = 0; grunts = 0; }
+		}
 		else if (wave == 2) {
 			int max_trolls, max_grunts;
 			trolls = grunts = ogres = 0;
@@ -298,10 +325,11 @@ void j1WaveSystem::StartWave(int wave)
 	int spawns;
 	if ((total_spawns - spawn_counter) >= 3) { spawns = 3; }
 	else { spawns = (total_spawns - spawn_counter); }
+	if (spawns > spawn_buildings) { spawns = spawn_buildings; }
 	spawn_counter += spawns;
 
 	for (int i = 1; i <= spawns; i++) {
-		if (i % 3 == 1)
+		if (i % 3 == 1 && spawn1->bulding->life_points > 0)
 		{
 			bool enemy_spawned = false;
 			do {
@@ -319,7 +347,7 @@ void j1WaveSystem::StartWave(int wave)
 				}
 			} while (enemy_spawned == false);
 		}
-		else if (i % 3 == 2) {
+		else if (i % 3 == 2 && spawn2->bulding->life_points > 0) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
@@ -336,7 +364,7 @@ void j1WaveSystem::StartWave(int wave)
 				}
 			} while (enemy_spawned == false);
 		}																													
-		else if (i % 3 == 0) {																								
+		else if (i % 3 == 0 && spawn3->bulding->life_points > 0) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
@@ -408,5 +436,16 @@ bool j1WaveSystem::SpawnGrunt(SpawnPoint* spawn)
 		iPoint point(spawn->path.at(i).x, spawn->path.at(i).y);
 		temp->path.push_back(point);
 	}
+	return true;
+}
+
+bool j1WaveSystem::CreateSpawnBuildings()
+{
+	spawn1->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn1->position.x, spawn1->position.y);
+	spawn2->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn2->position.x, spawn2->position.y);
+	spawn3->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn3->position.x, spawn3->position.y);
+
+	spawn_buildings = 3;
+
 	return true;
 }

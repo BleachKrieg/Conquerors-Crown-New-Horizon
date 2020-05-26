@@ -8,6 +8,8 @@
 
 j1Video::j1Video()
 {
+	name.create("video_player");
+
 }
 
 j1Video::~j1Video()

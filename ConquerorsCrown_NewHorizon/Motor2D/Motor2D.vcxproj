@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DynamicEnt.cpp" />
+    <ClCompile Include="EnemyBarracks.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="FoWEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="HumanArcher.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
+    <ClCompile Include="HumanKnight.cpp" />
     <ClCompile Include="HumanTownHall.cpp" />
     <ClCompile Include="HumanUpgrade.cpp" />
     <ClCompile Include="j1CutsceneManager.cpp" />
@@ -123,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="EnemyBarracks.h" />
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="FoWBitDefs.h" />
     <ClInclude Include="FoWEntity.h" />
@@ -132,6 +135,7 @@
     <ClInclude Include="HumanArcher.h" />
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />
+    <ClInclude Include="HumanKnight.h" />
     <ClInclude Include="HumanTownHall.h" />
     <ClInclude Include="HumanUpgrade.h" />
     <ClInclude Include="j1CutsceneManager.h" />

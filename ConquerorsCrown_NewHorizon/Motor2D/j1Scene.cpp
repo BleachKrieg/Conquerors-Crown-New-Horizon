@@ -159,18 +159,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 265) {
-			App->audio->PlayFx(1, App->audio->crown_fx, 0);
-		}
-		if (win_lose_counter == 325) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 370) {
-			App->audio->PlayFx(1, App->audio->warcry_fx, 0);
-		}
-		LOG("Victory counter: %i", win_lose_counter);
+		
 
 		/*if (scale_victory < 0.005)
 		{
@@ -190,19 +179,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 260) {
-			App->audio->PlayFx(1, App->audio->skull_fx, 0);
-		}
-		if (win_lose_counter == 340) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 380) {
-			App->audio->PlayFx(1, App->audio->horn_fx, 0);
-		}
-		LOG("Defeat counter: %i", win_lose_counter);
-
+		
 		/*if (scale_defeat < 0.005)
 		{
 			scale_defeat = scale_defeat + 0.0001;
@@ -259,12 +236,10 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			if (!pauseMenu) {
-				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
-				App->audio->MusicVolume(0.2);
+
 				CreatePauseMenu();
 			}
 			else {
-				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
 				DeletePauseMenu();
 			}
 			pauseMenu = !pauseMenu;
@@ -315,6 +290,10 @@ bool j1Scene::Update(float dt)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
 			}
+			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
+			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { mouse_position.x, mouse_position.y });
@@ -351,6 +330,10 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", 100);
 				App->scene->AddResource("gold", 100);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+			}
+
 			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 				App->fade->FadeToBlack(scenes::defeat, 2.0f);
 			}
@@ -373,6 +356,10 @@ bool j1Scene::Update(float dt)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
+
+			if(App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+
 		}
 
 		//Draw the map
@@ -396,7 +383,7 @@ bool j1Scene::Update(float dt)
 		}
 		else {
 			//gameClock Update
-			timer = 660 - gameClock.ReadSec();
+			timer = 660 - gameClock.ReadSec() - time_loaded;
 			if (Cooldown.ReadSec() > 1)
 			{
 				TimeToClock();
@@ -554,12 +541,10 @@ bool j1Scene::PostUpdate(float dt)
 		{
 			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
 
-
 		}
 
 		if (!loop)
 		{
-
 			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 		}
@@ -585,6 +570,13 @@ bool j1Scene::CleanUp()
 bool j1Scene::Load(pugi::xml_node& data)
 {
 	LOG("Loading Scene state");
+	gold = 0;
+	wood = 0;
+	stone = 0;
+	AddResource("gold", data.child("resources").attribute("gold").as_int());
+	AddResource("wood", data.child("resources").attribute("wood").as_int());
+	AddResource("stone", data.child("resources").attribute("stone").as_int());
+	time_loaded = data.child("clock").attribute("time_passed").as_int();
 	return true;
 }
 
@@ -594,8 +586,14 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	LOG("Saving Scene state");
 	
 
-	pugi::xml_node scene = data.append_child("scenename");
-	scene.append_attribute("name") = current_level.GetString();
+	pugi::xml_node scenename = data.append_child("scenename");
+	scenename.append_attribute("name") = current_level.GetString();
+	pugi::xml_node resources = data.append_child("resources");
+	resources.append_attribute("gold") = gold;
+	resources.append_attribute("wood") = wood;
+	resources.append_attribute("stone") = stone;
+	pugi::xml_node clock = data.append_child("clock");
+	clock.append_attribute("time_passed") = gameClock.ReadSec();
 
 	return true;
 }
@@ -847,8 +845,14 @@ bool j1Scene::CreateTutorial()
 
 bool j1Scene::CreatePauseMenu() 
 {
-	if(pausemenuBackground == nullptr)
+
+
+	if (pausemenuBackground == nullptr) {
+		App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+		App->audio->MusicVolume(0.2f);
 		pausemenuBackground = App->gui->CreateGuiElement(Types::image, 347, -342, { 2292, 731, 586, 483 }, ingameUI);
+	}
+
 
 	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
 	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
@@ -870,10 +874,15 @@ bool j1Scene::CreatePauseMenu()
 	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
 
+	App->entity->pause = true;
+
 	return true;
 }
 
 bool j1Scene::DeletePauseMenu() {
+
+	App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
+	//App->audio->MusicVolume(1.0f);
 	if (optionsMenu)
 	{
 		DeleteOptions();
@@ -885,6 +894,8 @@ bool j1Scene::DeletePauseMenu() {
 
 	pausemenuBackground->to_delete = true;
 	pausemenuBackground = nullptr;
+
+	App->entity->pause = false;
 
 	return true;
 }
@@ -1047,6 +1058,7 @@ bool j1Scene::CreateInGame()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
+	time_loaded = 0;
 
 	if (!wants_to_load)
 	{
@@ -1060,6 +1072,7 @@ bool j1Scene::CreateInGame()
 
 	if(ret) ret = CreateButtonsUI();
 
+	App->wave->CreateSpawnBuildings();
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
 

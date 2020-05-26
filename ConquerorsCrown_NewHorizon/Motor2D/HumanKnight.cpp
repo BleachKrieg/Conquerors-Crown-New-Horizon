@@ -1,12 +1,9 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Scene.h"
-#include "Animation.h"
 #include "p2Log.h"
 #include "j1EntityManager.h"
-#include "j1Entity.h"
-#include "HumanArcher.h"
-#include "DynamicEnt.h"
+#include "HumanKnight.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
@@ -15,50 +12,50 @@
 #include <math.h>
 #include "FoWManager.h"
 
-HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_ARCHER)
+
+HumanKnight::HumanKnight(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_KNIGHT)
 {
-	name.create("human_archer");
+	name.create("human_knight");
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 80 * App->scene->stats_upgrade_Archer;
+	life_points = 200 * App->scene->stats_upgrade_swordman;
 	max_hp = life_points;
 	attack_vision = 200;
-	attack_range = 140;
+	attack_range = 30;
 	time_attack = 1000;
-	attack_damage = 16 * App->scene->stats_upgrade_Archer;
+	attack_damage = 24 * App->scene->stats_upgrade_swordman;
 	vision = 26;
 	body = 13;
 	coll_range = 13;
-	active = true;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
 	to_delete = false;
-	can_attack = true;
+	active = true;
 	isSelected = false;
 	selectable = true;
 	following_target = false;
 	player_order = false;
+	can_attack = true;
 	team = TeamType::PLAYER;
 	target_entity = NULL;
 	state = DynamicState::IDLE;
-	entity_type = DynamicEntityType::HUMAN_ARCHER;
+	entity_type = DynamicEntityType::HUMAN_KNIGHT;
 
 	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
 	visionEntity->SetNewVisionRadius(5);
-	speed_modifier = 1.2;
+	speed_modifier = 1.7;
 
 	// TODO ------------------------------------------
 }
 
-HumanArcher::~HumanArcher() {}
+HumanKnight::~HumanKnight() {}
 
-bool HumanArcher::Start()
+bool HumanKnight::Start()
 {
-
 	list<Animation*>::iterator animations_list;
-	animations_list = App->entity->archer_animations.begin();
+	animations_list = App->entity->knight_animations.begin();
 	moving_up = **animations_list;
 	++animations_list;
 	moving_diagonal_up = **animations_list;
@@ -85,21 +82,21 @@ bool HumanArcher::Start()
 	++animations_list;
 
 	current_animation = &moving_down;
-
 	return true;
 }
 
-bool HumanArcher::Update(float dt)
+bool HumanKnight::Update(float dt)
 {
-	BROFILER_CATEGORY("ArcherUpdate", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_HumanFootman", Profiler::Color::BlanchedAlmond);
 
-	// Speed resetted to 0 each iteration
-	speed = { NULL, NULL };
+	//Speed is resetted to 0 each iteration
+	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
-	if (App->scene->debug)
-		life_points = life_points;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->scene->debug)
+		life_points = max_hp;
+
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
@@ -142,30 +139,31 @@ bool HumanArcher::Update(float dt)
 		Death(entity_type);
 		break;
 	}
-	
+
 	//App->render->DrawQuad({ (int)position.x, (int)position.y, 10, 10 }, 200, 200, 0);
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	if (isSelected)
-	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
-	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-
-	if (attack_damage > 16)
+		App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 15), (int)(position.y)-10);
+		//App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
+	
+	if (attack_damage > 12)
 	{
-		App->render->Blit(App->entity->arch_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+		App->render->Blit(App->entity->knight_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	}
-	else { App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
+	else { App->render->Blit(App->entity->knight_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
 
 	return true;
 }
 
-bool HumanArcher::PostUpdate(float dt)
+bool HumanKnight::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("Archer_PostUpdate", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("PostUpdate_HumanKnight", Profiler::Color::BurlyWood)
 
-	return true;
+
+		return true;
 }
 
-bool HumanArcher::CleanUp()
+bool HumanKnight::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();

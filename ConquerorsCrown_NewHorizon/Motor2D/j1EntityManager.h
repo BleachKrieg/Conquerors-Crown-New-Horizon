@@ -80,6 +80,7 @@ public:
 	SDL_Texture* foot_man_tex2 = nullptr;
 	SDL_Texture* arch_man_tex2 = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
+	SDL_Texture* knight_tex = nullptr;
 	SDL_Texture* troll_tex = nullptr;
 	SDL_Texture* ally_sel_tex = nullptr;
 	SDL_Texture* enemy_sel_tex = nullptr;
@@ -94,6 +95,7 @@ public:
 	list<Animation*> archer_animations;
 	list<Animation*> footman_animations;
 	list<Animation*> gatherer_animations;
+	list<Animation*> knight_animations;
 	list<Animation*> troll_animations;
 	list<Animation*> ogre_animations;
 	list<Animation*> grunt_animations;
@@ -102,6 +104,7 @@ public:
 	SDL_Texture* building = nullptr;
 	SDL_Texture* miscs = nullptr;
 
+	bool pause;
 	// Load entities textures
 };
 

@@ -7,10 +7,12 @@
 #include "HumanFootman.h"
 #include "HumanArcher.h"
 #include "HumanGatherer.h"
+#include "HumanKnight.h"
 #include "Troll_Enemy.h"
 #include "Ogre_Enemy.h"
 #include "Grunt_Enemy.h"
 #include "ResourceEntities.h"
+#include "EnemyBarracks.h"
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
@@ -36,6 +38,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	pause = false;
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
@@ -45,6 +48,7 @@ bool j1EntityManager::Start()
 	foot_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_footman_2.png");
 	arch_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_archer_2.png");
 	gather_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_gatherer.png");
+	knight_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_knight.png");
 	troll_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_troll.png");
 	ally_sel_tex = App->tex->Load("Assets/textures/units/selection_ally.png");
 	enemy_sel_tex = App->tex->Load("Assets/textures/units/selection_enemy.png");
@@ -55,6 +59,7 @@ bool j1EntityManager::Start()
 	LoadAnimations("Assets/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
 	LoadAnimations("Assets/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
 	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
@@ -89,14 +94,18 @@ bool j1EntityManager::Update(float dt)
 
 	Mix_AllocateChannels(20);
 
+	if (pause) {
+		dt = 0;
+	}
+
 	if(timer.ReadMs() > 200)
 	{
 		max_audio_attacks = 0;
 		timer.Start();
 	}
 
-	for (int i = 0; i < entities.size(); i++) {
-		
+	for (int i = 0; i < entities.size(); i++) 
+	{		
 		entities[i]->Update(dt);
 	}
 	
@@ -116,6 +125,9 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 		else
 		{
+			if (pause) {
+				dt = 0;
+			}
 			entities[i]->PostUpdate();
 		}
 	}
@@ -141,6 +153,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	case DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN: ret = new HumanFootman(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_ARCHER: ret = new HumanArcher(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::HUMAN_GATHERER: ret = new HumanGatherer(posx, posy); player_dyn_ent.push_back(ret); break;
+	case DynamicEnt::DynamicEntityType::HUMAN_KNIGHT: ret = new HumanKnight(posx, posy); player_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_TROLL: ret = new TrollEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_OGRE: ret = new OgreEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
 	case DynamicEnt::DynamicEntityType::ENEMY_GRUNT: ret = new GruntEnemy(posx, posy); ai_dyn_ent.push_back(ret); break;
@@ -165,6 +178,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); mines.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
+	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -184,10 +198,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 {
 	LOG("load entities here");
 	pugi::xml_node entity;
-
 	//Then we iterate the xml, to find every entity that's been saved
 	for (entity = data.child("Entity"); entity; entity = entity.next_sibling("Entity"))
 	{
+		int resource_id = 0;
 		StaticEnt::StaticEntType static_ID;
 		DynamicEnt::DynamicEntityType dynamic_ID;
 
@@ -195,64 +209,73 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 
 		if (type == "static")
 		{
-				p2SString static_type(entity.child("type").attribute("name").as_string());
-				if (static_type == "town_hall")
-				{
-					static_ID = StaticEnt::StaticEntType::HumanTownHall;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "human_barracks")
-				{
-					static_ID = StaticEnt::StaticEntType::HumanBarracks;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "gold_mine")
-				{
-					static_ID = StaticEnt::StaticEntType::GoldMine;
-					CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-				}
-				if (static_type == "resource")
-				{
-					static_ID = StaticEnt::StaticEntType::Resource;
-				}
+			p2SString static_type(entity.child("type").attribute("name").as_string());
+			if (static_type == "town_hall")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanTownHall;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "human_barracks")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanBarracks;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "gold_mine")
+			{
+				static_ID = StaticEnt::StaticEntType::GoldMine;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64);
+			}
+			if (static_type == "tree")
+			{
+				static_ID = StaticEnt::StaticEntType::Resource;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int(), 1);
+			}
+			if (static_type == "quarry")
+			{
+				static_ID = StaticEnt::StaticEntType::Resource;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int(), 2);
+			}
 		}
 		if (type == "dynamic")
 		{
-				p2SString dynamic_type(entity.child("type").attribute("name").as_string());
-				if (dynamic_type == "enemy_grunt")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
-				}
-				if (dynamic_type == "enemy_ogre")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
-				}
-				if (dynamic_type == "enemy_troll")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
-				}
-				if (dynamic_type == "human_archer")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
-				}
-				if (dynamic_type == "human_footman")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
-				}
-				if (dynamic_type == "human_gatherer")
-				{
-					dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
-				}
-				//Once localized an entity, we create it
-				
+			p2SString dynamic_type(entity.child("type").attribute("name").as_string());
+			if (dynamic_type == "enemy_grunt")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_GRUNT;
+			}
+			if (dynamic_type == "enemy_ogre")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_OGRE;
+			}
+			if (dynamic_type == "enemy_troll")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::ENEMY_TROLL;
+			}
+			if (dynamic_type == "human_archer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_ARCHER;
+			}
+			if (dynamic_type == "human_footman")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_FOOTMAN;
+			}
+			if (dynamic_type == "human_knight")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_KNIGHT;
+			}
+			if (dynamic_type == "human_gatherer")
+			{
+				dynamic_ID = DynamicEnt::DynamicEntityType::HUMAN_GATHERER;
+			}
+			//Once localized an entity, we create it
+
 			CreateEntity(dynamic_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 		}
-			
 
-			//Once located an entity, we create it
-			//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
-		
+		//Once located an entity, we create it
+		//CreateEntity(id, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 	}
+
 	// For load buildings correctly
 	App->scene->active = false;
 
@@ -261,7 +284,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 		entities_list->data->Load(entity);
 		entities_list = entities_list->next;
 	}*/
-
+	
 	return true;
 }
 
