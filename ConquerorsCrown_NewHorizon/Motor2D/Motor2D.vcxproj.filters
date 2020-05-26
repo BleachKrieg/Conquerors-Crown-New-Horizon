@@ -142,6 +142,15 @@
     <ClCompile Include="HumanBarn.cpp">
       <Filter>Entities\Static</Filter>
     </ClCompile>
+    <ClCompile Include="Emiter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicEnt.h">
@@ -309,6 +318,15 @@
     <ClInclude Include="HumanBarn.h">
       <Filter>Entities\Static</Filter>
     </ClInclude>
+    <ClInclude Include="Emiter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -337,6 +355,9 @@
     </Filter>
     <Filter Include="External libs">
       <UniqueIdentifier>{b6004e19-5903-48a6-9fc5-d3e7c91863d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{7b7d141b-bc1b-4c35-a450-6ebdb829ed01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
