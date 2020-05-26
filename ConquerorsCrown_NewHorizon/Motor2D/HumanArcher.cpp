@@ -87,9 +87,10 @@ bool HumanArcher::Start()
 	
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 0, 10, 10 }, 1, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 32, 96, 32, 32 }, 1, 0, 0, 0, 0);
+
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, true);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
 	particleSystem->PushEmiter(emiter);
 	particleSystem->Desactivate();
 

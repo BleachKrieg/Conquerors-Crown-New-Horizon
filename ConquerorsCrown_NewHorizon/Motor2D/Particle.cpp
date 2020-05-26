@@ -160,14 +160,18 @@ void Particle::PostUpdate(float dt)
 
 void Particle::Draw(float dt)
 {
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (speed[0] < 0)
+		flip = SDL_FLIP_HORIZONTAL;
+
 	if (fade == true)
 	{
 		Uint8 transparency = life / originalLife * 255;
-		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt), 1, 1, SDL_FLIP_NONE, 1, angle, 0, 0, transparency);
+		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt), 1, 1, flip, 1, angle, 0, 0, transparency);
 	}
 
 	else
-		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt),1, 1, SDL_FLIP_NONE, 1, angle);
+		App->render->Blit(texture, position[0], position[1], &animation.GetCurrentFrame(dt),1, 1, flip, 1, angle);
 
 }
 
