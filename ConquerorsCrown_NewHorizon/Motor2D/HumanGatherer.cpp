@@ -171,7 +171,7 @@ bool HumanGatherer::Update(float dt)
 	if (work_state == WORK_STATE::GO_TO_WORK)
 	{
 		target_entity = work_space;
-		if (position.DistanceTo(work_space->position) <= 100 && path.size() == 0)
+		if (position.DistanceTo(work_space->position) <= 20 && path.size() == 0)
 		{
 			CheckTownHall();
 			path.clear();
