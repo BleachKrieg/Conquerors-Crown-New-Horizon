@@ -11,7 +11,10 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "J1GroupMov.h"
+#include "Emiter.h"
+#include "ParticleSystem.h"
 #include "FoWManager.h"
+
 
 #include <math.h>
 
@@ -83,10 +86,20 @@ bool TrollEnemy::Start()
 
 	current_animation = &moving_down;
 
+	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 0, 96, 32, 32 }, 1, 0, 0, 0, 0);
+
+	anim.Reset();
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	particleSystem->PushEmiter(emiter );
+	particleSystem->Desactivate();
+
 	spawn = nullptr;
 	time = 10;
 	followpath = 0;
 	change_direction = true;
+
 	return true;
 }
 
@@ -104,6 +117,9 @@ bool TrollEnemy::Update(float dt)
 	AttackTarget(entity_type);
 
 	Movement(dt);
+
+	if (particleSystem != nullptr)
+		particleSystem->Move(position.x, position.y);
 
 	origin = App->map->WorldToMap(position.x, position.y);
 
@@ -123,6 +139,10 @@ bool TrollEnemy::Update(float dt)
 	
 	}
 	time = idletime.ReadSec();
+
+	if (state != DynamicState::INTERACTING)
+		if (particleSystem->IsActive())
+			particleSystem->Desactivate();
 	if (life_points <= 0)
 		state = DynamicState::DYING;
 
@@ -150,8 +170,51 @@ bool TrollEnemy::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
+		if (particleSystem != nullptr)
+		{
+			if (!particleSystem->IsActive())
+			{
+				particleSystem->Activate();
+			}
+				float xvec, yvec, ProjTime = 1;
+				iPoint destiny = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+				iPoint start = App->map->WorldToMap(position.x + 15, position.y + 15);
+
+
+				fPoint vec(destiny.x - start.x, destiny.y - start.y);
+
+				float norm = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+				yvec = (vec.y / norm);
+				xvec = (vec.x / norm);
+
+
+				xvec *= 3;
+				yvec *= 3;
+				if (norm > 0)
+				{
+					if (abs(xvec) > abs(yvec))
+						ProjTime = norm / abs(xvec);
+					else
+						ProjTime = norm / abs(yvec);
+					ProjTime *= 0.4;
+				}
+				else {
+					ProjTime = 1;
+				}
+
+				if (particleSystem->emiterVector.size() > 0)
+				{
+					particleSystem->emiterVector[0].SetSpeed(xvec, yvec);
+					particleSystem->emiterVector[0].SetMaxTime(ProjTime);
+				}
+
+		}
 		break;
 	case DynamicState::DYING:
+		if (particleSystem->IsActive())
+		{
+			particleSystem->Desactivate();
+		}
 		if (App->movement->ai_selected == this)
 			App->movement->ai_selected = nullptr;
 		Death(entity_type);
@@ -205,6 +268,8 @@ bool TrollEnemy::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	particleSystem->to_delete = true;
+
 	path.clear();
 	name.Clear();
 	return true;

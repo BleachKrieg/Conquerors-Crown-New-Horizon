@@ -13,6 +13,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "Emiter.h"
+#include "ParticleSystem.h"
 #include "FoWManager.h"
 
 HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_ARCHER)
@@ -86,6 +88,17 @@ bool HumanArcher::Start()
 
 	current_animation = &moving_down;
 
+	
+	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
+	Animation anim;
+	anim.PushBack(SDL_Rect{ 32, 96, 32, 32 }, 1, 0, 0, 0, 0);
+
+	anim.Reset();
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	particleSystem->PushEmiter(emiter);
+	particleSystem->Desactivate();
+
+
 	return true;
 }
 
@@ -110,8 +123,15 @@ bool HumanArcher::Update(float dt)
 	if (auxPos != position)
 		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
+	if (particleSystem != nullptr)
+		particleSystem->Move(position.x, position.y);
+	
 	if (life_points <= 0)
 		state = DynamicState::DYING;
+
+	if (state != DynamicState::INTERACTING)
+		if (particleSystem->IsActive())
+			particleSystem->Desactivate();
 
 	switch (state)
 	{
@@ -137,8 +157,52 @@ bool HumanArcher::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
+		if (particleSystem != nullptr)
+		{
+			if (!particleSystem->IsActive())
+			{
+				particleSystem->Activate();
+			}
+				float xvec, yvec, ProjTime = 1;
+				iPoint destiny = App->map->WorldToMap(target_entity->position.x, target_entity->position.y);
+				iPoint start = App->map->WorldToMap(position.x + 15, position.y + 15);
+				
+
+				fPoint vec(destiny.x - start.x, destiny.y - start.y);
+
+				float norm = sqrt(pow(vec.x, 2) + pow(vec.y, 2));
+				yvec = (vec.y / norm);
+				xvec = (vec.x / norm);
+
+				
+				xvec *= 3;
+				yvec *= 3;
+				if (norm > 0)
+				{
+					if (abs(xvec) > abs(yvec))
+						ProjTime = norm / abs(xvec);
+					else
+						ProjTime = norm / abs(yvec);
+					ProjTime *= 0.4;
+				}
+				else {
+					ProjTime = 1;
+				}
+			
+				if (particleSystem->emiterVector.size() > 0)
+				{
+					particleSystem->emiterVector[0].SetSpeed(xvec, yvec);
+					particleSystem->emiterVector[0].SetMaxTime(ProjTime);
+				}
+			
+			
+		}
 		break;
 	case DynamicState::DYING:
+		if (particleSystem->IsActive())
+		{
+			particleSystem->Desactivate();
+		}
 		Death(entity_type);
 		break;
 	}
@@ -170,6 +234,8 @@ bool HumanArcher::CleanUp()
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	visionEntity->deleteEntity = true;
+	particleSystem->to_delete = true;
+
 	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();

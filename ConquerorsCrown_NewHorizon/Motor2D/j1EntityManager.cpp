@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include "p2Log.h"
 #include "GoldMine.h"
+#include "Emiter.h"
+#include "ParticleSystem.h"
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Scene.h"
@@ -66,6 +68,8 @@ bool j1EntityManager::Start()
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
+	//arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
+	arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
 
 	max_audio_attacks = 0;
 	timer.Start();
@@ -82,8 +86,25 @@ bool j1EntityManager::CleanUp()
 		entities[i]->CleanUp();
 		RELEASE(entities[i]);
 	}
+	for (int i = 0; i < particles.size(); i++) {
 
+		particles[i]->CleanUp();
+		RELEASE(particles[i]);
+	}
 	entities.clear();
+	particles.clear();
+
+	App->tex->UnLoad(miscs);
+	App->tex->UnLoad(arrow);
+	App->tex->UnLoad(building);
+	App->tex->UnLoad(grunt_tex);
+	App->tex->UnLoad(ogre_tex);
+	App->tex->UnLoad(enemy_sel_tex);
+	App->tex->UnLoad(ally_sel_tex);
+	App->tex->UnLoad(troll_tex);
+	App->tex->UnLoad(gather_man_tex);
+	App->tex->UnLoad(arch_man_tex);
+	App->tex->UnLoad(foot_man_tex);
 
 	return true;
 }
@@ -108,7 +129,14 @@ bool j1EntityManager::Update(float dt)
 	{		
 		entities[i]->Update(dt);
 	}
-	
+
+	for (int i = 0; i < particles.size(); i++) {
+
+		particles[i]->Update(dt);
+	}
+	/*LOG("entitites: %d", entities.size());
+	LOG("particles: %d", particles.size());*/
+
 	return true;
 }
 
@@ -132,6 +160,7 @@ bool j1EntityManager::PostUpdate(float dt)
 		}
 	}
 
+
 	for (int i = 0; i < resources_ent.size(); i++) {
 		if (resources_ent[i]->to_delete == true)
 		{
@@ -140,7 +169,17 @@ bool j1EntityManager::PostUpdate(float dt)
 			i--;
 		}
 	}
-
+	for (int i = 0; i < particles.size(); i++) {
+		if (particles[i]->to_delete == true)
+		{
+			DeleteParticles(i, particles[i]);
+			i--;
+		}
+		else
+		{
+			particles[i]->PostUpdate();
+		}
+	}
 		return true;
 }
 
@@ -193,6 +232,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	}
 	return ret;
 }
+
 
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
@@ -306,6 +346,17 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	}
 	return true;
 }
+
+ParticleSystem* j1EntityManager::CreateParticleSys(int posx, int posy)
+{
+	ParticleSystem* particleSystem = new ParticleSystem(posx, posy);
+
+	j1Entity* ret = dynamic_cast<j1Entity*>(particleSystem);
+	ret->to_delete = false;
+	particles.push_back(ret);
+
+	return particleSystem;
+}
 bool j1EntityManager::DeleteAllEntities()
 {
 
@@ -317,6 +368,11 @@ bool j1EntityManager::DeleteAllEntities()
 		resources_ent[i]->to_delete = true;
 		resources_ent[i]->CleanUp();
 	}
+
+	for (int i = 0; i < particles.size(); i++) {
+		particles[i]->to_delete = true;
+	}
+
 	return true;
 }
 
@@ -364,6 +420,16 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 	RELEASE(entity);
 
 
+
+	return true;
+}
+
+bool j1EntityManager::DeleteParticles(int id, j1Entity* entity)
+{
+
+	particles.erase(particles.begin() + id);
+	entity->CleanUp();
+	RELEASE(entity);
 
 	return true;
 }
