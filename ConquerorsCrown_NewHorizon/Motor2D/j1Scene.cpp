@@ -73,7 +73,6 @@ bool j1Scene::Start()
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
 
-	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
@@ -85,6 +84,69 @@ bool j1Scene::Start()
 
 	wants_to_load = false;
 
+	//UI elements
+	menuButtonNewGame = nullptr;
+	menuTextNewGame = nullptr;
+	menuButtonLoadGame = nullptr;
+	menuTextLoadGame = nullptr;
+	menuButtonOptions = nullptr;
+	menuTextOptions = nullptr;
+	menuButtonExit = nullptr;
+	menuTextExit = nullptr;
+	menuBackground = nullptr;
+
+	ingameUI = nullptr;
+	ingameTopBar = nullptr;
+	ingameButtonMenu = nullptr;
+	ingameTextMenu = nullptr;
+	ingameTextGold = nullptr;
+	ingameTextWood = nullptr;
+	ingameTextStone = nullptr;
+	ingameTextClock = nullptr;
+	ingameTextWave = nullptr;
+
+	townHallButton = nullptr;
+	townHallImage = nullptr;
+	townHallWoodCostImage = nullptr;
+	townHallStoneCostImage = nullptr;
+	townHallWoodCostText = nullptr;
+	townHallStoneCostText = nullptr;
+
+	optionsBackground = nullptr;
+	optionsTitleText = nullptr;
+	optionsButtonClose = nullptr;
+	optionsTextClose = nullptr;
+	optionsMusicText = nullptr;
+	optionsMusicSlider = nullptr;
+	optionsFxText = nullptr;
+	optionsFxSlider = nullptr;
+	optionsButtonFullScreen = nullptr;
+	optionsTextFullScreen = nullptr;
+
+	pausemenuBackground = nullptr;
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
+
+	logoTextClick = nullptr;
+	logoBackground = nullptr;
+
+	victoryBackground = nullptr;
+	victoryButtonContinue = nullptr;
+	victoryTextContinue = nullptr;
+	victoryTextClick = nullptr;
+
+	defeatBackground = nullptr;
+	defeatButtonContinue = nullptr;
+	defeatTextContinue = nullptr;
+	defeatTextClick = nullptr;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);

@@ -139,6 +139,9 @@
     <ClCompile Include="HumanKnight.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="HumanBarn.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
     <ClCompile Include="Emiter.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
@@ -312,6 +315,9 @@
     <ClInclude Include="HumanKnight.h">
       <Filter>Entities\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="HumanBarn.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
     <ClInclude Include="Emiter.h">
       <Filter>Particles</Filter>
     </ClInclude>
@@ -351,7 +357,7 @@
       <UniqueIdentifier>{b6004e19-5903-48a6-9fc5-d3e7c91863d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Particles">
-      <UniqueIdentifier>{6bc08275-bf8c-4b1b-961e-d85df31a3ca8}</UniqueIdentifier>
+      <UniqueIdentifier>{7b7d141b-bc1b-4c35-a450-6ebdb829ed01}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

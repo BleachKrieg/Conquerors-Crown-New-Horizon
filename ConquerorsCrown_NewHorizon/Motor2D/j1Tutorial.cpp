@@ -47,6 +47,16 @@ bool j1Tutorial::Start()
 	MinimapActive = false;
 	moveCamera = false;
 
+	PopUpImage = nullptr;
+	PopUpText1 = nullptr;
+	PopUpText2 = nullptr;
+	PopUpText3 = nullptr;
+	PopUpText4 = nullptr;
+	PopUpText5 = nullptr;
+	PopUpTitleText = nullptr;
+	PopUpButton = nullptr;
+	Uther_Image = nullptr;
+
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
 	Button_No = nullptr;
@@ -61,6 +71,15 @@ bool j1Tutorial::Start()
 	mision3 = nullptr;
 	mision3_Text = nullptr;
 	mision3_Text_2 = nullptr;
+
+	Arrow_1 = nullptr;
+	Arrow_2 = nullptr;
+	Arrow_3 = nullptr;
+	Arrow_4 = nullptr;
+	Arrow_5 = nullptr;
+	Arrow_5_1 = nullptr;
+	Arrow_6 = nullptr;
+	Arrow_7 = nullptr;
 
 	ActualState = ST_Tutorial_Q0;
 
