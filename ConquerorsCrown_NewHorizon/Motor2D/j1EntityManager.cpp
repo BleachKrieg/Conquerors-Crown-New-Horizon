@@ -44,7 +44,6 @@ bool j1EntityManager::Start()
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
-
 	foot_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_archer.png");
 	foot_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_footman_2.png");

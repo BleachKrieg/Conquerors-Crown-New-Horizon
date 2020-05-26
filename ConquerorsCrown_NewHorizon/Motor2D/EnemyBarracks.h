@@ -44,6 +44,7 @@ public:
 	Animation finishedconst2;
 	SDL_Rect Construction;
 	SDL_Rect Created;
+	j1Timer spawn_cooldown;
 
 	// Stats
 	int attackrange;

@@ -27,6 +27,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	to_delete = false;
 	canbuild = false;
 	active = true;
+	spawn_cooldown.Start();
 
 
 	//pos0 = { 827, 103 };
@@ -41,6 +42,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 
 	team = TeamType::IA;
 	life_points = 100;
+	max_hp = life_points;
 }
 
 EnemyBarracks::~EnemyBarracks()
@@ -66,6 +68,15 @@ bool EnemyBarracks::Update(float dt)
 		
 	checkAnimation(dt);
 
+	if (life_points < max_hp && spawn_cooldown.ReadSec() > 20)
+	{
+		spawn_cooldown.Start();
+		LOG("spawn :D");
+	}
+	if (spawn_cooldown.ReadSec() < 20)
+	{
+		max_hp = life_points;
+	}
 
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
