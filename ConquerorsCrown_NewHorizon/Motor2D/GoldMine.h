@@ -15,7 +15,7 @@ class GoldMine : public StaticEnt
 {
 public:
 	// Constructor
-	GoldMine(int posx, int posy);
+	GoldMine(int posx, int posy, uint amount);
 
 	// Destructor
 	~GoldMine();

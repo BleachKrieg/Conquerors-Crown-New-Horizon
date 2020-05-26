@@ -45,7 +45,7 @@ public:
 	// Create a new entity
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
-	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
+	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0, uint amount = 2000u);
 
 	bool Load(pugi::xml_node&);
 

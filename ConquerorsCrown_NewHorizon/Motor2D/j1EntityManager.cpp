@@ -213,7 +213,7 @@ j1Entity* j1EntityManager::CreateEntity(DynamicEnt::DynamicEntityType type, int 
 	return ret;
 }
 
-j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy, uint resource_type)
+j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int posx, int posy, uint resource_type, uint amount)
 {
 	j1Entity* ret = nullptr;
 	GoldMine* aux = nullptr;
@@ -223,7 +223,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::HumanBarracks: ret = new HumanBarracks(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanTownHall: ret = new HumanTownHall(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
-	case StaticEnt::StaticEntType::GoldMine: aux = new GoldMine(posx, posy); mines.push_back(aux); ret = (j1Entity*)aux; break;
+	case StaticEnt::StaticEntType::GoldMine: aux = new GoldMine(posx, posy, amount); mines.push_back(aux); ret = (j1Entity*)aux; break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
@@ -271,7 +271,7 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (static_type == "gold_mine")
 			{
 				static_ID = StaticEnt::StaticEntType::GoldMine;
-				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64);
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64, entity.child("type").attribute("amount_left").as_uint());
 			}
 			if (static_type == "tree")
 			{

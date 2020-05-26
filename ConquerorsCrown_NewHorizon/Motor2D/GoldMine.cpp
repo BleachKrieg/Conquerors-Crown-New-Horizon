@@ -12,7 +12,7 @@
 #include "j1Fonts.h"
 #include "j1Audio.h"
 
-GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
+GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::GoldMine)
 {
 	name.create("gold_mine");
 	position.x = posx - 64;
@@ -26,6 +26,7 @@ GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 	has_limit = true;
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
 	isSelected = false;
+	extraction_limit = amount;
 }
 
 GoldMine::~GoldMine() {}
@@ -35,7 +36,8 @@ bool GoldMine::Start()
 	mine_lights = LIGHTS_OFF;
 	has_limit = true;
 	to_delete = false;
-	extraction_limit = 20u;
+	if (extraction_limit >= 1999u)
+		extraction_limit = 0u;
 	pre_check = extraction_limit;
 	return true;
 }

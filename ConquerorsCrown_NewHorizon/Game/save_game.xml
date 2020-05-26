@@ -12,7 +12,7 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="6.01300001" />
+		<clock time_passed="17.2929993" />
 	</scene>
 	<entity_request />
 	<group_movement />
@@ -22,8 +22,12 @@
 			<position pos_x="3456" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3296" pos_y="1408" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="1" />
+			<position pos_x="3136" pos_y="2144" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="enemy_barracks" />
@@ -39,15 +43,15 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1169.95996" />
+			<position pos_x="3520" pos_y="1168.04016" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1142.98108" />
+			<position pos_x="3520" pos_y="1141.63025" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1196.87988" />
+			<position pos_x="3334.7522" pos_y="1337.81885" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />

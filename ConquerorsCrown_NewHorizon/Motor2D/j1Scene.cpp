@@ -622,7 +622,7 @@ void j1Scene::LoadTiledEntities() {
 						switch (tile_id) {
 						case 381:
 							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 1u);
 							break;
 						case 401:
 							active = true;
@@ -634,7 +634,7 @@ void j1Scene::LoadTiledEntities() {
 							break;
 						case 422:
 							if (current_scene == scenes::tutorial) {
-								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 20u);
 							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
