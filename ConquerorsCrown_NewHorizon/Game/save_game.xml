@@ -12,7 +12,7 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="6.01300001" />
+		<clock time_passed="29.0349998" />
 	</scene>
 	<entity_request />
 	<group_movement />
@@ -39,15 +39,15 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1169.95996" />
+			<position pos_x="3520" pos_y="1236.44006" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1142.98108" />
+			<position pos_x="3520" pos_y="1181.95007" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1196.87988" />
+			<position pos_x="3520" pos_y="1276.56006" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2691,7 +2691,11 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave />
+	<wave wave="1" time="29.0419998">
+		<spawn_1 Has_Building="true" />
+		<spawn_2 Has_Building="true" />
+		<spawn_3 Has_Building="true" />
+	</wave>
 	<FoWManager />
 	<minimap />
 	<gui />

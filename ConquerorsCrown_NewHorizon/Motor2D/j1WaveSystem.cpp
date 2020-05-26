@@ -39,7 +39,7 @@ bool j1WaveSystem::Awake(pugi::xml_node& config)
 	spawn1 = new SpawnPoint();
 	spawn2 = new SpawnPoint();
 	spawn3 = new SpawnPoint();
-
+	loaded_time = 0;
 	spawn1->position.x = config.child("spawnpoints").child("spawnpoint1").attribute("x").as_int();
 	spawn1->position.y = config.child("spawnpoints").child("spawnpoint1").attribute("y").as_int();
 	spawn2->position.x = config.child("spawnpoints").child("spawnpoint2").attribute("x").as_int();
@@ -91,10 +91,21 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
+
+
+
 	if(App->scene->current_scene == scenes::ingame)
 	{ 
-		if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
+		if (spawn1->building != nullptr && spawn1->building->life_points <= 0)
+			spawn1->building = nullptr;
+		if (spawn2->building != nullptr && spawn2->building->life_points <= 0)
+			spawn2->building = nullptr;
+		if (spawn3->building != nullptr && spawn3->building->life_points <= 0)
+			spawn3->building = nullptr;
+
+		if (wave_ended.ReadSec() + loaded_time > next_wave && wave_ongoing == false && current_wave < max_waves) 
 		{
+			loaded_time = 0;
 			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 			{
 				StartWave(current_wave);
@@ -220,15 +231,15 @@ bool j1WaveSystem::Update(float dt)
 			}
 		}
 
-		if (spawn1->bulding->life_points <= 0 && spawn2->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0)
+		if (spawn1->building == nullptr && spawn2->building == nullptr && spawn3->building == nullptr)
 		{
 			spawn_buildings = 0;
 		}
-		else if ((spawn1->bulding->life_points <= 0 && spawn2->bulding->life_points <= 0) || (spawn1->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0) || (spawn2->bulding->life_points <= 0 && spawn3->bulding->life_points <= 0))
+		else if ((spawn1->building == nullptr && spawn2->building == nullptr) || (spawn1->building == nullptr && spawn3->building == nullptr) || (spawn2->building == nullptr && spawn3->building == nullptr))
 		{
 			spawn_buildings = 1;
 		}
-		else if (spawn1->bulding->life_points || spawn2->bulding->life_points <= 0 || spawn3->bulding->life_points <= 0)
+		else if (spawn1->building == nullptr || spawn2->building == nullptr || spawn3->building == nullptr)
 		{
 			spawn_buildings = 2;
 		}
@@ -252,6 +263,59 @@ bool j1WaveSystem::CleanUp()
 bool j1WaveSystem::Load(pugi::xml_node& data)
 {
 	LOG("Loading Wave state");
+	current_wave = data.attribute("wave").as_int();
+	loaded_time = data.attribute("time").as_int();
+
+	int distance = 100000;
+	if (data.child("spawn_1").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn1->position.x - x), 2) + pow((spawn1->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn1->building = App->entity->ai_stat_ent[i];
+			}
+				
+		}
+	else
+		spawn1->building = nullptr;
+
+	distance = 100000;
+	if (data.child("spawn_2").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn2->position.x - x), 2) + pow((spawn2->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn2->building = App->entity->ai_stat_ent[i];
+			}
+
+		}
+	else
+		spawn2->building = nullptr;
+
+	distance = 100000;
+	if (data.child("spawn_3").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn3->position.x - x), 2) + pow((spawn3->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn3->building = App->entity->ai_stat_ent[i];
+			}
+
+		}
+	else
+		spawn3->building = nullptr;
 
 	return true;
 }
@@ -260,7 +324,28 @@ bool j1WaveSystem::Load(pugi::xml_node& data)
 bool j1WaveSystem::Save(pugi::xml_node& data) const
 {
 	LOG("Saving Wave state");
-	
+	data.append_attribute("wave") = current_wave;
+	data.append_attribute("time") = wave_ended.ReadSec();
+
+	pugi::xml_node spawner1 = data.append_child("spawn_1");
+	pugi::xml_node spawner2 = data.append_child("spawn_2");
+	pugi::xml_node spawner3 = data.append_child("spawn_3");
+
+	if(spawn1->building != nullptr)
+	spawner1.append_attribute("Has_Building") = true;
+	else
+	spawner1.append_attribute("Has_Building") = false;
+
+	if (spawn2->building != nullptr)
+		spawner2.append_attribute("Has_Building") = true;
+	else
+		spawner2.append_attribute("Has_Building") = false;
+
+	if (spawn3->building != nullptr)
+		spawner3.append_attribute("Has_Building") = true;
+	else
+		spawner3.append_attribute("Has_Building") = false;
+
 	return true;
 }
 
@@ -329,7 +414,7 @@ void j1WaveSystem::StartWave(int wave)
 	spawn_counter += spawns;
 
 	for (int i = 1; i <= spawns; i++) {
-		if (i % 3 == 1 && spawn1->bulding->life_points > 0)
+		if (i % 3 == 1 && spawn1->building != nullptr)
 		{
 			bool enemy_spawned = false;
 			do {
@@ -347,7 +432,7 @@ void j1WaveSystem::StartWave(int wave)
 				}
 			} while (enemy_spawned == false);
 		}
-		else if (i % 3 == 2 && spawn2->bulding->life_points > 0) {
+		else if (i % 3 == 2 && spawn2->building != nullptr) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
@@ -364,7 +449,7 @@ void j1WaveSystem::StartWave(int wave)
 				}
 			} while (enemy_spawned == false);
 		}																													
-		else if (i % 3 == 0 && spawn3->bulding->life_points > 0) {
+		else if (i % 3 == 0 && spawn3->building != nullptr) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
@@ -441,9 +526,9 @@ bool j1WaveSystem::SpawnGrunt(SpawnPoint* spawn)
 
 bool j1WaveSystem::CreateSpawnBuildings()
 {
-	spawn1->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn1->position.x, spawn1->position.y);
-	spawn2->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn2->position.x, spawn2->position.y);
-	spawn3->bulding = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn3->position.x, spawn3->position.y);
+	spawn1->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn1->position.x, spawn1->position.y);
+	spawn2->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn2->position.x, spawn2->position.y);
+	spawn3->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn3->position.x, spawn3->position.y);
 
 	spawn_buildings = 3;
 

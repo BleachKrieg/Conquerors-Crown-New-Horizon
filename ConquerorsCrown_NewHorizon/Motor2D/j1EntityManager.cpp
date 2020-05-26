@@ -217,7 +217,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::HumanUpgrade: ret = new Human_Upgrade(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::GoldMine: ret = new GoldMine(posx, posy); mines.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
-	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy); break;
+	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy);  ai_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -258,6 +258,11 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (static_type == "human_barracks")
 			{
 				static_ID = StaticEnt::StaticEntType::HumanBarracks;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "enemy_barracks")
+			{
+				static_ID = StaticEnt::StaticEntType::enemy_barrack;
 				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 			}
 			if (static_type == "gold_mine")
@@ -409,6 +414,8 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 				player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
 			break;
 		case j1Entity::TeamType::IA:
+				if (!ai_stat_ent.empty())
+					ai_stat_ent.erase(std::find(ai_stat_ent.begin(), ai_stat_ent.end() + 1, entity));
 			break;
 		}
 		break;

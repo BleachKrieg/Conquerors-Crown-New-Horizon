@@ -17,7 +17,7 @@ struct SpawnPoint
 	j1Entity*	target;
 	fPoint		targetpos;
 	vector<iPoint>	path;
-	j1Entity*	bulding;
+	j1Entity*	building;
 };
 
 class j1WaveSystem : public j1Module {
@@ -56,7 +56,8 @@ public:
 	bool SpawnTroll(SpawnPoint* spawn);
 	bool SpawnOgre(SpawnPoint* spawn);
 	bool SpawnGrunt(SpawnPoint* spawn);
-
+private:
+	int loaded_time;
 public:
 	int current_wave;
 	int next_wave;

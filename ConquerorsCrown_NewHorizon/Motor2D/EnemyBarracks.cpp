@@ -54,7 +54,7 @@ bool EnemyBarracks::Start()
 
 bool EnemyBarracks::Update(float dt)
 {
-	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_enemyBarrack", Profiler::Color::BlanchedAlmond);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
@@ -77,7 +77,7 @@ bool EnemyBarracks::Update(float dt)
 
 bool EnemyBarracks::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("PostupdateTest_1", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("Pos_enemyBarrack", Profiler::Color::BurlyWood)
 
 		return true;
 }
