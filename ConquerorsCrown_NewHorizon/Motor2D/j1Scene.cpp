@@ -593,7 +593,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	resources.append_attribute("wood") = wood;
 	resources.append_attribute("stone") = stone;
 	pugi::xml_node clock = data.append_child("clock");
-	clock.append_attribute("time_passed") = gameClock.ReadSec();
+	clock.append_attribute("time_passed") = gameClock.ReadSec() - time_loaded;
 
 	return true;
 }
