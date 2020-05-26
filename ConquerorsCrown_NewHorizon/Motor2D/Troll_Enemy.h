@@ -9,6 +9,7 @@
 #include "j1WaveSystem.h"
 
 struct SpawnPoint;
+class ParticleSystem;
 class TrollEnemy : public DynamicEnt
 {
 public:
@@ -28,10 +29,14 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
 	public:
 	SpawnPoint* spawn;
 	j1Timer idletime;
 	int time;
+private:
+	ParticleSystem* particleSystem = nullptr;
+
 };
 
 #endif // !__TROLL_ENEMY_H__
