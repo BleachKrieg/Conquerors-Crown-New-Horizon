@@ -90,6 +90,11 @@ bool j1Tutorial::Update(float dt)
 			App->map->blitColliders = !App->map->blitColliders;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			//App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
+		}
+
 		// Debug modes
 		if (App->scene->debug)
 		{
