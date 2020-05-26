@@ -28,6 +28,9 @@ HumanKnight::HumanKnight(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 	vision = 26;
 	body = 13;
 	coll_range = 13;
+	stats_upgrade_damage = 12;
+	stats_upgrade_life = 100;
+	tier_knight = 0;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -146,11 +149,21 @@ bool HumanKnight::Update(float dt)
 		App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 15), (int)(position.y)-10);
 		//App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 	
-	if (attack_damage > 12)
+	if (tier_knight != App->scene->upgrade_knight)
 	{
-		App->render->Blit(App->entity->knight_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+		tier_knight = App->scene->upgrade_knight;
+		life_points += stats_upgrade_life;
+		attack_damage += stats_upgrade_damage;
 	}
-	else { App->render->Blit(App->entity->knight_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
+
+	if (attack_damage == 36)
+	{
+		App->render->Blit(App->entity->knight_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else 
+	{ 
+		App->render->Blit(App->entity->knight_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); 
+	}
 
 	return true;
 }
