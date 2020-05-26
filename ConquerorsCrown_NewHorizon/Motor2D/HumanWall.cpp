@@ -32,7 +32,7 @@ Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 	time_FX_barracks = 1;
 	
 	// Load all animations
-	finishedconst.PushBack({ 711,570,32,32 }, 0.2, 0, 0, 0, 0);
+	finishedconst.PushBack({ 409,785,32,32 }, 0.2, 0, 0, 0, 0);
 	team = TeamType::PLAYER;
 	actualState = ST_WALL_PREVIEW;
 	life_points = 200;

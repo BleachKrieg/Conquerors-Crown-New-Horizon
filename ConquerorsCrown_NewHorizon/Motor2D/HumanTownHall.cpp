@@ -6,6 +6,7 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "HumanTownHall.h"
+#include "HumanBarn.h"
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
 #include "J1GroupMov.h"
@@ -78,7 +79,12 @@ bool HumanTownHall::Start()
 	Wall_stone_cost = nullptr;
 	Wall_Text_stone = nullptr;
 	visionEntity = nullptr;
-
+	Button_Create_Barn = nullptr;
+	Barn_Image = nullptr;
+	Barn_stone_cost = nullptr;
+	Barn_Text_stone = nullptr;
+	Barn_wood_cost = nullptr;
+	Barn_Text_Wood = nullptr;
 	deployed = false;
 	return true;
 }
@@ -593,35 +599,43 @@ void HumanTownHall::ImageSelected()
 
 void HumanTownHall::CreateTownHallUI()
 {
-	Button_Create_Lab = App->gui->CreateGuiElement(Types::button, 1195, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Lab = App->gui->CreateGuiElement(Types::button, 1195, 66, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Lab->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Lab_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 49, 46, 38 }, Button_Create_Lab, nullptr, NULL);
-	Lab_stone_cost = App->gui->CreateGuiElement(Types::image, 1185, 140, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Lab_Text_stone = App->gui->CreateGuiElement(Types::text, 1215, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "900", App->font->smallfont);
-	Lab_wood_cost = App->gui->CreateGuiElement(Types::image, 1185, 165, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Lab_Text_Wood = App->gui->CreateGuiElement(Types::text, 1215, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "900", App->font->smallfont);
+	Lab_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 904, 49, 46, 38 }, Button_Create_Lab, nullptr, NULL);
+	Lab_stone_cost = App->gui->CreateGuiElement(Types::image, 1185, 120, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Lab_Text_stone = App->gui->CreateGuiElement(Types::text, 1215, 120, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "900", App->font->smallfont);
+	Lab_wood_cost = App->gui->CreateGuiElement(Types::image, 1185, 145, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Lab_Text_Wood = App->gui->CreateGuiElement(Types::text, 1215, 145, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "900", App->font->smallfont);
 
-	Button_Create_Barrack = App->gui->CreateGuiElement(Types::button, 1095, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Barrack = App->gui->CreateGuiElement(Types::button, 1095, 66, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Barrack->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	BarrackImage = App->gui->CreateGuiElement(Types::image, 6, 6, { 1045, 49, 46, 38 }, Button_Create_Barrack, nullptr, NULL);
-	Barrack_wood_cost = App->gui->CreateGuiElement(Types::image, 1085, 165, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1115, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
-	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1085, 140, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1115, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
+	Barrack_wood_cost = App->gui->CreateGuiElement(Types::image, 1085, 145, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1115, 145, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1085, 120, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1115, 120, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
 
-	Button_Create_Wall = App->gui->CreateGuiElement(Types::button, 1000, 200, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Wall = App->gui->CreateGuiElement(Types::button, 1010, 185, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Wall->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Wall_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Wall, nullptr, NULL);
-	Wall_stone_cost = App->gui->CreateGuiElement(Types::image, 1070, 215, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Wall_Text_stone = App->gui->CreateGuiElement(Types::text, 1100, 215, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Wall_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 951, 49, 46, 38 }, Button_Create_Wall, nullptr, NULL);
+	Wall_stone_cost = App->gui->CreateGuiElement(Types::image, 1005, 239, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Wall_Text_stone = App->gui->CreateGuiElement(Types::text, 1035, 239, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 
-	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Gatherer = App->gui->CreateGuiElement(Types::button, 1000, 66, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Gatherer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 	Gatherer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1140, 49, 46, 38 }, Button_Create_Gatherer, nullptr, NULL);
-	Gatherer_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Gatherer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
-	Gatherer_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Gatherer_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Gatherer_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 120, { 690, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Gatherer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 120, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+	Gatherer_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 145, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Gatherer_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 145, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
+
+	Button_Create_Barn = App->gui->CreateGuiElement(Types::button, 1095, 185, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+	Button_Create_Barn->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+	Barn_Image = App->gui->CreateGuiElement(Types::image, 6, 6, { 857, 49, 46, 38 }, Button_Create_Barn, nullptr, NULL);
+	Barn_stone_cost = App->gui->CreateGuiElement(Types::image, 1160, 185, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barn_Text_stone = App->gui->CreateGuiElement(Types::text, 1190, 185, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
+	Barn_wood_cost = App->gui->CreateGuiElement(Types::image, 1160, 210, { 832, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
+	Barn_Text_Wood = App->gui->CreateGuiElement(Types::text, 1190, 210, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "400", App->font->smallfont);
 }
 
 void HumanTownHall::DeleteTownHallUI()
@@ -683,6 +697,23 @@ void HumanTownHall::DeleteTownHallUI()
 		Wall_stone_cost = nullptr;
 		Wall_Text_stone = nullptr;
 	}
+	
+	if (Button_Create_Barn != nullptr) 
+	{
+		Button_Create_Barn->to_delete = true;
+		Barn_Image->to_delete = true;
+		Barn_stone_cost->to_delete = true;
+		Barn_Text_stone->to_delete = true;
+		Barn_wood_cost->to_delete = true;
+		Barn_Text_Wood->to_delete = true;
+
+		Button_Create_Barn = nullptr;
+		Barn_Image = nullptr;
+		Barn_stone_cost = nullptr;
+		Barn_Text_stone = nullptr;
+		Barn_wood_cost = nullptr;
+		Barn_Text_Wood = nullptr;
+	}
 }
 
 
@@ -727,6 +758,15 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			App->scene->Building_preview = true;
 		}
 	}
+
+	if (guiElement == Button_Create_Barn) {
+		if (App->scene->wood >= 400 && App->scene->stone >= 200 && App->scene->Building_preview == false || App->scene->debug == true && App->scene->Building_preview == false)
+		{
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Barn, App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->Building_preview = true;
+		}
+	}
+
 }
 
 iPoint HumanTownHall::Searchtile(iPoint map) 

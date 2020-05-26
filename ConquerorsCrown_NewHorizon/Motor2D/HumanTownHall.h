@@ -114,6 +114,14 @@ public:
 	GuiItem* Wall_stone_cost;
 	GuiItem* Wall_Text_stone;
 
+	//UI Barn
+	GuiItem* Button_Create_Barn;
+	GuiItem* Barn_Image;
+	GuiItem* Barn_stone_cost;
+	GuiItem* Barn_Text_stone;
+	GuiItem* Barn_wood_cost;
+	GuiItem* Barn_Text_Wood;
+
 	//UI Progress Bar
 	GuiItem* creation_TownHall_bar;
 

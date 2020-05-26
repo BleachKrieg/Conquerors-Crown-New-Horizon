@@ -85,6 +85,7 @@
     <ClCompile Include="GoldMine.cpp" />
     <ClCompile Include="Grunt_Enemy.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
+    <ClCompile Include="HumanBarn.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
     <ClCompile Include="HumanKnight.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="GoldMine.h" />
     <ClInclude Include="Grunt_Enemy.h" />
     <ClInclude Include="HumanArcher.h" />
+    <ClInclude Include="HumanBarn.h" />
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />
     <ClInclude Include="HumanKnight.h" />
