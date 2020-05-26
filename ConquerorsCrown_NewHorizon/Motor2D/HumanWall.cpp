@@ -17,7 +17,7 @@
 
 Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 {
-	name.create("test_1");
+	name.create("wall");
 	position.x = posx;
 	position.y = posy;
 	vision = 20;

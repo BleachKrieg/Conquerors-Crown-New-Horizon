@@ -577,6 +577,10 @@ bool j1Scene::Load(pugi::xml_node& data)
 	AddResource("wood", data.child("resources").attribute("wood").as_int());
 	AddResource("stone", data.child("resources").attribute("stone").as_int());
 	time_loaded = data.child("clock").attribute("time_passed").as_int();
+	upgrade_swordman = data.child("upgrades").attribute("swordman").as_int();
+	upgrade_archer = data.child("upgrades").attribute("archer").as_int();
+	upgrade_knight = data.child("upgrades").attribute("knight").as_int();
+
 	return true;
 }
 
@@ -594,6 +598,10 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	resources.append_attribute("stone") = stone;
 	pugi::xml_node clock = data.append_child("clock");
 	clock.append_attribute("time_passed") = gameClock.ReadSec();
+	pugi::xml_node upgrades = data.append_child("upgrades");
+	upgrades.append_attribute("swordman") = upgrade_swordman;
+	upgrades.append_attribute("archer") = upgrade_archer;
+	upgrades.append_attribute("knight") = upgrade_knight;
 
 	return true;
 }
@@ -1059,6 +1067,9 @@ bool j1Scene::CreateInGame()
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
 	time_loaded = 0;
+	upgrade_swordman = 0;
+	upgrade_archer = 0;
+	upgrade_knight = 0;
 
 	if (!wants_to_load)
 	{

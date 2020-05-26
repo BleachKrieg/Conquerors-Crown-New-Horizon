@@ -11,8 +11,9 @@
 	<tutorial />
 	<scene>
 		<scenename name="First level design.tmx" />
-		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="6.01300001" />
+		<resources gold="1600" wood="600" stone="500" />
+		<clock time_passed="45.4580002" />
+		<upgrades swordman="0" archer="0" knight="0" />
 	</scene>
 	<entity_request />
 	<group_movement />
@@ -39,15 +40,47 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1169.95996" />
+			<position pos_x="3520" pos_y="1168.63989" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1142.98108" />
+			<position pos_x="3520" pos_y="1141.66003" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1196.87988" />
+			<position pos_x="3520" pos_y="1195.2002" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barn" />
+			<position pos_x="3282" pos_y="1170" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="3346" pos_y="1330" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="3378" pos_y="1330" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="3314" pos_y="1330" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="3282" pos_y="1330" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="3250" pos_y="1330" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3602" pos_y="1170" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_upgrade" />
+			<position pos_x="3602" pos_y="1298" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />

@@ -18,7 +18,7 @@
 
 HumanBarn::HumanBarn(int posx, int posy) : StaticEnt(StaticEntType::Barn)
 {
-	name.create("human_barracks");
+	name.create("human_barn");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;

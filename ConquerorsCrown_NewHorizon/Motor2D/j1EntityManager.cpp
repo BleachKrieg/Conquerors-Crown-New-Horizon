@@ -284,6 +284,21 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 				static_ID = StaticEnt::StaticEntType::Resource;
 				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int(), 2);
 			}
+			if (static_type == "human_barn")
+			{
+				static_ID = StaticEnt::StaticEntType::Barn;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "wall")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanWall;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "human_upgrade")
+			{
+				static_ID = StaticEnt::StaticEntType::HumanUpgrade;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
 		}
 		if (type == "dynamic")
 		{

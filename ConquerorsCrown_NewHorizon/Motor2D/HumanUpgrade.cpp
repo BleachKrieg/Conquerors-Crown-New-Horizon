@@ -19,7 +19,7 @@
 
 Human_Upgrade::Human_Upgrade(int posx, int posy) : StaticEnt(StaticEntType::HumanUpgrade)
 {
-	name.create("test_1");
+	name.create("human_upgrade");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
@@ -412,7 +412,7 @@ void Human_Upgrade::checkAnimation(float dt)
 			if (upgrade_timer2.ReadSec() >= first_upgrade_time)
 			{
 				App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
-				App->scene->Upgrade_Sowrdman = true;
+				App->scene->upgrade_swordman++;
 				Upgrading_swordman = false;
 				if (creation_Upgrade_bar != nullptr)
 				{
@@ -440,7 +440,7 @@ void Human_Upgrade::checkAnimation(float dt)
 			if (upgrade_timer2.ReadSec() >= first_upgrade_time)
 			{
 				App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
-				App->scene->Upgrade_Archer = true;
+				App->scene->upgrade_archer++;
 				Upgrading_Archer = false;
 				if (creation_Upgrade_bar_archer != nullptr)
 				{

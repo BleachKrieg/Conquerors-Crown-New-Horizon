@@ -111,7 +111,7 @@ private:
 	iPoint speed;
 	bool wants_to_load = false;
 	int time_loaded;
-
+	
 public:
 	p2SString current_level;
 	scenes current_scene;
@@ -240,6 +240,10 @@ public:
 
 	// Wall
 	bool wall_create;
+
+	int upgrade_swordman;
+	int upgrade_archer;
+	int upgrade_knight;
 };
 
 #endif // __j1SCENE_H__
