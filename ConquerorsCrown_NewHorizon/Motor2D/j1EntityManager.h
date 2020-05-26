@@ -73,7 +73,7 @@ public:
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
-	vector<j1Entity*> mines;
+	vector<GoldMine*> mines;
 
 	// Task times --------------------
 	uint trees_time;

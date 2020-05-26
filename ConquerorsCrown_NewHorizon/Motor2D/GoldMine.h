@@ -36,10 +36,18 @@ public:
 
 	uint GetExtractionLimit();
 
+	uint GetPreCheck();
+
+	void DecreasePreCheck();
+
+	void DecreaseExtractionCount();
+
 private:
 	Animation no_light_mine;
 	Animation light_mine;
+	Animation out_of_material_mine;
 	uint extraction_limit;
+	uint pre_check;
 };
 
 #endif // !__GOLDMINE_H__
