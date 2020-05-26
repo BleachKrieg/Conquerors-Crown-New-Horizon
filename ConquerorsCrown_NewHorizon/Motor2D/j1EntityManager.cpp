@@ -66,6 +66,7 @@ bool j1EntityManager::Start()
 	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
+	enemy_building = App->tex->Load("Assets/textures/buildings/Orc Buildings/orc_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
 	//arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
 	arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
