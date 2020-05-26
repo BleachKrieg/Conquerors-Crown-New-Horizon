@@ -194,10 +194,10 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 {
 	LOG("load entities here");
 	pugi::xml_node entity;
-
 	//Then we iterate the xml, to find every entity that's been saved
 	for (entity = data.child("Entity"); entity; entity = entity.next_sibling("Entity"))
 	{
+		int resource_id = 0;
 		StaticEnt::StaticEntType static_ID;
 		DynamicEnt::DynamicEntityType dynamic_ID;
 
@@ -219,11 +219,17 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (static_type == "gold_mine")
 			{
 				static_ID = StaticEnt::StaticEntType::GoldMine;
-				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64);
 			}
-			if (static_type == "resource")
+			if (static_type == "tree")
 			{
 				static_ID = StaticEnt::StaticEntType::Resource;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int(), 1);
+			}
+			if (static_type == "quarry")
+			{
+				static_ID = StaticEnt::StaticEntType::Resource;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int(), 2);
 			}
 		}
 		if (type == "dynamic")

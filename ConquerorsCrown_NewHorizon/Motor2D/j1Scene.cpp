@@ -379,7 +379,7 @@ bool j1Scene::Update(float dt)
 		}
 		else {
 			//gameClock Update
-			timer = 660 - gameClock.ReadSec();
+			timer = 660 - gameClock.ReadSec() - time_loaded;
 			if (Cooldown.ReadSec() > 1)
 			{
 				TimeToClock();
@@ -568,6 +568,13 @@ bool j1Scene::CleanUp()
 bool j1Scene::Load(pugi::xml_node& data)
 {
 	LOG("Loading Scene state");
+	gold = 0;
+	wood = 0;
+	stone = 0;
+	AddResource("gold", data.child("resources").attribute("gold").as_int());
+	AddResource("wood", data.child("resources").attribute("wood").as_int());
+	AddResource("stone", data.child("resources").attribute("stone").as_int());
+	time_loaded = data.child("clock").attribute("time_passed").as_int();
 	return true;
 }
 
@@ -577,8 +584,14 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	LOG("Saving Scene state");
 	
 
-	pugi::xml_node scene = data.append_child("scenename");
-	scene.append_attribute("name") = current_level.GetString();
+	pugi::xml_node scenename = data.append_child("scenename");
+	scenename.append_attribute("name") = current_level.GetString();
+	pugi::xml_node resources = data.append_child("resources");
+	resources.append_attribute("gold") = gold;
+	resources.append_attribute("wood") = wood;
+	resources.append_attribute("stone") = stone;
+	pugi::xml_node clock = data.append_child("clock");
+	clock.append_attribute("time_passed") = gameClock.ReadSec();
 
 	return true;
 }
@@ -1043,6 +1056,7 @@ bool j1Scene::CreateInGame()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
+	time_loaded = 0;
 
 	if (!wants_to_load)
 	{

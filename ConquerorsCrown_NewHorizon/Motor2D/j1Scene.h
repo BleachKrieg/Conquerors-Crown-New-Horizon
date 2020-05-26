@@ -110,6 +110,7 @@ private:
 	int alpha;
 	iPoint speed;
 	bool wants_to_load = false;
+	int time_loaded;
 
 public:
 	p2SString current_level;
