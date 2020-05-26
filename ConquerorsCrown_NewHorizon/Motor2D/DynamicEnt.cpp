@@ -75,7 +75,7 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 	{
 		target_entity = App->movement->ai_selected;
 	}
-	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);

@@ -54,7 +54,6 @@ bool j1Input::PreUpdate(float dt)
 {
 	ScrollUp = false;
 	ScrollDown = false;
-	screen_click = false;
 	static SDL_Event event;
 	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);

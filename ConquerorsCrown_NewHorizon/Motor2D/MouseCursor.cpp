@@ -37,6 +37,11 @@ bool MouseCursor::Update(float dt) {
 
 	r = normal_cursor;
 
+	if (App->input->screen_click)
+	{
+
+	}
+
 	App->render->Blit(cursor_tex, pos.x, pos.y, &r );
 
 	return true;
