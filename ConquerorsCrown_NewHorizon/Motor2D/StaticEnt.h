@@ -22,6 +22,7 @@ public:
 		HumanUpgrade,
 		HumanWall,
 		Resource,
+		Barn,
 		GoldMine,
 		enemy_barrack
 	};

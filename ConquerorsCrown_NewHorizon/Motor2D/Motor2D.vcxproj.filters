@@ -139,6 +139,9 @@
     <ClCompile Include="HumanKnight.cpp">
       <Filter>Entities\Dynamic</Filter>
     </ClCompile>
+    <ClCompile Include="HumanBarn.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicEnt.h">
@@ -302,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="HumanKnight.h">
       <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanBarn.h">
+      <Filter>Entities\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
