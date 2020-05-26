@@ -12,7 +12,7 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="12.5860004" />
+		<clock time_passed="16.8360004" />
 	</scene>
 	<entity_request />
 	<group_movement />
@@ -34,44 +34,24 @@
 			<position pos_x="850" pos_y="2800" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1236" />
+			<type movement="static" name="enemy_barracks" />
+			<position pos_x="2200" pos_y="3800" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1181" />
+			<position pos_x="3520" pos_y="1170.02002" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1276" />
+			<position pos_x="3520" pos_y="1143.49011" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2115" pos_y="3843" />
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3520" pos_y="1197.05981" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2134" pos_y="3863" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2147" pos_y="3886" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2174" pos_y="3887" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2201" pos_y="3891" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2228" pos_y="3891" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_archer" />
-			<position pos_x="2243" pos_y="3913" />
+			<type movement="dynamic" name="enemy_troll" />
+			<position pos_x="3034.88403" pos_y="1503.62085" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2715,10 +2695,10 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave wave="1" time="12.592">
+	<wave wave="1" time="16.8390007">
 		<spawn_1 Has_Building="true" />
 		<spawn_2 Has_Building="true" />
-		<spawn_3 Has_Building="false" />
+		<spawn_3 Has_Building="true" />
 	</wave>
 	<FoWManager />
 	<minimap />
