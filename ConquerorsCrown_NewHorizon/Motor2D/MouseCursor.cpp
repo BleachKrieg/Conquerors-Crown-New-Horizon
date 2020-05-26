@@ -37,12 +37,21 @@ bool MouseCursor::Update(float dt) {
 
 	r = normal_cursor;
 
-	if (App->input->screen_click)
+	if (App->input->mouse_on_screen)
 	{
-
+		if (on_resources)
+			r = resource_cursor;
+		else if (is_blocked)
+			r = prohibited_cursor;
+		else if (to_attack)
+			r = attack_cursor;
 	}
 
 	App->render->Blit(cursor_tex, pos.x, pos.y, &r );
+
+	on_resources = false;
+	is_blocked = false;
+	to_attack = false;
 
 	return true;
 }

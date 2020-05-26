@@ -307,7 +307,7 @@ bool j1Scene::Update(float dt)
 			pauseMenu = !pauseMenu;
 		}
 
-		if (pauseMenu) App->input->screen_click = false;
+		if (pauseMenu) App->input->mouse_on_screen = false;
 
 		if (Upgrade_Sowrdman == true)
 		{
