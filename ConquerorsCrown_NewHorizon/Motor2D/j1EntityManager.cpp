@@ -54,6 +54,7 @@ bool j1EntityManager::Start()
 	arch_man_tex3 = App->tex->Load("Assets/textures/units/Human Sprites/human_archer_3.png");
 	gather_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_gatherer.png");
 	knight_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_knight.png");
+	knight_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_knight_2.png");
 	troll_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_troll.png");
 	ally_sel_tex = App->tex->Load("Assets/textures/units/selection_ally.png");
 	enemy_sel_tex = App->tex->Load("Assets/textures/units/selection_enemy.png");
