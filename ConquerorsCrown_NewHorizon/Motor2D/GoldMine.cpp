@@ -33,12 +33,13 @@ bool GoldMine::Start()
 {
 	mine_lights = LIGHTS_OFF;
 	has_limit = true;
+	to_delete = false;
 	extraction_limit = 20;
-	iPoint pos = { (int)position.x, (int)position.y };
-	pos = App->map->WorldToMap(pos.x, pos.y);
-	iPoint tempPos = pos;
+	//iPoint pos = { (int)position.x, (int)position.y };
+	//pos = App->map->WorldToMap(pos.x, pos.y);
+	//iPoint tempPos = pos;
 
-	for (int i = 0; i < 3; i++)
+	/*for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
 		{
@@ -46,7 +47,7 @@ bool GoldMine::Start()
 			tempPos.y = pos.y + j;
 			App->pathfinding->ChangeWalkability(tempPos, 1);
 		}
-	}
+	}*/
 
 	return true;
 }
@@ -64,6 +65,7 @@ bool GoldMine::Update(float dt)
 	}
 	r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
+	if (App->input->GetKey(SDL_SCANCODE_K))LOG("Gold Mine");
 
 	return true;
 }

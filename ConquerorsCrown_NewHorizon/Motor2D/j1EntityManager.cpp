@@ -82,6 +82,11 @@ bool j1EntityManager::CleanUp()
 		entities[i]->CleanUp();
 		RELEASE(entities[i]);
 	}
+	for (int i = 0; i < resources_ent.size(); ++i)
+	{
+		resources_ent[i]->CleanUp();
+		RELEASE(resources_ent[i]);
+	}
 
 	entities.clear();
 
