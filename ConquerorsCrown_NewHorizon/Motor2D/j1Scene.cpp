@@ -307,6 +307,8 @@ bool j1Scene::Update(float dt)
 			pauseMenu = !pauseMenu;
 		}
 
+		if (pauseMenu) App->input->screen_click = false;
+
 		if (Upgrade_Sowrdman == true)
 		{
 			stats_upgrade_swordman = 2.f;
