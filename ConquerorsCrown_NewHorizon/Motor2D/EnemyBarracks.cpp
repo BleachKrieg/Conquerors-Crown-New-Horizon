@@ -37,7 +37,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	//pos5 = { 890, 230 };
 	// Load all animations
 	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
-	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
+	finishedconst2.PushBack({129,0,125,124}, 0.2, 0, 0, 0, 0);
 
 	team = TeamType::IA;
 	life_points = 100;
@@ -69,7 +69,7 @@ bool EnemyBarracks::Update(float dt)
 
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x - 45, (int)position.y - 45, r, 1.0f, 1.0f);
+	App->render->Blit(App->entity->enemy_building, (int)position.x - 65, (int)position.y - 65, r, 1.0f, 1.0f);
 
 
 	return true;

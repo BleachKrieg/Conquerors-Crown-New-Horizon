@@ -277,9 +277,9 @@ void j1WaveSystem::StartWave(int wave)
 	if (wave_ongoing == false) {
 		if (wave == 1) {
 			trolls = 12; ogres = 0; grunts = 0;
-			if (spawn_buildings == 3) { trolls = 12; ogres = 0; grunts = 0; }
-			else if (spawn_buildings == 2) { trolls = 10; ogres = 0; grunts = 0; }
-			else if (spawn_buildings == 1) { trolls = 8; ogres = 0; grunts = 0; }
+			if (spawn_buildings == 3) { trolls = 0; ogres = 12; grunts = 0; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 10; grunts = 0; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 8; grunts = 0; }
 			else { trolls = 0; ogres = 0; grunts = 0; }
 		}
 		else if (wave == 5) { 
