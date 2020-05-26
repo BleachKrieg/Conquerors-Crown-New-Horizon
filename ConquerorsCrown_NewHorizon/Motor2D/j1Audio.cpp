@@ -69,8 +69,10 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	go_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Move_2.wav");
 	go_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Move_3.wav");
 	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Move.wav");
+	go_knight = App->audio->LoadFx("Assets/Audio/SFX/Humans/knight/Knight_Move_1.wav");
 	footman_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	archer_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Arrow_Throwing.wav");
+	knight_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav");
 	troll_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Axe_Throwing.wav");
 	grunt_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav"); 
 	ogre_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Heavy_Chop_Metal_3.wav");
@@ -78,6 +80,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
+	die_knight = App->audio->LoadFx("Assets/Audio/SFX/Humans/knight/Knight_Death.wav");
 	die_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
 	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
 	die_grunt = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Grunt/Grunt_Death.wav");

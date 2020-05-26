@@ -45,6 +45,13 @@ bool j1Entity::Save(pugi::xml_node& data) const {
 	case  entityType::STATIC:
 		data.child("type").append_attribute("movement") = "static";
 		data.child("type").append_attribute("name") = name.GetString();
+		if (name == "gold_mine")
+		{
+			for (int i = 0; i < App->entity->mines.size(); ++i) {
+				if (App->entity->mines[i] == this)
+					data.child("type").append_attribute("amount_left") = App->entity->mines[i]->GetExtractionLimit();
+			}
+		}
 		break;
 	case  entityType::DYNAMIC:
 		data.child("type").append_attribute("movement") = "dynamic";

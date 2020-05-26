@@ -45,7 +45,7 @@ public:
 	// Create a new entity
 	j1Entity* CreateEntity(DynamicEnt::DynamicEntityType type, int posx = 0, int posy = 0);
 
-	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0);
+	j1Entity* CreateStaticEntity(StaticEnt::StaticEntType type, int posx = 0, int posy = 0, uint resource_type = 0, uint amount = 2000u);
 
 	bool Load(pugi::xml_node&);
 
@@ -73,7 +73,7 @@ public:
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
 	vector<j1Entity*> resources_ent;
-	vector<j1Entity*> mines;
+	vector<GoldMine*> mines;
 
 	// Task times --------------------
 	uint trees_time;
