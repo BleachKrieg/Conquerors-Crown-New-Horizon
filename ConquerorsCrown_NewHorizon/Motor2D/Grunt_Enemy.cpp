@@ -43,7 +43,7 @@ GruntEnemy::GruntEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	target_entity = nullptr;
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::ENEMY_GRUNT;
-
+	speed_modifier = 0.7;
 
 	// TODO ------------------------------------------
 }
@@ -103,9 +103,7 @@ bool GruntEnemy::Update(float dt)
 
 	Movement(dt);
 
-	origin = App->map->WorldToMap(position.x, position.y);
-
-	if (target_entity == nullptr)
+	if (target_entity == nullptr && App->scene->current_scene != scenes::tutorial)
 	{
 		if (spawn != nullptr)
 		{
@@ -118,9 +116,36 @@ bool GruntEnemy::Update(float dt)
 				change_direction = true;
 			}
 		}
+		else
+		{
+			spawn = App->wave->spawn1;
+			int x = App->wave->spawn1->position.x;
+			int y = App->wave->spawn1->position.y;
+			int distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			x = App->wave->spawn2->position.x;
+			y = App->wave->spawn2->position.y;
+			int distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn2;
+			}
+			x = App->wave->spawn3->position.x;
+			y = App->wave->spawn3->position.y;
+			distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn3;
+			}
+
+
+
+		}
 
 	}
 	time = idletime.ReadSec();
+
 	if (life_points <= 0)
 		state = DynamicState::DYING;
 

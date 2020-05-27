@@ -1,103 +1,363 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="DynamicEnt.cpp" />
-    <ClCompile Include="EntityRequest.cpp" />
-    <ClCompile Include="FoWEntity.cpp" />
-    <ClCompile Include="FoWManager.cpp" />
-    <ClCompile Include="GoldMine.cpp" />
-    <ClCompile Include="Grunt_Enemy.cpp" />
-    <ClCompile Include="HumanArcher.cpp" />
-    <ClCompile Include="HumanFootman.cpp" />
-    <ClCompile Include="HumanGatherer.cpp" />
-    <ClCompile Include="HumanTownHall.cpp" />
-    <ClCompile Include="HumanUpgrade.cpp" />
-    <ClCompile Include="j1CutsceneManager.cpp" />
-    <ClCompile Include="j1Entity.cpp" />
-    <ClCompile Include="j1EntityManager.cpp" />
-    <ClCompile Include="j1FadeToBlack.cpp" />
-    <ClCompile Include="j1Fonts.cpp" />
-    <ClCompile Include="j1GroupMov.cpp" />
-    <ClCompile Include="j1Gui.cpp" />
-    <ClCompile Include="j1Main.cpp" />
-    <ClCompile Include="j1App.cpp" />
-    <ClCompile Include="j1Audio.cpp" />
-    <ClCompile Include="j1Input.cpp" />
-    <ClCompile Include="j1Map.cpp" />
-    <ClCompile Include="j1Minimap.cpp" />
-    <ClCompile Include="j1Pathfinding.cpp" />
-    <ClCompile Include="j1PerfTimer.cpp" />
-    <ClCompile Include="j1Scene.cpp" />
-    <ClCompile Include="j1Timer.cpp" />
-    <ClCompile Include="j1Tutorial.cpp" />
-    <ClCompile Include="j1Video.cpp" />
-    <ClCompile Include="j1WaveSystem.cpp" />
-    <ClCompile Include="Ogre_Enemy.cpp" />
-    <ClCompile Include="p2Log.cpp" />
-    <ClCompile Include="j1Render.cpp" />
-    <ClCompile Include="j1Textures.cpp" />
-    <ClCompile Include="j1Window.cpp" />
-    <ClCompile Include="PathFinder.cpp" />
-    <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="ResourceEntities.cpp" />
-    <ClCompile Include="StaticEnt.cpp" />
-    <ClCompile Include="HumanBarracks.cpp" />
-    <ClCompile Include="theoraplay.cpp" />
-    <ClCompile Include="Troll_Enemy.cpp" />
-    <ClCompile Include="HumanWall.cpp" />
+    <ClCompile Include="DynamicEnt.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBarracks.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityRequest.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Grunt_Enemy.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanArcher.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldMine.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanBarracks.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanTownHall.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanUpgrade.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanWall.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanFootman.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanGatherer.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Ogre_Enemy.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="Troll_Enemy.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticEnt.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceEntities.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="j1GroupMov.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Minimap.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FoWEntity.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FoWManager.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Audio.cpp">
+      <Filter>Audio &amp; image</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
+      <Filter>Audio &amp; image</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Render.cpp">
+      <Filter>Audio &amp; image</Filter>
+    </ClCompile>
+    <ClCompile Include="j1FadeToBlack.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Video.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1WaveSystem.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1CutsceneManager.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>p2Defs</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1App.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Window.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>External libs</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.cpp">
+      <Filter>External libs</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Tutorial.cpp">
+      <Filter>Maps and scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanKnight.cpp">
+      <Filter>Entities\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="HumanBarn.cpp">
+      <Filter>Entities\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Emiter.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="EntityRequest.h" />
-    <ClInclude Include="FoWBitDefs.h" />
-    <ClInclude Include="FoWEntity.h" />
-    <ClInclude Include="FoWManager.h" />
-    <ClInclude Include="GoldMine.h" />
-    <ClInclude Include="Grunt_Enemy.h" />
-    <ClInclude Include="HumanArcher.h" />
-    <ClInclude Include="HumanFootman.h" />
-    <ClInclude Include="HumanGatherer.h" />
-    <ClInclude Include="HumanTownHall.h" />
-    <ClInclude Include="HumanUpgrade.h" />
-    <ClInclude Include="j1CutsceneManager.h" />
-    <ClInclude Include="j1Entity.h" />
-    <ClInclude Include="j1EntityManager.h" />
-    <ClInclude Include="j1FadeToBlack.h" />
-    <ClInclude Include="j1Fonts.h" />
-    <ClInclude Include="J1GroupMov.h" />
-    <ClInclude Include="j1Gui.h" />
-    <ClInclude Include="j1Map.h" />
-    <ClInclude Include="j1Minimap.h" />
-    <ClInclude Include="j1Pathfinding.h" />
-    <ClInclude Include="j1PerfTimer.h" />
-    <ClInclude Include="j1Scene.h" />
-    <ClInclude Include="j1Timer.h" />
-    <ClInclude Include="j1Tutorial.h" />
-    <ClInclude Include="j1Url.h" />
-    <ClInclude Include="j1Video.h" />
-    <ClInclude Include="j1WaveSystem.h" />
-    <ClInclude Include="j1Audio.h" />
-    <ClInclude Include="j1Input.h" />
-    <ClInclude Include="Ogre_Enemy.h" />
-    <ClInclude Include="p2Log.h" />
-    <ClInclude Include="j1App.h" />
-    <ClInclude Include="p2Defs.h" />
-    <ClInclude Include="j1Module.h" />
-    <ClInclude Include="p2Point.h" />
-    <ClInclude Include="j1Render.h" />
-    <ClInclude Include="j1Textures.h" />
-    <ClInclude Include="j1Window.h" />
-    <ClInclude Include="p2SString.h" />
-    <ClInclude Include="PathFinder.h" />
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
-    <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="DynamicEnt.h" />
-    <ClInclude Include="ResourceEntities.h" />
-    <ClInclude Include="StaticEnt.h" />
-    <ClInclude Include="HumanBarracks.h" />
-    <ClInclude Include="theoraplay.h" />
-    <ClInclude Include="theoraplay_cvtrgb.h" />
-    <ClInclude Include="Troll_Enemy.h" />
-    <ClInclude Include="HumanWall.h" />
+    <ClInclude Include="DynamicEnt.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBarracks.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityRequest.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Grunt_Enemy.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanArcher.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldMine.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanBarracks.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanWall.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanTownHall.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanUpgrade.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanFootman.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanGatherer.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Ogre_Enemy.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Troll_Enemy.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticEnt.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceEntities.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="J1GroupMov.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Minimap.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWManager.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWEntity.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FoWBitDefs.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Audio.h">
+      <Filter>Audio &amp; image</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
+      <Filter>Audio &amp; image</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Render.h">
+      <Filter>Audio &amp; image</Filter>
+    </ClInclude>
+    <ClInclude Include="j1FadeToBlack.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Video.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1WaveSystem.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1CutsceneManager.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="p2SString.h">
+      <Filter>p2Defs</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Defs.h">
+      <Filter>p2Defs</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>p2Defs</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>p2Defs</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1App.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Window.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Url.h">
+      <Filter>External libs</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>External libs</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>External libs</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>External libs</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay_cvtrgb.h">
+      <Filter>External libs</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Tutorial.h">
+      <Filter>Maps and scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanKnight.h">
+      <Filter>Entities\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="HumanBarn.h">
+      <Filter>Entities\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Emiter.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Particles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{b7929c67-6c70-4e33-839e-01c439701618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Static">
+      <UniqueIdentifier>{fa37c9ac-15db-4212-a660-e0ee405533ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Dynamic">
+      <UniqueIdentifier>{467c71f5-8c15-4193-af23-08ecac68581b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Maps and scenes">
+      <UniqueIdentifier>{f1b2a19a-13c6-49a7-a58f-80dc38c2c1f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio &amp; image">
+      <UniqueIdentifier>{58ed5343-28ab-4795-8bbf-835dc4481300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{c8bed19e-b9ef-497e-9610-efd953fbbaa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="p2Defs">
+      <UniqueIdentifier>{1212e7d8-20c3-4e1d-863b-ed09b6b9c5c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{b9895dba-6249-49d7-b2ec-66ad6d9290f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External libs">
+      <UniqueIdentifier>{b6004e19-5903-48a6-9fc5-d3e7c91863d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particles">
+      <UniqueIdentifier>{7b7d141b-bc1b-4c35-a450-6ebdb829ed01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

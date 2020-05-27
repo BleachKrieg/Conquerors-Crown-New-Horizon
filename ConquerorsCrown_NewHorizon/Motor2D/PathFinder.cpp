@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Pathfinding.h"
 #include "j1Entity.h"
+#include "j1Scene.h"
 
 
 PathFinder::PathFinder() : initSuccessful(false), pathCompleted(false),max_iterations(150),available(true), max_frames(0)
@@ -53,7 +54,7 @@ bool PathFinder::IteratePath()
 		
 		//	player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
 		bool stop = false;
-		if (entity != NULL)
+		if (entity != NULL && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial))
 			if (entity->life_points <= 0)
 				stop = true;
 		if (node->pos == destination || stop) {
@@ -75,7 +76,7 @@ bool PathFinder::IteratePath()
 			available = true;
 			open.list.clear();
 			close.list.clear();
-			if (entity != NULL)
+			if (entity != NULL && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial))
 			{
 				if (entity->life_points <= 0)
 				{
@@ -213,15 +214,19 @@ const PathNode* PathList::GetNodeLowestScore() const
 
 void PathFinder::SavePath(vector<iPoint>* path)
 {
-	const vector<iPoint>* last_path = GetLastPath();
-	path->clear();
-	for (uint i = 0; i < last_path->size(); ++i)
+	if (path != nullptr && (App->scene->current_scene == scenes::ingame || App->scene->current_scene == scenes::tutorial) )
 	{
-		iPoint point(last_path->at(i).x, last_path->at(i).y);
+		const vector<iPoint>* last_path = GetLastPath();
+		path->clear();
+		for (uint i = 0; i < last_path->size(); ++i)
+		{
+			iPoint point(last_path->at(i).x, last_path->at(i).y);
 
-		path->push_back(point);
+			path->push_back(point);
+		}
+		LOG("saving path");
 	}
-	LOG("saving path");
+	
 }
 #pragma endregion
 

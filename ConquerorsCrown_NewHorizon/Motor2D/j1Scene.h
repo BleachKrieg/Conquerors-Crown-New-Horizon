@@ -95,6 +95,8 @@ private:
 	bool changeEntities = false;
 	p2SString logoSheet_file_name;
 	SDL_Texture* logoSheet;
+	SDL_Texture* victoryLogo;
+	SDL_Texture* defeatLogo;
 	SDL_Texture* video_texture;
 	SDL_Texture* videologo_tex;
 	Animation* current_animation = nullptr;
@@ -108,7 +110,8 @@ private:
 	int alpha;
 	iPoint speed;
 	bool wants_to_load = false;
-
+	int time_loaded;
+	
 public:
 	p2SString current_level;
 	scenes current_scene;
@@ -154,9 +157,6 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
-
-	
-	SDL_Texture* portrait_tex;
 
 	//OptionsGui
 	bool optionsMenu;
@@ -233,10 +233,9 @@ public:
 	int camera_limit_y2;
 
 	//Upgrade_Swordman
-	bool Upgrade_Sowrdman;
-	float stats_upgrade_swordman;
-	bool Upgrade_Archer;
-	float stats_upgrade_Archer;
+	int upgrade_swordman;
+	int upgrade_archer;
+	int upgrade_knight;
 
 	// Wall
 	bool wall_create;

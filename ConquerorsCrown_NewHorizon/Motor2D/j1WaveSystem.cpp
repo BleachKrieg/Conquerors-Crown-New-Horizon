@@ -38,9 +38,8 @@ bool j1WaveSystem::Awake(pugi::xml_node& config)
 	pugi::xml_node wave;
 	spawn1 = new SpawnPoint();
 	spawn2 = new SpawnPoint();
-
 	spawn3 = new SpawnPoint();
-
+	loaded_time = 0;
 	spawn1->position.x = config.child("spawnpoints").child("spawnpoint1").attribute("x").as_int();
 	spawn1->position.y = config.child("spawnpoints").child("spawnpoint1").attribute("y").as_int();
 	spawn2->position.x = config.child("spawnpoints").child("spawnpoint2").attribute("x").as_int();
@@ -72,10 +71,12 @@ bool j1WaveSystem::Start()
 	ogre_counter = 0;
 	wave_ongoing = false;
 	max_waves = 7;
+	to_win = false;
 
 	troll_value = 15;
 	grunt_value = 10;
 	ogre_value = 30;
+	spawn_buildings = 0;
 
 	return ret;
 }
@@ -91,135 +92,165 @@ bool j1WaveSystem::Update(float dt)
 {
 	bool ret = true;
 	//wave_ongoing = true;
+
+
+
 	if(App->scene->current_scene == scenes::ingame)
 	{ 
-	if (wave_ended.ReadSec() > next_wave && wave_ongoing == false && current_wave < max_waves) 
-	{
-		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+		if (spawn1->building != nullptr && spawn1->building->life_points <= 0)
+			spawn1->building = nullptr;
+		if (spawn2->building != nullptr && spawn2->building->life_points <= 0)
+			spawn2->building = nullptr;
+		if (spawn3->building != nullptr && spawn3->building->life_points <= 0)
+			spawn3->building = nullptr;
+
+		if (wave_ended.ReadSec() + loaded_time > next_wave && wave_ongoing == false && current_wave < max_waves) 
 		{
-			StartWave(current_wave);
+			loaded_time = 0;
+			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+			{
+				StartWave(current_wave);
+			}
 		}
-	}
-	else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
-	{
-		if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+		else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
 		{
-			StartWave(current_wave);
+			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
+			{
+				StartWave(current_wave);
+			}
 		}
-	}
 
 
-	if ((spawn1->target == nullptr || spawn2->target == nullptr || spawn3->target == nullptr))
-	{
-		if(!App->entity->player_stat_ent.empty())
+		if ((spawn1->target == nullptr || spawn2->target == nullptr || spawn3->target == nullptr))
 		{
-			spawn1->target = nullptr;
-			spawn2->target = nullptr;
-			spawn3->target = nullptr;
-
-			int dis_to_1, dis_to_2, dis_to_3;
-			dis_to_1 = dis_to_2 = dis_to_3 = 0;
-
-			for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
-				if (App->entity->player_stat_ent[i]->deployed == false)
-					continue;
-				fPoint vec1, vec2, vec3;
-				vec1 = { App->entity->player_stat_ent[i]->position.x - spawn1->position.x,  App->entity->player_stat_ent[i]->position.y - spawn1->position.y };
-				vec2 = { App->entity->player_stat_ent[i]->position.x - spawn2->position.x,  App->entity->player_stat_ent[i]->position.y - spawn2->position.y };
-				vec3 = { App->entity->player_stat_ent[i]->position.x - spawn3->position.x,  App->entity->player_stat_ent[i]->position.y - spawn3->position.y };
-				int norm1, norm2, norm3;
-				norm1 = sqrt(pow((vec1.x), 2) + pow((vec1.y), 2));
-				norm2 = sqrt(pow((vec2.x), 2) + pow((vec2.y), 2));
-				norm3 = sqrt(pow((vec3.x), 2) + pow((vec3.y), 2));
-
-				if (dis_to_1 == 0 || dis_to_1 > norm1)
-				{
-					dis_to_1 = norm1;
-					spawn1->target = App->entity->player_stat_ent[i];
-					spawn1->targetpos = spawn1->target->position;
-				}
-				if (dis_to_2 == 0 || dis_to_2 > norm2)
-				{
-					dis_to_2 = norm2;
-					spawn2->target = App->entity->player_stat_ent[i];
-					spawn2->targetpos = spawn2->target->position;
-				}
-				if (dis_to_3 == 0 || dis_to_3 > norm3)
-				{
-					dis_to_3 = norm3;
-					spawn3->target = App->entity->player_stat_ent[i];
-					spawn3->targetpos = spawn3->target->position;
-
-				}
-
-			}
-			
-			if (dis_to_1 > 0)
+			if(!App->entity->player_stat_ent.empty())
 			{
-				iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
-				iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+				spawn1->target = nullptr;
+				spawn2->target = nullptr;
+				spawn3->target = nullptr;
+
+				int dis_to_1, dis_to_2, dis_to_3;
+				dis_to_1 = dis_to_2 = dis_to_3 = 0;
+
+				for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
+					if (App->entity->player_stat_ent[i]->deployed == false)
+						continue;
+					fPoint vec1, vec2, vec3;
+					vec1 = { App->entity->player_stat_ent[i]->position.x - spawn1->position.x,  App->entity->player_stat_ent[i]->position.y - spawn1->position.y };
+					vec2 = { App->entity->player_stat_ent[i]->position.x - spawn2->position.x,  App->entity->player_stat_ent[i]->position.y - spawn2->position.y };
+					vec3 = { App->entity->player_stat_ent[i]->position.x - spawn3->position.x,  App->entity->player_stat_ent[i]->position.y - spawn3->position.y };
+					int norm1, norm2, norm3;
+					norm1 = sqrt(pow((vec1.x), 2) + pow((vec1.y), 2));
+					norm2 = sqrt(pow((vec2.x), 2) + pow((vec2.y), 2));
+					norm3 = sqrt(pow((vec3.x), 2) + pow((vec3.y), 2));
+
+					if (dis_to_1 == 0 || dis_to_1 > norm1)
+					{
+						dis_to_1 = norm1;
+						spawn1->target = App->entity->player_stat_ent[i];
+						spawn1->targetpos = spawn1->target->position;
+					}
+					if (dis_to_2 == 0 || dis_to_2 > norm2)
+					{
+						dis_to_2 = norm2;
+						spawn2->target = App->entity->player_stat_ent[i];
+						spawn2->targetpos = spawn2->target->position;
+					}
+					if (dis_to_3 == 0 || dis_to_3 > norm3)
+					{
+						dis_to_3 = norm3;
+						spawn3->target = App->entity->player_stat_ent[i];
+						spawn3->targetpos = spawn3->target->position;
+
+					}
+
+				}
+				
+				if (dis_to_1 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
+					iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+				}
+				if (dis_to_2 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
+					iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
+				}
+				if (dis_to_3 > 0)
+				{
+					iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
+					iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
+				}
 			}
-			if (dis_to_2 > 0)
-			{
-				iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
-				iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
-			}
-			if (dis_to_3 > 0)
-			{
-				iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
-				iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
-				App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
-			}
+		}
+		else 
+		{
+			if (spawn1->target->life_points <= 0)spawn1->target = nullptr;
+			if (spawn2->target->life_points <= 0)spawn2->target = nullptr;
+			if (spawn3->target->life_points <= 0)spawn3->target = nullptr;
+
 		}
 		
-	}
-	else 
-	{
-		if (spawn1->target->life_points <= 0)spawn1->target = nullptr;
-		if (spawn2->target->life_points <= 0)spawn2->target = nullptr;
-		if (spawn3->target->life_points <= 0)spawn3->target = nullptr;
-
-	}
-	
-	if (App->scene->debug == true)
-	{
-		App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
-		App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
-		App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
-	}
-
-
-	for (uint i = 0; i < spawn1->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
-		if (App->scene->debug)
+		if (App->scene->debug == true)
 		{
-			
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			App->render->DrawQuad({ spawn1->position.x, spawn1->position.y, 30, 30 }, 255, 0, 0);
+			App->render->DrawQuad({ spawn2->position.x, spawn2->position.y, 30, 30 }, 255, 0, 0);
+			App->render->DrawQuad({ spawn3->position.x, spawn3->position.y, 30, 30 }, 255, 0, 0);
 		}
-	}
 
-	for (uint i = 0; i < spawn2->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
-		if (App->scene->debug)
+
+		for (uint i = 0; i < spawn1->path.size(); ++i)
 		{
-
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			iPoint nextPoint = App->map->MapToWorld(spawn1->path.at(i).x, spawn1->path.at(i).y);
+			if (App->scene->debug)
+			{
+				
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
 		}
-	}
 
-	for (uint i = 0; i < spawn3->path.size(); ++i)
-	{
-		iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
-		if (App->scene->debug)
+		for (uint i = 0; i < spawn2->path.size(); ++i)
 		{
+			iPoint nextPoint = App->map->MapToWorld(spawn2->path.at(i).x, spawn2->path.at(i).y);
+			if (App->scene->debug)
+			{
 
-			App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
 		}
-	}
+
+		for (uint i = 0; i < spawn3->path.size(); ++i)
+		{
+			iPoint nextPoint = App->map->MapToWorld(spawn3->path.at(i).x, spawn3->path.at(i).y);
+			if (App->scene->debug)
+			{
+
+				App->render->DrawQuad({ nextPoint.x + 14, nextPoint.y + 14, 6, 6 }, 200, 0, 0, 100);
+			}
+		}
+
+		if (spawn1->building == nullptr && spawn2->building == nullptr && spawn3->building == nullptr)
+		{
+			spawn_buildings = 0;
+		}
+		else if ((spawn1->building == nullptr && spawn2->building == nullptr) || (spawn1->building == nullptr && spawn3->building == nullptr) || (spawn2->building == nullptr && spawn3->building == nullptr))
+		{
+			spawn_buildings = 1;
+		}
+		else if (spawn1->building == nullptr || spawn2->building == nullptr || spawn3->building == nullptr)
+		{
+			spawn_buildings = 2;
+		}
+		else { spawn_buildings = 3; }
+
+		if (spawn_buildings == 0 && to_win == false && App->scene->timer - 660 > 5)
+		{
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			to_win = true;
+		}
 	}
 	return ret;
 }
@@ -239,6 +270,59 @@ bool j1WaveSystem::CleanUp()
 bool j1WaveSystem::Load(pugi::xml_node& data)
 {
 	LOG("Loading Wave state");
+	current_wave = data.attribute("wave").as_int();
+	loaded_time = data.attribute("time").as_int();
+
+	int distance = 100000;
+	if (data.child("spawn_1").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn1->position.x - x), 2) + pow((spawn1->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn1->building = App->entity->ai_stat_ent[i];
+			}
+				
+		}
+	else
+		spawn1->building = nullptr;
+
+	distance = 100000;
+	if (data.child("spawn_2").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn2->position.x - x), 2) + pow((spawn2->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn2->building = App->entity->ai_stat_ent[i];
+			}
+
+		}
+	else
+		spawn2->building = nullptr;
+
+	distance = 100000;
+	if (data.child("spawn_3").attribute("Has_Building").as_bool())
+		for (int i = 0; i < App->entity->ai_stat_ent.size(); i++)
+		{
+			int x = App->entity->ai_stat_ent[i]->position.x;
+			int y = App->entity->ai_stat_ent[i]->position.y;
+			int distance2 = sqrt(pow((spawn3->position.x - x), 2) + pow((spawn3->position.y - y), 2));
+			if (distance2 < distance)
+			{
+				distance = distance2;
+				spawn3->building = App->entity->ai_stat_ent[i];
+			}
+
+		}
+	else
+		spawn3->building = nullptr;
 
 	return true;
 }
@@ -247,7 +331,28 @@ bool j1WaveSystem::Load(pugi::xml_node& data)
 bool j1WaveSystem::Save(pugi::xml_node& data) const
 {
 	LOG("Saving Wave state");
-	
+	data.append_attribute("wave") = current_wave;
+	data.append_attribute("time") = wave_ended.ReadSec();
+
+	pugi::xml_node spawner1 = data.append_child("spawn_1");
+	pugi::xml_node spawner2 = data.append_child("spawn_2");
+	pugi::xml_node spawner3 = data.append_child("spawn_3");
+
+	if(spawn1->building != nullptr)
+	spawner1.append_attribute("Has_Building") = true;
+	else
+	spawner1.append_attribute("Has_Building") = false;
+
+	if (spawn2->building != nullptr)
+		spawner2.append_attribute("Has_Building") = true;
+	else
+		spawner2.append_attribute("Has_Building") = false;
+
+	if (spawn3->building != nullptr)
+		spawner3.append_attribute("Has_Building") = true;
+	else
+		spawner3.append_attribute("Has_Building") = false;
+
 	return true;
 }
 
@@ -256,11 +361,25 @@ void j1WaveSystem::StartWave(int wave)
 	
 	//int total_spawns = 2 + 9 * wave;
 
-	int wave_value = 30 + 80 * wave;
+	int wave_value = 30 + 70 * wave;
+	if (spawn_buildings == 2) { wave_value = wave_value - 30 * wave; }
+	else if (spawn_buildings == 1) { wave_value = wave_value - 60 * wave; }
+	else if (spawn_buildings == 0) { wave_value = 0; }
 
 	if (wave_ongoing == false) {
-		if (wave == 1) { trolls = 12; ogres = 0; grunts = 0; }
-		else if (wave == 5) { trolls = 0; ogres = 15; grunts = 0; }
+		if (wave == 1) {
+			trolls = 0; ogres = 0; grunts = 9;
+			if (spawn_buildings == 3) { trolls = 0; ogres = 0; grunts = 9; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 0; grunts = 7; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 0; grunts = 5; }
+			else { trolls = 0; ogres = 0; grunts = 0; }
+		}
+		else if (wave == 5) { 
+			if (spawn_buildings == 3) { trolls = 0; ogres = 12; grunts = 0; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 9; grunts = 0; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 6; grunts = 0; }
+			else { trolls = 0; ogres = 0; grunts = 0; }
+		}
 		else if (wave == 2) {
 			int max_trolls, max_grunts;
 			trolls = grunts = ogres = 0;
@@ -298,57 +417,60 @@ void j1WaveSystem::StartWave(int wave)
 	int spawns;
 	if ((total_spawns - spawn_counter) >= 3) { spawns = 3; }
 	else { spawns = (total_spawns - spawn_counter); }
+	if (spawns > spawn_buildings) { spawns = spawn_buildings; }
 	spawn_counter += spawns;
 
-	for (int i = 1; i <= spawns; i++) {
-		if (i % 3 == 1)
+
+	for (int i = 1; i <= 3; i++) {
+		if (i % 3 == 1 && spawn1->building != nullptr)
+
 		{
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn1); troll_counter++; enemy_spawned = true; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn1); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn1); grunt_counter++; enemy_spawned = true; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn1); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn1); ogre_counter++; enemy_spawned = true; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn1); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
 		}
-		else if (i % 3 == 2) {
+		else if (i % 3 == 2 && spawn2->building != nullptr) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn2); troll_counter++; enemy_spawned = true; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn2); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn2); grunt_counter++; enemy_spawned = true; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn2); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn2); ogre_counter++; enemy_spawned = true; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn2); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
 		}																													
-		else if (i % 3 == 0) {																								
+		else if (i % 3 == 0 && spawn3->building != nullptr) {
 			bool enemy_spawned = false;
 			do {
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn3); troll_counter++; enemy_spawned = true; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn3); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn3); grunt_counter++; enemy_spawned = true; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn3); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn3); ogre_counter++; enemy_spawned = true; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn3); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
@@ -408,5 +530,17 @@ bool j1WaveSystem::SpawnGrunt(SpawnPoint* spawn)
 		iPoint point(spawn->path.at(i).x, spawn->path.at(i).y);
 		temp->path.push_back(point);
 	}
+	return true;
+}
+
+bool j1WaveSystem::CreateSpawnBuildings()
+{
+	spawn1->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn1->position.x, spawn1->position.y);
+	spawn2->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn2->position.x, spawn2->position.y);
+	spawn3->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn3->position.x, spawn3->position.y);
+
+	spawn_buildings = 3;
+	to_win = false;
+
 	return true;
 }

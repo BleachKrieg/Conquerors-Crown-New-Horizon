@@ -27,7 +27,6 @@ public:
 	bool NewGroup;
 	j1Entity* player_selected = nullptr;
 	j1Entity* ai_selected = nullptr;
-	j1Entity* portrait_entity = nullptr;
 
 private:
 

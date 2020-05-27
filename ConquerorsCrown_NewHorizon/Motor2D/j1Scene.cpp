@@ -21,7 +21,6 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
-#include "J1GroupMov.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -52,8 +51,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
-	
-	
 	fullscreen = false;
 	
 	return ret;
@@ -76,20 +73,82 @@ bool j1Scene::Start()
 	map_coordinates = { 0, 0 };
 	optionsMenu = false;
 
+	upgrade_swordman = 0;
+	upgrade_archer = 0;
+	upgrade_knight = 0;
+
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
+
 	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
-	Upgrade_Sowrdman = false;
-	stats_upgrade_swordman = 1;
-	Upgrade_Archer = false;
 	wall_create = false;
-	stats_upgrade_Archer = 1;
 
 	wants_to_load = false;
 
-	
+	//UI elements
+	menuButtonNewGame = nullptr;
+	menuTextNewGame = nullptr;
+	menuButtonLoadGame = nullptr;
+	menuTextLoadGame = nullptr;
+	menuButtonOptions = nullptr;
+	menuTextOptions = nullptr;
+	menuButtonExit = nullptr;
+	menuTextExit = nullptr;
+	menuBackground = nullptr;
 
+	ingameUI = nullptr;
+	ingameTopBar = nullptr;
+	ingameButtonMenu = nullptr;
+	ingameTextMenu = nullptr;
+	ingameTextGold = nullptr;
+	ingameTextWood = nullptr;
+	ingameTextStone = nullptr;
+	ingameTextClock = nullptr;
+	ingameTextWave = nullptr;
+
+	townHallButton = nullptr;
+	townHallImage = nullptr;
+	townHallWoodCostImage = nullptr;
+	townHallStoneCostImage = nullptr;
+	townHallWoodCostText = nullptr;
+	townHallStoneCostText = nullptr;
+
+	optionsBackground = nullptr;
+	optionsTitleText = nullptr;
+	optionsButtonClose = nullptr;
+	optionsTextClose = nullptr;
+	optionsMusicText = nullptr;
+	optionsMusicSlider = nullptr;
+	optionsFxText = nullptr;
+	optionsFxSlider = nullptr;
+	optionsButtonFullScreen = nullptr;
+	optionsTextFullScreen = nullptr;
+
+	pausemenuBackground = nullptr;
+	pausemenuButtonResume = nullptr;
+	pausemenuTextResume = nullptr;
+	pausemenuButtonOptions = nullptr;
+	pausemenuTextOptions = nullptr;
+	pausemenuButtonSave = nullptr;
+	pausemenuTextSave = nullptr;
+	pausemenuButtonLoad = nullptr;
+	pausemenuTextLoad = nullptr;
+	pausemenuButtonExit = nullptr;
+	pausemenuTextExit = nullptr;
+
+	logoTextClick = nullptr;
+	logoBackground = nullptr;
+
+	victoryBackground = nullptr;
+	victoryButtonContinue = nullptr;
+	victoryTextContinue = nullptr;
+	victoryTextClick = nullptr;
+
+	defeatBackground = nullptr;
+	defeatButtonContinue = nullptr;
+	defeatTextContinue = nullptr;
+	defeatTextClick = nullptr;
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
 	//App->entity->CreateEntity(DynamicEnt::DynamicEntityType::TEST_1, 100, 200);
@@ -164,18 +223,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 265) {
-			App->audio->PlayFx(1, App->audio->crown_fx, 0);
-		}
-		if (win_lose_counter == 325) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 370) {
-			App->audio->PlayFx(1, App->audio->warcry_fx, 0);
-		}
-		LOG("Victory counter: %i", win_lose_counter);
+		
 
 		/*if (scale_victory < 0.005)
 		{
@@ -195,19 +243,7 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
-		win_lose_counter++;
-
-		if (win_lose_counter == 260) {
-			App->audio->PlayFx(1, App->audio->skull_fx, 0);
-		}
-		if (win_lose_counter == 340) {
-			App->audio->PlayFx(1, App->audio->axe_fx, 0);
-		}
-		if (win_lose_counter == 380) {
-			App->audio->PlayFx(1, App->audio->horn_fx, 0);
-		}
-		LOG("Defeat counter: %i", win_lose_counter);
-
+		
 		/*if (scale_defeat < 0.005)
 		{
 			scale_defeat = scale_defeat + 0.0001;
@@ -223,8 +259,6 @@ bool j1Scene::Update(float dt)
 
 		break;
 	case scenes::ingame:
-		
-		
 		//Camera movement inputs
 		int x, y;
 		App->input->GetMousePosition(x, y);
@@ -257,7 +291,6 @@ bool j1Scene::Update(float dt)
 		if (App->render->camera.y > 0) App->render->camera.y = 0;
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
 		if (App->render->camera.y < camera_limit_y) App->render->camera.y = camera_limit_y;
-
 		
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
@@ -267,34 +300,15 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			if (!pauseMenu) {
-				App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
-				App->audio->MusicVolume(0.2);
+
 				CreatePauseMenu();
 			}
 			else {
-				App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
 				DeletePauseMenu();
 			}
 			pauseMenu = !pauseMenu;
 		}
 
-		if (Upgrade_Sowrdman == true)
-		{
-			stats_upgrade_swordman = 2.f;
-		}
-		else
-		{
-			stats_upgrade_swordman = 1.f;
-		}
-
-		if(Upgrade_Archer == true)
-		{
-			stats_upgrade_Archer = 2.f;
-		}
-		else
-		{
-			stats_upgrade_Archer = 1.f;
-		}
 		//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
@@ -322,6 +336,10 @@ bool j1Scene::Update(float dt)
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
+			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
@@ -359,6 +377,10 @@ bool j1Scene::Update(float dt)
 				App->scene->AddResource("stone", 100);
 				App->scene->AddResource("gold", 100);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+			}
+
 			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
 				App->fade->FadeToBlack(scenes::defeat, 2.0f);
 			}
@@ -381,13 +403,22 @@ bool j1Scene::Update(float dt)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
+
+			if(App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
+
 		}
 
 		//Draw the map
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
-		
+		int townhall_counter = 0;
+		for (int i = 0; i < App->entity->player_stat_ent.size(); i++)
+		{
+			if (App->entity->player_stat_ent[i]->name == "town_hall")
+				townhall_counter++;
+		}
 
 		if (timer <= 0 && !finish)
 		{
@@ -395,16 +426,16 @@ bool j1Scene::Update(float dt)
 			win_lose_counter = 0;
 			finish = true;
 		}
-		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
+		else if (gameClock.ReadSec() > 5 && !finish && townhall_counter == 0)
 		{
-			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
-			App->fade->FadeToBlack(scenes::defeat, 2.0f);
-			win_lose_counter = 0;
-			finish = true;
+	//		LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
+				App->fade->FadeToBlack(scenes::defeat, 2.0f);
+				win_lose_counter = 0;
+				finish = true;
 		}
 		else {
 			//gameClock Update
-			timer = 660 - gameClock.ReadSec();
+			timer = 660 - gameClock.ReadSec() - time_loaded;
 			if (Cooldown.ReadSec() > 1)
 			{
 				TimeToClock();
@@ -440,88 +471,8 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
-		//portraits
-		if (App->movement->portrait_entity != nullptr)
-		{
-
-			if (App->movement->portrait_entity->name == p2SString("town_hall"))
-			{
-				SDL_Rect rect = { 3126, 312, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
-			{
-				SDL_Rect rect = { 3126, 468, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_footman"))
-			{
-				SDL_Rect rect = { 2978, 156, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
-			{
-				SDL_Rect rect = { 2978, 0, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_archer"))
-			{
-				SDL_Rect rect = { 3126, 0, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
-			{
-				SDL_Rect rect = { 3126, 624, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_wall"))
-			{
-
-			}
-
-		}
 		break;
 	case scenes::ingame:
-		//portraits
-		if (App->movement->portrait_entity != nullptr)
-		{
-
-			if (App->movement->portrait_entity->name == p2SString("town_hall"))
-			{
-				SDL_Rect rect = { 3126, 312, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
-			{
-				SDL_Rect rect = { 3126, 468, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_footman"))
-			{
-				SDL_Rect rect = { 2978, 156, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
-			{
-				SDL_Rect rect = { 2978, 0, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_archer"))
-			{
-				SDL_Rect rect = { 3126, 0, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
-			{
-				SDL_Rect rect = { 3126, 624, 144, 152 };
-				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_wall"))
-			{
-				
-			}
-		
-		}
 
 		//Mouse input for UI buttons
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
@@ -642,12 +593,10 @@ bool j1Scene::PostUpdate(float dt)
 		{
 			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
 
-
 		}
 
 		if (!loop)
 		{
-
 			App->render->Blit(videologo_tex, 70, -130, &loader->GetCurrentFrame(last_dt), 1.0f, 0.0f);
 
 		}
@@ -673,6 +622,17 @@ bool j1Scene::CleanUp()
 bool j1Scene::Load(pugi::xml_node& data)
 {
 	LOG("Loading Scene state");
+	gold = 0;
+	wood = 0;
+	stone = 0;
+	AddResource("gold", data.child("resources").attribute("gold").as_int());
+	AddResource("wood", data.child("resources").attribute("wood").as_int());
+	AddResource("stone", data.child("resources").attribute("stone").as_int());
+	time_loaded = data.child("clock").attribute("time_passed").as_int();
+	upgrade_swordman = data.child("upgrades").attribute("swordman").as_int();
+	upgrade_archer = data.child("upgrades").attribute("archer").as_int();
+	upgrade_knight = data.child("upgrades").attribute("knight").as_int();
+
 	return true;
 }
 
@@ -682,8 +642,18 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	LOG("Saving Scene state");
 	
 
-	pugi::xml_node scene = data.append_child("scenename");
-	scene.append_attribute("name") = current_level.GetString();
+	pugi::xml_node scenename = data.append_child("scenename");
+	scenename.append_attribute("name") = current_level.GetString();
+	pugi::xml_node resources = data.append_child("resources");
+	resources.append_attribute("gold") = gold;
+	resources.append_attribute("wood") = wood;
+	resources.append_attribute("stone") = stone;
+	pugi::xml_node clock = data.append_child("clock");
+	clock.append_attribute("time_passed") = gameClock.ReadSec() - time_loaded;;
+	pugi::xml_node upgrades = data.append_child("upgrades");
+	upgrades.append_attribute("swordman") = upgrade_swordman;
+	upgrades.append_attribute("archer") = upgrade_archer;
+	upgrades.append_attribute("knight") = upgrade_knight;
 
 	return true;
 }
@@ -712,7 +682,7 @@ void j1Scene::LoadTiledEntities() {
 						switch (tile_id) {
 						case 381:
 							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 20u);
 							break;
 						case 401:
 							active = true;
@@ -724,7 +694,7 @@ void j1Scene::LoadTiledEntities() {
 							break;
 						case 422:
 							if (current_scene == scenes::tutorial) {
-								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y);
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 40u);
 							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
@@ -768,37 +738,22 @@ void j1Scene::DeleteScene() {
 		App->map->CleanUp();
 		App->fowManager->DeleteFoWMap();
 		App->wave->wave_ongoing = false;
-		App->tex->UnLoad(portrait_tex);
 		break;
 	case scenes::logo:
-		if (intro_video != 0)
-		{
-			App->video->DestroyVideo(intro_video);
-			intro_video = 0;
-		}
-
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::victory:
-		if (intro_video != 0)
-		{
-			App->video->DestroyVideo(intro_video);
-			intro_video = 0;
-		}
+		App->tex->UnLoad(victoryLogo);
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
 		DeleteUI();
 		break;
 	case scenes::defeat:
-		if (intro_video != 0)
-		{
-			App->video->DestroyVideo(intro_video);
-			intro_video = 0;
-		}
+		App->tex->UnLoad(defeatLogo);
 		App->tex->UnLoad(video_texture);
 		App->tex->UnLoad(videologo_tex);
 		loader = nullptr;
@@ -820,10 +775,9 @@ void j1Scene::CreateScene(scenes next_scene) {
 		App->audio->PlayMusic("Warcraft_II_Main_Menu.ogg", 2.0F);
 		break;
 	case scenes::tutorial:
-		Upgrade_Archer = false;
-		stats_upgrade_Archer = 1.f;
-		Upgrade_Sowrdman = false;
-		stats_upgrade_swordman = 1;
+		upgrade_swordman = 0;
+		upgrade_archer = 0;
+		upgrade_knight = 0;
 		current_scene = scenes::tutorial;
 		CreateTutorial();
 		App->audio->PlayMusic("Human/Human_Battle_5.ogg", 2.0F);
@@ -835,10 +789,9 @@ void j1Scene::CreateScene(scenes next_scene) {
 		finish = false;
 		break;
 	case scenes::ingame:
-		Upgrade_Archer = false;
-		stats_upgrade_Archer = 1.f;
-		Upgrade_Sowrdman = false;
-		stats_upgrade_swordman = 1;
+		upgrade_swordman = 0;
+		upgrade_archer = 0;
+		upgrade_knight = 0;
 		current_scene = scenes::ingame;
 		CreateInGame();
 		App->minimap->input = true;
@@ -950,8 +903,14 @@ bool j1Scene::CreateTutorial()
 
 bool j1Scene::CreatePauseMenu() 
 {
-	if(pausemenuBackground == nullptr)
+
+
+	if (pausemenuBackground == nullptr) {
+		App->audio->PlayFx(-1, App->audio->pause_fx_out, 0);
+		App->audio->MusicVolume(0.2f);
 		pausemenuBackground = App->gui->CreateGuiElement(Types::image, 347, -342, { 2292, 731, 586, 483 }, ingameUI);
+	}
+
 
 	pausemenuButtonResume = App->gui->CreateGuiElement(Types::button, 150, 100, { 0, 63, 303, 42 }, pausemenuBackground, this, NULL);
 	pausemenuButtonResume->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
@@ -973,10 +932,15 @@ bool j1Scene::CreatePauseMenu()
 	pausemenuButtonExit->setRects({ 305, 63, 303, 42 }, { 0, 107, 303, 42 });
 	pausemenuTextExit = App->gui->CreateGuiElement(Types::text, 115, 4, { 0, 0, 138, 30 }, pausemenuButtonExit, nullptr, "Exit");
 
+	App->entity->pause = true;
+
 	return true;
 }
 
 bool j1Scene::DeletePauseMenu() {
+
+	App->audio->PlayFx(-1, App->audio->pause_fx_in, 0);
+	//App->audio->MusicVolume(1.0f);
 	if (optionsMenu)
 	{
 		DeleteOptions();
@@ -988,6 +952,8 @@ bool j1Scene::DeletePauseMenu() {
 
 	pausemenuBackground->to_delete = true;
 	pausemenuBackground = nullptr;
+
+	App->entity->pause = false;
 
 	return true;
 }
@@ -1150,12 +1116,16 @@ bool j1Scene::CreateInGame()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
-
-	portrait_tex = App->tex->Load("Assets/textures/gui/Ui_Atlas.png");
+	time_loaded = 0;
+	upgrade_swordman = 0;
+	upgrade_archer = 0;
+	upgrade_knight = 0;
 
 	if (!wants_to_load)
 	{
 		LoadTiledEntities();
+		App->wave->CreateSpawnBuildings();
+
 	}
 	else {
 		active = true;
@@ -1167,6 +1137,8 @@ bool j1Scene::CreateInGame()
 
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
+	App->wave->spawn_buildings = 3;
+	App->wave->to_win = false;
 
 	return ret;
 }
@@ -1365,6 +1337,14 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		}
 		else if (guiElement == menuButtonLoadGame) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				//App->LoadGame();
+
+			}
+
 		}
 		else if (guiElement == menuButtonOptions) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
@@ -1431,10 +1411,22 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		}
 		else if (guiElement == pausemenuButtonSave) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if(current_scene == scenes::ingame)
+			App->SaveGame();
+
 			//save
 		}
 		else if (guiElement == pausemenuButtonLoad) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				pauseMenu = false;
+				DeletePauseMenu();
+				//App->LoadGame();
+
+			}
 			//load
 		}
 		else if (guiElement == pausemenuButtonOptions) {

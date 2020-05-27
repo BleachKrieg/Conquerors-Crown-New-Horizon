@@ -27,9 +27,6 @@ bool j1GroupMov::Awake(pugi::xml_node& config) {
 }
 
 bool j1GroupMov::Start() {
-	player_selected = nullptr;
-	ai_selected = nullptr;
-	portrait_entity = nullptr;
 	return true;
 
 }
@@ -57,7 +54,6 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->screen_click)
 	{
-		portrait_entity = nullptr;
 		player_selected = nullptr;
 		App->input->GetMousePosition(origin.x, origin.y);
 		origin = App->render->ScreenToWorld(origin.x, origin.y);
@@ -77,7 +73,6 @@ bool j1GroupMov::Update(float dt) {
 			{
 				it->isSelected = true;
 				player_selected = it;
-				portrait_entity = it;
 				loop = false;
 			}
 		}
@@ -96,7 +91,6 @@ bool j1GroupMov::Update(float dt) {
 			{
 				it->isSelected = true;
 				player_selected = it;
-				portrait_entity = it;
 			}
 		}
 	}
@@ -169,14 +163,11 @@ bool j1GroupMov::Update(float dt) {
 				NewGroup = true;
 				selected.push_back(it);
 			}
-			
+
 			if (it->isSelected && it->name == p2SString("human_gatherer"))
 			{
 				gatherer_counter += 1u;
 			}
-
-			if (it->isSelected)
-				portrait_entity = it;
 		}
 
 		uint size = selected.size();
