@@ -421,12 +421,22 @@ bool j1Scene::Update(float dt)
 			win_lose_counter = 0;
 			finish = true;
 		}
-		else if (App->entity->player_stat_ent.size() == 0 && gameClock.ReadSec() > 5 && !finish)
+		else if (gameClock.ReadSec() > 5 && !finish)
 		{
 			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
-			App->fade->FadeToBlack(scenes::defeat, 2.0f);
-			win_lose_counter = 0;
-			finish = true;
+			int townhall_counter = 0;
+			for (int i = 0; i < App->entity->player_stat_ent.size(); i++)
+			{
+				if (App->entity->player_stat_ent[i]->name == "town_hall")
+					townhall_counter++;
+			}
+			if (townhall_counter == 0)
+			{
+				App->fade->FadeToBlack(scenes::defeat, 2.0f);
+				win_lose_counter = 0;
+				finish = true;
+			}
+			
 		}
 		else {
 			//gameClock Update

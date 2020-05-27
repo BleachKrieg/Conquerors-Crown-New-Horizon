@@ -121,7 +121,6 @@ bool TrollEnemy::Update(float dt)
 	if (particleSystem != nullptr)
 		particleSystem->Move(position.x, position.y);
 
-	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (target_entity == nullptr)
 	{
@@ -196,7 +195,7 @@ bool TrollEnemy::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
-		if (particleSystem != nullptr)
+		if (particleSystem != nullptr && target_entity != nullptr)
 		{
 			if (!particleSystem->IsActive())
 			{

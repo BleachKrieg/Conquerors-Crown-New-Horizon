@@ -61,6 +61,7 @@ bool HumanBarn::Start()
 	if (App->scene->active == true) {
 		actualState = ST_BARN_AUTOMATIC;
 	}
+	Button_Create_Footman = nullptr;
 	createUI = true;
 	Swordman_image = nullptr;
 	Swordman_stone_cost = nullptr;

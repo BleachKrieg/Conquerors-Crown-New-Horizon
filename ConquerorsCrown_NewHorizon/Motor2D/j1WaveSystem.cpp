@@ -430,13 +430,13 @@ void j1WaveSystem::StartWave(int wave)
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn1); troll_counter++; enemy_spawned = true; spawns -= 1; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn1); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn1); grunt_counter++; enemy_spawned = true; spawns -= 1; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn1); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn1); ogre_counter++; enemy_spawned = true; spawns -= 1; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn1); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
@@ -447,13 +447,13 @@ void j1WaveSystem::StartWave(int wave)
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn2); troll_counter++; enemy_spawned = true; spawns -= 1; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn2); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn2); grunt_counter++; enemy_spawned = true; spawns -= 1; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn2); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn2); ogre_counter++; enemy_spawned = true; spawns -= 1; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn2); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
@@ -464,13 +464,13 @@ void j1WaveSystem::StartWave(int wave)
 				int r = rand() % 3 + 1;
 				switch (r) {
 				case 1:
-					if (troll_counter < trolls) { SpawnTroll(spawn3); troll_counter++; enemy_spawned = true; spawns -= 1; }
+					if (troll_counter <= trolls) { SpawnTroll(spawn3); troll_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 2:
-					if (grunt_counter < grunts) { SpawnGrunt(spawn3); grunt_counter++; enemy_spawned = true; spawns -= 1; }
+					if (grunt_counter <= grunts) { SpawnGrunt(spawn3); grunt_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				case 3:
-					if (ogre_counter < ogres) { SpawnOgre(spawn3); ogre_counter++; enemy_spawned = true; spawns -= 1; }
+					if (ogre_counter <= ogres) { SpawnOgre(spawn3); ogre_counter++; enemy_spawned = true; spawns -= 1; }
 					break;
 				}
 			} while (enemy_spawned == false);
