@@ -10,6 +10,8 @@
 #include "Animation.h"
 #include "j1Audio.h"
 #include "SDL_mixer\include\SDL_mixer.h"
+#include "FoWEntity.h"
+
 
 using namespace std;
 
@@ -56,6 +58,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Load(pugi::xml_node& data);
+	bool Save(pugi::xml_node& data) const;
+
 	//Spatial Audio
 	void SpatialAudio(int channel, int SFX, int posx, int posy);
 
@@ -73,15 +78,17 @@ public:
 	fPoint position;
 	bool to_delete;
 	int body;
+	int coll_range;
 	fPoint speed;
-	int volume;
-	int SFX;
 	entityType type;
 	TeamType	team;
 	int		life_points;
+	int		max_hp;
 	vector<iPoint>	path;
 
 	bool deployed = true;
+	FoWEntity* visionEntity = nullptr;
+
 	
 };
 

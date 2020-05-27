@@ -61,7 +61,6 @@ public:
 	
 	// Stats
 	int attackrange;
-	int collrange;
 
 	// Upgrade
 	bool Barrack_Upgraded;

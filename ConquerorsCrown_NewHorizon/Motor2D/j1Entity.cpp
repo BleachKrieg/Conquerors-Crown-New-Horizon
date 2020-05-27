@@ -28,6 +28,47 @@ bool j1Entity::CleanUp()
 	return true;
 }
 
+
+bool j1Entity::Load(pugi::xml_node& data) {
+	return true;
+}
+
+bool j1Entity::Save(pugi::xml_node& data) const {
+	data.append_child("type");
+	data.append_child("position");
+	switch (type)
+	{
+	case  entityType::NO_TYPE:
+		data.child("type").append_attribute("movement") = "none";
+		data.child("type").append_attribute("name") = name.GetString();
+		break;
+	case  entityType::STATIC:
+		data.child("type").append_attribute("movement") = "static";
+		data.child("type").append_attribute("name") = name.GetString();
+		if (name == "gold_mine")
+		{
+			for (int i = 0; i < App->entity->mines.size(); ++i) {
+				if (App->entity->mines[i] == this)
+					data.child("type").append_attribute("amount_left") = App->entity->mines[i]->GetExtractionLimit();
+			}
+		}
+		break;
+	case  entityType::DYNAMIC:
+		data.child("type").append_attribute("movement") = "dynamic";
+		data.child("type").append_attribute("name") = name.GetString();
+		break;
+	}
+		
+	
+	data.child("position").append_attribute("pos_x") = position.x;
+	data.child("position").append_attribute("pos_y") = position.y;
+	
+
+
+	
+	return true;
+}
+
 SDL_Rect TileSetEntity::GetAnimRect(int id) const
 {
 	int relative_id = id;
@@ -47,12 +88,12 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 	//App->render->DrawQuad(SDL_Rect{ center_camera.x, center_camera.y, 2,2 }, 255, 255, 255, 255);
 	iPoint provisional_distance = { posx - center_camera.x, posy - center_camera.y };
 	int normalize = (provisional_distance.x * provisional_distance.x + provisional_distance.y * provisional_distance.y) / 400;
-	volume = (normalize * 255) / (App->render->camera.w);
-	if (volume < 0) {
-		volume = 0;
+	App->entity->volume = (normalize * 255) / (App->render->camera.w);
+	if (App->entity->volume < 0) {
+		App->entity->volume = 0;
 	}
-	if (volume > 255) {
-		volume = 255;
+	if (App->entity->volume > 255) {
+		App->entity->volume = 255;
 	}
 
 	float angle = 0;
@@ -68,11 +109,12 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 	}
 	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
 	
-	Mix_SetPosition(channel, angle, volume);
+	Mix_SetPosition(channel, angle, App->entity->volume);
 	/*iPoint pos = {-posx, -posy}, camera = {App->render->camera.x,  App->render->camera.y};
 	if(pos.x < camera.x && pos.x > camera.x - App->render->camera.w && pos.y < camera.y && pos.y > camera.y - App->render->camera.h)*/
-	App->audio->PlayFx(channel, SFX, 0);
+	//LOG("VOLUME: %i", App->entity->volume);
 
+	App->audio->PlayFx(channel, SFX, 0);
 	//LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
 	//	center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }

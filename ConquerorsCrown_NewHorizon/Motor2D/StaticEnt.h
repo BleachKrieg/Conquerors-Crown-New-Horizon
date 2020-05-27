@@ -19,8 +19,12 @@ public:
 		NO_TYPE,
 		HumanBarracks,
 		HumanTownHall,
+		HumanUpgrade,
+		HumanWall,
 		Resource,
+		Barn,
 		GoldMine,
+		enemy_barrack
 	};
 
 	// Constructor

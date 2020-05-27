@@ -89,6 +89,9 @@ bool j1Render::Update(float dt)
 	if (shaking)
 		UpdateCameraShake();
 
+	camera_pos.x = camera.x;
+	camera_pos.y = camera.y;
+
 	return true;
 }
 
@@ -138,16 +141,20 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speedX, float speedY, SDL_RendererFlip flip, float scale, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speedX, float speedY, SDL_RendererFlip flip, float scale, double angle, int pivot_x, int pivot_y, Uint8 alpha) const
 {
 	bool ret = true;
-	//float scale = App->win->GetScale();
+	float winscale = App->win->GetScale();
 
-	//scale *= user_scale;
-
+	scale *= winscale;
 	SDL_Rect rect;
 	rect.x = round((int)(camera.x * speedX) + x * scale);
 	rect.y = round((int)(camera.y * speedY) + y * scale);
+
+	if (alpha != 255)
+	{
+		SDL_SetTextureAlphaMod(texture, alpha);
+	}
 
 	if (section != NULL)
 	{
@@ -176,6 +183,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
+	}
+
+	if (alpha != 255)
+	{
+		SDL_SetTextureAlphaMod(texture, 255);
 	}
 
 	return ret;
@@ -250,8 +262,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	{
 		rec.x = (int)(camera.x + rect.x * scale);
 		rec.y = (int)(camera.y + rect.y * scale);
-		rec.w *= scale;
-		rec.h *= scale;
+		rec.w = (int)(rec.w * scale);
+		rec.h = (int)(rec.h * scale);
 	}
 
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);

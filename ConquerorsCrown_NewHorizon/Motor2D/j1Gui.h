@@ -39,17 +39,19 @@ public:
 
 	virtual void updateBar(float) {
 	}
-	virtual void returnChilds(GuiItem*, GuiItem*) {
+	virtual void ReturnChilds(GuiItem*, GuiItem*) {
 	}
 	virtual void slide() {
 	}
 	virtual float returnSliderPos() {
 		return 0;
 	}
-	virtual void SetText(const char*) {
+	virtual void setSliderPos(float) {
+	}
+	virtual void SetText(string) {
 	}
 	
-	virtual const char* GetText() const {
+	virtual string GetText() const {
 		return "none";
 	}
 	virtual GuiItem* GetInputText() const {
@@ -81,6 +83,7 @@ public:
 	bool isDynamic;
 	bool follow;
 	bool delayBlit;
+	bool visible;
 };
 
 class GuiImage: public GuiItem
@@ -100,11 +103,11 @@ public:
 private:
 	SDL_Color color;
 	_TTF_Font* local_font;
-	const char *text;
+	string text;
 
 public:
-	const char* GetText() const;
-	void SetText(const char*);
+	string GetText() const;
+	void SetText(string);
 };
 
 class GuiButton : public GuiItem
@@ -136,7 +139,8 @@ public:
 	virtual ~GuiSlider();
 	void slide();
 	float returnSliderPos();
-	void returnChilds(GuiItem*, GuiItem*);
+	void setSliderPos(float);
+	void ReturnChilds(GuiItem*, GuiItem*);
 private:
 	GuiItem* Image;
 	GuiItem* ScrollThumb;
@@ -150,7 +154,7 @@ class GuiBar : public GuiItem
 public:
 	GuiBar(int x, int y, SDL_Rect texrect, j1Module* callback = nullptr);
 	virtual ~GuiBar();
-	void returnChilds(GuiItem*, GuiItem*);
+	void ReturnChilds(GuiItem*, GuiItem*);
 	void updateBar(float); 
 private:
 	GuiItem* background;
@@ -202,6 +206,8 @@ public:
 	SDL_Texture* GetAtlas() const;
 	
 	GuiItem* CreateGuiElement(Types type, int x, int y, SDL_Rect, GuiItem* parentnode = NULL, j1Module* callback = nullptr, char* text = "", _TTF_Font* font = nullptr);
+
+	void SetGuiVisible(bool is_visible);
 
 public:
 	bool buttonPressed;

@@ -5,6 +5,7 @@
 #include "j1Fonts.h"
 #include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
+#include "j1Render.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
 j1Fonts::j1Fonts() : j1Module()
@@ -30,13 +31,15 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 	}
 	else
 	{
-		
+
 		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
 		LOG("%s", path);
 		int bigfontSize = conf.child("font_size").attribute("big").as_int(DEFAULT_FONT_SIZE);
 		int smallfontSize = conf.child("font_size").attribute("small").as_int(DEFAULT_FONT_SIZE);
+		int xsfontsize = conf.child("font_size").attribute("xs").as_int(DEFAULT_FONT_SIZE);
 		defaultfont = Load(path, bigfontSize);
 		smallfont = Load(path, smallfontSize);
+		xs_font = Load(path, xsfontsize);
 	}
 
 	return ret;
@@ -89,7 +92,7 @@ SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, TTF_Font* font)
 	}
 	else
 	{
-		ret = App->tex->LoadSurface(surface);
+		ret = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 		SDL_FreeSurface(surface);
 	}
 

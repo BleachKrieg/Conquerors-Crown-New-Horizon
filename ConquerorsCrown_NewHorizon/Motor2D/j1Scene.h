@@ -17,11 +17,11 @@ class StaticEnt;;
 
 enum class scenes {
 	menu,
+	tutorial,
 	ingame,
 	logo,
 	victory,
 	defeat
-
 };
 
 class GuiItem;
@@ -56,12 +56,23 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
+	void UpdateCameraPosition(int speed);
+
 	//Menu functions
 	void DeleteScene();
 	void CreateScene(scenes);
 
 	bool CreateMenu();
+	bool CreateTutorial();
 	bool CreateInGame();
+
+	bool CreateOptions();
+	bool DeleteOptions();
+
+	bool CreatePauseMenu();
+	bool DeletePauseMenu();
+	bool DeletePauseMenuButtons();
+
 	bool CreateLogo();
 	bool CreateVictory();
 	bool CreateDefeat();
@@ -72,7 +83,6 @@ public:
 	bool DeleteButtonsUI();
 
 	void LogoPushbacks();
-	void TeamLogoPushbacks();
 	void LoadTiledEntities();
 
 	void AddResource(char*, int);
@@ -80,25 +90,32 @@ public:
 
 	void GuiInput(GuiItem* guiElement);
 	
+
 private:
 	bool changeEntities = false;
-	scenes current_scene;
 	p2SString logoSheet_file_name;
-	p2SString teamLogoSheet_file_name;
 	SDL_Texture* logoSheet;
 	SDL_Texture* victoryLogo;
 	SDL_Texture* defeatLogo;
-	SDL_Texture* teamLogoSheet;
+	SDL_Texture* video_texture;
+	SDL_Texture* videologo_tex;
 	Animation* current_animation = nullptr;
+	Animation* loader;
 	Animation logo;
 	Animation team_logo;
 	int logoTextTimer;
 	int logo_team_sfx_counter;
+	int win_lose_counter;
 	j1Timer logoTimer;
 	int alpha;
-
+	iPoint speed;
+	bool wants_to_load = false;
+	int time_loaded;
+	
 public:
 	p2SString current_level;
+	scenes current_scene;
+
 	//SDL_Texture* debug_tex;
 
 	uint gold;
@@ -133,12 +150,42 @@ public:
 	GuiItem* ingameTextClock;
 	GuiItem* ingameTextWave;
 
+
 	GuiItem* townHallButton;
 	GuiItem* townHallImage;
 	GuiItem* townHallWoodCostImage;
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
+
+
+	//OptionsGui
+	bool optionsMenu;
+	bool fullscreen;
+	GuiItem* optionsBackground;
+	GuiItem* optionsTitleText;
+	GuiItem* optionsButtonClose;
+	GuiItem* optionsTextClose;
+	GuiItem* optionsMusicText;
+	GuiItem* optionsMusicSlider;
+	GuiItem* optionsFxText;
+	GuiItem* optionsFxSlider;
+	GuiItem* optionsButtonFullScreen;
+	GuiItem* optionsTextFullScreen;
+
+	//PauseMenuGui
+	GuiItem* pausemenuBackground;
+	GuiItem* pausemenuButtonResume;
+	GuiItem* pausemenuTextResume;
+	GuiItem* pausemenuButtonOptions;
+	GuiItem* pausemenuTextOptions;
+	GuiItem* pausemenuButtonSave;
+	GuiItem* pausemenuTextSave;
+	GuiItem* pausemenuButtonLoad;
+	GuiItem* pausemenuTextLoad;
+	GuiItem* pausemenuButtonExit;
+	GuiItem* pausemenuTextExit;
+	bool pauseMenu = false;
 
 	//LogoGui
 	GuiItem* logoTextClick;
@@ -166,12 +213,33 @@ public:
 	float speed_defeat = 0.0f;
 
 	j1Timer gameClock;
+	j1Timer Cooldown;
+
 	int timer;
 	string mins;
 	string secs;
 	bool finish = false;
+	bool UiEnabled;
+	bool loop = false;
+	float last_dt;
+	int intro_video;
+
 
 	bool active;
+
+	// Tutorial
+	bool tutorial;
+	j1Timer TutorialTimer;
+	int camera_limit_x2;
+	int camera_limit_y2;
+
+	//Upgrade_Swordman
+	int upgrade_swordman;
+	int upgrade_archer;
+	int upgrade_knight;
+
+	// Wall
+	bool wall_create;
 };
 
 #endif // __j1SCENE_H__

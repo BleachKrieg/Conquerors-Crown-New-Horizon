@@ -13,15 +13,17 @@
 #include "j1Gui.h"
 #include "j1Fonts.h"
 #include "j1Audio.h"
+#include "j1Tutorial.h"
+#include "FoWManager.h"
 
 HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::HumanBarracks)
 {
-	name.create("test_1");
+	name.create("human_barracks");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	collrange = 25;
+	coll_range = 70;
 	active = true;
 	selectable = true;
 	isSelected = false;
@@ -49,9 +51,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	life_points = 100;
 	createUI = false;
 	Barrack_Upgraded = false;
-	
-
-
+	visionEntity = nullptr;
 }
 
 HumanBarracks::~HumanBarracks()
@@ -82,6 +82,7 @@ bool HumanBarracks::Start()
 	Archer_gold_cost = nullptr;
 	Archer_Text_Gold = nullptr;
 	creation_barrack_bar = nullptr;
+	visionEntity = nullptr;
 	deployed = false;
 
 	return true;
@@ -185,6 +186,8 @@ bool HumanBarracks::CleanUp()
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
+		visionEntity->deleteEntity = true;
+		App->fowManager->foWMapNeedsRefresh = true;
 
 		for (int i = -1; i < 2; i++)
 		{
@@ -245,6 +248,14 @@ void HumanBarracks::checkAnimation(float dt)
 		world.y = position.y;  
 		team = TeamType::PLAYER;
 
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
+
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint tempPos = pos;
@@ -258,8 +269,6 @@ void HumanBarracks::checkAnimation(float dt)
 				App->pathfinding->ChangeWalkability(tempPos, 2);
 			}
 		}
-
-		//SpatialAudio(1, App->audio->construction, position.x, position.y);
 
 		actualState = ST_BARRACK_FINISHED;
 	}
@@ -307,7 +316,6 @@ void HumanBarracks::checkAnimation(float dt)
 		
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 		{
-		//	Mix_HaltChannel(-1);
 			SpatialAudio(1, App->audio->cancel_building, position.x, position.y);
 			App->scene->Building_preview = false;
 			team = TeamType::PLAYER;
@@ -329,6 +337,14 @@ void HumanBarracks::checkAnimation(float dt)
 		current_animation = &inconstruction;
 		team = TeamType::PLAYER;
 
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
+
 		if (timer.ReadSec() >= construction_time)
 		{
 			//Mix_HaltChannel(-1);
@@ -345,6 +361,22 @@ void HumanBarracks::checkAnimation(float dt)
 		//LOG("%d", Troop.size());
 		// Finished Animation
 		current_animation = &finishedconst;
+
+		if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q9_1)
+		{
+			if (App->tutorial->mision1 != nullptr && App->tutorial->mision1_Text != nullptr && App->tutorial->mision1_Text_2 != nullptr)
+			{
+				App->tutorial->mision1->to_delete = true;
+				App->tutorial->mision1_Text->to_delete = true;
+				App->tutorial->mision1_Text_2->to_delete = true;
+
+				App->tutorial->mision1 = nullptr;
+				App->tutorial->mision1_Text = nullptr;
+				App->tutorial->mision1_Text_2 = nullptr;
+			}
+			App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+			App->tutorial->ActualState = ST_Tutorial_Q10;
+		}
 
 		CheckQueue();
 
@@ -525,6 +557,7 @@ void HumanBarracks::checkAnimation(float dt)
 		//Timer for the upgrade
 		if (upgrade_timer.ReadSec() >= first_upgrade_time )
 		{
+			App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
 			if (creation_barrack_bar != nullptr)
 			{
 				creation_barrack_bar->to_delete = true;
@@ -565,7 +598,24 @@ void HumanBarracks::CheckQueue()
 			case 1:
 				Searchtile(map);
 				randomrespawn = rand() % 10 + 10;
-				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+	
+				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
+				{
+					if (App->tutorial->mision2 != nullptr && App->tutorial->mision2_Text != nullptr && App->tutorial->mision2_Text_2 != nullptr)
+					{
+						App->tutorial->mision2->to_delete = true;
+						App->tutorial->mision2_Text->to_delete = true;
+						App->tutorial->mision2_Text_2->to_delete = true;
+
+						App->tutorial->mision2 = nullptr;
+						App->tutorial->mision2_Text = nullptr;
+						App->tutorial->mision2_Text_2 = nullptr;
+					}
+					App->audio->PlayFx(-1, App->audio->quest_complete, 0);
+					App->tutorial->ActualState = ST_Tutorial_Q11;
+				}
+				
 				if (Troop[i]->image != nullptr)
 				{
 					Troop[i]->image->to_delete = true;

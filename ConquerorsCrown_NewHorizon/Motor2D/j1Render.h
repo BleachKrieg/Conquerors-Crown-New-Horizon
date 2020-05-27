@@ -5,7 +5,6 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-
 enum RENDER_PIVOT
 {
 	TOP_RIGHT,
@@ -44,7 +43,7 @@ public:
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 
-	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speedX = 1.0f, float speedY = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, float scale = 1, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
+	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speedX = 1.0f, float speedY = 1.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, float scale = 1, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX, Uint8 alpha = 255) const;
 	bool BlitWithScale(SDL_Texture* texture, int x, int y, SDL_Rect* section, float scale, float speed, float fillAmount, RENDER_PIVOT pivot);
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool filled = true, bool use_camera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
@@ -63,11 +62,10 @@ public:
 public:
 
 	SDL_Renderer*	renderer;
+	iPoint		    camera_pos;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
-
-	
 	
 private:
 	bool shaking = false;

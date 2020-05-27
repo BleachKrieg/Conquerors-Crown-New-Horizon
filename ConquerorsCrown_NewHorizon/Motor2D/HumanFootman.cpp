@@ -10,6 +10,8 @@
 #include "j1Input.h"
 #include "J1GroupMov.h"
 #include <math.h>
+#include "FoWManager.h"
+
 
 HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::HUMAN_FOOTMAN)
 {
@@ -18,12 +20,17 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 100;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 30;
+	tier_swordman = 0;
+	stats_upgrade_damage = 6;
+	stats_upgrade_life = 50;
 	time_attack = 1000;
 	attack_damage = 12;
 	vision = 26;
 	body = 13;
+	coll_range = 13;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -38,6 +45,11 @@ HumanFootman::HumanFootman(int posx, int posy) : DynamicEnt(DynamicEntityType::H
 	target_entity = NULL;
 	state = DynamicState::IDLE;
 	entity_type = DynamicEntityType::HUMAN_FOOTMAN;
+
+	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
+	visionEntity->SetNewVisionRadius(5);
+
+	speed_modifier = 1;
 
 	// TODO ------------------------------------------
 }
@@ -74,6 +86,7 @@ bool HumanFootman::Start()
 	++animations_list;
 
 	current_animation = &moving_down;
+
 	return true;
 }
 
@@ -86,14 +99,18 @@ bool HumanFootman::Update(float dt)
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (App->scene->debug)
-		life_points = 100;
+		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
 	AttackTarget(entity_type);
+	fPoint auxPos = position;
 	Movement(dt);
+
+	if (auxPos != position)
+		visionEntity->SetNewPosition({ (int)position.x, (int)position.y });
 
 	if (life_points <= 0)
 		state = DynamicState::DYING;
@@ -103,7 +120,7 @@ bool HumanFootman::Update(float dt)
 	case DynamicState::IDLE:
 		current_animation = &moving_right;
 		current_animation->Reset();
-		current_animation->loop = false;
+		//current_animation->loop = false;
 		break;
 	case DynamicState::UP:
 		current_animation = &moving_up;
@@ -133,7 +150,32 @@ bool HumanFootman::Update(float dt)
 	if (isSelected)
 		App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 15), (int)(position.y)-10);
 		//App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
-	App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w/2), (int)(position.y - (*r).h/2), r, 1.0f, 1.0f, orientation);
+	
+	if (tier_swordman != App->scene->upgrade_swordman)
+	{
+		tier_swordman = App->scene->upgrade_swordman;
+		life_points += stats_upgrade_life;
+		attack_damage += stats_upgrade_damage;
+		if (tier_swordman == 2)
+		{
+			life_points = 200;
+			attack_damage = 24;
+		}
+	}
+	
+	if (attack_damage == 18)
+	{
+		App->render->Blit(App->entity->foot_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else if (attack_damage == 24)
+	{
+		App->render->Blit(App->entity->foot_man_tex3, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else 
+	{ 
+		App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); 
+	}
+
 	return true;
 }
 
@@ -149,6 +191,8 @@ bool HumanFootman::CleanUp()
 {
 	close_entity_list.clear();
 	colliding_entity_list.clear();
+	visionEntity->deleteEntity = true;
+	App->fowManager->foWMapNeedsRefresh = true;
 	path.clear();
 	name.Clear();
 	return true;

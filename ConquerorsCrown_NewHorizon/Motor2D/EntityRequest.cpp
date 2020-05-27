@@ -11,7 +11,7 @@
 
 EntityRequest::EntityRequest()
 {
-	name.create("entity request");
+	name.create("entity_request");
 }
 
 EntityRequest::~EntityRequest()
@@ -55,8 +55,17 @@ bool EntityRequest::Update(float dt)
 				case SpawnTypes::GATHERER:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_GATHERER, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
+				case SpawnTypes::KNIGHT:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::HUMAN_KNIGHT, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
 				case SpawnTypes::TROLL:
 					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				case SpawnTypes::OGRE:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_OGRE, Queue[i]->pos.x, Queue[i]->pos.y);
+					break;
+				case SpawnTypes::GRUNT:
+					App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_GRUNT, Queue[i]->pos.x, Queue[i]->pos.y);
 					break;
 				}
 			}

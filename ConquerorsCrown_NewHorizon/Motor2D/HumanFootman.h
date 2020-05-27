@@ -27,6 +27,10 @@ public:
 
 	bool CleanUp();
 
+	int tier_swordman;
+	int stats_upgrade_damage;
+	int stats_upgrade_life;
+
 };
 
 #endif // !__HUMANFOOTMAN_H__

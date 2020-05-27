@@ -120,6 +120,7 @@ int j1PathFinding::RequestPath(const iPoint& origin, const iPoint& destination, 
 	iPoint dest = destination;
 
 	if (GetWalkability(origin) == 0 || GetWalkability(destination) == 0) {
+		requester->path.clear();
 		return -1;
 	}
 	else if (GetWalkability(destination) == 2)

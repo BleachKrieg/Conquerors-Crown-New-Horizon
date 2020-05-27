@@ -21,9 +21,12 @@ enum class SpawnTypes
 	NONE,
 	SWORDMAN,
 	ARCHER,
+	KNIGHT,
 	GATHERER,
 	PEASANT,
 	TROLL,
+	OGRE,
+	GRUNT
 };
 
 struct QueueItem

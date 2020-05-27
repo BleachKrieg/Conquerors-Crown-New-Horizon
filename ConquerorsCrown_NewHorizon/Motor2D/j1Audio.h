@@ -47,46 +47,57 @@ public:
 
 	//Load module audio data
 	bool j1Audio::Load(pugi::xml_node& config);
-	void musicvolume(float value);
-	float fxvolume(float value);
+	void MusicVolume(float vol);
+	void FxVolume(int channel, float value);
 	void SetChannelVolume(int channel, int volume);
 
 public:
+	float volumemusic;
+	float volumefx;
+	int sp_audio;
 
 	int construction;
 	int cancel_building;
-	int select_footman;
-	int select_archer;
-	int select_gatherer;
 	int go_footman;
 	int go_archer;
 	int go_gatherer;
+	int go_knight;
 	int footman_attack;
 	int archer_attack;
+	int knight_attack;
 	int troll_attack;
+	int grunt_attack;
+	int ogre_attack;
 	int wood_gatherer;
 	int mine_gatherer;
 	int die_footman;
 	int die_archer;
+	int die_knight;
 	int die_gatherer;
 	int die_troll;
+	int die_grunt;
+	int die_ogre;
 
 	int click_to_play;
 	int normal_click;
+	int pause_fx_in;
+	int pause_fx_out;
+
 	int upgrade_complete;
+	int quest_complete;
+	int quest_failed;
+	int tutorial_complete;
 
 	int logo_game_fx;
 	int logo_team_fx;
-
+	
 private:
 
 	_Mix_Music* music = NULL;
 	vector<Mix_Chunk*>	fx;
 	p2SString			music_directory;
 	p2SString			fx_directory;
-	float volumemusic;
-	float volumefx;
-
+	
 	bool musicToFree;
 };
 

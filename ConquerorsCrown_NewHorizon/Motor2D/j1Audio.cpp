@@ -1,3 +1,4 @@
+#include <math.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -26,10 +27,10 @@ j1Audio::~j1Audio()
 bool j1Audio::Awake(pugi::xml_node & config)
 {
 	
-	/*music_directory = config.child("music").child_value("folder");
+	music_directory = config.child("music").child_value("folder");
 	fx_directory = config.child("fx").child_value("folder");
 	volumemusic = config.child("music").child("volumemusic").attribute("value").as_float();
-	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();*/
+	volumefx = config.child("fx").child("volumefx").attribute("value").as_float();
 	
 
 	LOG("Loading Audio Mixer");
@@ -65,28 +66,39 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	construction = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Construction_Loop_2.wav");
 	cancel_building = App->audio->LoadFx("Assets/Audio/SFX/Buildings/Cancel_Building2.wav");
 	
-	/*select_footman = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
-	select_archer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
-	select_gatherer = App->audio->LoadFx("Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");*/
 	go_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Move_2.wav");
 	go_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Move_3.wav");
-	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/peasant/Peasant_Move.wav");
+	go_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Move.wav");
+	go_knight = App->audio->LoadFx("Assets/Audio/SFX/Humans/knight/Knight_Move_1.wav");
 	footman_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Light_Slice_Metal_1.wav");
 	archer_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Arrow_Throwing.wav");
+	knight_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav");
 	troll_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Axe_Throwing.wav");
+	grunt_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav"); 
+	ogre_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Heavy_Chop_Metal_3.wav");
 	wood_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
 	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
-	//die_gatherer = App->audio->LoadFx("Audio/SFX/Humans/peasant/Peasant_Death.wav");
+	die_knight = App->audio->LoadFx("Assets/Audio/SFX/Humans/knight/Knight_Death.wav");
+	die_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Humans/Peasant/Peasant_Warcry_1.wav");
 	die_troll = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Troll/Troll_Death2.wav");
-	
+	die_grunt = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Grunt/Grunt_Death.wav");
+	die_ogre = App->audio->LoadFx("Assets/Audio/SFX/Orcs/Ogre/Ogre_Death_1.wav");
+
 	click_to_play = App->audio->LoadFx("Assets/Audio/SFX/UI/Big_Button_Click.wav");
 	normal_click = App->audio->LoadFx("Assets/Audio/SFX/UI/Click.wav");
-	//upgrade_complete = App->audio->LoadFx("Audio/SFX/Humans/Upgrade_Complete_1.wav");
+	pause_fx_in = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_In.wav");
+	pause_fx_out = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_Out.wav");
+
+	upgrade_complete = App->audio->LoadFx("Assets/Audio/SFX/Humans/Upgrade_Complete_1.wav");
+	quest_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Good_Job.wav");
+	quest_failed = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Failed.wav");
+	tutorial_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Completed.wav");
 	
 	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");
 	logo_team_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Team_SFX.wav");
+	
 	return ret;
 }
 
@@ -128,7 +140,6 @@ bool j1Audio::Update(float dt) {
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
-	//Mix_VolumeMusic(128 * volumemusic);
 	bool ret = true;
 
 	if(!active)
@@ -174,7 +185,6 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	}
 
 	LOG("Successfully playing %s", path);
-
 	return ret;
 }
 
@@ -229,9 +239,15 @@ bool j1Audio::PlayFx(int channel, unsigned int id, int repeat)
 
 	if (id > 0 && id <= fx.size())
 	{
-		if (fx[id - 1] != nullptr) Mix_PlayChannel(channel, fx[id - 1], repeat);
-		else LOG("Could not play audio because there is no fx.");
-		//Mix_VolumeChunk(fx[id - 1], (volumefx*128));
+		if (fx[id - 1] != nullptr) 
+		{ 
+			//FxVolume(-1, volumefx, sp_audio);
+			Mix_PlayChannel(channel, fx[id - 1], repeat);
+		}
+		else {
+			LOG("Could not play audio because there is no fx.");
+		}
+
 	}
 
 	return ret;
@@ -262,18 +278,38 @@ bool j1Audio::Load(pugi::xml_node& data)
 	volumefx = data.child("volumefx").attribute("value").as_float();
 	return true;
 }
-void j1Audio::musicvolume(float value) {
-	volumemusic = value;
+void j1Audio::MusicVolume(float vol) {
+
+	volumemusic = vol;
+
+	if (volumemusic >= 1) {
+		volumemusic = 1;
+	}
+	if (volumemusic <= 0) {
+		volumemusic = 0;
+	}
+
 	Mix_VolumeMusic(128 * volumemusic);
 }
 
-float j1Audio::fxvolume(float value) {
-	volumefx = value;
-	return volumefx;
+void j1Audio::FxVolume(int channel, float vol) {
+	
+	volumefx = vol;
+	
+	if (volumefx >= 1) {
+		volumefx = 1;
+	}
+	if (volumefx <= 0) {
+		volumefx = 0;
+	}
+	Mix_Volume(channel, volumefx*128);
+	//LOG("VOLUME SLIDER: %.2f", vol);
 }
 
 void j1Audio::SetChannelVolume(int channel, int volume)
 {
-	Mix_Volume(channel, volume);
+	//volume_fx = volume_fx * spatial_audio_volume;
+	Mix_Volume(channel, (volumefx * 128));
+	LOG("VOLUME: %i", 128 - Mix_Volume(channel, -1));
 }
 
