@@ -155,9 +155,6 @@ public:
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
 
-	
-	SDL_Texture* portrait_tex;
-
 	//OptionsGui
 	bool optionsMenu;
 	bool fullscreen;
