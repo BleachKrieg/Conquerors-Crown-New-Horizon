@@ -25,7 +25,6 @@ ResourceEntity::~ResourceEntity() {}
 
 bool ResourceEntity::Start()
 {
-	to_delete = false;
 	//iPoint pos = App->map->WorldToMap((int)position.x, (int)position.y);
 	//App->pathfinding->ChangeWalkability(pos, 2);
 	return true;

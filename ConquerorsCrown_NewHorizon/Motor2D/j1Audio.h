@@ -61,10 +61,8 @@ public:
 	int go_footman;
 	int go_archer;
 	int go_gatherer;
-	int go_knight;
 	int footman_attack;
 	int archer_attack;
-	int knight_attack;
 	int troll_attack;
 	int grunt_attack;
 	int ogre_attack;
@@ -72,7 +70,6 @@ public:
 	int mine_gatherer;
 	int die_footman;
 	int die_archer;
-	int die_knight;
 	int die_gatherer;
 	int die_troll;
 	int die_grunt;
@@ -90,7 +87,12 @@ public:
 
 	int logo_game_fx;
 	int logo_team_fx;
-	
+	int crown_fx;
+	int axe_fx;
+	int warcry_fx;
+	int skull_fx;
+	int horn_fx;
+
 private:
 
 	_Mix_Music* music = NULL;

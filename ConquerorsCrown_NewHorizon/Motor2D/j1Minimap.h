@@ -46,7 +46,6 @@ private:
 	Corner corner;
 	SDL_Rect minimap_test_rect;
 	j1PerfTimer	ptimer;
-	SDL_Texture* minimap_entities;
 };
 
 #endif // !_j1MINIMAP_H

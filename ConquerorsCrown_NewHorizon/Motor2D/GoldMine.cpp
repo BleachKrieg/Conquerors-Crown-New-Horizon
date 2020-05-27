@@ -12,7 +12,7 @@
 #include "j1Fonts.h"
 #include "j1Audio.h"
 
-GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::GoldMine)
+GoldMine::GoldMine(int posx, int posy) : StaticEnt(StaticEntType::GoldMine)
 {
 	name.create("gold_mine");
 	position.x = posx - 64;
@@ -22,11 +22,8 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	active = true;
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
-	out_of_material_mine.PushBack({ 103,8,96,89 }, 0.2, 0, 0, 0, 0);
-	has_limit = true;
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
 	isSelected = false;
-	extraction_limit = amount;
 }
 
 GoldMine::~GoldMine() {}
@@ -34,34 +31,36 @@ GoldMine::~GoldMine() {}
 bool GoldMine::Start()
 {
 	mine_lights = LIGHTS_OFF;
-	has_limit = true;
-	to_delete = false;
-	if (extraction_limit >= 1999u)
-		extraction_limit = 0u;
-	pre_check = extraction_limit;
+	iPoint pos = { (int)position.x, (int)position.y };
+	pos = App->map->WorldToMap(pos.x, pos.y);
+	iPoint tempPos = pos;
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			tempPos.x = pos.x + i;
+			tempPos.y = pos.y + j;
+			App->pathfinding->ChangeWalkability(tempPos, 1);
+		}
+	}
+
 	return true;
 }
 
 bool GoldMine::Update(float dt)
 {
 	SDL_Rect* r;
-	if (extraction_limit == 0)
-	{
-		current_animation = &out_of_material_mine;
-	}
-	else if (extraction_limit > 0 && mine_lights == LIGHTS_OFF)
+	if (mine_lights == LIGHTS_OFF)
 	{
 		current_animation = &no_light_mine;
 	}
-	else if (extraction_limit > 0 && mine_lights == LIGHTS_ON)
+	else if (mine_lights == LIGHTS_ON)
 	{
 		current_animation = &light_mine;
 	}
-
 	r = &current_animation->GetCurrentFrame(dt);
-
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
-	
 
 	return true;
 }
@@ -77,26 +76,4 @@ bool GoldMine::CleanUp()
 {
 
 	return true;
-}
-
-uint GoldMine::GetExtractionLimit()
-{
-	return extraction_limit;
-}
-
-void GoldMine::DecreaseExtractionCount()
-{
-	if (extraction_limit > 0)extraction_limit--;
-	else extraction_limit = 0;
-}
-
-uint GoldMine::GetPreCheck()
-{
-	return pre_check;
-}
-
-void GoldMine::DecreasePreCheck()
-{
-	if (pre_check > 0)pre_check--;
-	else pre_check = 0;
 }

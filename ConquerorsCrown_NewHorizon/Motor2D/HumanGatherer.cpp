@@ -49,8 +49,6 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 
 	visionEntity = App->fowManager->CreateFoWEntity({ posx, posy }, true);
 	visionEntity->SetNewVisionRadius(5);
-	speed_modifier = 1;
-
 	// TODO ------------------------------------------
 }
 
@@ -58,6 +56,7 @@ HumanGatherer::~HumanGatherer() {}
 
 bool HumanGatherer::Start()
 {
+	AssignTownHall();
 
 	list<Animation*>::iterator animations_list;
 	animations_list = App->entity->gatherer_animations.begin();
@@ -85,9 +84,6 @@ bool HumanGatherer::Start()
 	++animations_list;
 	death_down = **animations_list;
 	++animations_list;
-	work_space = nullptr;
-	work_mine_space = nullptr;
-	town_hall = nullptr;
 	
 	current_animation = &moving_down;
 	return true;
@@ -115,11 +111,8 @@ bool HumanGatherer::Update(float dt)
 			CheckTownHall();
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
-			work_space = nullptr;
-			work_mine_space = nullptr;
 			iPoint pos;
 			j1Entity* it;
-			GoldMine* it_mine;
 			App->input->GetMousePosition(pos.x, pos.y);
 			pos = App->render->ScreenToWorld(pos.x, pos.y);
 			bool loop = true;
@@ -127,22 +120,22 @@ bool HumanGatherer::Update(float dt)
 			inv_size = 0;
 			for (int i = 0; i < App->entity->mines.size() && loop; ++i)
 			{
-				it_mine = App->entity->mines[i];
-				it = (j1Entity*)it_mine;
-				r = it_mine->GetAnimation()->GetCurrentSize();
-				r.x = it_mine->position.x + 64;
-				r.y = it_mine->position.y + 64;
+				it = App->entity->mines[i];
+
+				r = it->GetAnimation()->GetCurrentSize();
+				r.x = it->position.x + 64;
+				r.y = it->position.y + 64;
 				r.w /= 2;
 				r.h /= 2;
-				if (pos.x > (r.x - r.w - 12) && pos.x < (r.x + r.w) && pos.y >(r.y - r.h - 12) && pos.y < (r.y + r.h - 24) && it_mine->GetPreCheck() > 0)
+				if (pos.x > (r.x - r.w - 12) && pos.x < (r.x + r.w) && pos.y >(r.y - r.h - 12) && pos.y < (r.y + r.h - 24))
 				{
 					work_space = it;
-					work_mine_space = it_mine;
 					loop = false;
 					found = true;
 					work_state = WORK_STATE::GO_TO_WORK;
 					work_name = it->name;
 					work_time = App->entity->mines_time;
+					App->render->DrawQuad(r, 255, 255, 0, 255);
 				}
 			}
 			for (int i = 0; i < App->entity->resources_ent.size() && loop; ++i)
@@ -175,11 +168,6 @@ bool HumanGatherer::Update(float dt)
 		}
 	}
 
-	if (work_space != work_mine_space) {
-		if (work_mine_space != nullptr)
-			work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
-		work_mine_space = nullptr;
-	}
 	
 	if (work_state == WORK_STATE::GO_TO_WORK)
 	{
@@ -190,18 +178,10 @@ bool HumanGatherer::Update(float dt)
 			path.clear();
 			work_state = WORK_STATE::WORKING;
 			target_entity = nullptr;
-			if (work_name == "gold_mine" && work_mine_space->GetPreCheck() > 0)
+			if (work_name == "gold_mine")
 			{
-				work_mine_space->DecreasePreCheck();
-				work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_ON;
 				to_blit = false;
 				isSelected = false;
-			}
-			else if (work_name == "gold_mine" && work_mine_space->GetPreCheck() == 0) {
-				work_space = nullptr;
-				work_mine_space = nullptr;
-				work_name = "";
-				work_state = WORK_STATE::NONE;
 			}
 			start_time = timer.ReadMs();
 		}
@@ -224,12 +204,6 @@ bool HumanGatherer::Update(float dt)
 			player_order = true;
 			inv_size = 0u;
 			following_target = false;
-			if (work_mine_space != nullptr && work_mine_space->GetExtractionLimit() == 0)
-			{
-				work_space = nullptr;
-				work_name = "";
-				work_state = WORK_STATE::NONE;
-			}
 		}
 	}
 	if (work_state == WORK_STATE::WORKING)
@@ -237,15 +211,10 @@ bool HumanGatherer::Update(float dt)
 		if (work_name == "gold_mine") 
 		{
 			isSelected = false;
-			work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_ON;
 		}
 		state = DynamicState::INTERACTING;
 		if ((timer.ReadMs() - start_time) > work_time)
 		{
-			if (work_mine_space != nullptr) {
-				work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
-				work_mine_space->DecreaseExtractionCount();
-			}
 			target_entity = town_hall;
 			following_target = false;
 			inv_size = 100;
@@ -328,7 +297,6 @@ bool HumanGatherer::PostUpdate(float dt)
 
 bool HumanGatherer::CleanUp()
 {
-	if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	visionEntity->deleteEntity = true;
@@ -340,22 +308,17 @@ bool HumanGatherer::CleanUp()
 
 void HumanGatherer::CheckTownHall()
 {
-	bool found = false;
+	bool loop = true;
 	if (town_hall != nullptr)
 	{
-		for (uint i = 0; i < App->entity->player_stat_ent.size(); ++i)
+		for (uint i = 0; i < App->entity->player_stat_ent.size() && loop; ++i)
 		{
-			if (App->entity->player_stat_ent[i]->name == "town_hall" && position.DistanceTo(App->entity->player_stat_ent[i]->position) < position.DistanceTo(town_hall->position))
-			{
-				town_hall = App->entity->player_stat_ent[i];
-				found = true;
-			}
 			if (town_hall == App->entity->player_stat_ent[i])
 			{
-				found = true;
+				loop = false;
 			}
 		}
-		if (!found)
+		if (loop)
 			town_hall = nullptr;
 	}
 	if (town_hall == nullptr)
@@ -365,14 +328,9 @@ void HumanGatherer::CheckTownHall()
 void HumanGatherer::AssignTownHall()
 {
 	bool found = false;
-	for (int i = 0; i < App->entity->player_stat_ent.size(); ++i)
+	for (int i = 0; i < App->entity->player_stat_ent.size() && !found; ++i)
 	{
-		if (town_hall == nullptr && App->entity->player_stat_ent[i]->name == "town_hall")
-		{
-			town_hall = App->entity->player_stat_ent[i];
-			found = true;
-		}
-		if (town_hall != nullptr && App->entity->player_stat_ent[i]->name == "town_hall" && position.DistanceTo(App->entity->player_stat_ent[i]->position) < position.DistanceTo(town_hall->position))
+		if (App->entity->player_stat_ent[i]->name == "town_hall")
 		{
 			town_hall = App->entity->player_stat_ent[i];
 			found = true;

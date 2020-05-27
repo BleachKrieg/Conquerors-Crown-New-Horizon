@@ -27,12 +27,7 @@ public:
 
 	// Clean
 	bool CleanUp();
-private:
-	ParticleSystem* particleSystem = nullptr;
 
-	int tier_archer;
-	int stats_upgrade_damage;
-	int stats_upgrade_life;
 };
 
 #endif // !__HUMANARCHER_H__

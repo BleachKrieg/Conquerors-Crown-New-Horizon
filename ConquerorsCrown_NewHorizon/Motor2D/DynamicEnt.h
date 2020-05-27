@@ -20,7 +20,6 @@ public:
 		HUMAN_ARCHER,
 		HUMAN_FOOTMAN,
 		HUMAN_GATHERER,
-		HUMAN_KNIGHT,
 		ENEMY_TROLL,
 		ENEMY_OGRE,
 		ENEMY_GRUNT,
@@ -108,8 +107,7 @@ protected:
 	j1PerfTimer	timer;
 	uint		current_time;
 	bool		change_direction;
-protected:
-	float speed_modifier = 0.0f;
+
 private:
 
 	int			death_counter;

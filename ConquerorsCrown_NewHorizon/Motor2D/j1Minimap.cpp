@@ -66,7 +66,6 @@ bool j1Minimap::Start() {
 	scale = ((width) / ((float)map_width));
 	height = (map_height) * scale;
 
-	minimap_entities = App->tex->Load("Assets/textures/units/Minimap/minimap_entities.png");
 	//TODO 2: Create a texture for the minimap
 	texture = SDL_CreateTexture(App->render->renderer, SDL_GetWindowPixelFormat(App->win->window), SDL_TEXTUREACCESS_TARGET,1.f * width, 1.f *height);
 	
@@ -147,23 +146,26 @@ bool j1Minimap::Update(float dt) {
 		{
 					
 			for (int i = 0; i < App->entity->ai_dyn_ent.size(); i++) {
-				SDL_Rect rect{ 2, 0, 2, 2 };
-				iPoint minimap_rect_position = App->minimap->WorldToMinimap(App->entity->ai_dyn_ent[i]->position.x, App->entity->ai_dyn_ent[i]->position.y);
-				
-				App->render->Blit(minimap_entities, minimap_rect_position.x, minimap_rect_position.y, &rect, 0, 0);
+				SDL_Rect rect{ App->entity->ai_dyn_ent[i]->position.x, App->entity->ai_dyn_ent[i]->position.y, 2, 2 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 255, 0, 0, 255, true, false);
 			}
 			for (int i = 0; i < App->entity->player_dyn_ent.size(); i++) {
-				SDL_Rect rect{ 0, 0, 2, 2 };
-				iPoint minimap_rect_position = App->minimap->WorldToMinimap(App->entity->player_dyn_ent[i]->position.x, App->entity->player_dyn_ent[i]->position.y);
-				
-				App->render->Blit(minimap_entities, minimap_rect_position.x, minimap_rect_position.y, &rect, 0, 0);
+				SDL_Rect rect{ App->entity->player_dyn_ent[i]->position.x, App->entity->player_dyn_ent[i]->position.y, 2, 2 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 0, 255, 0, 255, true, false);
 			}
 
 			for (int i = 0; i < App->entity->player_stat_ent.size(); i++) {
-				SDL_Rect rect{ 0, 2, 4, 4 };
-				iPoint minimap_rect_position = App->minimap->WorldToMinimap(App->entity->player_stat_ent[i]->position.x, App->entity->player_stat_ent[i]->position.y);
-
-				App->render->Blit(minimap_entities, minimap_rect_position.x, minimap_rect_position.y, &rect, 0, 0);
+				SDL_Rect rect{ App->entity->player_stat_ent[i]->position.x, App->entity->player_stat_ent[i]->position.y, 4, 4 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(rect.x, rect.y);
+				rect.x = minimap_rect_position.x;
+				rect.y = minimap_rect_position.y;
+				App->render->DrawQuad(rect, 0, 255, 0, 255, true, false);
 			}
 
 			if (App->scene->current_scene == scenes::ingame && App->tutorial->MinimapActive == false && !App->scene->debug)
@@ -188,7 +190,6 @@ bool j1Minimap::PostUpdate(float dt)
 
 bool j1Minimap::CleanUp() {
 	App->tex->UnLoad(texture);
-	App->tex->UnLoad(minimap_entities);
 	texture = nullptr;
 	input = false;
 	return true;

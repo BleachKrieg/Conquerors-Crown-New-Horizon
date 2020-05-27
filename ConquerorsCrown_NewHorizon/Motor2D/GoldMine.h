@@ -15,7 +15,7 @@ class GoldMine : public StaticEnt
 {
 public:
 	// Constructor
-	GoldMine(int posx, int posy, uint amount);
+	GoldMine(int posx, int posy);
 
 	// Destructor
 	~GoldMine();
@@ -32,22 +32,9 @@ public:
 
 	MINE_LIGHTS mine_lights;
 
-	bool has_limit;
-
-	uint GetExtractionLimit();
-
-	uint GetPreCheck();
-
-	void DecreasePreCheck();
-
-	void DecreaseExtractionCount();
-
 private:
 	Animation no_light_mine;
 	Animation light_mine;
-	Animation out_of_material_mine;
-	uint extraction_limit;
-	uint pre_check;
 };
 
 #endif // !__GOLDMINE_H__
