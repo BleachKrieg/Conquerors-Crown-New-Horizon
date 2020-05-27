@@ -27,10 +27,10 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	speed = { NULL, NULL };
 	life_points = 80;
 	attack_vision = 200;
-	attack_range = 140;
+	attack_range = 100;
 	time_attack = 1400;
 	attack_damage = 12;
-	vision = 26;
+	vision = 20;
 	body = 13;
 	coll_range = 13;
 	position.x = posx;
