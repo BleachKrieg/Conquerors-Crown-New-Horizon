@@ -361,23 +361,23 @@ void j1WaveSystem::StartWave(int wave)
 	
 	//int total_spawns = 2 + 9 * wave;
 
-	int wave_value = 30 + 80 * wave;
-	if (spawn_buildings == 2) { wave_value = wave_value - 20 * wave; }
+	int wave_value = 30 + 70 * wave;
+	if (spawn_buildings == 2) { wave_value = wave_value - 30 * wave; }
 	else if (spawn_buildings == 1) { wave_value = wave_value - 60 * wave; }
 	else if (spawn_buildings == 0) { wave_value = 0; }
 
 	if (wave_ongoing == false) {
 		if (wave == 1) {
-			trolls = 12; ogres = 0; grunts = 0;
-			if (spawn_buildings == 3) { trolls = 0; ogres = 0; grunts = 12; }
-			else if (spawn_buildings == 2) { trolls = 0; ogres = 0; grunts = 10; }
-			else if (spawn_buildings == 1) { trolls = 0; ogres = 0; grunts = 8; }
+			trolls = 0; ogres = 0; grunts = 9;
+			if (spawn_buildings == 3) { trolls = 0; ogres = 0; grunts = 9; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 0; grunts = 7; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 0; grunts = 5; }
 			else { trolls = 0; ogres = 0; grunts = 0; }
 		}
 		else if (wave == 5) { 
-			if (spawn_buildings == 3) { trolls = 0; ogres = 15; grunts = 0; }
-			else if (spawn_buildings == 2) { trolls = 0; ogres = 12; grunts = 0; }
-			else if (spawn_buildings == 1) { trolls = 0; ogres = 9; grunts = 0; }
+			if (spawn_buildings == 3) { trolls = 0; ogres = 12; grunts = 0; }
+			else if (spawn_buildings == 2) { trolls = 0; ogres = 9; grunts = 0; }
+			else if (spawn_buildings == 1) { trolls = 0; ogres = 6; grunts = 0; }
 			else { trolls = 0; ogres = 0; grunts = 0; }
 		}
 		else if (wave == 2) {
