@@ -52,6 +52,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		lvlname.create(map.attribute("name").as_string());
 	}
 	logoSheet_file_name = config.child("logo").attribute("file").as_string("");
+	
+	
 	fullscreen = false;
 	
 	return ret;
@@ -85,6 +87,8 @@ bool j1Scene::Start()
 	stats_upgrade_Archer = 1;
 
 	wants_to_load = false;
+
+	
 
 
 	//debug_tex = App->tex->Load("textures/maps/Tile_select.png");
@@ -219,20 +223,9 @@ bool j1Scene::Update(float dt)
 
 		break;
 	case scenes::ingame:
-		//Camera movement inputs
-		if (App->movement->portrait_entity != nullptr)
-		{
-			if (App->movement->portrait_entity->name == p2SString("town_hall"))
-			{
-				LOG("imprimir town_hall");
-			}
-			if (App->movement->portrait_entity->name == p2SString("human_archer"))
-			{
-				LOG("imprimir human_archer");
-			}
-		}
 		
-
+		
+		//Camera movement inputs
 		int x, y;
 		App->input->GetMousePosition(x, y);
 
@@ -264,6 +257,7 @@ bool j1Scene::Update(float dt)
 		if (App->render->camera.y > 0) App->render->camera.y = 0;
 		int camera_limit_y = (-1 * App->map->data.height * App->map->data.tile_height) + App->render->camera.h;
 		if (App->render->camera.y < camera_limit_y) App->render->camera.y = camera_limit_y;
+
 		
 		//UI Position update
 		ingameUIPosition = App->render->ScreenToWorld(0, 442);
@@ -446,8 +440,88 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
+
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			{
+
+			}
+
+		}
 		break;
 	case scenes::ingame:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
+
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(portrait_tex, App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			{
+				
+			}
+		
+		}
 
 		//Mouse input for UI buttons
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
@@ -694,6 +768,7 @@ void j1Scene::DeleteScene() {
 		App->map->CleanUp();
 		App->fowManager->DeleteFoWMap();
 		App->wave->wave_ongoing = false;
+		App->tex->UnLoad(portrait_tex);
 		break;
 	case scenes::logo:
 		if (intro_video != 0)
@@ -1075,6 +1150,8 @@ bool j1Scene::CreateInGame()
 	ingameTextWave = App->gui->CreateGuiElement(Types::text, 631, 0, { 0, 0, 49, 49 }, ingameTopBar, nullptr, "0", App->font->defaultfont);
 
 	App->fowManager->CreateFoWMap(App->map->data.width, App->map->data.height);
+
+	portrait_tex = App->tex->Load("Assets/textures/gui/Ui_Atlas.png");
 
 	if (!wants_to_load)
 	{
