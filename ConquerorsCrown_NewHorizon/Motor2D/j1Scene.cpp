@@ -423,7 +423,7 @@ bool j1Scene::Update(float dt)
 		}
 		else if (gameClock.ReadSec() > 5 && !finish)
 		{
-			LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
+	//		LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
 			int townhall_counter = 0;
 			for (int i = 0; i < App->entity->player_stat_ent.size(); i++)
 			{
@@ -1342,6 +1342,14 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		}
 		else if (guiElement == menuButtonLoadGame) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				//App->LoadGame();
+
+			}
+
 		}
 		else if (guiElement == menuButtonOptions) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
@@ -1408,10 +1416,22 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		}
 		else if (guiElement == pausemenuButtonSave) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if(current_scene == scenes::ingame)
+			App->SaveGame();
+
 			//save
 		}
 		else if (guiElement == pausemenuButtonLoad) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				wants_to_load = true;
+				pauseMenu = false;
+				DeletePauseMenu();
+				//App->LoadGame();
+
+			}
 			//load
 		}
 		else if (guiElement == pausemenuButtonOptions) {

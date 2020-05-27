@@ -4,7 +4,7 @@
 	<window />
 	<textures />
 	<audio>
-		<volumemusic value="1" />
+		<volumemusic value="0.200000003" />
 		<volumefx value="1" />
 	</audio>
 	<map />
@@ -12,7 +12,7 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="-1.19200003" />
+		<clock time_passed="5.54500008" />
 		<upgrades swordman="0" archer="0" knight="0" />
 	</scene>
 	<entity_request />
@@ -48,15 +48,19 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1168" />
+			<position pos_x="3520" pos_y="1169" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1141" />
+			<position pos_x="3520" pos_y="1142" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1195" />
+			<position pos_x="3520" pos_y="1196" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="3441" pos_y="1332" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2668,7 +2672,7 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave wave="1" time="1.80999994">
+	<wave wave="1" time="9.54699993">
 		<spawn_1 Has_Building="true" />
 		<spawn_2 Has_Building="true" />
 		<spawn_3 Has_Building="true" />
