@@ -21,6 +21,7 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "J1GroupMov.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -76,6 +77,8 @@ bool j1Scene::Start()
 	upgrade_swordman = 0;
 	upgrade_archer = 0;
 	upgrade_knight = 0;
+
+	
 
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 
@@ -471,9 +474,88 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
+
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			{
+
+			}
+
+		}
 		break;
 	case scenes::ingame:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
 
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			{
+
+			}
+
+		}
 		//Mouse input for UI buttons
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())

@@ -158,6 +158,7 @@ public:
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
 
+
 	//OptionsGui
 	bool optionsMenu;
 	bool fullscreen;

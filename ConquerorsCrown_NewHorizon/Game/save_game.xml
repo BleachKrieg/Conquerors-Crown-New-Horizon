@@ -4,7 +4,7 @@
 	<window />
 	<textures />
 	<audio>
-		<volumemusic value="1" />
+		<volumemusic value="0.200000003" />
 		<volumefx value="1" />
 	</audio>
 	<map />
@@ -12,14 +12,14 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="25.2329998" />
+		<clock time_passed="56.8099976" />
 		<upgrades swordman="0" archer="0" knight="0" />
 	</scene>
 	<entity_request />
 	<group_movement />
 	<entity_manager>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3456" pos_y="896" />
 		</Entity>
 		<Entity>
@@ -27,23 +27,23 @@
 			<position pos_x="3456" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="416" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3296" pos_y="1408" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="2720" pos_y="1568" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3136" pos_y="2144" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="2208" pos_y="2336" />
 		</Entity>
 		<Entity>
@@ -60,43 +60,31 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1169.06006" />
+			<position pos_x="3520" pos_y="1169" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1142.68018" />
+			<position pos_x="3520" pos_y="1142" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1196.81982" />
+			<position pos_x="3520" pos_y="1196" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3332" pos_y="1315" />
+			<position pos_x="3551.18066" pos_y="1280.91858" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3306" pos_y="1323" />
+			<position pos_x="3630" pos_y="1250" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3317" pos_y="1246" />
+			<position pos_x="3602" pos_y="1296" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3263" pos_y="1345" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3308" pos_y="1372" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3376" pos_y="1325" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="human_footman" />
-			<position pos_x="3344" pos_y="1276" />
+			<position pos_x="3556" pos_y="1342" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2708,7 +2696,7 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave wave="1" time="25.2350006">
+	<wave wave="1" time="72.8119965">
 		<spawn_1 Has_Building="true" />
 		<spawn_2 Has_Building="true" />
 		<spawn_3 Has_Building="true" />
