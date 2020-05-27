@@ -20,8 +20,8 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
-	body = 40;
-	collrange = 50;
+	body = 0;
+	collrange = 70;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
@@ -44,7 +44,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	finishedconst2.PushBack({129,0,125,124}, 0.2, 0, 0, 0, 0);
 
 	team = TeamType::IA;
-	life_points = 300;
+	life_points = 200;
 	max_hp = life_points;
 }
 

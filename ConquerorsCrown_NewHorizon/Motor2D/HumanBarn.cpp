@@ -23,7 +23,7 @@ HumanBarn::HumanBarn(int posx, int posy) : StaticEnt(StaticEntType::Barn)
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	coll_range = 50;
+	coll_range = 70;
 	active = true;
 	selectable = true;
 	isSelected = false;

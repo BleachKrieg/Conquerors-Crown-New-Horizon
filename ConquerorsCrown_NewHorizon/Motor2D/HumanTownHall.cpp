@@ -23,7 +23,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	coll_range = 50;
+	coll_range = 70;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
@@ -49,7 +49,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 
 	team = TeamType::PLAYER;
 	actualState = ST_TOWNHALL_PREVIEW;
-	life_points = 100;
+	life_points = 200;
 }
 
 HumanTownHall::~HumanTownHall()
@@ -96,7 +96,7 @@ bool HumanTownHall::Update(float dt)
 	if (isSelected && App->movement->player_selected != this)
 		isSelected = false;
 	if(App->scene->debug)
-	life_points = 100;
+	life_points = 200;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
