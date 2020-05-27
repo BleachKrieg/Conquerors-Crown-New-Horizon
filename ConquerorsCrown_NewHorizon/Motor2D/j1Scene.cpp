@@ -801,6 +801,7 @@ void j1Scene::LoadTiledEntities() {
 		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1175 });
 		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1165 });
 		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1185 });
+		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { 3520, 1195 });
 	}
 }
 
