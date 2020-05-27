@@ -766,7 +766,7 @@ void j1Scene::LoadTiledEntities() {
 						switch (tile_id) {
 						case 381:
 							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 20u);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 50u);
 							break;
 						case 401:
 							active = true;
