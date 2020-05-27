@@ -27,7 +27,10 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	to_delete = false;
 	canbuild = false;
 	active = true;
+	defense_cooldown.Start();
 	spawn_cooldown.Start();
+	defenses_spawned = false;
+	spawn_counter = 0;
 
 
 	//pos0 = { 827, 103 };
@@ -37,11 +40,11 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	//pos4 = { 827, 230 };
 	//pos5 = { 890, 230 };
 	// Load all animations
-	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
+	inconstruction.PushBack({0,0,125,124}, 0.2, 0, 0, 0, 0);
 	finishedconst2.PushBack({129,0,125,124}, 0.2, 0, 0, 0, 0);
 
 	team = TeamType::IA;
-	life_points = 100;
+	life_points = 300;
 	max_hp = life_points;
 }
 
@@ -68,14 +71,15 @@ bool EnemyBarracks::Update(float dt)
 		
 	checkAnimation(dt);
 
-	if (life_points < max_hp && spawn_cooldown.ReadSec() > 20)
+	if (life_points < max_hp && defense_cooldown.ReadSec() > 20)
 	{
-		spawn_cooldown.Start();
-		LOG("spawn :D");
+		SpawnDefenses();
+		if (defenses_spawned == true) { defense_cooldown.Start(); }
 	}
-	if (spawn_cooldown.ReadSec() < 20)
+	if (defense_cooldown.ReadSec() < 20)
 	{
 		max_hp = life_points;
+		defenses_spawned = false;
 	}
 
 	//Final blit
@@ -160,4 +164,29 @@ iPoint EnemyBarracks::Searchtile(iPoint map)
 
 	respawn = { 1,1 };
 	return respawn;
+}
+
+bool EnemyBarracks::SpawnDefenses()
+{
+	if (spawn_cooldown.ReadSec() > 0.5)
+	{
+		int r = rand() % 3 + 1;
+		switch (r) {
+		case 1:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, position.x + 20, position.y + 20);
+			break;
+		case 2:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_GRUNT, position.x + 20, position.y + 20);
+			break;
+		case 3:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_OGRE, position.x + 20, position.y + 20);
+			break;
+		}
+		spawn_counter++;
+		spawn_cooldown.Start();
+	}
+
+	if (spawn_counter == 7) { defenses_spawned = true; spawn_counter = 0; }
+
+	return true;
 }

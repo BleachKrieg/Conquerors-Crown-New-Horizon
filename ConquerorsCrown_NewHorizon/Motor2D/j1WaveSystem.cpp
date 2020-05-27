@@ -71,6 +71,7 @@ bool j1WaveSystem::Start()
 	ogre_counter = 0;
 	wave_ongoing = false;
 	max_waves = 7;
+	to_win = false;
 
 	troll_value = 15;
 	grunt_value = 10;
@@ -244,6 +245,12 @@ bool j1WaveSystem::Update(float dt)
 			spawn_buildings = 2;
 		}
 		else { spawn_buildings = 3; }
+
+		if (spawn_buildings == 0 && to_win == false)
+		{
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			to_win = true;
+		}
 	}
 	return ret;
 }
@@ -533,6 +540,7 @@ bool j1WaveSystem::CreateSpawnBuildings()
 	spawn3->building = App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, spawn3->position.x, spawn3->position.y);
 
 	spawn_buildings = 3;
+	to_win = false;
 
 	return true;
 }

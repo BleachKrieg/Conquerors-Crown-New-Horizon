@@ -76,6 +76,7 @@ public:
 	int grunt_value;
 	int ogre_value;
 	int spawn_buildings;
+	bool to_win;
 
 	SpawnPoint* spawn1;
 	SpawnPoint* spawn2;

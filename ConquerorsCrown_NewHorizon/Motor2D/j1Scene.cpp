@@ -1076,6 +1076,8 @@ bool j1Scene::CreateInGame()
 
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
+	App->wave->spawn_buildings = 3;
+	App->wave->to_win = false;
 
 	return ret;
 }
