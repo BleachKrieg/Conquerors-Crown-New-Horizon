@@ -116,6 +116,7 @@ bool HumanGatherer::Update(float dt)
 			work_state = WORK_STATE::NONE;
 			target_entity = nullptr;
 			work_space = nullptr;
+			work_mine_space = nullptr;
 			iPoint pos;
 			j1Entity* it;
 			GoldMine* it_mine;
@@ -198,6 +199,7 @@ bool HumanGatherer::Update(float dt)
 			}
 			else if (work_name == "gold_mine" && work_mine_space->GetPreCheck() == 0) {
 				work_space = nullptr;
+				work_mine_space = nullptr;
 				work_name = "";
 				work_state = WORK_STATE::NONE;
 			}
@@ -326,6 +328,7 @@ bool HumanGatherer::PostUpdate(float dt)
 
 bool HumanGatherer::CleanUp()
 {
+	if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	visionEntity->deleteEntity = true;
