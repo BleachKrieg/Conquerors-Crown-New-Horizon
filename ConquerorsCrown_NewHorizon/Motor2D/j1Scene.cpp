@@ -508,9 +508,10 @@ bool j1Scene::PostUpdate(float dt)
 				SDL_Rect rect = { 3126, 624, 144, 152 };
 				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
-			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			if (App->movement->portrait_entity->name == p2SString("human_knight"))
 			{
-
+				SDL_Rect rect = { 3126, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
 
 		}
@@ -550,9 +551,10 @@ bool j1Scene::PostUpdate(float dt)
 				SDL_Rect rect = { 3126, 624, 144, 152 };
 				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
-			if (App->movement->portrait_entity->name == p2SString("human_wall"))
+			if (App->movement->portrait_entity->name == p2SString("human_knight"))
 			{
-
+				SDL_Rect rect = { 3126, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
 
 		}
