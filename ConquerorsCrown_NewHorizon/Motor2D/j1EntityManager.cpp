@@ -45,7 +45,6 @@ bool j1EntityManager::Start()
 	trees_time = 10000;
 	quarries_time = 10000;
 	mines_time = 10000;
-
 	foot_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_footman.png");
 	arch_man_tex = App->tex->Load("Assets/textures/units/Human Sprites/human_archer.png");
 	foot_man_tex2 = App->tex->Load("Assets/textures/units/Human Sprites/human_footman_2.png");
@@ -71,6 +70,7 @@ bool j1EntityManager::Start()
 	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
+	enemy_building = App->tex->Load("Assets/textures/buildings/Orc Buildings/orc_buildings_summer.png");
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
 	//arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
 	arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
@@ -230,7 +230,7 @@ j1Entity* j1EntityManager::CreateStaticEntity(StaticEnt::StaticEntType type, int
 	case StaticEnt::StaticEntType::GoldMine: aux = new GoldMine(posx, posy, amount); mines.push_back(aux); ret = (j1Entity*)aux; break;
 	case StaticEnt::StaticEntType::Barn: ret = new HumanBarn(posx, posy); player_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::HumanWall: ret = new Human_Wall(posx, posy); player_stat_ent.push_back(ret); break;
-	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy); break;
+	case StaticEnt::StaticEntType::enemy_barrack: ret = new	EnemyBarracks(posx, posy);  ai_stat_ent.push_back(ret); break;
 	case StaticEnt::StaticEntType::Resource: ret = new ResourceEntity(posx, posy, resource_type); resources_ent.push_back(ret); break;
 	}
 
@@ -271,6 +271,11 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (static_type == "human_barracks")
 			{
 				static_ID = StaticEnt::StaticEntType::HumanBarracks;
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
+			}
+			if (static_type == "enemy_barracks")
+			{
+				static_ID = StaticEnt::StaticEntType::enemy_barrack;
 				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int(), entity.child("position").attribute("pos_y").as_int());
 			}
 			if (static_type == "gold_mine")
@@ -437,6 +442,8 @@ bool j1EntityManager::DeleteEntity(int id, j1Entity* entity)
 				player_stat_ent.erase(std::find(player_stat_ent.begin(), player_stat_ent.end() + 1, entity));
 			break;
 		case j1Entity::TeamType::IA:
+				if (!ai_stat_ent.empty())
+					ai_stat_ent.erase(std::find(ai_stat_ent.begin(), ai_stat_ent.end() + 1, entity));
 			break;
 		}
 		break;

@@ -136,6 +136,32 @@ bool TrollEnemy::Update(float dt)
 				change_direction = true;
 			}
 		}
+		else
+		{
+			spawn = App->wave->spawn1;
+			int x = App->wave->spawn1->position.x;
+			int y = App->wave->spawn1->position.y;
+			int distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			x = App->wave->spawn2->position.x;
+			y = App->wave->spawn2->position.y;
+			int distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn2;
+			}
+			x = App->wave->spawn3->position.x;
+			y = App->wave->spawn3->position.y;
+			 distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn3;
+			}
+					
+
+				
+		}
 	
 	}
 	time = idletime.ReadSec();

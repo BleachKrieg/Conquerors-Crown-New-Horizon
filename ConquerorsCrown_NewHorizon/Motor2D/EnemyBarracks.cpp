@@ -27,6 +27,10 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	to_delete = false;
 	canbuild = false;
 	active = true;
+	defense_cooldown.Start();
+	spawn_cooldown.Start();
+	defenses_spawned = false;
+	spawn_counter = 0;
 
 
 	//pos0 = { 827, 103 };
@@ -36,11 +40,12 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	//pos4 = { 827, 230 };
 	//pos5 = { 890, 230 };
 	// Load all animations
-	inconstruction.PushBack({265,145,111,95}, 0.2, 0, 0, 0, 0);
-	finishedconst2.PushBack({262,16,119,107}, 0.2, 0, 0, 0, 0);
+	inconstruction.PushBack({0,0,125,124}, 0.2, 0, 0, 0, 0);
+	finishedconst2.PushBack({129,0,125,124}, 0.2, 0, 0, 0, 0);
 
 	team = TeamType::IA;
-	life_points = 100;
+	life_points = 300;
+	max_hp = life_points;
 }
 
 EnemyBarracks::~EnemyBarracks()
@@ -54,7 +59,7 @@ bool EnemyBarracks::Start()
 
 bool EnemyBarracks::Update(float dt)
 {
-	BROFILER_CATEGORY("UpdateTest_1", Profiler::Color::BlanchedAlmond);
+	BROFILER_CATEGORY("Update_enemyBarrack", Profiler::Color::BlanchedAlmond);
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
@@ -66,10 +71,20 @@ bool EnemyBarracks::Update(float dt)
 		
 	checkAnimation(dt);
 
+	if (life_points < max_hp && defense_cooldown.ReadSec() > 20)
+	{
+		SpawnDefenses();
+		if (defenses_spawned == true) { defense_cooldown.Start(); }
+	}
+	if (defense_cooldown.ReadSec() < 20)
+	{
+		max_hp = life_points;
+		defenses_spawned = false;
+	}
 
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
-	App->render->Blit(App->entity->building, (int)position.x - 45, (int)position.y - 45, r, 1.0f, 1.0f);
+	App->render->Blit(App->entity->enemy_building, (int)position.x - 65, (int)position.y - 65, r, 1.0f, 1.0f);
 
 
 	return true;
@@ -77,7 +92,7 @@ bool EnemyBarracks::Update(float dt)
 
 bool EnemyBarracks::PostUpdate(float dt)
 {
-	BROFILER_CATEGORY("PostupdateTest_1", Profiler::Color::BurlyWood)
+	BROFILER_CATEGORY("Pos_enemyBarrack", Profiler::Color::BurlyWood)
 
 		return true;
 }
@@ -149,4 +164,29 @@ iPoint EnemyBarracks::Searchtile(iPoint map)
 
 	respawn = { 1,1 };
 	return respawn;
+}
+
+bool EnemyBarracks::SpawnDefenses()
+{
+	if (spawn_cooldown.ReadSec() > 0.5)
+	{
+		int r = rand() % 3 + 1;
+		switch (r) {
+		case 1:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_TROLL, position.x + 20, position.y + 20);
+			break;
+		case 2:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_GRUNT, position.x + 20, position.y + 20);
+			break;
+		case 3:
+			App->entity->CreateEntity(DynamicEnt::DynamicEntityType::ENEMY_OGRE, position.x + 20, position.y + 20);
+			break;
+		}
+		spawn_counter++;
+		spawn_cooldown.Start();
+	}
+
+	if (spawn_counter == 7) { defenses_spawned = true; spawn_counter = 0; }
+
+	return true;
 }

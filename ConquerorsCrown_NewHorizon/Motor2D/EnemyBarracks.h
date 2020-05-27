@@ -38,16 +38,22 @@ public:
 	//FreeTile
 	iPoint Searchtile(iPoint respawn);
 
+	bool SpawnDefenses();
+
 public:
 	// Animations
 	Animation inconstruction;
 	Animation finishedconst2;
 	SDL_Rect Construction;
 	SDL_Rect Created;
+	j1Timer spawn_cooldown;
+	j1Timer defense_cooldown;
+	int spawn_counter;
 
 	// Stats
 	int attackrange;
 	int collrange;
+	bool defenses_spawned;
 
 	// Queue
 

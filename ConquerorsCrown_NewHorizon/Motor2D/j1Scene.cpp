@@ -644,7 +644,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	resources.append_attribute("wood") = wood;
 	resources.append_attribute("stone") = stone;
 	pugi::xml_node clock = data.append_child("clock");
-	clock.append_attribute("time_passed") = gameClock.ReadSec();
+	clock.append_attribute("time_passed") = gameClock.ReadSec() - time_loaded;;
 	pugi::xml_node upgrades = data.append_child("upgrades");
 	upgrades.append_attribute("swordman") = upgrade_swordman;
 	upgrades.append_attribute("archer") = upgrade_archer;
@@ -1119,6 +1119,8 @@ bool j1Scene::CreateInGame()
 	if (!wants_to_load)
 	{
 		LoadTiledEntities();
+		App->wave->CreateSpawnBuildings();
+
 	}
 	else {
 		active = true;
@@ -1128,9 +1130,10 @@ bool j1Scene::CreateInGame()
 
 	if(ret) ret = CreateButtonsUI();
 
-	App->wave->CreateSpawnBuildings();
 	App->wave->wave_ended.Start();
 	App->wave->wave_ongoing = false;
+	App->wave->spawn_buildings = 3;
+	App->wave->to_win = false;
 
 	return ret;
 }
