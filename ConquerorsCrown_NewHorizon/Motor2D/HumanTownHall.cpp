@@ -392,6 +392,7 @@ void HumanTownHall::checkAnimation(float dt)
 				// Tutorial
 				if (App->tutorial->ActualState == ST_Tutorial_Q5)
 				{
+					if (App->tutorial->Arrow_4 != nullptr)
 					App->tutorial->Arrow_4->to_delete = true;
 					App->tutorial->Arrow_4 = nullptr;
 					App->tutorial->Arrow_5 = App->gui->CreateGuiElement(Types::image, 1005, 450, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
@@ -495,6 +496,7 @@ void HumanTownHall::CheckQueue()
 			// Tutorial
 			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q5)
 			{
+				if (App->tutorial->Arrow_5_1 != nullptr)
 				App->tutorial->Arrow_5_1->to_delete = true;
 				App->tutorial->Arrow_5_1 = nullptr;
 				App->audio->PlayFx(-1, App->audio->quest_complete, 0);
@@ -726,6 +728,7 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			// Tutorial
 			if (App->tutorial->ActualState == ST_Tutorial_Q5)
 			{
+				if (App->tutorial->Arrow_5 != nullptr)
 				App->tutorial->Arrow_5->to_delete = true;
 				App->tutorial->Arrow_5 = nullptr;
 				App->tutorial->Arrow_5_1 = App->gui->CreateGuiElement(Types::image, 830, 455, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
