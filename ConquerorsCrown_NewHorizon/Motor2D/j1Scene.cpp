@@ -778,7 +778,7 @@ void j1Scene::LoadTiledEntities() {
 							break;
 						case 422:
 							if (current_scene == scenes::tutorial) {
-								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 40u);
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 80u);
 							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
