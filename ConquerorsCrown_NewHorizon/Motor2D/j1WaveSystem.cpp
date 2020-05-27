@@ -246,7 +246,7 @@ bool j1WaveSystem::Update(float dt)
 		}
 		else { spawn_buildings = 3; }
 
-		if (spawn_buildings == 0 && to_win == false)
+		if (spawn_buildings == 0 && to_win == false && App->scene->timer - 660 > 5)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
 			to_win = true;

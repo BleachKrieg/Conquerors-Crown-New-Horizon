@@ -11,15 +11,15 @@
 	<tutorial />
 	<scene>
 		<scenename name="First level design.tmx" />
-		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="10.5179996" />
-		<upgrades swordman="0" archer="0" knight="0" />
+		<resources gold="102" wood="36102" stone="2400" />
+		<clock time_passed="618.14801" />
+		<upgrades swordman="0" archer="1" knight="1" />
 	</scene>
 	<entity_request />
 	<group_movement />
 	<entity_manager>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3456" pos_y="896" />
 		</Entity>
 		<Entity>
@@ -27,36 +27,256 @@
 			<position pos_x="3456" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3296" pos_y="1408" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" amount_left="20" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3136" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="enemy_barracks" />
-			<position pos_x="1050" pos_y="850" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="enemy_barracks" />
 			<position pos_x="850" pos_y="2800" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="enemy_barracks" />
-			<position pos_x="2200" pos_y="3800" />
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3552.05322" pos_y="1409.35669" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1169.90002" />
+			<position pos_x="3490.53149" pos_y="1096.52869" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1142.98047" />
+			<position pos_x="3516.33716" pos_y="1093.20801" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1151.45398" pos_y="2728.49805" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1272.10718" pos_y="2690.56641" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1181.99426" pos_y="2730.17847" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1191.25085" pos_y="2697.28369" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1165.99536" pos_y="2705.02588" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1145.85327" pos_y="2681.57104" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1205.82593" pos_y="2745.03564" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1171.7771" pos_y="2677.13379" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1207.05188" pos_y="2719.04639" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1174.58191" pos_y="2755.78955" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1196.09998" />
+			<position pos_x="3401.89478" pos_y="1173.3645" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3218" pos_y="1138" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1299.0719" pos_y="2596.67603" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1271.66565" pos_y="2599.58789" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3512.3064" pos_y="1120.20605" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1189.99939" pos_y="2657.86719" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1305.62354" pos_y="2680.10547" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3500.42798" pos_y="1072.57434" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3486.38989" pos_y="1122.03027" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1277.39465" pos_y="2723.17725" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1387.11743" pos_y="2604.89111" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_upgrade" />
+			<position pos_x="2770" pos_y="1266" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3295.46362" pos_y="1216.79407" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3202.06714" pos_y="1890.22705" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3228.67139" pos_y="1867.43567" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3231.21704" pos_y="1953.16492" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3201.6604" pos_y="1861.48047" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="town_hall" />
+			<position pos_x="3346" pos_y="1874" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3362.81128" pos_y="1925.85303" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3250.92261" pos_y="1887.47766" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3328.83911" pos_y="1952.50623" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3243.15479" pos_y="1928.92627" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3360.85669" pos_y="1952.53955" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1216.94238" pos_y="2689.30444" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1254.19189" pos_y="2649.88257" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1295.16687" pos_y="2705.62109" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barn" />
+			<position pos_x="2962" pos_y="1234" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2322" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2290" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2258" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2226" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1906" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1874" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1842" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1810" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2130" pos_y="1810" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2130" pos_y="1778" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1364.07336" pos_y="2624.23364" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1329.90674" pos_y="2607.01416" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1320.80127" pos_y="2660.09424" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1412.90637" pos_y="2591.35303" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1389.91418" pos_y="2607.05811" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1216.92004" pos_y="2656.14795" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1343.64331" pos_y="2642.72119" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1386.96362" pos_y="2632.2063" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1320.33508" pos_y="2633.02661" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2668,10 +2888,10 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave wave="1" time="10.5240002">
-		<spawn_1 Has_Building="true" />
+	<wave wave="7" time="49.2490005">
+		<spawn_1 Has_Building="false" />
 		<spawn_2 Has_Building="true" />
-		<spawn_3 Has_Building="true" />
+		<spawn_3 Has_Building="false" />
 	</wave>
 	<FoWManager />
 	<minimap />

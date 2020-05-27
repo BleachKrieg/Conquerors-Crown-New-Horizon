@@ -446,11 +446,11 @@ bool j1Scene::Update(float dt)
 	}
 	
 	// testing winlose scenes
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && debug) {
 		App->fade->FadeToBlack(scenes::defeat, 2.0f);
 		win_lose_counter = 0;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN && debug) {
 		App->fade->FadeToBlack(scenes::victory, 2.0f);
 		win_lose_counter = 0;
 	}
