@@ -77,14 +77,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DynamicEnt.cpp" />
+    <ClCompile Include="Emiter.cpp" />
+    <ClCompile Include="EnemyBarracks.cpp" />
     <ClCompile Include="EntityRequest.cpp" />
     <ClCompile Include="FoWEntity.cpp" />
     <ClCompile Include="FoWManager.cpp" />
     <ClCompile Include="GoldMine.cpp" />
     <ClCompile Include="Grunt_Enemy.cpp" />
     <ClCompile Include="HumanArcher.cpp" />
+    <ClCompile Include="HumanBarn.cpp" />
     <ClCompile Include="HumanFootman.cpp" />
     <ClCompile Include="HumanGatherer.cpp" />
+    <ClCompile Include="HumanKnight.cpp" />
     <ClCompile Include="HumanTownHall.cpp" />
     <ClCompile Include="HumanUpgrade.cpp" />
     <ClCompile Include="j1CutsceneManager.cpp" />
@@ -112,6 +116,8 @@
     <ClCompile Include="j1Render.cpp" />
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PathFinder.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="ResourceEntities.cpp" />
@@ -123,6 +129,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Emiter.h" />
+    <ClInclude Include="EnemyBarracks.h" />
     <ClInclude Include="EntityRequest.h" />
     <ClInclude Include="FoWBitDefs.h" />
     <ClInclude Include="FoWEntity.h" />
@@ -130,8 +138,10 @@
     <ClInclude Include="GoldMine.h" />
     <ClInclude Include="Grunt_Enemy.h" />
     <ClInclude Include="HumanArcher.h" />
+    <ClInclude Include="HumanBarn.h" />
     <ClInclude Include="HumanFootman.h" />
     <ClInclude Include="HumanGatherer.h" />
+    <ClInclude Include="HumanKnight.h" />
     <ClInclude Include="HumanTownHall.h" />
     <ClInclude Include="HumanUpgrade.h" />
     <ClInclude Include="j1CutsceneManager.h" />
@@ -163,6 +173,8 @@
     <ClInclude Include="j1Textures.h" />
     <ClInclude Include="j1Window.h" />
     <ClInclude Include="p2SString.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PathFinder.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />

@@ -13,10 +13,11 @@
 #include "j1Fonts.h"
 #include "j1Audio.h"
 #include "HumanWall.h"
+#include "FoWManager.h"
 
 Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 {
-	name.create("test_1");
+	name.create("wall");
 	position.x = posx;
 	position.y = posy;
 	vision = 20;
@@ -27,10 +28,11 @@ Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 	isSelected = false;
 	to_delete = false;
 	canbuild = false;
+	visionEntity = nullptr;
 	time_FX_barracks = 1;
 	
 	// Load all animations
-	finishedconst.PushBack({ 711,570,32,32 }, 0.2, 0, 0, 0, 0);
+	finishedconst.PushBack({ 409,785,32,32 }, 0.2, 0, 0, 0, 0);
 	team = TeamType::PLAYER;
 	actualState = ST_WALL_PREVIEW;
 	life_points = 200;
@@ -45,6 +47,7 @@ bool Human_Wall::Start()
 		actualState = ST_WALL_AUTOMATIC;
 	}
 
+	visionEntity = nullptr;
 	deployed = false;
 	return true;
 }
@@ -120,11 +123,15 @@ bool Human_Wall::CleanUp()
 		iPoint tempPos = pos;
 
 		App->pathfinding->ChangeWalkability(tempPos, 1);
+
+		visionEntity->deleteEntity = true;
+		App->fowManager->foWMapNeedsRefresh = true;
 	}
 	else
 	{
 		App->scene->Building_preview = false;
 	}
+
 	return true;
 }
 
@@ -149,6 +156,14 @@ void Human_Wall::checkAnimation(float dt)
 		world.x = position.x;
 		world.y = position.y;
 		team = TeamType::PLAYER;
+
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
 
 		iPoint pos = { (int)position.x, (int)position.y };
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -208,6 +223,14 @@ void Human_Wall::checkAnimation(float dt)
 
 	if (actualState == ST_WALL_FINISHED)
 	{
+		// Fog of war
+		if (visionEntity == nullptr)
+		{
+			iPoint pos = { (int)position.x, (int)position.y };
+			visionEntity = App->fowManager->CreateFoWEntity({ pos.x, pos.y }, true);
+			visionEntity->SetNewVisionRadius(5);
+		}
+
 		// Finished Animation
 		current_animation = &finishedconst;
 

@@ -11,29 +11,272 @@
 	<tutorial />
 	<scene>
 		<scenename name="First level design.tmx" />
+		<resources gold="102" wood="36102" stone="2400" />
+		<clock time_passed="618.14801" />
+		<upgrades swordman="0" archer="1" knight="1" />
 	</scene>
 	<entity_request />
 	<group_movement />
 	<entity_manager>
 		<Entity>
+			<type movement="static" name="gold_mine" amount_left="0" />
+			<position pos_x="3456" pos_y="896" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="town_hall" />
 			<position pos_x="3456" pos_y="1216" />
 		</Entity>
 		<Entity>
-			<type movement="static" name="gold_mine" />
+			<type movement="static" name="gold_mine" amount_left="0" />
 			<position pos_x="3296" pos_y="1408" />
 		</Entity>
 		<Entity>
-			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1167.97998" />
+			<type movement="static" name="gold_mine" amount_left="0" />
+			<position pos_x="3136" pos_y="2144" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="enemy_barracks" />
+			<position pos_x="850" pos_y="2800" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1141.45117" />
+			<position pos_x="3552.05322" pos_y="1409.35669" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1194.8999" />
+			<position pos_x="3490.53149" pos_y="1096.52869" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3516.33716" pos_y="1093.20801" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1151.45398" pos_y="2728.49805" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1272.10718" pos_y="2690.56641" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1181.99426" pos_y="2730.17847" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1191.25085" pos_y="2697.28369" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1165.99536" pos_y="2705.02588" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1145.85327" pos_y="2681.57104" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1205.82593" pos_y="2745.03564" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1171.7771" pos_y="2677.13379" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1207.05188" pos_y="2719.04639" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_knight" />
+			<position pos_x="1174.58191" pos_y="2755.78955" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3401.89478" pos_y="1173.3645" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barracks" />
+			<position pos_x="3218" pos_y="1138" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1299.0719" pos_y="2596.67603" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1271.66565" pos_y="2599.58789" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3512.3064" pos_y="1120.20605" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1189.99939" pos_y="2657.86719" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_footman" />
+			<position pos_x="1305.62354" pos_y="2680.10547" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3500.42798" pos_y="1072.57434" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3486.38989" pos_y="1122.03027" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1277.39465" pos_y="2723.17725" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1387.11743" pos_y="2604.89111" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_upgrade" />
+			<position pos_x="2770" pos_y="1266" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3295.46362" pos_y="1216.79407" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3202.06714" pos_y="1890.22705" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3228.67139" pos_y="1867.43567" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3231.21704" pos_y="1953.16492" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3201.6604" pos_y="1861.48047" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="town_hall" />
+			<position pos_x="3346" pos_y="1874" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3362.81128" pos_y="1925.85303" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3250.92261" pos_y="1887.47766" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3328.83911" pos_y="1952.50623" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3243.15479" pos_y="1928.92627" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_gatherer" />
+			<position pos_x="3360.85669" pos_y="1952.53955" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1216.94238" pos_y="2689.30444" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1254.19189" pos_y="2649.88257" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1295.16687" pos_y="2705.62109" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="human_barn" />
+			<position pos_x="2962" pos_y="1234" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2322" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2290" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2258" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2226" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1938" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1906" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1874" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1842" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2162" pos_y="1810" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2130" pos_y="1810" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="wall" />
+			<position pos_x="2130" pos_y="1778" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1364.07336" pos_y="2624.23364" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1329.90674" pos_y="2607.01416" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1320.80127" pos_y="2660.09424" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1412.90637" pos_y="2591.35303" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1389.91418" pos_y="2607.05811" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1216.92004" pos_y="2656.14795" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1343.64331" pos_y="2642.72119" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1386.96362" pos_y="2632.2063" />
+		</Entity>
+		<Entity>
+			<type movement="dynamic" name="human_archer" />
+			<position pos_x="1320.33508" pos_y="2633.02661" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -81,18 +324,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1184" pos_y="256" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1216" pos_y="256" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1248" pos_y="256" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1312" pos_y="256" />
 		</Entity>
 		<Entity>
@@ -110,22 +341,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1152" pos_y="288" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1184" pos_y="288" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1216" pos_y="288" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1248" pos_y="288" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1280" pos_y="288" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -149,47 +364,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1152" pos_y="320" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1184" pos_y="320" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1248" pos_y="320" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1280" pos_y="320" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1312" pos_y="320" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1088" pos_y="352" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1120" pos_y="352" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1152" pos_y="352" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1184" pos_y="352" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1216" pos_y="352" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1248" pos_y="352" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -233,7 +412,31 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
+			<position pos_x="1280" pos_y="416" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1312" pos_y="416" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
 			<position pos_x="1344" pos_y="416" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1376" pos_y="416" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1248" pos_y="448" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1376" pos_y="448" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1248" pos_y="480" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -245,7 +448,15 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
+			<position pos_x="1280" pos_y="512" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
 			<position pos_x="1312" pos_y="512" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="1344" pos_y="512" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -253,7 +464,19 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
+			<position pos_x="2752" pos_y="608" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2784" pos_y="608" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
 			<position pos_x="2816" pos_y="608" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2848" pos_y="608" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -261,19 +484,59 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="640" />
+			<position pos_x="2912" pos_y="608" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="672" />
+			<position pos_x="2592" pos_y="640" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="672" />
+			<position pos_x="2624" pos_y="640" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="672" />
+			<position pos_x="2656" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2688" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2720" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2752" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2912" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2944" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2976" pos_y="640" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2592" pos_y="672" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2976" pos_y="672" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="3008" pos_y="672" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="tree" />
+			<position pos_x="2528" pos_y="704" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -281,23 +544,19 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="704" />
+			<position pos_x="2592" pos_y="704" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="704" />
+			<position pos_x="3008" pos_y="704" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="736" />
+			<position pos_x="2528" pos_y="736" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="736" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="736" />
+			<position pos_x="3008" pos_y="736" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="quarry" />
@@ -309,75 +568,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2720" pos_y="768" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="768" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="768" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="768" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="768" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3008" pos_y="768" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2528" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2688" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2720" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="800" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -389,79 +584,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3552" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3584" pos_y="800" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2528" pos_y="832" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2688" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2720" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2976" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3616" pos_y="832" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3648" pos_y="832" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -473,63 +600,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2688" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2720" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2944" pos_y="864" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2976" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3616" pos_y="864" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3648" pos_y="864" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -566,14 +641,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2784" pos_y="896" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="896" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="896" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -653,18 +720,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="1024" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1920" pos_y="1024" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1952" pos_y="1024" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2016" pos_y="1024" />
 		</Entity>
 		<Entity>
@@ -697,35 +752,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1920" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1952" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1984" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2016" pos_y="1056" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3392" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="1056" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="1056" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -741,22 +772,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="1088" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="1088" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1952" pos_y="1088" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1984" pos_y="1088" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2016" pos_y="1088" />
 		</Entity>
 		<Entity>
@@ -769,35 +784,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="1088" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3488" pos_y="1088" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1792" pos_y="1120" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1824" pos_y="1120" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="1120" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="1120" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1920" pos_y="1120" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1952" pos_y="1120" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -953,18 +944,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1664" pos_y="1536" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1696" pos_y="1536" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1728" pos_y="1536" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1760" pos_y="1536" />
 		</Entity>
 		<Entity>
@@ -1001,14 +980,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1696" pos_y="1568" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1728" pos_y="1568" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1760" pos_y="1568" />
 		</Entity>
 		<Entity>
@@ -1041,18 +1012,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="1568" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="1568" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3488" pos_y="1568" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3552" pos_y="1568" />
 		</Entity>
 		<Entity>
@@ -1077,18 +1036,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2464" pos_y="1600" />
 		</Entity>
 		<Entity>
@@ -1098,18 +1045,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3392" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3488" pos_y="1600" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3520" pos_y="1600" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1125,18 +1060,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2464" pos_y="1632" />
 		</Entity>
 		<Entity>
@@ -1146,22 +1069,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3360" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3488" pos_y="1632" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3520" pos_y="1632" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1177,47 +1084,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2304" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2464" pos_y="1664" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3328" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="1664" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3488" pos_y="1664" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1230,26 +1101,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2240" pos_y="1696" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2272" pos_y="1696" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2304" pos_y="1696" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="1696" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="1696" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="1696" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1353,14 +1204,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1760" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1760" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="480" pos_y="1760" />
 		</Entity>
 		<Entity>
@@ -1374,34 +1217,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="256" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="288" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="352" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="384" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="1792" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="1792" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1449,42 +1264,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="288" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="320" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="352" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="384" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="544" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="576" pos_y="1824" />
 		</Entity>
 		<Entity>
@@ -1513,22 +1292,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1824" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3104" pos_y="1824" />
 		</Entity>
 		<Entity>
@@ -1545,46 +1308,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="224" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="256" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="288" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="320" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="352" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="384" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="544" pos_y="1856" />
 		</Entity>
 		<Entity>
@@ -1597,46 +1320,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="1856" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3168" pos_y="1856" />
 		</Entity>
 		<Entity>
@@ -1646,46 +1329,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="192" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="224" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="256" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="288" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="320" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="352" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="384" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="1888" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1705,54 +1348,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="1888" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3200" pos_y="1888" />
 		</Entity>
 		<Entity>
@@ -1765,38 +1360,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="256" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="288" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="320" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="352" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="384" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="416" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="448" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="512" pos_y="1920" />
 		</Entity>
 		<Entity>
@@ -1806,62 +1369,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2720" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="1920" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="1920" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1917,58 +1424,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="1952" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3200" pos_y="1952" />
 		</Entity>
 		<Entity>
@@ -2002,58 +1457,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2720" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="1984" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="1984" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2093,75 +1496,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2752" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="2016" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3168" pos_y="2016" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1760" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1792" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1824" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="2048" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2174,50 +1513,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2752" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2784" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2816" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="2048" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2048" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2234,22 +1529,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1760" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1792" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1824" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="2080" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2285,14 +1564,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="2080" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3072" pos_y="2080" />
 		</Entity>
 		<Entity>
@@ -2310,22 +1581,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1728" pos_y="2112" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1760" pos_y="2112" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1792" pos_y="2112" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="2112" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1888" pos_y="2112" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2362,26 +1617,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1696" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1728" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1760" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1792" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1824" pos_y="2144" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1856" pos_y="2144" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2473,14 +1708,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2464" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2464" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2560" pos_y="2464" />
 		</Entity>
 		<Entity>
@@ -2494,34 +1721,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2336" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="2496" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="2496" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2569,42 +1768,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2656" pos_y="2528" />
 		</Entity>
 		<Entity>
@@ -2633,22 +1796,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2528" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3392" pos_y="2528" />
 		</Entity>
 		<Entity>
@@ -2665,46 +1812,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2304" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2624" pos_y="2560" />
 		</Entity>
 		<Entity>
@@ -2717,46 +1824,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3200" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3232" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="2560" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3456" pos_y="2560" />
 		</Entity>
 		<Entity>
@@ -2766,46 +1833,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2272" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2304" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="2592" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2833,54 +1860,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3200" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3232" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3456" pos_y="2592" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3488" pos_y="2592" />
 		</Entity>
 		<Entity>
@@ -2890,38 +1869,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2304" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="2624" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2942,58 +1889,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3008" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3200" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3232" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="2624" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="2624" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3045,58 +1940,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3040" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3200" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3232" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3424" pos_y="2656" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3456" pos_y="2656" />
 		</Entity>
 		<Entity>
@@ -3126,50 +1969,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3040" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3072" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3104" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3136" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3168" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3200" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3232" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3264" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="2688" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="2688" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3206,14 +2005,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3264" pos_y="2720" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3296" pos_y="2720" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="2720" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3281,18 +2072,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="2848" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="2848" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2688" pos_y="2848" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2720" pos_y="2848" />
 		</Entity>
 		<Entity>
@@ -3302,14 +2081,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2624" pos_y="2880" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="2880" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2688" pos_y="2880" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3369,14 +2140,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="2976" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="2976" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1632" pos_y="2976" />
 		</Entity>
 		<Entity>
@@ -3390,34 +2153,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1408" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1440" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1504" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1536" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1632" pos_y="3008" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1664" pos_y="3008" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3438,42 +2173,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1408" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1440" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1472" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1504" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1536" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1632" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1664" pos_y="3040" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1696" pos_y="3040" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3505,46 +2204,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="1376" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1408" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1440" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1472" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1504" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1536" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1632" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1664" pos_y="3072" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="1696" pos_y="3072" />
 		</Entity>
 		<Entity>
@@ -3557,63 +2216,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="544" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="576" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="608" pos_y="3104" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1344" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1376" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1408" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1440" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1472" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1504" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1536" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1632" pos_y="3104" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1664" pos_y="3104" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3629,14 +2236,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="544" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="576" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="608" pos_y="3136" />
 		</Entity>
 		<Entity>
@@ -3646,38 +2245,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1376" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1408" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1440" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1472" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1504" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1536" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1568" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1600" pos_y="3136" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1632" pos_y="3136" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3789,14 +2356,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2080" pos_y="3200" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2112" pos_y="3200" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2176" pos_y="3200" />
 		</Entity>
 		<Entity>
@@ -3806,18 +2365,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2016" pos_y="3232" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2080" pos_y="3232" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2112" pos_y="3232" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2144" pos_y="3232" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3857,22 +2404,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2016" pos_y="3264" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2048" pos_y="3264" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2112" pos_y="3264" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2144" pos_y="3264" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2176" pos_y="3264" />
 		</Entity>
 		<Entity>
@@ -3889,39 +2420,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="576" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="608" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="672" pos_y="3296" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1952" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="1984" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2016" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2048" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2080" pos_y="3296" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2112" pos_y="3296" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -3946,18 +2449,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="512" pos_y="3328" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="576" pos_y="3328" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="608" pos_y="3328" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="640" pos_y="3328" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4021,22 +2512,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="544" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="608" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="640" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="672" pos_y="3360" />
 		</Entity>
 		<Entity>
@@ -4053,43 +2528,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="3328" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="3360" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3424" pos_y="3360" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="448" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="480" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="512" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="544" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="576" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="608" pos_y="3392" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4114,14 +2557,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3328" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3360" pos_y="3392" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3392" pos_y="3392" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4209,14 +2644,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3616" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3616" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2592" pos_y="3616" />
 		</Entity>
 		<Entity>
@@ -4230,34 +2657,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2368" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="3648" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="3648" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4281,87 +2680,11 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2656" pos_y="3680" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2688" pos_y="3680" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2304" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="3712" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="3712" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4377,46 +2700,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2336" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2624" pos_y="3744" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="2656" pos_y="3744" />
 		</Entity>
 		<Entity>
@@ -4426,38 +2709,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2336" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2368" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2400" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2432" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2464" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2496" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2528" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2560" pos_y="3776" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2592" pos_y="3776" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4553,18 +2804,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="3872" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="3872" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="3872" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3040" pos_y="3872" />
 		</Entity>
 		<Entity>
@@ -4574,18 +2813,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2880" pos_y="3904" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="3904" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="3904" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="3904" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4609,22 +2836,6 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="3936" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="3936" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="3936" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="3008" pos_y="3936" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
 			<position pos_x="3040" pos_y="3936" />
 		</Entity>
 		<Entity>
@@ -4638,26 +2849,6 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2816" pos_y="3968" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2848" pos_y="3968" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2880" pos_y="3968" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2912" pos_y="3968" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2944" pos_y="3968" />
-		</Entity>
-		<Entity>
-			<type movement="static" name="tree" />
-			<position pos_x="2976" pos_y="3968" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -4697,12 +2888,17 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave />
+	<wave wave="7" time="49.2490005">
+		<spawn_1 Has_Building="false" />
+		<spawn_2 Has_Building="true" />
+		<spawn_3 Has_Building="false" />
+	</wave>
 	<FoWManager />
 	<minimap />
 	<gui />
 	<fadetoblack />
 	<fonts />
 	<cutscene />
+	<video_player />
 	<renderer />
 </game_state>

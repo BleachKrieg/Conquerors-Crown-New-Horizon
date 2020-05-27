@@ -133,6 +133,9 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
 			SpatialAudio(5, App->audio->go_archer, position.x, position.y);
 		}
+		if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+			SpatialAudio(5, App->audio->go_knight, position.x, position.y);
+		}
 		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
 			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
@@ -193,6 +196,11 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 						}
 						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 							SpatialAudio(3, App->audio->footman_attack, position.x, position.y);
+							App->entity->max_audio_attacks++;
+
+						}
+						if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+							SpatialAudio(4, App->audio->knight_attack, position.x, position.y);
 							App->entity->max_audio_attacks++;
 
 						}
@@ -416,17 +424,18 @@ void DynamicEnt::Movement(float dt)
 		}
 
 	
-		if(team == TeamType::PLAYER)
-			speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-		else
-	speed.x += 1 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
-	
+		
+		speed.x += 1.5 * pathSpeed.x + 1 * separationSpeed.x + 0.5 * cohesionSpeed.x + 0 * alignmentSpeed.x;
 		speed.y += 1.5 * pathSpeed.y + 1 * separationSpeed.y + 0.5 * cohesionSpeed.y + 0 * alignmentSpeed.y;
 
-	CheckCollisions(&speed);
+		speed.x *= speed_modifier;
+		speed.y *= speed_modifier;
 
-	position.y += 60 * dt * speed.y;
-	position.x += 60 * dt * speed.x;
+		CheckCollisions(&speed);
+
+		position.y += 60 * dt * speed.y;
+		position.x += 60 * dt * speed.x;
+
 }
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)
@@ -462,10 +471,10 @@ void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entit
 				}
 			}
 			else {
-				/*if (target_entity == it && !player_order)
+				if (target_entity == it && !player_order)
 				{
 					target_entity = NULL;
-				}*/
+				}
 			}
 			if(it->type == entityType::DYNAMIC)
 			if (distance < vision + it->body)
@@ -483,10 +492,12 @@ void DynamicEnt::Death(DynamicEntityType entity_type)
 	if (death_counter == 2) {
 		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
 			SpatialAudio(8, App->audio->die_archer, position.x, position.y);
-
 		}
 		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 			SpatialAudio(8, App->audio->die_footman, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+			SpatialAudio(8, App->audio->die_knight, position.x, position.y);
 		}
 		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
 			SpatialAudio(8, App->audio->die_gatherer, position.x, position.y);

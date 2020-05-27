@@ -47,6 +47,16 @@ bool j1Tutorial::Start()
 	MinimapActive = false;
 	moveCamera = false;
 
+	PopUpImage = nullptr;
+	PopUpText1 = nullptr;
+	PopUpText2 = nullptr;
+	PopUpText3 = nullptr;
+	PopUpText4 = nullptr;
+	PopUpText5 = nullptr;
+	PopUpTitleText = nullptr;
+	PopUpButton = nullptr;
+	Uther_Image = nullptr;
+
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
 	Button_No = nullptr;
@@ -61,6 +71,15 @@ bool j1Tutorial::Start()
 	mision3 = nullptr;
 	mision3_Text = nullptr;
 	mision3_Text_2 = nullptr;
+
+	Arrow_1 = nullptr;
+	Arrow_2 = nullptr;
+	Arrow_3 = nullptr;
+	Arrow_4 = nullptr;
+	Arrow_5 = nullptr;
+	Arrow_5_1 = nullptr;
+	Arrow_6 = nullptr;
+	Arrow_7 = nullptr;
 
 	ActualState = ST_Tutorial_Q0;
 
@@ -88,6 +107,11 @@ bool j1Tutorial::Update(float dt)
 		{
 			App->scene->debug = !App->scene->debug;
 			App->map->blitColliders = !App->map->blitColliders;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			//App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
 		}
 
 		// Debug modes
@@ -133,6 +157,8 @@ bool j1Tutorial::Update(float dt)
 				App->scene->AddResource("stone", +100);
 				App->scene->AddResource("gold", +100);
 			}
+			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, App->scene->mouse_position.x, App->scene->mouse_position.y);
 		}
 
 		// Camera movement inputs
