@@ -122,7 +122,7 @@ bool TrollEnemy::Update(float dt)
 		particleSystem->Move(position.x, position.y);
 
 
-	if (target_entity == nullptr)
+	if (target_entity == nullptr && App->scene->current_scene != scenes::tutorial)
 	{
 		if (spawn != nullptr)
 		{

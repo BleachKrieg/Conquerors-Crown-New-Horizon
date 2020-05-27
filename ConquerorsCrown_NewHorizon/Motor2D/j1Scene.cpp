@@ -413,7 +413,12 @@ bool j1Scene::Update(float dt)
 		App->map->Draw();
 		map_coordinates = App->map->WorldToMap(mouse_position.x, mouse_position.y);
 
-		
+		int townhall_counter = 0;
+		for (int i = 0; i < App->entity->player_stat_ent.size(); i++)
+		{
+			if (App->entity->player_stat_ent[i]->name == "town_hall")
+				townhall_counter++;
+		}
 
 		if (timer <= 0 && !finish)
 		{
@@ -421,22 +426,12 @@ bool j1Scene::Update(float dt)
 			win_lose_counter = 0;
 			finish = true;
 		}
-		else if (gameClock.ReadSec() > 5 && !finish)
+		else if (gameClock.ReadSec() > 5 && !finish && townhall_counter == 0)
 		{
 	//		LOG("%f %d", gameClock.ReadSec(), App->entity->player_stat_ent.size());
-			int townhall_counter = 0;
-			for (int i = 0; i < App->entity->player_stat_ent.size(); i++)
-			{
-				if (App->entity->player_stat_ent[i]->name == "town_hall")
-					townhall_counter++;
-			}
-			if (townhall_counter == 0)
-			{
 				App->fade->FadeToBlack(scenes::defeat, 2.0f);
 				win_lose_counter = 0;
 				finish = true;
-			}
-			
 		}
 		else {
 			//gameClock Update

@@ -103,7 +103,7 @@ bool GruntEnemy::Update(float dt)
 
 	Movement(dt);
 
-	if (target_entity == nullptr)
+	if (target_entity == nullptr && App->scene->current_scene != scenes::tutorial)
 	{
 		if (spawn != nullptr)
 		{
