@@ -540,9 +540,9 @@ void Human_Upgrade::CreateUpgradeUI()
 		Button_Upgrade_Knight->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 		Knight_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 998, 49, 46, 38 }, Button_Upgrade_Knight, nullptr, NULL);
 		Knight_gold_cost = App->gui->CreateGuiElement(Types::image, 1190, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-		Knight_Text_Gold = App->gui->CreateGuiElement(Types::text, 1220, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "250", App->font->smallfont);
+		Knight_Text_Gold = App->gui->CreateGuiElement(Types::text, 1220, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
 		Knight_stone_cost = App->gui->CreateGuiElement(Types::image, 1190, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-		Knight_Text_stone = App->gui->CreateGuiElement(Types::text, 1220, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "250", App->font->smallfont);
+		Knight_Text_stone = App->gui->CreateGuiElement(Types::text, 1220, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
 	}
 	
 }
