@@ -88,7 +88,7 @@ public:
 
 	bool deployed = true;
 	FoWEntity* visionEntity = nullptr;
-
+	float hp_conversion;
 	
 };
 

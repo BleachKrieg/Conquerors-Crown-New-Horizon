@@ -27,6 +27,10 @@ public:
 
 	bool CleanUp();
 
+	int tier_knight;
+	int stats_upgrade_damage;
+	int stats_upgrade_life;
+
 };
 
 #endif // !__HUMANFOOTMAN_H__

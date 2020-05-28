@@ -47,6 +47,16 @@ bool j1Tutorial::Start()
 	MinimapActive = false;
 	moveCamera = false;
 
+	PopUpImage = nullptr;
+	PopUpText1 = nullptr;
+	PopUpText2 = nullptr;
+	PopUpText3 = nullptr;
+	PopUpText4 = nullptr;
+	PopUpText5 = nullptr;
+	PopUpTitleText = nullptr;
+	PopUpButton = nullptr;
+	Uther_Image = nullptr;
+
 	Button_Yes = nullptr;
 	Button_Yes_Text = nullptr;
 	Button_No = nullptr;
@@ -61,6 +71,15 @@ bool j1Tutorial::Start()
 	mision3 = nullptr;
 	mision3_Text = nullptr;
 	mision3_Text_2 = nullptr;
+
+	Arrow_1 = nullptr;
+	Arrow_2 = nullptr;
+	Arrow_3 = nullptr;
+	Arrow_4 = nullptr;
+	Arrow_5 = nullptr;
+	Arrow_5_1 = nullptr;
+	Arrow_6 = nullptr;
+	Arrow_7 = nullptr;
 
 	ActualState = ST_Tutorial_Q0;
 
@@ -90,10 +109,28 @@ bool j1Tutorial::Update(float dt)
 			App->map->blitColliders = !App->map->blitColliders;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->SaveGame();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				App->scene->wants_to_load = true;
+				//App->LoadGame();
+
+			}
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			//App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("stone", 100);
+			App->scene->AddResource("gold", 100);
 		}
+
 
 		// Debug modes
 		if (App->scene->debug)
@@ -104,7 +141,7 @@ bool j1Tutorial::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { App->scene->mouse_position.x,App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 			{
@@ -112,36 +149,46 @@ bool j1Tutorial::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
-			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !App->scene->Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !App->scene->Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, App->scene->mouse_position.x, App->scene->mouse_position.y);
 				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !App->scene->Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !App->scene->Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, App->scene->mouse_position.x, App->scene->mouse_position.y);
 				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && !App->scene->Building_preview)
 			{
-				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", +100);
-				App->scene->AddResource("gold", +100);
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, App->scene->mouse_position.x, App->scene->mouse_position.y);
+			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Barn, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
 		}
-
 		// Camera movement inputs
 		int x, y;
 		App->input->GetMousePosition(x, y);

@@ -19,12 +19,12 @@
 
 Human_Upgrade::Human_Upgrade(int posx, int posy) : StaticEnt(StaticEntType::HumanUpgrade)
 {
-	name.create("test_1");
+	name.create("human_upgrade");
 	position.x = posx;
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	coll_range = 50;
+	coll_range = 70;
 	active = true;
 	selectable = true;
 	isSelected = false;
@@ -40,6 +40,7 @@ Human_Upgrade::Human_Upgrade(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	team = TeamType::PLAYER;
 	actualState = ST_UPGRADE_PREVIEW;
 	life_points = 100;
+	max_hp = life_points;
 	createUI = false;
 	visionEntity = nullptr;
 }
@@ -94,7 +95,7 @@ bool Human_Upgrade::Update(float dt)
 	if (App->scene->debug)
 		life_points = 100;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (life_points <= 0)
@@ -137,7 +138,13 @@ bool Human_Upgrade::Update(float dt)
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
-
+	hp_conversion = (float)40 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_UPGRADE_PREVIEW) {
 
@@ -381,13 +388,40 @@ void Human_Upgrade::checkAnimation(float dt)
 				actualState = ST_UPGRADE_UPGRADING;
 
 			}
+
+			if (Knight_Upgrade == true && App->scene->wood >= 999 && App->scene->gold >= 999 || App->scene->debug == true && Knight_Upgrade == true)
+			{
+				Knight_Upgrade = false;
+				if (App->scene->debug == false)
+				{
+					App->scene->AddResource("wood", -999);
+					App->scene->AddResource("gold", -999);
+				}
+				upgrade_timer2.Start();
+				creation_Upgrade_bar_Knight = App->gui->CreateGuiElement(Types::bar, position.x - 65, position.y - 80, { 306, 107, 129, 9 }, nullptr, this, NULL);
+				actualState = ST_UPGRADE_UPGRADING;
+
+			}
 		}
 		else
 		{
-			if (Button_Upgrade_Footman != nullptr && createUI == false)
+			if (createUI == false)
 			{
-				DeleteUpgradeUI();
-				createUI = true;
+				if (Button_Upgrade_Footman != nullptr)
+				{
+					DeleteUpgradeUI();
+					createUI = true;
+				}
+				else if (Button_Create_Archer != nullptr)
+				{
+					DeleteUpgradeUI();
+					createUI = true;
+				}
+				else if (Button_Upgrade_Knight != nullptr)
+				{
+					DeleteUpgradeUI();
+					createUI = true;
+				}
 			}
 		}
 	}
@@ -412,12 +446,13 @@ void Human_Upgrade::checkAnimation(float dt)
 			if (upgrade_timer2.ReadSec() >= first_upgrade_time)
 			{
 				App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
-				App->scene->Upgrade_Sowrdman = true;
+				App->scene->upgrade_swordman++;
 				Upgrading_swordman = false;
 				if (creation_Upgrade_bar != nullptr)
 				{
 					creation_Upgrade_bar->to_delete = true;
 				}
+
 				actualState = ST_UPGRADE_FINISHED;
 				createUI = true;
 			}
@@ -428,7 +463,7 @@ void Human_Upgrade::checkAnimation(float dt)
 			float upgrade_bar = (upgrade_timer2.ReadSec() * 100) / 10;
 			creation_Upgrade_bar_archer->updateBar(upgrade_bar);
 			time_bar_start = false;
-			if (Button_Upgrade_Footman != nullptr)
+			if (Button_Create_Archer != nullptr)
 			{
 				DeleteUpgradeUI();
 			}
@@ -440,11 +475,39 @@ void Human_Upgrade::checkAnimation(float dt)
 			if (upgrade_timer2.ReadSec() >= first_upgrade_time)
 			{
 				App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
-				App->scene->Upgrade_Archer = true;
+				App->scene->upgrade_archer++;
 				Upgrading_Archer = false;
 				if (creation_Upgrade_bar_archer != nullptr)
 				{
 					creation_Upgrade_bar_archer->to_delete = true;
+				}
+				actualState = ST_UPGRADE_FINISHED;
+				createUI = true;
+			}
+		}
+
+		if (Upgrading_Knight == true)
+		{
+			float upgrade_bar = (upgrade_timer2.ReadSec() * 100) / 10;
+			creation_Upgrade_bar_Knight->updateBar(upgrade_bar);
+			time_bar_start = false;
+			if (Button_Upgrade_Knight != nullptr)
+			{
+				DeleteUpgradeUI();
+			}
+			if (isSelected == true)
+			{
+				App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
+			}
+			//Timer for the upgrade
+			if (upgrade_timer2.ReadSec() >= first_upgrade_time)
+			{
+				App->audio->PlayFx(1, App->audio->upgrade_complete, 0);
+				App->scene->upgrade_knight++;
+				Upgrading_Knight = false;
+				if (creation_Upgrade_bar_Knight != nullptr)
+				{
+					creation_Upgrade_bar_Knight->to_delete = true;
 				}
 				actualState = ST_UPGRADE_FINISHED;
 				createUI = true;
@@ -456,55 +519,95 @@ void Human_Upgrade::checkAnimation(float dt)
 void Human_Upgrade::CreateUpgradeUI()
 {
 
-
-	Button_Upgrade_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-	Button_Upgrade_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 49, 46, 38 }, Button_Upgrade_Footman, nullptr, NULL);
-	Swordman_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Swordman_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
-	Swordman_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	if (App->scene->upgrade_swordman <= 1)
+	{
+		Button_Upgrade_Footman = App->gui->CreateGuiElement(Types::button, 1000, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Upgrade_Footman->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Swordman_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1186, 49, 46, 38 }, Button_Upgrade_Footman, nullptr, NULL);
+		Swordman_gold_cost = App->gui->CreateGuiElement(Types::image, 990, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Swordman_Text_Gold = App->gui->CreateGuiElement(Types::text, 1020, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+		Swordman_stone_cost = App->gui->CreateGuiElement(Types::image, 990, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Swordman_Text_stone = App->gui->CreateGuiElement(Types::text, 1020, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	}
 	
-	Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
-	Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
-	Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 49, 46, 38 }, Button_Create_Archer, nullptr, NULL);
-	Archer_gold_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Archer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
-	Archer_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
-	Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	if (App->scene->upgrade_archer <= 1)
+	{
+		Button_Create_Archer = App->gui->CreateGuiElement(Types::button, 1100, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Create_Archer->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Archer_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 1233, 49, 46, 38 }, Button_Create_Archer, nullptr, NULL);
+		Archer_gold_cost = App->gui->CreateGuiElement(Types::image, 1090, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Archer_Text_Gold = App->gui->CreateGuiElement(Types::text, 1120, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+		Archer_stone_cost = App->gui->CreateGuiElement(Types::image, 1090, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Archer_Text_stone = App->gui->CreateGuiElement(Types::text, 1120, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	}
+
+	if (App->scene->upgrade_knight == 0)
+	{
+		Button_Upgrade_Knight = App->gui->CreateGuiElement(Types::button, 1200, 80, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
+		Button_Upgrade_Knight->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
+		Knight_image = App->gui->CreateGuiElement(Types::image, 6, 6, { 998, 49, 46, 38 }, Button_Upgrade_Knight, nullptr, NULL);
+		Knight_gold_cost = App->gui->CreateGuiElement(Types::image, 1190, 140, { 690, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Knight_Text_Gold = App->gui->CreateGuiElement(Types::text, 1220, 140, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+		Knight_stone_cost = App->gui->CreateGuiElement(Types::image, 1190, 165, { 832, 5, 85, 26 }, App->scene->ingameUI, nullptr, NULL);
+		Knight_Text_stone = App->gui->CreateGuiElement(Types::text, 1220, 165, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "999", App->font->smallfont);
+	}
 	
 }
 
 void Human_Upgrade::DeleteUpgradeUI()
 {
-	if (Button_Upgrade_Footman != nullptr)
+	if (App->scene->upgrade_swordman <= 1)
 	{
-		Button_Upgrade_Footman->to_delete = true;
-		Swordman_gold_cost->to_delete = true;
-		Swordman_Text_Gold->to_delete = true;
-		Swordman_stone_cost->to_delete = true;
-		Swordman_Text_stone->to_delete = true;
+		if (Button_Upgrade_Footman != nullptr)
+		{
+			Button_Upgrade_Footman->to_delete = true;
+			Swordman_gold_cost->to_delete = true;
+			Swordman_Text_Gold->to_delete = true;
+			Swordman_stone_cost->to_delete = true;
+			Swordman_Text_stone->to_delete = true;
 
-		Swordman_gold_cost = nullptr;
-		Swordman_Text_Gold = nullptr;
-		Swordman_stone_cost = nullptr;
-		Swordman_Text_stone = nullptr;
-		Button_Upgrade_Footman = nullptr;
+			Swordman_gold_cost = nullptr;
+			Swordman_Text_Gold = nullptr;
+			Swordman_stone_cost = nullptr;
+			Swordman_Text_stone = nullptr;
+			Button_Upgrade_Footman = nullptr;
+		}
 	}
 
-	if (Button_Create_Archer != nullptr)
+	if (App->scene->upgrade_archer <= 1)
 	{
-		Button_Create_Archer->to_delete = true;
-		Archer_stone_cost->to_delete = true;
-		Archer_Text_stone->to_delete = true;
-		Archer_gold_cost->to_delete = true;
-		Archer_Text_Gold->to_delete = true;
+		if (Button_Create_Archer != nullptr)
+		{
+			Button_Create_Archer->to_delete = true;
+			Archer_stone_cost->to_delete = true;
+			Archer_Text_stone->to_delete = true;
+			Archer_gold_cost->to_delete = true;
+			Archer_Text_Gold->to_delete = true;
 
-		Archer_gold_cost = nullptr;
-		Archer_Text_Gold = nullptr;
-		Archer_stone_cost = nullptr;
-		Archer_Text_stone = nullptr;
-		Button_Create_Archer = nullptr;
+			Archer_gold_cost = nullptr;
+			Archer_Text_Gold = nullptr;
+			Archer_stone_cost = nullptr;
+			Archer_Text_stone = nullptr;
+			Button_Create_Archer = nullptr;
+		}
+	}
+
+	if (App->scene->upgrade_knight == 0)
+	{
+		if (Button_Upgrade_Knight != nullptr)
+		{
+			Button_Upgrade_Knight->to_delete = true;
+			Knight_stone_cost->to_delete = true;
+			Knight_Text_stone->to_delete = true;
+			Knight_gold_cost->to_delete = true;
+			Knight_Text_Gold->to_delete = true;
+
+			Knight_gold_cost = nullptr;
+			Knight_Text_Gold = nullptr;
+			Knight_stone_cost = nullptr;
+			Knight_Text_stone = nullptr;
+			Button_Upgrade_Knight = nullptr;
+		}
 	}
 }
 
@@ -525,6 +628,14 @@ void Human_Upgrade::GuiInput(GuiItem* guiElement) {
 		if (App->scene->wood >= 999 && App->scene->gold >= 999 || App->scene->debug == true) {
 			Archer_Upgrade = true;
 			Upgrading_Archer = true;
+		}
+	}
+	else if (guiElement == Button_Upgrade_Knight)
+	{
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		if (App->scene->wood >= 999 && App->scene->gold >= 999 || App->scene->debug == true) {
+			Knight_Upgrade = true;
+			Upgrading_Knight = true;
 		}
 	}
 

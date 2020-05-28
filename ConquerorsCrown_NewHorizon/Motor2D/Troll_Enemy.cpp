@@ -26,11 +26,12 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 80;
+	max_hp = life_points;
 	attack_vision = 200;
-	attack_range = 140;
+	attack_range = 100;
 	time_attack = 1400;
 	attack_damage = 12;
-	vision = 26;
+	vision = 20;
 	body = 13;
 	coll_range = 13;
 	position.x = posx;
@@ -110,7 +111,7 @@ bool TrollEnemy::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 
@@ -121,9 +122,8 @@ bool TrollEnemy::Update(float dt)
 	if (particleSystem != nullptr)
 		particleSystem->Move(position.x, position.y);
 
-	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (target_entity == nullptr)
+	if (target_entity == nullptr && App->scene->current_scene != scenes::tutorial)
 	{
 		if (spawn != nullptr)
 		{
@@ -135,6 +135,32 @@ bool TrollEnemy::Update(float dt)
 				followpath = 0;
 				change_direction = true;
 			}
+		}
+		else
+		{
+			spawn = App->wave->spawn1;
+			int x = App->wave->spawn1->position.x;
+			int y = App->wave->spawn1->position.y;
+			int distance = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			x = App->wave->spawn2->position.x;
+			y = App->wave->spawn2->position.y;
+			int distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn2;
+			}
+			x = App->wave->spawn3->position.x;
+			y = App->wave->spawn3->position.y;
+			 distance2 = sqrt(pow((position.x - x), 2) + pow((position.y - y), 2));
+			if (distance > distance2)
+			{
+				distance = distance2;
+				spawn = App->wave->spawn3;
+			}
+					
+
+				
 		}
 	
 	}
@@ -170,7 +196,7 @@ bool TrollEnemy::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
-		if (particleSystem != nullptr)
+		if (particleSystem != nullptr && target_entity != nullptr)
 		{
 			if (!particleSystem->IsActive())
 			{
@@ -253,7 +279,18 @@ bool TrollEnemy::Update(float dt)
 
 	}
 	if (fogId == -1 && shroudId == -1 || App->scene->debug)
-	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	{
+		App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+
+		hp_conversion = (float)25 / (float)max_hp;
+		SDL_Rect section;
+		section.x = 0;
+		section.y = 0;
+		section.w = ((int)life_points * hp_conversion);
+		section.h = 2;
+		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+
+	}
 	return true;
 }
 

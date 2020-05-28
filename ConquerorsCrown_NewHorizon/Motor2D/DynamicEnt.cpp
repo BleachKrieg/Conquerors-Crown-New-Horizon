@@ -133,6 +133,9 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
 			SpatialAudio(5, App->audio->go_archer, position.x, position.y);
 		}
+		if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+			SpatialAudio(5, App->audio->go_knight, position.x, position.y);
+		}
 		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
 			SpatialAudio(5, App->audio->go_gatherer, position.x, position.y);
 		}
@@ -193,6 +196,11 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 						}
 						if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 							SpatialAudio(3, App->audio->footman_attack, position.x, position.y);
+							App->entity->max_audio_attacks++;
+
+						}
+						if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+							SpatialAudio(4, App->audio->knight_attack, position.x, position.y);
 							App->entity->max_audio_attacks++;
 
 						}
@@ -484,10 +492,12 @@ void DynamicEnt::Death(DynamicEntityType entity_type)
 	if (death_counter == 2) {
 		if (entity_type == DynamicEntityType::HUMAN_ARCHER) {
 			SpatialAudio(8, App->audio->die_archer, position.x, position.y);
-
 		}
 		if (entity_type == DynamicEntityType::HUMAN_FOOTMAN) {
 			SpatialAudio(8, App->audio->die_footman, position.x, position.y);
+		}
+		if (entity_type == DynamicEntityType::HUMAN_KNIGHT) {
+			SpatialAudio(8, App->audio->die_knight, position.x, position.y);
 		}
 		if (entity_type == DynamicEntityType::HUMAN_GATHERER) {
 			SpatialAudio(8, App->audio->die_gatherer, position.x, position.y);
