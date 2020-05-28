@@ -1,10 +1,10 @@
 # Conquerors-Crown-New-Horizon
-This is the Vertical Slice from the team BleachKrieg for the subject of project 2 in UPC,CITM
+This is the Alpha version of the videogame: Conqueror's Crown: New Horizon from our team BleachKrieg, for the subject of project 2 in UPC,CITM
 
 ## Repository
-https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon
+<https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon>
 
-## Team:
+## Team
 - Pol de la Torre Solé https://github.com/polf780.
 
 - Marc Palma Turón https://github.com/marcpt98.
@@ -28,9 +28,22 @@ It is a video game from the genre RTS in which you are lockdown in a map where e
 
 ## Controls 
 
+In-Game && tutorial:
 - W,A,S,D : Camera movement (also with the mouse and minimap).
 
-- F10: God mode (in this mode the player doesn't use resources when creating troops/buldings/level ups).
+- F1: Gain 100 of Wood,Stone and Gold (Resources).
+
+- F2: Skip to defeat scene (only in-game).
+
+- F3: Skip to victory scene (only in-game).
+
+- F5: Save current game state (only in-game).
+
+- F6: Load previous game state.
+
+- X: skip tutorial (only tutorial)
+
+- F10: God mode (in this mode the player doesn't use resources when creating troops/buldings/level ups), friendly troops won't receive damage.
 
 - While F10 active:
 
@@ -40,14 +53,23 @@ It is a video game from the genre RTS in which you are lockdown in a map where e
 
 3: Spawn FootMan.
 
-4: Spawn Orc.
+4: Spawn Knight.
 
-5: Spawn Barrack.
+5: Spawn Troll.
 
-6: Spawn Town Hall.
+6: Spawn Ogre
 
-7: Gain 100 of Wood,Stone and Gold (Resources).
+7: Spawn Orc.
 
+Q: Build Townhall.
+
+E: Build Barracks.
+
+R: Build Laboratory.
+
+T: Build Walls.
+
+Q: Build Stables.
 
 - Right click mouse to: 
 
