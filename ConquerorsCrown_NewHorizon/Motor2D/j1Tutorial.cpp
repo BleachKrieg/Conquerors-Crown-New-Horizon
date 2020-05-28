@@ -297,8 +297,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (App->render->camera.x == -576 && App->render->camera.y == -281)
 		{
 			createUI = true;
-			App->render->camera.x = -576;
-			App->render->camera.y = -281;
 			ActualState = ST_Tutorial_Q2;
 		}
 	}
@@ -309,6 +307,9 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+
+			App->render->camera.x = -576;
+			App->render->camera.y = -281;
 			
 			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
