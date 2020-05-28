@@ -100,8 +100,6 @@ bool j1Tutorial::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
-	LOG("%d %d", App->render->camera.x, App->render->camera.y);
-
 	if (App->scene->current_scene == scenes::tutorial)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
