@@ -50,6 +50,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	team = TeamType::PLAYER;
 	actualState = ST_TOWNHALL_PREVIEW;
 	life_points = 200;
+	max_hp = life_points;
 }
 
 HumanTownHall::~HumanTownHall()
@@ -154,6 +155,13 @@ bool HumanTownHall::Update(float dt)
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 55, world.y - 55, r, 1.0f, 1.0f);
 
+	hp_conversion = (float)60 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_TOWNHALL_PREVIEW) {
 

@@ -44,7 +44,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	finishedconst2.PushBack({129,0,125,124}, 0.2, 0, 0, 0, 0);
 
 	team = TeamType::IA;
-	life_points = 200;
+	life_points = 300;
 	max_hp = life_points;
 }
 
@@ -86,7 +86,13 @@ bool EnemyBarracks::Update(float dt)
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->enemy_building, (int)position.x - 65, (int)position.y - 65, r, 1.0f, 1.0f);
 
-
+	hp_conversion = (float)60 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	return true;
 }
 

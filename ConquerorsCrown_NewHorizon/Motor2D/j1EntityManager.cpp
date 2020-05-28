@@ -74,6 +74,7 @@ bool j1EntityManager::Start()
 	miscs = App->tex->Load("Assets/textures/misc/misc.png");
 	//arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
 	arrow = App->tex->Load("Assets/textures/particles/projectiles.png");
+	life_bar = App->tex->Load("Assets/textures/gui/life.png");
 
 	max_audio_attacks = 0;
 	timer.Start();
@@ -106,6 +107,7 @@ bool j1EntityManager::CleanUp()
 	particles.clear();
 
 	App->tex->UnLoad(miscs);
+	App->tex->UnLoad(life_bar);
 	App->tex->UnLoad(arrow);
 	App->tex->UnLoad(building);
 	App->tex->UnLoad(grunt_tex);

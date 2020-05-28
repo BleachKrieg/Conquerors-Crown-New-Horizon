@@ -49,6 +49,7 @@ HumanBarn::HumanBarn(int posx, int posy) : StaticEnt(StaticEntType::Barn)
 	team = TeamType::PLAYER;
 	actualState = ST_BARN_PREVIEW;
 	life_points = 100;
+	max_hp = life_points;
 	createUI = false;
 	visionEntity = nullptr;
 }
@@ -141,6 +142,14 @@ bool HumanBarn::Update(float dt)
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+
+	hp_conversion = (float)40 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_BARN_PREVIEW) {
