@@ -100,6 +100,7 @@ bool j1Tutorial::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
+	LOG("%d %d", App->render->camera.x, App->render->camera.y);
 
 	if (App->scene->current_scene == scenes::tutorial)
 	{
@@ -307,12 +308,11 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
-			App->render->camera.x = -576;
-			App->render->camera.y = -281;
 			
 			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
+		App->render->camera.x = -576;
+		App->render->camera.y = -281;
 	}
 
 	// Step 2.5
