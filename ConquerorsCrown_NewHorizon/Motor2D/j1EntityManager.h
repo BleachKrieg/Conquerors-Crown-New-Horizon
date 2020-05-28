@@ -114,8 +114,10 @@ public:
 	SDL_Texture* building = nullptr;
 	SDL_Texture* enemy_building = nullptr;
 	SDL_Texture* miscs = nullptr;
-	bool pause;
 	SDL_Texture* arrow = nullptr;
+	SDL_Texture* life_bar = nullptr;
+
+	bool pause;
 	bool lights;
 
 	// Load entities textures

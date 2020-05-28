@@ -21,6 +21,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	work_state = WORK_STATE::NONE;
 	speed = { NULL, NULL };
 	life_points = 80;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 0;
 	time_attack = 0;
@@ -102,9 +103,9 @@ bool HumanGatherer::Update(float dt)
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (App->scene->debug)
-		life_points = 80;
+		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)
@@ -316,6 +317,15 @@ bool HumanGatherer::Update(float dt)
 	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 	if (to_blit)
 		App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	
+	hp_conversion = (float)25 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+
 	return true;
 }
 

@@ -26,6 +26,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 80;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 100;
 	time_attack = 1400;
@@ -110,7 +111,7 @@ bool TrollEnemy::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 
@@ -278,7 +279,18 @@ bool TrollEnemy::Update(float dt)
 
 	}
 	if (fogId == -1 && shroudId == -1 || App->scene->debug)
-	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	{
+		App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+
+		hp_conversion = (float)25 / (float)max_hp;
+		SDL_Rect section;
+		section.x = 0;
+		section.y = 0;
+		section.w = ((int)life_points * hp_conversion);
+		section.h = 2;
+		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+
+	}
 	return true;
 }
 

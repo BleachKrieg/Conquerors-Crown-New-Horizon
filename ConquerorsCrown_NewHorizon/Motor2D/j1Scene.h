@@ -109,12 +109,12 @@ private:
 	j1Timer logoTimer;
 	int alpha;
 	iPoint speed;
-	bool wants_to_load = false;
 	int time_loaded;
 	
 public:
 	p2SString current_level;
 	scenes current_scene;
+	bool wants_to_load = false;
 
 	//SDL_Texture* debug_tex;
 
