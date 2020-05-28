@@ -250,6 +250,8 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (App->render->camera.x == -576 && App->render->camera.y == -281)
 		{
 			createUI = true;
+			App->render->camera.x = -576;
+			App->render->camera.y = -281;
 			ActualState = ST_Tutorial_Q2;
 		}
 	}
