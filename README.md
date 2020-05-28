@@ -24,7 +24,7 @@ This is the Alpha version of the videogame: Conqueror's Crown: New Horizon from 
 - Pol Galán i Morales https://github.com/pgalmor
 
 ## What is Conquerors-Crown-New-Horizon about?
-It is a video game from the genre RTS in which you are lockdown in a map where every now and then a horde of orcs will attack your base, so the goal of our game is to survive this ords of orcs until the timer is over, if at the end of the time the player still have at least one building alive, the player will have won the game, if the horde destroy all your buildings, the game is over.
+It is a video game from the genre RTS in which you are lockdown in a map where every now and then a horde of orcs will attack your base, so the goal of our game is to survive this ords of orcs until the timer is over, if at the end of the time the player still has at least one townhall standing, the player will beat the game, if the horde destroys all your townhalls, the game is over. You can also explore the map and search for the enemy barracks. Destroy one, and the enemy will stop spawning from there, but the other barracks will spawn more troops than usual. Destroy them all, and you will automatically win the game. Be careful, barracks will invoke some defenders to protect them in case they are under attack. So be sure to bring a large group to take them down.
 
 ## Controls 
 
