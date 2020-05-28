@@ -105,7 +105,7 @@ bool HumanGatherer::Update(float dt)
 	if (App->scene->debug)
 		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)

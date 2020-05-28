@@ -95,7 +95,7 @@ bool Human_Upgrade::Update(float dt)
 	if (App->scene->debug)
 		life_points = 100;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (life_points <= 0)

@@ -184,7 +184,7 @@ bool j1Scene::Update(float dt)
 		
 		break;
 	case scenes::tutorial:
-		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) 
 		{
 			App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		}
@@ -333,16 +333,25 @@ bool j1Scene::Update(float dt)
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}			
-
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("stone", 100);
+			App->scene->AddResource("gold", 100);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			win_lose_counter = 0;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			win_lose_counter = 0;
+		}
 		if (debug)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
-			}
-			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
@@ -354,61 +363,55 @@ bool j1Scene::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { mouse_position.x, mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { mouse_position.x, mouse_position.y });
 			}
-			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
-			{
-				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", 100);
-				App->scene->AddResource("gold", 100);
-			}
-			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
-			}
-
-			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-				App->fade->FadeToBlack(scenes::defeat, 2.0f);
-			}
-			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-				App->fade->FadeToBlack(scenes::victory, 2.0f);
-			}*/
-			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
+			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Barn, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+			// testing winlose scenes
+			
+
+			
 		}
 
 		if (stone >= 100 && wall_create == true && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
-
-			if(App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
 
 		}
 
@@ -446,16 +449,6 @@ bool j1Scene::Update(float dt)
 			}
 		}
 		break;
-	}
-	
-	// testing winlose scenes
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && debug) {
-		App->fade->FadeToBlack(scenes::defeat, 2.0f);
-		win_lose_counter = 0;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN && debug) {
-		App->fade->FadeToBlack(scenes::victory, 2.0f);
-		win_lose_counter = 0;
 	}
 
 	//App->render->Blit(debug_tex, p.x, p.y);
