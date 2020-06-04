@@ -61,13 +61,13 @@ bool j1EntityManager::Start()
 	grunt_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_grunt.png");
 	
 	LOG("Loading Dynamic Entities Animations");
-	LoadAnimations("Assets/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
-	LoadAnimations("Assets/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
-	LoadAnimations("Assets/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
-	LoadAnimations("Assets/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
-	LoadAnimations("Assets/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
-	LoadAnimations("Assets/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
-	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
+	LoadAnimations("Assets_old/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
+	LoadAnimations("Assets_old/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
+	LoadAnimations("Assets_old/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
+	LoadAnimations("Assets_old/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
+	LoadAnimations("Assets_old/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
+	LoadAnimations("Assets_old/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
+	LoadAnimations("Assets_old/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	enemy_building = App->tex->Load("Assets/textures/buildings/Orc Buildings/orc_buildings_summer.png");

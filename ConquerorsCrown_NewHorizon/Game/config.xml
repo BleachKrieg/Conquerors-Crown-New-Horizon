@@ -23,7 +23,7 @@
       <icons file="Assets/textures/gui/icons.png"/>
   </gui>
   <fonts>
-    <default_font file="Assets/fonts/alagard.ttf"/>
+    <default_font file="Assets_old/fonts/alagard.ttf"/>
     <font_size big="38" small="28" xs="22"/>
   </fonts>
   <audio>
@@ -42,7 +42,7 @@
   </file_system>
 
   <map>
-    <folder>Assets/textures/maps/</folder>
+    <folder>Assets_old/textures/maps/</folder>
   </map>
   <minimap width="225" corner="bottom_left" margin="15"/>
 

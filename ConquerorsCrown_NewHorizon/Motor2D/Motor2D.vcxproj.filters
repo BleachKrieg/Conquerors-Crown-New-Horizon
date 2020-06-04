@@ -151,6 +151,9 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Particles</Filter>
     </ClCompile>
+    <ClCompile Include="AssetsManager.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicEnt.h">
@@ -326,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsManager.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

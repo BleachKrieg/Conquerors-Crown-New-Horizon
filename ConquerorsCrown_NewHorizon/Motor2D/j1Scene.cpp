@@ -22,6 +22,7 @@
 #include "FoWManager.h"
 #include "j1Video.h"
 #include "J1GroupMov.h"
+#include "AssetsManager.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -64,6 +65,28 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
+	if (!PHYSFS_exists("data.xml"))
+		return false;
+
+	char* buffer;
+
+	pugi::xml_document dataFile;
+	int bytesFile = App->assetManager->Load("data.xml", &buffer);
+
+	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	//// We load all the ZIP texture files
+	//LoadTexFile(dataFile);
+
+	//// We load all the ZIP fx files
+	//LoadFxFile(dataFile);
+
+	//// We load and play the desired music from the ZIP
+	//LoadMusFile(dataFile);
+
+
 	current_scene = scenes::logo;
 	current_level = "Tutorial.tmx";
 	debug = false;
@@ -82,7 +105,7 @@ bool j1Scene::Start()
 
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 
-	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
 	wall_create = false;
@@ -585,7 +608,7 @@ bool j1Scene::PostUpdate(float dt)
 
 			if (intro_video == 0 && loop)
 			{
-				intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+				intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 
 
 			}
@@ -637,7 +660,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/victory.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/victory.ogv", App->render->renderer);
 
 
 		}
@@ -668,7 +691,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/defeat.ogv", App->render->renderer);
 
 		}
 
@@ -1262,7 +1285,7 @@ bool j1Scene::CreateLogo() {
 
 	//video
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/evangelion-opening.ogv", App->render->renderer);
 
 	loop = true;
 	//Reseting camera to (0,0) position
@@ -1609,4 +1632,22 @@ void j1Scene::LogoPushbacks() {
 void j1Scene::UpdateCameraPosition(int speed) 
 {
 
+}
+
+void j1Scene::LoadTexFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node tex_node = dataFile.child("data").child("texture");
+	texture = App->tex->Load(tex_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadFxFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node fx_node = dataFile.child("data").child("fx");
+	App->audio->LoadFx(fx_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadMusFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node mus_node = dataFile.child("data").child("mus");
+	App->audio->PlayMusic(mus_node.attribute("file").as_string());
 }

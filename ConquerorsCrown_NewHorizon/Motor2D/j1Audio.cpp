@@ -9,6 +9,7 @@
 #include "DynamicEnt.h"
 #include "StaticEnt.h"
 #include "SDL/include/SDL.h"
+#include "AssetsManager.h"
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
@@ -155,6 +156,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	p2SString tmp("%s%s", music_directory.GetString(), path);
 
 	music = Mix_LoadMUS(tmp.GetString());
+	music = Mix_LoadMUS_RW(App->assetManager->Load(tmp.GetString()), 1);
 
 	if(music == NULL)
 	{
@@ -213,8 +215,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if (!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
-
+	Mix_Chunk* chunk = Mix_LoadWAV_RW(App->assetManager->Load(path), 1);
 	if (chunk == NULL)
 	{
 		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
