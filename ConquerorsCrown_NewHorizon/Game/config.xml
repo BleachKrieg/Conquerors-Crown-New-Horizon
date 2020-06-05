@@ -42,7 +42,7 @@
   </file_system>
 
   <map>
-    <folder>Assets_old/textures/maps/</folder>
+    <folder>Assets/textures/maps/</folder>
   </map>
   <minimap width="225" corner="bottom_left" margin="15"/>
 
