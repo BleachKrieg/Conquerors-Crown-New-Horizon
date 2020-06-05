@@ -8,6 +8,7 @@
 #include "j1Gui.h"
 #include "j1Window.h"
 #include "j1CutsceneManager.h"
+#include "AssetsManager.h"
 #include "j1Minimap.h"
 
 
@@ -38,8 +39,13 @@ bool j1CutsceneManager::Start()
 	black_bars.down_rect.w = App->win->width;
 	black_bars.down_rect.h = bar_height;
 
-	result = data.load_file("CutsceneEditor.xml");
+	char* buffer;
+
+	int bytesFile = App->assetManager->Load("CutsceneEditor.xml", &buffer);
+	result = data.load_buffer(buffer, bytesFile);
 	cutsceneManager = data.document_element();
+
+	RELEASE_ARRAY(buffer);
 
 	cinematic_camera.active = false;
 	camera.active = false;
