@@ -65,13 +65,13 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	if (!PHYSFS_exists("data.xml"))
+	if (!PHYSFS_exists("Assets/data.xml"))
 		return false;
 
 	char* buffer;
 
 	pugi::xml_document dataFile;
-	int bytesFile = App->assetManager->Load("data.xml", &buffer);
+	int bytesFile = App->assetManager->Load("Assets/data.xml", &buffer);
 
 	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
 	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
