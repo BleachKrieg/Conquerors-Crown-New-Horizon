@@ -23,6 +23,7 @@
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Scene.h"
+#include "AssetsManager.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -61,13 +62,13 @@ bool j1EntityManager::Start()
 	grunt_tex = App->tex->Load("Assets/textures/units/Orc Sprites/orc_grunt.png");
 	
 	LOG("Loading Dynamic Entities Animations");
-	LoadAnimations("Assets_old/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
-	LoadAnimations("Assets_old/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
-	LoadAnimations("Assets_old/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
-	LoadAnimations("Assets_old/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
-	LoadAnimations("Assets_old/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
-	LoadAnimations("Assets_old/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
-	LoadAnimations("Assets_old/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/archer_animations.tmx", archer_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/footman_animations.tmx", footman_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/gatherer_animations.tmx", gatherer_animations);
+	LoadAnimations("Assets/textures/units/Human Units Animations/knight_animations.tmx", knight_animations);
+	LoadAnimations("Assets/textures/units/Orc Units Animations/troll_animations.tmx", troll_animations);
+	LoadAnimations("Assets/textures/units/Orc Units Animations/ogre_animations.tmx", ogre_animations);
+	LoadAnimations("Assets/textures/units/Orc Units Animations/grunt_animations.tmx", grunt_animations);
 
 	building = App->tex->Load("Assets/textures/buildings/Human Buildings/human_buildings_summer.png");
 	enemy_building = App->tex->Load("Assets/textures/buildings/Orc Buildings/orc_buildings_summer.png");
@@ -473,8 +474,13 @@ bool j1EntityManager::DeleteParticles(int id, j1Entity* entity)
 
 
 void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animations) {
+	
+	char* buffer;
 	pugi::xml_document	entity_file;
-	pugi::xml_parse_result result = entity_file.load_file(path);
+	int bytesFile = App->assetManager->Load(path, &buffer);
+	pugi::xml_parse_result result = entity_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
 	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", path, result.description());
