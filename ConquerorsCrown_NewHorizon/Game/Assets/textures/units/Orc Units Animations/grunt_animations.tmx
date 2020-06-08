@@ -54,47 +54,47 @@
   </tile>
   <tile id="5">
    <animation>
-    <frame tileid="5" duration="475"/>
-    <frame tileid="15" duration="475"/>
-    <frame tileid="25" duration="475"/>
-    <frame tileid="35" duration="475"/>
-    <frame tileid="45" duration="475"/>
+    <frame tileid="5" duration="375"/>
+    <frame tileid="15" duration="375"/>
+    <frame tileid="25" duration="375"/>
+    <frame tileid="35" duration="275"/>
+    <frame tileid="45" duration="375"/>
    </animation>
   </tile>
   <tile id="6">
    <animation>
-    <frame tileid="6" duration="475"/>
-    <frame tileid="16" duration="475"/>
-    <frame tileid="26" duration="475"/>
-    <frame tileid="36" duration="475"/>
-    <frame tileid="46" duration="475"/>
+    <frame tileid="6" duration="375"/>
+    <frame tileid="16" duration="375"/>
+    <frame tileid="26" duration="375"/>
+    <frame tileid="36" duration="275"/>
+    <frame tileid="46" duration="375"/>
    </animation>
   </tile>
   <tile id="7">
    <animation>
-    <frame tileid="7" duration="475"/>
-    <frame tileid="17" duration="475"/>
-    <frame tileid="27" duration="475"/>
-    <frame tileid="37" duration="475"/>
-    <frame tileid="47" duration="475"/>
+    <frame tileid="7" duration="375"/>
+    <frame tileid="17" duration="375"/>
+    <frame tileid="27" duration="375"/>
+    <frame tileid="37" duration="275"/>
+    <frame tileid="47" duration="375"/>
    </animation>
   </tile>
   <tile id="8">
    <animation>
-    <frame tileid="8" duration="475"/>
-    <frame tileid="18" duration="475"/>
-    <frame tileid="28" duration="475"/>
-    <frame tileid="38" duration="475"/>
-    <frame tileid="48" duration="475"/>
+    <frame tileid="8" duration="375"/>
+    <frame tileid="18" duration="375"/>
+    <frame tileid="28" duration="375"/>
+    <frame tileid="38" duration="275"/>
+    <frame tileid="48" duration="375"/>
    </animation>
   </tile>
   <tile id="9">
    <animation>
-    <frame tileid="9" duration="475"/>
-    <frame tileid="19" duration="475"/>
-    <frame tileid="29" duration="475"/>
-    <frame tileid="39" duration="475"/>
-    <frame tileid="49" duration="475"/>
+    <frame tileid="9" duration="375"/>
+    <frame tileid="19" duration="375"/>
+    <frame tileid="29" duration="375"/>
+    <frame tileid="39" duration="275"/>
+    <frame tileid="49" duration="375"/>
    </animation>
   </tile>
   <tile id="55">

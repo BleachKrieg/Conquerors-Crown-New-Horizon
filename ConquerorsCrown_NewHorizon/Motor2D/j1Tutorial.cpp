@@ -430,6 +430,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->guldan_laugh, 0);
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
 
 			App->cutscene->StartCutscene("Tutorial2");
