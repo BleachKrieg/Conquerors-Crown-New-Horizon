@@ -196,7 +196,6 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
-			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
@@ -225,6 +224,7 @@ bool j1Scene::Update(float dt)
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		
@@ -246,6 +246,7 @@ bool j1Scene::Update(float dt)
 	case scenes::defeat:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		
