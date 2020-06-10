@@ -109,12 +109,12 @@ private:
 	j1Timer logoTimer;
 	int alpha;
 	iPoint speed;
-	bool wants_to_load = false;
 	int time_loaded;
-
+	
 public:
 	p2SString current_level;
 	scenes current_scene;
+	bool wants_to_load = false;
 
 	//SDL_Texture* debug_tex;
 
@@ -157,6 +157,7 @@ public:
 	GuiItem* townHallStoneCostImage;
 	GuiItem* townHallWoodCostText;
 	GuiItem* townHallStoneCostText;
+
 
 	//OptionsGui
 	bool optionsMenu;
@@ -233,10 +234,9 @@ public:
 	int camera_limit_y2;
 
 	//Upgrade_Swordman
-	bool Upgrade_Sowrdman;
-	float stats_upgrade_swordman;
-	bool Upgrade_Archer;
-	float stats_upgrade_Archer;
+	int upgrade_swordman;
+	int upgrade_archer;
+	int upgrade_knight;
 
 	// Wall
 	bool wall_create;

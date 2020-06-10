@@ -17,7 +17,7 @@
 
 Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 {
-	name.create("test_1");
+	name.create("wall");
 	position.x = posx;
 	position.y = posy;
 	vision = 20;
@@ -36,6 +36,7 @@ Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 	team = TeamType::PLAYER;
 	actualState = ST_WALL_PREVIEW;
 	life_points = 200;
+	max_hp = life_points;
 }
 
 Human_Wall::~Human_Wall()
@@ -62,7 +63,7 @@ bool Human_Wall::Update(float dt)
 	if (App->scene->debug)
 		life_points = 200;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (life_points <= 0)
@@ -89,6 +90,14 @@ bool Human_Wall::Update(float dt)
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 16, world.y - 16, r, 1.0f, 1.0f);
+
+	hp_conversion = (float)20 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_WALL_PREVIEW) {

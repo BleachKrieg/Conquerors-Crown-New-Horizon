@@ -72,6 +72,7 @@ public:
 	vector<j1Entity*> player_dyn_ent;
 	vector<j1Entity*> ai_dyn_ent;
 	vector<j1Entity*> player_stat_ent;
+	vector<j1Entity*> ai_stat_ent;
 	vector<j1Entity*> resources_ent;
 	vector<GoldMine*> mines;
 
@@ -84,9 +85,12 @@ public:
 	SDL_Texture* foot_man_tex = nullptr;
 	SDL_Texture* arch_man_tex = nullptr;
 	SDL_Texture* foot_man_tex2 = nullptr;
+	SDL_Texture* foot_man_tex3 = nullptr;
 	SDL_Texture* arch_man_tex2 = nullptr;
+	SDL_Texture* arch_man_tex3 = nullptr;
 	SDL_Texture* gather_man_tex = nullptr;
 	SDL_Texture* knight_tex = nullptr;
+	SDL_Texture* knight_tex2 = nullptr;
 	SDL_Texture* troll_tex = nullptr;
 	SDL_Texture* ally_sel_tex = nullptr;
 	SDL_Texture* enemy_sel_tex = nullptr;
@@ -108,9 +112,12 @@ public:
 	// ---------------------------------
 
 	SDL_Texture* building = nullptr;
+	SDL_Texture* enemy_building = nullptr;
 	SDL_Texture* miscs = nullptr;
-	bool pause;
 	SDL_Texture* arrow = nullptr;
+	SDL_Texture* life_bar = nullptr;
+
+	bool pause;
 	bool lights;
 
 	// Load entities textures

@@ -23,12 +23,15 @@ HumanArcher::HumanArcher(int posx, int posy) : DynamicEnt(DynamicEntityType::HUM
 
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
-	life_points = 80 * App->scene->stats_upgrade_Archer;
+	life_points = 80; 
 	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 140;
 	time_attack = 1000;
-	attack_damage = 16 * App->scene->stats_upgrade_Archer;
+	attack_damage = 16;
+	stats_upgrade_damage = 8;
+	stats_upgrade_life = 40;
+	tier_archer = 0;
 	vision = 26;
 	body = 13;
 	coll_range = 13;
@@ -110,9 +113,9 @@ bool HumanArcher::Update(float dt)
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
 	if (App->scene->debug)
-		life_points = life_points;
+		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
@@ -157,7 +160,7 @@ bool HumanArcher::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
-		if (particleSystem != nullptr)
+		if (particleSystem != nullptr && target_entity != nullptr)
 		{
 			if (!particleSystem->IsActive())
 			{
@@ -213,11 +216,40 @@ bool HumanArcher::Update(float dt)
 	App->render->Blit(App->entity->ally_sel_tex, (int)(position.x - 20), (int)(position.y) - 10);
 	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 
-	if (attack_damage > 16)
+	if (tier_archer != App->scene->upgrade_archer)
+	{
+		tier_archer = App->scene->upgrade_archer;
+		life_points += stats_upgrade_life;
+		max_hp += stats_upgrade_life;
+		attack_damage += stats_upgrade_damage;
+		if (tier_archer == 2)
+		{
+			life_points = 160;
+			max_hp = 160;
+			attack_damage = 32;
+		}
+	}
+
+	if (attack_damage == 24)
 	{
 		App->render->Blit(App->entity->arch_man_tex2, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
 	}
-	else { App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); }
+	else if (attack_damage == 32)
+	{
+		App->render->Blit(App->entity->arch_man_tex3, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	}
+	else 
+	{ 
+		App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); 
+	}
+
+	hp_conversion = (float)25 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;
 }

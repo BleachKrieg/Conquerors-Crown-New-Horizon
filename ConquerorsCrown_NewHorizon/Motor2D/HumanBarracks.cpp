@@ -23,7 +23,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	coll_range = 50;
+	coll_range = 70;
 	active = true;
 	selectable = true;
 	isSelected = false;
@@ -49,6 +49,7 @@ HumanBarracks::HumanBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	team = TeamType::PLAYER;
 	actualState = ST_BARRACK_PREVIEW;
 	life_points = 100;
+	max_hp = life_points;
 	createUI = false;
 	Barrack_Upgraded = false;
 	visionEntity = nullptr;
@@ -98,7 +99,7 @@ bool HumanBarracks::Update(float dt)
 	if (App->scene->debug)
 		life_points = 100;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (life_points <= 0)
@@ -154,6 +155,14 @@ bool HumanBarracks::Update(float dt)
 	//Final blit
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 50, world.y - 50, r, 1.0f, 1.0f);
+
+	hp_conversion = (float)40 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_BARRACK_PREVIEW) {
@@ -598,8 +607,8 @@ void HumanBarracks::CheckQueue()
 			case 1:
 				Searchtile(map);
 				randomrespawn = rand() % 10 + 10;
-				App->requests->AddRequest(Petition::SPAWN, 0, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
-				
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { respawn.x + randomrespawn, respawn.y + randomrespawn });
+	
 				if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q10_1)
 				{
 					if (App->tutorial->mision2 != nullptr && App->tutorial->mision2_Text != nullptr && App->tutorial->mision2_Text_2 != nullptr)

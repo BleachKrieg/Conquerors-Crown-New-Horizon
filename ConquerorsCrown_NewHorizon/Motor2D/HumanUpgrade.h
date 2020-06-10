@@ -59,7 +59,7 @@ public:
 
 
 	// UI
-	//Upggrade UI
+	//Upgrade UI
 	GuiItem* Button_Upgrade;
 	GuiItem* Barrack_image;
 	GuiItem* Arrow_image;
@@ -83,6 +83,14 @@ public:
 	GuiItem* Swordman_gold_cost;
 	GuiItem* Swordman_Text_Gold;
 
+	//Knight UI
+	GuiItem* Button_Upgrade_Knight;
+	GuiItem* Knight_image;
+	GuiItem* Knight_stone_cost;
+	GuiItem* Knight_Text_stone;
+	GuiItem* Knight_gold_cost;
+	GuiItem* Knight_Text_Gold;
+
 	//Progress Bar
 	GuiItem* creation_barrack_bar;
 
@@ -90,13 +98,17 @@ public:
 	j1Timer upgrade_timer2;
 	bool Swordman_Upgrade;
 	bool Archer_Upgrade;
+	bool Knight_Upgrade;
 	bool time_bar_start;
 	bool Upgrading_swordman;
 	bool Upgrading_Archer;
-	//bool
+	bool Upgrading_Knight;
+	
+
 	float first_upgrade_time;
 	GuiItem* creation_Upgrade_bar;
 	GuiItem* creation_Upgrade_bar_archer;
+	GuiItem* creation_Upgrade_bar_Knight;
 
 };
 #endif // __UPGRADE_1_H__

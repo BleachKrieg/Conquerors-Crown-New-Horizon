@@ -61,7 +61,7 @@ bool GoldMine::Update(float dt)
 	r = &current_animation->GetCurrentFrame(dt);
 
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
-	if (App->input->GetKey(SDL_SCANCODE_K))LOG("Gold Mine");
+	
 
 	return true;
 }

@@ -23,7 +23,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	position.y = posy;
 	vision = 30;
 	body = 40;
-	coll_range = 50;
+	coll_range = 70;
 	selectable = false;
 	isSelected = false;
 	to_delete = false;
@@ -49,7 +49,8 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 
 	team = TeamType::PLAYER;
 	actualState = ST_TOWNHALL_PREVIEW;
-	life_points = 100;
+	life_points = 200;
+	max_hp = life_points;
 }
 
 HumanTownHall::~HumanTownHall()
@@ -96,9 +97,9 @@ bool HumanTownHall::Update(float dt)
 	if (isSelected && App->movement->player_selected != this)
 		isSelected = false;
 	if(App->scene->debug)
-	life_points = 100;
+	life_points = 200;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (life_points <= 0) 
@@ -154,6 +155,13 @@ bool HumanTownHall::Update(float dt)
 	SDL_Rect* r = &current_animation->GetCurrentFrame(dt);
 	App->render->Blit(App->entity->building, world.x - 55, world.y - 55, r, 1.0f, 1.0f);
 
+	hp_conversion = (float)60 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_TOWNHALL_PREVIEW) {
 
@@ -392,9 +400,15 @@ void HumanTownHall::checkAnimation(float dt)
 				// Tutorial
 				if (App->tutorial->ActualState == ST_Tutorial_Q5)
 				{
-					App->tutorial->Arrow_4->to_delete = true;
-					App->tutorial->Arrow_4 = nullptr;
-					App->tutorial->Arrow_5 = App->gui->CreateGuiElement(Types::image, 1005, 450, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+					if (App->tutorial->Arrow_4 != nullptr)
+					{
+						App->tutorial->Arrow_4->to_delete = true;
+						App->tutorial->Arrow_4 = nullptr;
+					}
+					if (App->tutorial->Arrow_5 == nullptr)
+					{
+						App->tutorial->Arrow_5 = App->gui->CreateGuiElement(Types::image, 1005, 450, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
+					}
 				}
 			}
 
@@ -465,6 +479,15 @@ void HumanTownHall::checkAnimation(float dt)
 					Troop[i]->bar->to_delete = true;
 				}
 			}
+			// Tutorial
+			if (App->tutorial->ActualState == ST_Tutorial_Q5)
+			{
+				if (App->tutorial->Arrow_5 != nullptr)
+				{
+					App->tutorial->Arrow_5->to_delete = true;
+					App->tutorial->Arrow_5 = nullptr;
+				}
+			}
 		}
 	}	
 }
@@ -495,8 +518,16 @@ void HumanTownHall::CheckQueue()
 			// Tutorial
 			if (App->scene->current_scene == scenes::tutorial && App->tutorial->ActualState == ST_Tutorial_Q5)
 			{
-				App->tutorial->Arrow_5_1->to_delete = true;
-				App->tutorial->Arrow_5_1 = nullptr;
+				if (App->tutorial->Arrow_5_1 != nullptr)
+				{
+					App->tutorial->Arrow_5_1->to_delete = true;
+					App->tutorial->Arrow_5_1 = nullptr;
+				}
+				if (App->tutorial->Arrow_5 != nullptr)
+				{
+					App->tutorial->Arrow_5->to_delete = true;
+					App->tutorial->Arrow_5 = nullptr;
+				}
 				App->audio->PlayFx(-1, App->audio->quest_complete, 0);
 				App->tutorial->ActualState = ST_Tutorial_Q6;
 				App->tutorial->deleteUI(0);
@@ -726,8 +757,11 @@ void HumanTownHall::GuiInput(GuiItem* guiElement) {
 			// Tutorial
 			if (App->tutorial->ActualState == ST_Tutorial_Q5)
 			{
-				App->tutorial->Arrow_5->to_delete = true;
-				App->tutorial->Arrow_5 = nullptr;
+				if (App->tutorial->Arrow_5 != nullptr)
+				{
+					App->tutorial->Arrow_5->to_delete = true;
+					App->tutorial->Arrow_5 = nullptr;
+				}
 				App->tutorial->Arrow_5_1 = App->gui->CreateGuiElement(Types::image, 830, 455, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 			}
 		}
