@@ -30,6 +30,7 @@ Human_Wall::Human_Wall(int posx, int posy) : StaticEnt(StaticEntType::HumanWall)
 	canbuild = false;
 	visionEntity = nullptr;
 	time_FX_barracks = 1;
+	createUI = false;
 	
 	// Load all animations
 	finishedconst.PushBack({ 409,785,32,32 }, 0.2, 0, 0, 0, 0);

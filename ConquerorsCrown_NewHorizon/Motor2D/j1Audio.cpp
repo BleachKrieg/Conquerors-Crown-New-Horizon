@@ -93,7 +93,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 
 	upgrade_complete = App->audio->LoadFx("Assets/Audio/SFX/Humans/Upgrade_Complete_1.wav");
 	quest_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Good_Job.wav");
-	quest_failed = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Failed.wav");
+	guldan_laugh = App->audio->LoadFx("Assets/Audio/SFX/UI/Gul'dan_Laugh.wav");
 	tutorial_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Completed.wav");
 	
 	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");

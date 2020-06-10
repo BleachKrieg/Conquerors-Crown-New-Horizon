@@ -85,7 +85,7 @@ public:
 
 	int upgrade_complete;
 	int quest_complete;
-	int quest_failed;
+	int guldan_laugh;
 	int tutorial_complete;
 
 	int logo_game_fx;
