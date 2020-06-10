@@ -10,7 +10,7 @@
 
 StaticEnt::StaticEnt(StaticEntType type) : j1Entity(entityType::STATIC)
 {
-	createUI = false;
+
 }
 
 StaticEnt::~StaticEnt()

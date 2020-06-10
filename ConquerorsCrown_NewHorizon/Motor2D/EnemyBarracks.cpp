@@ -31,7 +31,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	spawn_cooldown.Start();
 	defenses_spawned = false;
 	spawn_counter = 0;
-
+	createUI = false;
 
 	//pos0 = { 827, 103 };
 	//pos1 = { 890, 103 };
