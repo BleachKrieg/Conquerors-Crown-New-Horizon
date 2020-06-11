@@ -347,6 +347,8 @@ void DynamicEnt::Movement(float dt)
 				state = DynamicState::DIAGONAL_DOWN;
 				current_animation = &moving_diagonal_down;
 			}
+			change_direction = false;
+
 		}
 		else if (pathSpeed.y != 0) {
 			if (pathSpeed.y < 0)
@@ -360,6 +362,8 @@ void DynamicEnt::Movement(float dt)
 				state = DynamicState::DOWN;
 				current_animation = &moving_down;
 			}
+			change_direction = false;
+
 		}
 		else
 		{
@@ -373,7 +377,6 @@ void DynamicEnt::Movement(float dt)
 		{
 			orientation = SDL_FLIP_NONE;
 		}
-		change_direction = false;
 
 	}
 	
