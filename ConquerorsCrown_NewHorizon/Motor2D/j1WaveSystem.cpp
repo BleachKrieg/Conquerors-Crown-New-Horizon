@@ -110,7 +110,6 @@ bool j1WaveSystem::Update(float dt)
 			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 			{
 				StartWave(current_wave);
-				//App->audio->PlayFx(-1, App->audio->wave_warning, 0);
 			}
 		}
 		else if (spawn_cooldown.ReadSec() > 0.75 && wave_ongoing == true)
@@ -118,7 +117,6 @@ bool j1WaveSystem::Update(float dt)
 			if (!spawn1->path.empty() && !spawn1->path.empty() && !spawn1->path.empty())
 			{
 				StartWave(current_wave);
-				App->audio->PlayFx(-1, App->audio->wave_warning, 0);
 			}
 		}
 
@@ -362,6 +360,7 @@ void j1WaveSystem::StartWave(int wave)
 {
 	
 	//int total_spawns = 2 + 9 * wave;
+
 	int wave_value = 30 + 70 * wave;
 	if (spawn_buildings == 2) { wave_value = wave_value - 30 * wave; }
 	else if (spawn_buildings == 1) { wave_value = wave_value - 60 * wave; }
