@@ -59,6 +59,7 @@ private:
 	j1PerfTimer timer;
 
 	int chop_time;
+	int quarry_time;
 
 	bool to_blit;
 

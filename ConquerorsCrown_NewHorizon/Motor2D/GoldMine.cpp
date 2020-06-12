@@ -32,6 +32,7 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	isSelected = false;
 	extraction_limit = amount;
 	createUI = false;
+	mine_time = 0;
 }
 
 GoldMine::~GoldMine() {}
@@ -61,6 +62,11 @@ bool GoldMine::Update(float dt)
 	else if (extraction_limit > 0 && mine_lights == LIGHTS_ON)
 	{
 		current_animation = &light_mine;
+		if (mine_time >= 70) {
+			SpatialAudio(11, App->audio->mine_gatherer, position.x, position.y);
+			mine_time = 0;
+		}
+		mine_time++;
 	}
 
 	if (!App->mouse_cursor->on_resources && App->movement->player_selected != nullptr && App->movement->player_selected->GetDynEntType() == uint(DynamicEnt::DynamicEntityType::HUMAN_GATHERER))
