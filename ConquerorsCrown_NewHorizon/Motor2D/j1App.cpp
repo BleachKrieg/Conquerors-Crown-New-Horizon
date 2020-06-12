@@ -252,7 +252,7 @@ void j1App::FinishUpdate()
 		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
 	*/
-	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u]", prev_last_sec_frame_count);
+	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u], %d, %d", prev_last_sec_frame_count, App->scene->mouse_position.x, App->scene->mouse_position.y);
 
 	App->win->SetTitle(title);
 

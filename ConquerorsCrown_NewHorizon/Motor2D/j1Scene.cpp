@@ -22,6 +22,8 @@
 #include "FoWManager.h"
 #include "j1Video.h"
 #include "J1GroupMov.h"
+     
+
 
 
 j1Scene::j1Scene() : j1Module()
@@ -689,11 +691,11 @@ bool j1Scene::CleanUp()
 	bool ret = true;
 	ret = App->tex->UnLoad(video_texture);
 	ret = App->tex->UnLoad(videologo_tex);
-	loader = nullptr;
-	App->minimap->CleanUp();
-	LOG("Freeing scene");
+loader = nullptr;
+App->minimap->CleanUp();
+LOG("Freeing scene");
 
-	return ret;
+return ret;
 }
 bool j1Scene::Load(pugi::xml_node& data)
 {
@@ -716,7 +718,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	LOG("Saving Scene state");
-	
+
 
 	pugi::xml_node scenename = data.append_child("scenename");
 	scenename.append_attribute("name") = current_level.GetString();
@@ -737,6 +739,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::LoadTiledEntities() {
 
 	list<MapLayer*>::iterator Layer_list;
+	vector<iPoint> positions;
+	int maxpositions = 0;
 	MapLayer* layer;
 
 	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
@@ -761,8 +765,8 @@ void j1Scene::LoadTiledEntities() {
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 50u);
 							break;
 						case 401:
-							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
+							maxpositions++;
+							positions.push_back(pos);
 							break;
 						case 418:
 							active = true;
@@ -786,14 +790,32 @@ void j1Scene::LoadTiledEntities() {
 			}
 		}
 	}
-	active = false;
+	
+	if (current_scene == scenes::ingame)
+	{
+		int pos_id = 0;
+		if (maxpositions > 0)
+		{
+			pos_id = rand() % maxpositions;
+			
+			active = true;
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, positions[pos_id].x, positions[pos_id].y);
+
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y + 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y - 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { positions[pos_id].x - 80,  positions[pos_id].y});
+
+			active = false;
+		}
+
+		
+	}
+	
 
 	if (current_scene == scenes::ingame)
 	{
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1175 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1165 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1185 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { 3520, 1195 });
+		
 	}
 }
 
