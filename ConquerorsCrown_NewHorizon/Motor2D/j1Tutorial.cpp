@@ -430,6 +430,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->guldan_laugh, 0);
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
 
 			App->cutscene->StartCutscene("Tutorial2");
@@ -522,6 +523,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	if (ActualState == ST_Tutorial_Finished && App->scene->current_scene == scenes::tutorial)
 	{
 		App->scene->current_scene = scenes::ingame;
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 
 		MinimapActive = false;
@@ -584,11 +586,10 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	// Step 1
 	if (guiElement == Button_Yes)
 	{
-
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		deleteUI(1);
-
 	}
 	else if (guiElement == Button_No)
 	{

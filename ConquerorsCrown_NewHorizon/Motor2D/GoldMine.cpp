@@ -27,6 +27,7 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
 	isSelected = false;
 	extraction_limit = amount;
+	createUI = false;
 }
 
 GoldMine::~GoldMine() {}
