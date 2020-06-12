@@ -283,7 +283,9 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			if (static_type == "gold_mine")
 			{
 				static_ID = StaticEnt::StaticEntType::GoldMine;
-				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64, entity.child("type").attribute("amount_left").as_uint());
+				uint amount = entity.child("type").attribute("amount_left").as_uint();
+				LOG("%d", amount);
+				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64, 0u, amount);
 			}
 			if (static_type == "tree")
 			{
