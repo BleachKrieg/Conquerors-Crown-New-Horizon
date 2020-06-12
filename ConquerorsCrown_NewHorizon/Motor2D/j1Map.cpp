@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include "j1Window.h"
 #include "j1Audio.h"
+#include "AssetsManager.h"
 #include <math.h>
 #include "Brofiler/Brofiler.h"
 
@@ -194,8 +195,16 @@ bool j1Map::Load(const char* file_name)
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 
-	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
-	
+	//pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
+	//
+
+	char* buffer;
+
+	int bytesFile = App->assetManager->Load(tmp.GetString(), &buffer);
+
+	pugi::xml_parse_result result = map_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer)
+
 
 	if(result == NULL)
 	{
