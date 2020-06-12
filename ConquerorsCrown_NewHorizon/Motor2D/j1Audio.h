@@ -83,6 +83,7 @@ public:
 	int pause_fx_in;
 	int pause_fx_out;
 
+	int uther_welcome;
 	int upgrade_complete;
 	int quest_complete;
 	int guldan_laugh;
