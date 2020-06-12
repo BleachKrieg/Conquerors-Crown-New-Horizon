@@ -31,7 +31,6 @@ private:
 public:
 	bool on_resources;
 	bool to_attack;
-	bool is_blocked;
 };
 
 #endif // !__MOUSE_CURSOR_H__

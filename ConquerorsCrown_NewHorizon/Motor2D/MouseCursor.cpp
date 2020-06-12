@@ -2,7 +2,10 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Scene.h"
+#include "J1GroupMov.h"
+#include "j1Pathfinding.h"
 #include "j1Render.h"
+#include "j1Map.h"
 
 MouseCursor::MouseCursor() : j1Module()
 {
@@ -14,7 +17,6 @@ bool MouseCursor::Start() {
 	// Control Variables
 	on_resources = false;
 	to_attack = false;
-	is_blocked = false;
 
 	// Cursor position in texture
 	resource_cursor = { 0,0,32,32 };
@@ -32,19 +34,21 @@ bool MouseCursor::Update(float dt) {
 
 	SDL_Rect r;
 	iPoint pos;
+	iPoint tile;
 
 	App->input->GetMousePosition(pos.x, pos.y);
 	pos = App->render->ScreenToWorld(pos.x, pos.y);
+	tile = App->map->WorldToMap(pos.x, pos.y);
 	r = normal_cursor;
 
 	if (App->input->mouse_on_screen && !App->scene->pauseMenu)
 	{
-		if (on_resources)
-			r = resource_cursor;
-		else if (is_blocked)
-			r = prohibited_cursor;
-		else if (to_attack)
+		if (to_attack && App->movement->player_selected != nullptr)
 			r = attack_cursor;
+		if (on_resources && App->movement->player_selected != nullptr)
+			r = resource_cursor;
+		if (App->pathfinding->GetWalkability(tile) == 0 && App->movement->player_selected != nullptr)
+			r = prohibited_cursor;
 	}
 	else
 	{
@@ -54,7 +58,6 @@ bool MouseCursor::Update(float dt) {
 	App->render->Blit(cursor_tex, pos.x, pos.y, &r );
 
 	on_resources = false;
-	is_blocked = false;
 	to_attack = false;
 
 	return true;
