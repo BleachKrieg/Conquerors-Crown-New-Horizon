@@ -43,7 +43,7 @@ bool ModuleAssetsManager::Awake(pugi::xml_node& config)
 	// When you mount an archive, it is added to a virtual file system...
 	// all files in all of the archives are interpolated into a single hierachical file tree.
 	PHYSFS_mount("Assets.zip", nullptr, 1);
-
+	PHYSFS_setWriteDir("Assets_old");
 	return true;
 }
 
@@ -66,7 +66,6 @@ SDL_RWops* ModuleAssetsManager::Load(const char* path) const
 	SDL_RWops* ret = SDL_RWFromConstMem(buffer, bytes);
 
 	return ret;
-
 }
 
 
@@ -109,4 +108,26 @@ uint ModuleAssetsManager::Load(const char* path, char** buffer) const
 	return ret;
 }
 
+// Save a whole buffer to disk
+unsigned int ModuleAssetsManager::Save(const char* file, const char* buffer, unsigned int size) const
+{
+	unsigned int ret = 0;
 
+	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
+
+	if (fs_file != NULL)
+	{
+		PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void*)buffer, 1, size);
+		if (written != size)
+			LOG("File System error while writing to file %s: %s", file, PHYSFS_getLastError());
+		else
+			ret = (uint)written;
+
+		if (PHYSFS_close(fs_file) == 0)
+			LOG("File System error while closing file %s: %s", file, PHYSFS_getLastError());
+	}
+	else
+		LOG("File System error while opening file %s: %s", file, PHYSFS_getLastError());
+
+	return ret;
+}

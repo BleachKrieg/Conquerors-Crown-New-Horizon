@@ -12,11 +12,14 @@
 #include "Troll_Enemy.h"
 #include "Ogre_Enemy.h"
 #include "Grunt_Enemy.h"
+#include "J1GroupMov.h"
 #include "ResourceEntities.h"
 #include "EnemyBarracks.h"
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
+#include "j1Render.h"
+#include "MouseCursor.h"
 #include "GoldMine.h"
 #include "Emiter.h"
 #include "ParticleSystem.h"
@@ -125,7 +128,13 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Update(float dt)
 {
+	SDL_Rect r;
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
+
+	iPoint pos;
+
+	App->input->GetMousePosition(pos.x, pos.y);
+	pos = App->render->ScreenToWorld(pos.x, pos.y);
 
 	Mix_AllocateChannels(20);
 
@@ -142,6 +151,20 @@ bool j1EntityManager::Update(float dt)
 	for (int i = 0; i < entities.size(); i++) 
 	{		
 		entities[i]->Update(dt);
+	}
+
+	if (App->movement->player_selected != nullptr && App->movement->player_selected->GetDynEntType() == uint(DynamicEnt::DynamicEntityType::HUMAN_GATHERER)) {
+		for (int i = 0; i < resources_ent.size(); i++)
+		{
+			r.x = resources_ent[i]->position.x;
+			r.y = resources_ent[i]->position.y;
+			r.w = 32;
+			r.h = 32;
+			if (pos.x > r.x&& pos.x < (r.x + r.w) && pos.y > r.y&& pos.y < (r.y + r.h))
+			{
+				App->mouse_cursor->on_resources = true;
+			}
+		}
 	}
 
 	for (int i = 0; i < particles.size(); i++) {
@@ -285,7 +308,6 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 			{
 				static_ID = StaticEnt::StaticEntType::GoldMine;
 				uint amount = entity.child("type").attribute("amount_left").as_uint();
-				LOG("%d", amount);
 				CreateStaticEntity(static_ID, entity.child("position").attribute("pos_x").as_int()+64, entity.child("position").attribute("pos_y").as_int()+64, 0u, amount);
 			}
 			if (static_type == "tree")

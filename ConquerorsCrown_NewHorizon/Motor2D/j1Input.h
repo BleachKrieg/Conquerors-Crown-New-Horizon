@@ -87,6 +87,7 @@ public:
 	bool ScrollUp;
 	bool ScrollDown;
 	bool screen_click;
+	bool mouse_on_screen;
 };
 
 #endif // __j1INPUT_H__

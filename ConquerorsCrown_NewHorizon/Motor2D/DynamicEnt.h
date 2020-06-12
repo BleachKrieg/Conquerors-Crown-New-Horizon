@@ -59,6 +59,7 @@ public:
 
 	void AttackTarget(DynamicEntityType type);
 
+	uint GetDynEntType();
 
 	void GathererGoTos();
 

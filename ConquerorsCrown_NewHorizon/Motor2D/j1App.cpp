@@ -26,8 +26,8 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "MouseCursor.h"
 #include "AssetsManager.h"
-
 
 
 // Constructor
@@ -59,6 +59,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
 	video = new j1Video();
+	mouse_cursor = new MouseCursor();
 
 
 	// Ordered for awake / Start / Update
@@ -79,6 +80,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fowManager);
 	AddModule(minimap);
 	AddModule(gui);
+	AddModule(mouse_cursor);
 	AddModule(fade);
 	AddModule(font);
 	AddModule(cutscene);
@@ -453,7 +455,7 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 	char* buffer;
-	load_game.create("save_game.xml");
+	load_game.create("Assets_old/save_game.xml");
 
 	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
 
@@ -553,8 +555,11 @@ bool j1App::SavegameNow()
 	{
 		std::stringstream stream;
 		data.save(stream);
+		//stream.str().c_str(); //contingut del fitxer
+		//stream.str().length(); //mida del fitxer
+		App->assetManager->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
 
-		data.save_file(save_game.GetString());
+		//data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	
 	}
