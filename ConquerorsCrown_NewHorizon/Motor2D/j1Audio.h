@@ -87,6 +87,7 @@ public:
 	int quest_complete;
 	int guldan_laugh;
 	int tutorial_complete;
+	int wave_warning;
 
 	int logo_game_fx;
 	int logo_team_fx;
