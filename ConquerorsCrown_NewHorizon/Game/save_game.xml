@@ -12,12 +12,44 @@
 	<scene>
 		<scenename name="First level design.tmx" />
 		<resources gold="0" wood="0" stone="0" />
-		<clock time_passed="74.1190033" />
+		<clock time_passed="2.06900001" />
 		<upgrades swordman="0" archer="0" knight="0" />
 	</scene>
 	<entity_request />
 	<group_movement />
 	<entity_manager>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2400" pos_y="3072" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2944" pos_y="3328" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2432" pos_y="3392" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2112" pos_y="3680" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2336" pos_y="128" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2752" pos_y="416" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2304" pos_y="448" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="2272" pos_y="704" />
+		</Entity>
 		<Entity>
 			<type movement="static" name="gold_mine" amount_left="50" />
 			<position pos_x="3456" pos_y="896" />
@@ -40,11 +72,27 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="768" pos_y="1632" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
 			<position pos_x="3136" pos_y="2144" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="gold_mine" amount_left="50" />
 			<position pos_x="2208" pos_y="2336" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="960" pos_y="2400" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="416" pos_y="2464" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="gold_mine" amount_left="50" />
+			<position pos_x="1632" pos_y="3648" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="enemy_barracks" />
@@ -60,11 +108,11 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1160.99048" />
+			<position pos_x="3520" pos_y="1161.59009" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
-			<position pos_x="3520" pos_y="1133.1803" />
+			<position pos_x="3520" pos_y="1134.61023" />
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_gatherer" />
@@ -72,11 +120,7 @@
 		</Entity>
 		<Entity>
 			<type movement="dynamic" name="human_knight" />
-			<position pos_x="3404.20825" pos_y="1230.65393" />
-		</Entity>
-		<Entity>
-			<type movement="dynamic" name="enemy_grunt" />
-			<position pos_x="3474" pos_y="1471" />
+			<position pos_x="3520" pos_y="1215.09375" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -167,6 +211,10 @@
 			<position pos_x="1312" pos_y="320" />
 		</Entity>
 		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="1984" pos_y="320" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1088" pos_y="352" />
 		</Entity>
@@ -177,6 +225,10 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1312" pos_y="352" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="2400" pos_y="352" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -335,6 +387,10 @@
 			<position pos_x="3008" pos_y="672" />
 		</Entity>
 		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="2112" pos_y="704" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2528" pos_y="704" />
 		</Entity>
@@ -489,6 +545,10 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2880" pos_y="928" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="2368" pos_y="960" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -679,6 +739,10 @@
 			<position pos_x="2880" pos_y="1248" />
 		</Entity>
 		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="224" pos_y="1280" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1888" pos_y="1280" />
 		</Entity>
@@ -696,7 +760,15 @@
 		</Entity>
 		<Entity>
 			<type movement="static" name="quarry" />
+			<position pos_x="736" pos_y="1408" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
 			<position pos_x="3552" pos_y="1408" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="448" pos_y="1472" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -813,6 +885,10 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="3552" pos_y="1568" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="672" pos_y="1600" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -1435,6 +1511,10 @@
 			<position pos_x="2112" pos_y="2144" />
 		</Entity>
 		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="480" pos_y="2176" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="1696" pos_y="2176" />
 		</Entity>
@@ -1469,6 +1549,14 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2112" pos_y="2176" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="192" pos_y="2368" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="224" pos_y="2400" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2503,6 +2591,10 @@
 			<position pos_x="2656" pos_y="3744" />
 		</Entity>
 		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="3104" pos_y="3744" />
+		</Entity>
+		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2304" pos_y="3776" />
 		</Entity>
@@ -2517,6 +2609,10 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2656" pos_y="3776" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="3168" pos_y="3776" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2553,6 +2649,10 @@
 		<Entity>
 			<type movement="static" name="tree" />
 			<position pos_x="2624" pos_y="3808" />
+		</Entity>
+		<Entity>
+			<type movement="static" name="quarry" />
+			<position pos_x="3136" pos_y="3808" />
 		</Entity>
 		<Entity>
 			<type movement="static" name="tree" />
@@ -2688,7 +2788,7 @@
 		</Entity>
 	</entity_manager>
 	<pathfinding />
-	<wave wave="1" time="74.1299973">
+	<wave wave="1" time="2.07200003">
 		<spawn_1 Has_Building="true" />
 		<spawn_2 Has_Building="true" />
 		<spawn_3 Has_Building="true" />

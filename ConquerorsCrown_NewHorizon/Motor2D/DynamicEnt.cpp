@@ -177,7 +177,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 		if (distance < attack_range + target_entity->coll_range)
 		{
 			state = DynamicState::INTERACTING;
-
+			change_direction = false;
 			following_target = false;
 			if (player_order == false)
 			{

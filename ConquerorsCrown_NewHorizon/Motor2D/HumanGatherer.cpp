@@ -241,6 +241,8 @@ bool HumanGatherer::Update(float dt)
 			work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_ON;
 		}
 		state = DynamicState::INTERACTING;
+		change_direction = false;
+
 		if ((timer.ReadMs() - start_time) > work_time)
 		{
 			if (work_mine_space != nullptr) {
@@ -338,7 +340,7 @@ bool HumanGatherer::PostUpdate(float dt)
 
 bool HumanGatherer::CleanUp()
 {
-	if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
+	//if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	visionEntity->deleteEntity = true;
