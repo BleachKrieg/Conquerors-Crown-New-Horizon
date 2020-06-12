@@ -17,6 +17,7 @@
 #include "j1App.h"
 #include <stdio.h>
 #include "p2Log.h"
+#include "j1Render.h"
 #include "GoldMine.h"
 #include "Emiter.h"
 #include "ParticleSystem.h"
@@ -125,6 +126,11 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::Update(float dt)
 {
 	BROFILER_CATEGORY("UpdateEntity", Profiler::Color::Bisque);
+
+	iPoint pos;
+
+	App->input->GetMousePosition(pos.x, pos.y);
+	pos = App->render->ScreenToWorld(pos.x, pos.y);
 
 	Mix_AllocateChannels(20);
 

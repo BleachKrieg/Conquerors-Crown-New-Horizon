@@ -1,6 +1,7 @@
 #include "MouseCursor.h"
 #include "j1App.h"
 #include "j1Input.h"
+#include "j1Scene.h"
 #include "j1Render.h"
 
 MouseCursor::MouseCursor() : j1Module()
@@ -34,10 +35,9 @@ bool MouseCursor::Update(float dt) {
 
 	App->input->GetMousePosition(pos.x, pos.y);
 	pos = App->render->ScreenToWorld(pos.x, pos.y);
-
 	r = normal_cursor;
 
-	if (App->input->mouse_on_screen)
+	if (App->input->mouse_on_screen && !App->scene->pauseMenu)
 	{
 		if (on_resources)
 			r = resource_cursor;
@@ -45,6 +45,10 @@ bool MouseCursor::Update(float dt) {
 			r = prohibited_cursor;
 		else if (to_attack)
 			r = attack_cursor;
+	}
+	else
+	{
+		r = normal_cursor;
 	}
 
 	App->render->Blit(cursor_tex, pos.x, pos.y, &r );

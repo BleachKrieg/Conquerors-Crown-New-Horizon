@@ -312,8 +312,6 @@ bool j1Scene::Update(float dt)
 			pauseMenu = !pauseMenu;
 		}
 
-		if (pauseMenu) App->input->mouse_on_screen = false;
-
 		//Debug input
 		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		{
