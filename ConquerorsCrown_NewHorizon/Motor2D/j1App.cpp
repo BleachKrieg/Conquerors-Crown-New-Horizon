@@ -27,6 +27,7 @@
 #include "FoWManager.h"
 #include "j1Video.h"
 #include "MouseCursor.h"
+#include "AssetsManager.h"
 
 
 // Constructor
@@ -37,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	frames = 0;
 	want_to_save = want_to_load = false;
 
+	assetManager = new ModuleAssetsManager();
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
@@ -62,6 +64,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	AddModule(assetManager);
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
@@ -122,6 +125,12 @@ bool j1App::Awake()
 	pause = false;
 	bool ret = false;
 	cap = true;
+
+	list<j1Module*>::iterator item_list;
+	item_list = modules.begin();
+	j1Module* it = *item_list;
+	it->Awake(config.child(it->name.GetString()));
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -143,8 +152,12 @@ bool j1App::Awake()
 		j1Module* it;
 
 		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-			it = *item_list;
-				ret = it->Awake(config.child(it->name.GetString()));	
+			
+			if (item_list != modules.begin())
+			{
+				it = *item_list;
+				ret = it->Awake(config.child(it->name.GetString()));
+			}
 		}
 
 	}
@@ -200,7 +213,17 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+
+
+
+	char* buffer;
+
+	int bytesFile = App->assetManager->Load("config.xml", &buffer);
+
+	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
 
 	if (result == NULL) {
 	LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -428,12 +451,23 @@ bool j1App::GetPause()
 bool j1App::LoadGameNow()
 {
 	bool ret = false;
-	
+
 	pugi::xml_document data;
 	pugi::xml_node root;
+	char* buffer;
 	load_game.create("save_game.xml");
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
 
+	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
+
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	//pugi::xml_document data;
+	//pugi::xml_node root;
+	//load_game.create("save_game.xml");
+	//pugi::xml_parse_result result = data.load_file(load_game.GetString());
+
+	
 	if(result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
@@ -467,18 +501,32 @@ bool j1App::LoadGameNow()
 
 bool j1App::CheckSaveGame()
 {
-	pugi::xml_document data;
-	pugi::xml_node root;
-	load_game.create("save_game.xml");
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
 
-	if (result != NULL) {
-		return true;
-	}
-	else {
+	//pugi::xml_document data;
+	//pugi::xml_node root;
+	//load_game.create("save_game.xml");
+	//pugi::xml_parse_result result = data.load_file(load_game.GetString());
+
+	//if (result != NULL) {
+	//	return true;
+	//}
+	//else {
+	//	LOG("no available savegame");
+	//	return false;
+	//}
+
+	if (!PHYSFS_exists("save_game.xml"))
+	{
 		LOG("no available savegame");
 		return false;
 	}
+
+	return true;
+
+
+
+
+
 }
 
 

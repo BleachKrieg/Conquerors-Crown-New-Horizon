@@ -26,6 +26,7 @@
 #include "j1Textures.h"
 #include "Brofiler/Brofiler.h"
 #include "j1Scene.h"
+#include "AssetsManager.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -497,8 +498,13 @@ bool j1EntityManager::DeleteParticles(int id, j1Entity* entity)
 
 
 void j1EntityManager::LoadAnimations(const char* path, list<Animation*>& animations) {
+	
+	char* buffer;
 	pugi::xml_document	entity_file;
-	pugi::xml_parse_result result = entity_file.load_file(path);
+	int bytesFile = App->assetManager->Load(path, &buffer);
+	pugi::xml_parse_result result = entity_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
 	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s. pugi error: %s", path, result.description());

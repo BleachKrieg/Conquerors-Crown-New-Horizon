@@ -34,6 +34,7 @@ class FoWManager;
 class j1Video;
 class ModuleParticles;
 class MouseCursor;
+class ModuleAssetsManager;
 
 
 class j1App
@@ -124,6 +125,7 @@ public:
 	j1Tutorial*			tutorial = NULL;
 	j1Video*			video = NULL;
 	MouseCursor*		mouse_cursor = NULL;
+	ModuleAssetsManager* assetManager = NULL;
 
 
 

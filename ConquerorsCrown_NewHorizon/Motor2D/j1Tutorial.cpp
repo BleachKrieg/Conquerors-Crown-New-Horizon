@@ -386,7 +386,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "click on it and then click", "on the resource you want to", "collect.");
+			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "select it and then click", "on the resource you want to", "collect.");
 		}
 	}
 
@@ -451,7 +451,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a horde", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
