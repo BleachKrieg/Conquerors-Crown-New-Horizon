@@ -48,6 +48,7 @@ private:
 	Animation out_of_material_mine;
 	uint extraction_limit;
 	uint pre_check;
+	int mine_time;
 };
 
 #endif // !__GOLDMINE_H__
