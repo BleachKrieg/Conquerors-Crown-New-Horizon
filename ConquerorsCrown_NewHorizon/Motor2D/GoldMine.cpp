@@ -9,8 +9,11 @@
 #include "GoldMine.h"
 #include "StaticEnt.h"
 #include "Brofiler/Brofiler.h"
+#include "DynamicEnt.h"
 #include "j1Fonts.h"
 #include "j1Audio.h"
+#include "MouseCursor.h"
+#include "J1GroupMov.h"
 
 GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::GoldMine)
 {
@@ -20,6 +23,7 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	body = 0;
 	coll_range = 0;
 	active = true;
+	selectable = true;
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
 	out_of_material_mine.PushBack({ 103,8,96,89 }, 0.2, 0, 0, 0, 0);
@@ -59,10 +63,24 @@ bool GoldMine::Update(float dt)
 		current_animation = &light_mine;
 	}
 
+	if (!App->mouse_cursor->on_resources && App->movement->player_selected != nullptr && App->movement->player_selected->GetDynEntType() == uint(DynamicEnt::DynamicEntityType::HUMAN_GATHERER))
+	{
+		iPoint m_pos;
+		SDL_Rect r;
+		App->input->GetMousePosition(m_pos.x, m_pos.y);
+		m_pos = App->render->ScreenToWorld(m_pos.x, m_pos.y);
+		r = GetAnimation()->GetCurrentSize();
+		r.x = position.x + 64;
+		r.y = position.y + 64;
+		r.w /= 2;
+		r.h /= 2;
+		if (m_pos.x > (r.x - r.w - 12) && m_pos.x < (r.x + r.w) && m_pos.y >(r.y - r.h - 12) && m_pos.y < (r.y + r.h - 24))
+			App->mouse_cursor->on_resources = true;
+	}
+
 	r = &current_animation->GetCurrentFrame(dt);
 
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
-	
 
 	return true;
 }

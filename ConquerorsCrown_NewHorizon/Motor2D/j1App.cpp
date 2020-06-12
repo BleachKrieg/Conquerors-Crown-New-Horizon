@@ -26,8 +26,8 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "MouseCursor.h"
 #include "AssetsManager.h"
-
 
 
 // Constructor
@@ -59,6 +59,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
 	video = new j1Video();
+	mouse_cursor = new MouseCursor();
 
 
 	// Ordered for awake / Start / Update
@@ -79,6 +80,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fowManager);
 	AddModule(minimap);
 	AddModule(gui);
+	AddModule(mouse_cursor);
 	AddModule(fade);
 	AddModule(font);
 	AddModule(cutscene);

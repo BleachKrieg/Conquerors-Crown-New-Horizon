@@ -326,7 +326,8 @@ bool HumanGatherer::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
-	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+	if (to_blit)
+		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;
 }
