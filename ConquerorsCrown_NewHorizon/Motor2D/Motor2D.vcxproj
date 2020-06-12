@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="DynamicEnt.cpp" />
     <ClCompile Include="Emiter.cpp" />
     <ClCompile Include="EnemyBarracks.cpp" />
@@ -129,6 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Emiter.h" />
     <ClInclude Include="EnemyBarracks.h" />
     <ClInclude Include="EntityRequest.h" />

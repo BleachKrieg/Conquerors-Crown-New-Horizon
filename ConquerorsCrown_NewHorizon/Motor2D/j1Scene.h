@@ -90,6 +90,14 @@ public:
 
 	void GuiInput(GuiItem* guiElement);
 	
+	// We load all the ZIP texture files
+	void LoadTexFile(const pugi::xml_document& dataFile);
+
+	// We load all the ZIP fx files
+	void LoadFxFile(const pugi::xml_document& dataFile);
+
+	// We load and play the desired music from the ZIP
+	void LoadMusFile(const pugi::xml_document& dataFile);
 
 private:
 	bool changeEntities = false;
@@ -111,6 +119,8 @@ private:
 	iPoint speed;
 	int time_loaded;
 	
+	SDL_Texture* texture;
+
 public:
 	p2SString current_level;
 	scenes current_scene;
