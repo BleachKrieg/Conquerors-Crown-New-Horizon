@@ -23,6 +23,7 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	body = 0;
 	coll_range = 0;
 	active = true;
+	selectable = true;
 	team = TeamType::NO_TYPE;
 	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
 	out_of_material_mine.PushBack({ 103,8,96,89 }, 0.2, 0, 0, 0, 0);
@@ -80,7 +81,6 @@ bool GoldMine::Update(float dt)
 	r = &current_animation->GetCurrentFrame(dt);
 
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
-	
 
 	return true;
 }
