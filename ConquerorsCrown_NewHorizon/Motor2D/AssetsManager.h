@@ -27,6 +27,7 @@ public:
 	// Allows you to use pointers to memory instead of files or things such as images or samples
 	SDL_RWops* Load(const char* path) const;
 
+	unsigned int Save(const char* file, const char* buffer, unsigned int size) const;
 };
 
 #endif // __ASSETSMANAGER_H__

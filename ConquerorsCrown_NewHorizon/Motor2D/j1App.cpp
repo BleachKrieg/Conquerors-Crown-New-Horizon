@@ -453,7 +453,7 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 	char* buffer;
-	load_game.create("save_game.xml");
+	load_game.create("Assets_old/save_game.xml");
 
 	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
 
@@ -553,8 +553,11 @@ bool j1App::SavegameNow()
 	{
 		std::stringstream stream;
 		data.save(stream);
+		//stream.str().c_str(); //contingut del fitxer
+		//stream.str().length(); //mida del fitxer
+		App->assetManager->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
 
-		data.save_file(save_game.GetString());
+		//data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	
 	}
