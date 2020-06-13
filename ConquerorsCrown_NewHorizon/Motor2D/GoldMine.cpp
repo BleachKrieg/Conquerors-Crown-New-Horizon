@@ -31,6 +31,7 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
 	isSelected = false;
 	extraction_limit = amount;
+	max_resources = extraction_limit;
 	createUI = false;
 	mine_time = 0;
 }
@@ -90,11 +91,14 @@ bool GoldMine::Update(float dt)
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
 
 	SDL_Rect section;
+	float 	bar_conversion = (float)50 / (float)max_resources;
+
 	section.x = 0;
 	section.y = 2;
-	section.w = ((int)extraction_limit);
+	section.w = ((int)extraction_limit * bar_conversion);
 	section.h = 2;
 
+	if(extraction_limit< max_resources && extraction_limit != 0)
 	App->render->Blit(App->entity->life_bar, (int)(position.x + (*r).w / 3), (int)(position.y + (*r).h), &section);
 
 	return true;
