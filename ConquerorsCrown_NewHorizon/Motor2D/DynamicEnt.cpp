@@ -9,6 +9,7 @@
 #include "Brofiler/Brofiler.h"
 #include "j1Map.h"
 #include "J1GroupMov.h"
+#include "MouseCursor.h"
 #include "j1Input.h"
 #include "j1Map.h"
 #include "j1Pathfinding.h"
@@ -75,7 +76,7 @@ void DynamicEnt::OrderPath(DynamicEntityType type)
 	{
 		target_entity = App->movement->ai_selected;
 	}
-	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	else if (isSelected && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && App->input->screen_click)
 	{
 		App->input->GetMousePosition(mouse.x, mouse.y);
 		mouse = App->render->ScreenToWorld(mouse.x, mouse.y);
@@ -177,7 +178,7 @@ void DynamicEnt::AttackTarget(DynamicEntityType type)
 		if (distance < attack_range + target_entity->coll_range)
 		{
 			state = DynamicState::INTERACTING;
-
+			change_direction = false;
 			following_target = false;
 			if (player_order == false)
 			{
@@ -439,6 +440,28 @@ void DynamicEnt::Movement(float dt)
 		position.y += 60 * dt * speed.y;
 		position.x += 60 * dt * speed.x;
 
+		if (!App->mouse_cursor->to_attack && App->movement->player_selected != nullptr && team == j1Entity::TeamType::IA && App->movement->player_selected->GetDynEntType() != uint(DynamicEntityType::HUMAN_GATHERER))
+		{
+			iPoint m_pos;
+			App->input->GetMousePosition(m_pos.x, m_pos.y);
+			m_pos = App->render->ScreenToWorld(m_pos.x, m_pos.y);
+			int w, h;
+			w = GetAnimation()->GetCurrentSize().w;
+			h = GetAnimation()->GetCurrentSize().h;
+			w /= 3;
+			h /= 3;
+			if (m_pos.x > (position.x - w) && m_pos.x < (position.x + w) && m_pos.y >(position.y - h) && m_pos.y < (position.y + h))
+				App->mouse_cursor->to_attack = true;
+		}
+		if (App->movement->player_selected != nullptr && App->movement->player_selected->GetDynEntType() == uint(DynamicEntityType::HUMAN_GATHERER))
+		{
+			App->mouse_cursor->to_attack = false;
+		}
+}
+
+uint DynamicEnt::GetDynEntType()
+{
+	return uint(entity_type);
 }
 
 void DynamicEnt::SaveNeighbours(list<j1Entity*>* close_entity_list, list<j1Entity*>* colliding_entity_list)

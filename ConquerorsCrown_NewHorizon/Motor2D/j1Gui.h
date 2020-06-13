@@ -84,6 +84,7 @@ public:
 	bool follow;
 	bool delayBlit;
 	bool visible;
+	bool hover;
 };
 
 class GuiImage: public GuiItem

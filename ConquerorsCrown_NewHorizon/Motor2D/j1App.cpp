@@ -26,6 +26,8 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "MouseCursor.h"
+#include "AssetsManager.h"
 
 
 // Constructor
@@ -36,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	frames = 0;
 	want_to_save = want_to_load = false;
 
+	assetManager = new ModuleAssetsManager();
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
@@ -56,10 +59,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	cutscene = new j1CutsceneManager();
 	tutorial = new j1Tutorial();
 	video = new j1Video();
+	mouse_cursor = new MouseCursor();
 
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	AddModule(assetManager);
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
@@ -75,6 +80,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(fowManager);
 	AddModule(minimap);
 	AddModule(gui);
+	AddModule(mouse_cursor);
 	AddModule(fade);
 	AddModule(font);
 	AddModule(cutscene);
@@ -119,6 +125,12 @@ bool j1App::Awake()
 	pause = false;
 	bool ret = false;
 	cap = true;
+
+	list<j1Module*>::iterator item_list;
+	item_list = modules.begin();
+	j1Module* it = *item_list;
+	it->Awake(config.child(it->name.GetString()));
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -140,8 +152,12 @@ bool j1App::Awake()
 		j1Module* it;
 
 		for (item_list = modules.begin(); item_list != modules.end() && ret == true; ++item_list) {
-			it = *item_list;
-				ret = it->Awake(config.child(it->name.GetString()));	
+			
+			if (item_list != modules.begin())
+			{
+				it = *item_list;
+				ret = it->Awake(config.child(it->name.GetString()));
+			}
 		}
 
 	}
@@ -197,7 +213,17 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+
+
+
+	char* buffer;
+
+	int bytesFile = App->assetManager->Load("config.xml", &buffer);
+
+	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
 
 	if (result == NULL) {
 	LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
@@ -252,7 +278,7 @@ void j1App::FinishUpdate()
 		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
 	*/
-	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u]", prev_last_sec_frame_count);
+	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u], %d, %d", prev_last_sec_frame_count, App->scene->mouse_position.x, App->scene->mouse_position.y);
 
 	App->win->SetTitle(title);
 
@@ -425,12 +451,23 @@ bool j1App::GetPause()
 bool j1App::LoadGameNow()
 {
 	bool ret = false;
-	
+
 	pugi::xml_document data;
 	pugi::xml_node root;
-	load_game.create("save_game.xml");
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+	char* buffer;
+	load_game.create("Assets_old/save_game.xml");
 
+	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
+
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	//pugi::xml_document data;
+	//pugi::xml_node root;
+	//load_game.create("save_game.xml");
+	//pugi::xml_parse_result result = data.load_file(load_game.GetString());
+
+	
 	if(result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
@@ -464,18 +501,32 @@ bool j1App::LoadGameNow()
 
 bool j1App::CheckSaveGame()
 {
-	pugi::xml_document data;
-	pugi::xml_node root;
-	load_game.create("save_game.xml");
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
 
-	if (result != NULL) {
-		return true;
-	}
-	else {
+	//pugi::xml_document data;
+	//pugi::xml_node root;
+	//load_game.create("save_game.xml");
+	//pugi::xml_parse_result result = data.load_file(load_game.GetString());
+
+	//if (result != NULL) {
+	//	return true;
+	//}
+	//else {
+	//	LOG("no available savegame");
+	//	return false;
+	//}
+
+	if (!PHYSFS_exists("save_game.xml"))
+	{
 		LOG("no available savegame");
 		return false;
 	}
+
+	return true;
+
+
+
+
+
 }
 
 
@@ -504,8 +555,11 @@ bool j1App::SavegameNow()
 	{
 		std::stringstream stream;
 		data.save(stream);
+		//stream.str().c_str(); //contingut del fitxer
+		//stream.str().length(); //mida del fitxer
+		App->assetManager->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
 
-		data.save_file(save_game.GetString());
+		//data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	
 	}

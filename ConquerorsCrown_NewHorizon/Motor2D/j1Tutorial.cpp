@@ -306,7 +306,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			
+			App->audio->PlayFx(-1, App->audio->uther_welcome, 0);
 			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
 		App->render->camera.x = -576;
@@ -345,7 +345,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
 			// Create TownHall
 			App->scene->active = true;
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 995, 600);
@@ -386,7 +385,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "click on it and then click", "on the resource you want to", "collect.");
+			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "select it and then click", "on the resource you want to", "collect.");
 		}
 	}
 
@@ -451,7 +450,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a horde", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
@@ -599,8 +598,6 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == PopUpButton) {
 		deleteUI(0);
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-
 		if (ActualState == ST_Tutorial_Q2)
 		{
 			ActualState = ST_Tutorial_Q2_1;
@@ -662,6 +659,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 			ActualState = ST_Tutorial_Finished;
 		}
 		createUI = true;
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 	}
 	
 }

@@ -54,6 +54,7 @@ bool j1Input::PreUpdate(float dt)
 {
 	ScrollUp = false;
 	ScrollDown = false;
+	mouse_on_screen = false;
 	static SDL_Event event;
 	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -172,6 +173,8 @@ bool j1Input::PreUpdate(float dt)
 				break;
 		}
 	}
+	if (mouse.y > (-App->render->camera.y + 36) && mouse.y < ((-App->render->camera.y) + App->render->camera.h - 272))
+		mouse_on_screen = true;
 
 	return true;
 }

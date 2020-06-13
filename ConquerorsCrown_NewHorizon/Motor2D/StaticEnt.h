@@ -60,6 +60,7 @@ public:
 
 	// UI
 	bool createUI;
+	bool createUIdefinitions;
 
 };
 

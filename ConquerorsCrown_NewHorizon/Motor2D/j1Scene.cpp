@@ -22,6 +22,8 @@
 #include "FoWManager.h"
 #include "j1Video.h"
 #include "J1GroupMov.h"
+#include "AssetsManager.h"
+
 
 
 j1Scene::j1Scene() : j1Module()
@@ -64,6 +66,28 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
+	if (!PHYSFS_exists("Assets/data.xml"))
+		return false;
+
+	char* buffer;
+
+	pugi::xml_document dataFile;
+	int bytesFile = App->assetManager->Load("Assets/data.xml", &buffer);
+
+	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	//// We load all the ZIP texture files
+	//LoadTexFile(dataFile);
+
+	//// We load all the ZIP fx files
+	//LoadFxFile(dataFile);
+
+	//// We load and play the desired music from the ZIP
+	//LoadMusFile(dataFile);
+
+
 	current_scene = scenes::logo;
 	current_level = "Tutorial.tmx";
 	debug = false;
@@ -82,7 +106,7 @@ bool j1Scene::Start()
 
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 
-	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
 	wall_create = false;
@@ -196,7 +220,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
-
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 				
@@ -216,10 +240,8 @@ bool j1Scene::Update(float dt)
 			if (logoTextTimer == 88) {
 				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
-	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
 
-	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -588,7 +610,7 @@ bool j1Scene::PostUpdate(float dt)
 
 			if (intro_video == 0 && loop)
 			{
-				intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+				intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 
 
 			}
@@ -640,7 +662,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/victory.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/victory.ogv", App->render->renderer);
 
 
 		}
@@ -671,7 +693,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/defeat.ogv", App->render->renderer);
 
 		}
 
@@ -693,11 +715,11 @@ bool j1Scene::CleanUp()
 	bool ret = true;
 	ret = App->tex->UnLoad(video_texture);
 	ret = App->tex->UnLoad(videologo_tex);
-	loader = nullptr;
-	App->minimap->CleanUp();
-	LOG("Freeing scene");
+loader = nullptr;
+App->minimap->CleanUp();
+LOG("Freeing scene");
 
-	return ret;
+return ret;
 }
 bool j1Scene::Load(pugi::xml_node& data)
 {
@@ -720,7 +742,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	LOG("Saving Scene state");
-	
+
 
 	pugi::xml_node scenename = data.append_child("scenename");
 	scenename.append_attribute("name") = current_level.GetString();
@@ -741,6 +763,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::LoadTiledEntities() {
 
 	list<MapLayer*>::iterator Layer_list;
+	vector<iPoint> positions;
+	int maxpositions = 0;
 	MapLayer* layer;
 
 	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
@@ -765,8 +789,8 @@ void j1Scene::LoadTiledEntities() {
 							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 50u);
 							break;
 						case 401:
-							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
+							maxpositions++;
+							positions.push_back(pos);
 							break;
 						case 418:
 							active = true;
@@ -790,14 +814,32 @@ void j1Scene::LoadTiledEntities() {
 			}
 		}
 	}
-	active = false;
+	
+	if (current_scene == scenes::ingame)
+	{
+		int pos_id = 0;
+		if (maxpositions > 0)
+		{
+			pos_id = rand() % maxpositions;
+			
+			active = true;
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, positions[pos_id].x, positions[pos_id].y);
+
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y + 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y - 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { positions[pos_id].x - 80,  positions[pos_id].y});
+
+			active = false;
+		}
+
+		
+	}
+	
 
 	if (current_scene == scenes::ingame)
 	{
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1175 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1165 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1185 });
-		App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { 3520, 1195 });
+		
 	}
 }
 
@@ -1265,7 +1307,7 @@ bool j1Scene::CreateLogo() {
 
 	//video
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/evangelion-opening.ogv", App->render->renderer);
 
 	loop = true;
 	//Reseting camera to (0,0) position
@@ -1613,4 +1655,22 @@ void j1Scene::LogoPushbacks() {
 void j1Scene::UpdateCameraPosition(int speed) 
 {
 
+}
+
+void j1Scene::LoadTexFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node tex_node = dataFile.child("data").child("texture");
+	texture = App->tex->Load(tex_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadFxFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node fx_node = dataFile.child("data").child("fx");
+	App->audio->LoadFx(fx_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadMusFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node mus_node = dataFile.child("data").child("mus");
+	App->audio->PlayMusic(mus_node.attribute("file").as_string());
 }

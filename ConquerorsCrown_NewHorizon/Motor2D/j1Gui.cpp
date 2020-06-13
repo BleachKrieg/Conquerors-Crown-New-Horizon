@@ -38,7 +38,7 @@ bool j1Gui::Start()
 {
 	//Load the atlas file
 	atlas = App->tex->Load(atlas_file_name.GetString());
-	icons = App->tex->Load(icons_file_name.GetString());
+//	icons = App->tex->Load(icons_file_name.GetString());
 
 	FocusIt = 0;
 	//Turn debug off
@@ -287,10 +287,18 @@ bool GuiItem::checkBoundaries(int x, int y)
 	{
 		if (y > posy && y < (posy + LocalRect.h)) 
 		{
-			if (type == Types::button)
-				textureRect = illuminatedRect; //Illuminated Button
+			if (type == Types::button) 
+			{
+				textureRect = illuminatedRect;
+				hover = true;
+			}//Illuminated Button
 			return true;
+
 		}
+	}
+	else 
+	{
+		hover = false;
 	}
 	return false;
 }
