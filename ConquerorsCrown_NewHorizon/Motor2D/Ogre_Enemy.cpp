@@ -175,6 +175,14 @@ bool OgreEnemy::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
+		if (target_entity != nullptr)
+		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+		}
+	
 		break;
 	case DynamicState::DYING:
 		if (App->movement->ai_selected == this)

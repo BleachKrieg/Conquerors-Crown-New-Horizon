@@ -136,6 +136,13 @@ bool HumanKnight::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
+		if (target_entity != nullptr)
+		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+		}
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:

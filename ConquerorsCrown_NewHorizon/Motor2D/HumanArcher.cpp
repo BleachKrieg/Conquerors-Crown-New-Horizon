@@ -162,6 +162,11 @@ bool HumanArcher::Update(float dt)
 		current_animation = &attacking_right;
 		if (particleSystem != nullptr && target_entity != nullptr)
 		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
