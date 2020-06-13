@@ -89,10 +89,18 @@ bool TrollEnemy::Start()
 
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 96, 32, 32 }, 1, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{  0, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 32, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 64, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 96, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{  0, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 32, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 64, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 96, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+
 
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entity->arrow, anim, false);
 	particleSystem->PushEmiter(emiter );
 	particleSystem->Desactivate();
 

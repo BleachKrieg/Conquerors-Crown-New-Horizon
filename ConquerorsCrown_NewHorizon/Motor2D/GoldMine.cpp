@@ -42,6 +42,7 @@ bool GoldMine::Start()
 	mine_lights = LIGHTS_OFF;
 	has_limit = true;
 	to_delete = false;
+	current_animation = &no_light_mine;
 	if (extraction_limit >= 1999u)
 		extraction_limit = 0u;
 	pre_check = extraction_limit;
