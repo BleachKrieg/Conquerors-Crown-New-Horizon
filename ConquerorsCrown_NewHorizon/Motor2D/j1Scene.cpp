@@ -829,6 +829,9 @@ void j1Scene::LoadTiledEntities() {
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y });
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y - 10 });
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { positions[pos_id].x - 80,  positions[pos_id].y});
+			
+			App->render->camera.x = -positions[pos_id].x + App->win->width/2;
+			App->render->camera.y = -positions[pos_id].y + App->win->height/3;
 
 			active = false;
 		}
@@ -923,8 +926,6 @@ void j1Scene::CreateScene(scenes next_scene) {
 		CreateInGame();
 		App->minimap->input = true;
 		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -2830;
-		App->render->camera.y = -967;
 		App->wave->Start();
 		gameClock.Start();
 		Cooldown.Start();
