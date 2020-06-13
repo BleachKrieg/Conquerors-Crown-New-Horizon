@@ -89,6 +89,14 @@ bool GoldMine::Update(float dt)
 
 	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
 
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 2;
+	section.w = ((int)extraction_limit);
+	section.h = 2;
+
+	App->render->Blit(App->entity->life_bar, (int)(position.x + (*r).w / 3), (int)(position.y + (*r).h), &section);
+
 	return true;
 }
 

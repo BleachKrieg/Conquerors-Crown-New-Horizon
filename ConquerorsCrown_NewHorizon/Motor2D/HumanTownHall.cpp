@@ -167,6 +167,7 @@ bool HumanTownHall::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
+	if (life_points < max_hp)
 	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_TOWNHALL_PREVIEW) {
