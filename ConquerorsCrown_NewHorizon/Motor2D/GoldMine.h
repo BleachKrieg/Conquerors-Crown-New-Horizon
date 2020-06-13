@@ -47,6 +47,7 @@ private:
 	Animation light_mine;
 	Animation out_of_material_mine;
 	uint extraction_limit;
+	uint max_resources;
 	uint pre_check;
 	int mine_time;
 };

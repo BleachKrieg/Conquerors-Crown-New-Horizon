@@ -175,6 +175,14 @@ bool OgreEnemy::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
+		if (target_entity != nullptr)
+		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+		}
+	
 		break;
 	case DynamicState::DYING:
 		if (App->movement->ai_selected == this)
@@ -225,6 +233,7 @@ bool OgreEnemy::Update(float dt)
 		section.y = 0;
 		section.w = ((int)life_points * hp_conversion);
 		section.h = 2;
+		if (life_points < max_hp)
 		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	}
 	

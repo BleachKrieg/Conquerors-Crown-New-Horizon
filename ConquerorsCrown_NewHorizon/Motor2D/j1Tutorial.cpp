@@ -408,7 +408,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack fom the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
+			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack from the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
 		}
 	}
 

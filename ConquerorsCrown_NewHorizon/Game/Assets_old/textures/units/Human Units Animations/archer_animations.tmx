@@ -49,32 +49,32 @@
   </tile>
   <tile id="5">
    <animation>
-    <frame tileid="5" duration="300"/>
-    <frame tileid="13" duration="300"/>
+    <frame tileid="5" duration="90"/>
+    <frame tileid="13" duration="250"/>
    </animation>
   </tile>
   <tile id="21">
    <animation>
-    <frame tileid="21" duration="300"/>
-    <frame tileid="29" duration="300"/>
+    <frame tileid="21" duration="90"/>
+    <frame tileid="29" duration="250"/>
    </animation>
   </tile>
   <tile id="37">
    <animation>
-    <frame tileid="37" duration="300"/>
-    <frame tileid="45" duration="300"/>
+    <frame tileid="37" duration="90"/>
+    <frame tileid="45" duration="250"/>
    </animation>
   </tile>
   <tile id="40">
    <animation>
-    <frame tileid="40" duration="300"/>
-    <frame tileid="41" duration="300"/>
+    <frame tileid="40" duration="90"/>
+    <frame tileid="41" duration="250"/>
    </animation>
   </tile>
   <tile id="42">
    <animation>
-    <frame tileid="42" duration="300"/>
-    <frame tileid="43" duration="300"/>
+    <frame tileid="42" duration="90"/>
+    <frame tileid="43" duration="250"/>
    </animation>
   </tile>
   <tile id="44">
