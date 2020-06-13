@@ -110,13 +110,7 @@ void j1Entity::SpatialAudio(int channel, int SFX, int posx, int posy) {
 	angle = (angle * 57) + 360; //we add 360 cause of angle circumference
 	
 	Mix_SetPosition(channel, angle, App->entity->volume);
-	/*iPoint pos = {-posx, -posy}, camera = {App->render->camera.x,  App->render->camera.y};
-	if(pos.x < camera.x && pos.x > camera.x - App->render->camera.w && pos.y < camera.y && pos.y > camera.y - App->render->camera.h)*/
-	//LOG("VOLUME: %i", App->entity->volume);
-
 	App->audio->PlayFx(channel, SFX, 0);
-	//LOG("PositionX: %i	PositionY: %i	Angle: %.2f	Volume: %i	Camera width: %i	Mouse position: %i %i", center_camera.x, 
-	//	center_camera.y, angle, volume, App->render->camera.w, provisional_distance);
 }
 
 Animation* j1Entity::GetAnimation()

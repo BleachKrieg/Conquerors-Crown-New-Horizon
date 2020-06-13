@@ -94,10 +94,10 @@ bool HumanArcher::Start()
 	
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 32, 96, 32, 32 }, 1, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 0, 0, 32, 32 }, 1, 0, 0, 0, 0);
 
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entity->arrow, anim, false);
 	particleSystem->PushEmiter(emiter);
 	particleSystem->Desactivate();
 
@@ -113,9 +113,9 @@ bool HumanArcher::Update(float dt)
 	speed = { NULL, NULL };
 	origin = App->map->WorldToMap(position.x, position.y);
 	if (App->scene->debug)
-		life_points = life_points;
+		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 	OrderPath(entity_type);
@@ -160,8 +160,13 @@ bool HumanArcher::Update(float dt)
 		break;
 	case DynamicState::INTERACTING:
 		current_animation = &attacking_right;
-		if (particleSystem != nullptr)
+		if (particleSystem != nullptr && target_entity != nullptr)
 		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
@@ -220,10 +225,12 @@ bool HumanArcher::Update(float dt)
 	{
 		tier_archer = App->scene->upgrade_archer;
 		life_points += stats_upgrade_life;
+		max_hp += stats_upgrade_life;
 		attack_damage += stats_upgrade_damage;
 		if (tier_archer == 2)
 		{
 			life_points = 160;
+			max_hp = 160;
 			attack_damage = 32;
 		}
 	}
@@ -240,6 +247,15 @@ bool HumanArcher::Update(float dt)
 	{ 
 		App->render->Blit(App->entity->arch_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); 
 	}
+
+	hp_conversion = (float)25 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	if (life_points < max_hp)
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;
 }

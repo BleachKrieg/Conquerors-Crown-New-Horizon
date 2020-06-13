@@ -161,8 +161,8 @@ void Particle::PostUpdate(float dt)
 void Particle::Draw(float dt)
 {
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	if (speed[0] < 0)
-		flip = SDL_FLIP_HORIZONTAL;
+	/*if (speed[0] < 0)
+		flip = SDL_FLIP_HORIZONTAL;*/
 
 	if (fade == true)
 	{
@@ -183,7 +183,7 @@ void Particle::Move(float dt)
 	//TODO 1: Do the same with position and angles
 	position[0] += speed[0] * dt * 60;
 	position[1] += speed[1] * dt * 60;
-
+	angle = -(-90 + atan2(speed[0], speed[1]) * 180 / 3.14159265);
 	angle += angularSpeed * dt * 60;
 }
 

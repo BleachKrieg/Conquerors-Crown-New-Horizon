@@ -165,6 +165,12 @@ bool j1Minimap::Update(float dt) {
 
 				App->render->Blit(minimap_entities, minimap_rect_position.x, minimap_rect_position.y, &rect, 0, 0);
 			}
+			for (int i = 0; i < App->entity->ai_stat_ent.size(); i++) {
+				SDL_Rect rect{ 4, 2, 4, 4 };
+				iPoint minimap_rect_position = App->minimap->WorldToMinimap(App->entity->ai_stat_ent[i]->position.x, App->entity->ai_stat_ent[i]->position.y);
+
+				App->render->Blit(minimap_entities, minimap_rect_position.x, minimap_rect_position.y, &rect, 0, 0);
+			}
 
 			if (App->scene->current_scene == scenes::ingame && App->tutorial->MinimapActive == false && !App->scene->debug)
 			{

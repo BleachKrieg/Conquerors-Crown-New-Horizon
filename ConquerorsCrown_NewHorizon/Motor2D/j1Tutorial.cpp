@@ -100,7 +100,6 @@ bool j1Tutorial::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
-
 	if (App->scene->current_scene == scenes::tutorial)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -109,10 +108,28 @@ bool j1Tutorial::Update(float dt)
 			App->map->blitColliders = !App->map->blitColliders;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		{
+			App->SaveGame();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		{
+			if (App->CheckSaveGame()) {
+
+				App->fade->FadeToBlack(scenes::ingame, 2.0f);
+				App->scene->wants_to_load = true;
+				//App->LoadGame();
+
+			}
+		}
+
 		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			//App->entity->CreateParticleSys(App->scene->mouse_position.x, App->scene->mouse_position.y);
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("stone", 100);
+			App->scene->AddResource("gold", 100);
 		}
+
 
 		// Debug modes
 		if (App->scene->debug)
@@ -123,7 +140,7 @@ bool j1Tutorial::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { App->scene->mouse_position.x,App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::ARCHER, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 			{
@@ -131,36 +148,46 @@ bool j1Tutorial::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { App->scene->mouse_position.x, App->scene->mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { App->scene->mouse_position.x, App->scene->mouse_position.y });
 			}
-			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !App->scene->Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !App->scene->Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, App->scene->mouse_position.x, App->scene->mouse_position.y);
 				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !App->scene->Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !App->scene->Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, App->scene->mouse_position.x, App->scene->mouse_position.y);
 				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && !App->scene->Building_preview)
 			{
-				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", +100);
-				App->scene->AddResource("gold", +100);
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, App->scene->mouse_position.x, App->scene->mouse_position.y);
+			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN && !App->scene->Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Barn, App->scene->mouse_position.x, App->scene->mouse_position.y);
+				App->scene->Building_preview = true;
+			}
 		}
-
 		// Camera movement inputs
 		int x, y;
 		App->input->GetMousePosition(x, y);
@@ -279,9 +306,11 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			
+			App->audio->PlayFx(-1, App->audio->uther_welcome, 0);
 			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
+		App->render->camera.x = -576;
+		App->render->camera.y = -281;
 	}
 
 	// Step 2.5
@@ -316,7 +345,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
 			// Create TownHall
 			App->scene->active = true;
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 995, 600);
@@ -357,7 +385,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "click on it and then click", "on the resource you want to", "collect.");
+			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "select it and then click", "on the resource you want to", "collect.");
 		}
 	}
 
@@ -380,7 +408,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack fom the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
+			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack from the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
 		}
 	}
 
@@ -401,6 +429,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->guldan_laugh, 0);
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
 
 			App->cutscene->StartCutscene("Tutorial2");
@@ -421,7 +450,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a horde", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
@@ -493,6 +522,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	if (ActualState == ST_Tutorial_Finished && App->scene->current_scene == scenes::tutorial)
 	{
 		App->scene->current_scene = scenes::ingame;
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 
 		MinimapActive = false;
@@ -555,11 +585,10 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	// Step 1
 	if (guiElement == Button_Yes)
 	{
-
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		deleteUI(1);
-
 	}
 	else if (guiElement == Button_No)
 	{
@@ -569,8 +598,6 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == PopUpButton) {
 		deleteUI(0);
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-
 		if (ActualState == ST_Tutorial_Q2)
 		{
 			ActualState = ST_Tutorial_Q2_1;
@@ -632,6 +659,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 			ActualState = ST_Tutorial_Finished;
 		}
 		createUI = true;
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 	}
 	
 }

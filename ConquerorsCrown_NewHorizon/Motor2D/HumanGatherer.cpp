@@ -21,6 +21,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	work_state = WORK_STATE::NONE;
 	speed = { NULL, NULL };
 	life_points = 80;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 0;
 	time_attack = 0;
@@ -30,6 +31,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	body = 13;
 	coll_range = 13;
 	chop_time = 0;
+	quarry_time = 0;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -102,9 +104,9 @@ bool HumanGatherer::Update(float dt)
 	origin = App->map->WorldToMap(position.x, position.y);
 
 	if (App->scene->debug)
-		life_points = 80;
+		life_points = max_hp;
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 
 	if (isSelected)
@@ -240,6 +242,8 @@ bool HumanGatherer::Update(float dt)
 			work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_ON;
 		}
 		state = DynamicState::INTERACTING;
+		change_direction = false;
+
 		if ((timer.ReadMs() - start_time) > work_time)
 		{
 			if (work_mine_space != nullptr) {
@@ -256,13 +260,16 @@ bool HumanGatherer::Update(float dt)
 			CheckTownHall();
 		}
 		else {
-			if (chop_time >= 70 && work_name=="tree") {
+			if (chop_time >= 90 && work_name=="tree") {
 				SpatialAudio(10, App->audio->wood_gatherer, position.x, position.y);
-				//LOG("Position x: %i		Position y: %i", position.x, position.y);
 				chop_time = 0;
 			}
-
+			if (quarry_time >= 90 && work_name == "quarry") {
+				SpatialAudio(10, App->audio->mine_gatherer, position.x, position.y);
+				quarry_time = 0;
+			}
 			chop_time++;
+			quarry_time++;
 		}
 	}
 
@@ -316,6 +323,16 @@ bool HumanGatherer::Update(float dt)
 	//	App->render->DrawCircle((int)position.x, (int)position.y, 20, 0, 200, 0, 200);
 	if (to_blit)
 		App->render->Blit(App->entity->gather_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	
+	hp_conversion = (float)25 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	if (to_blit && life_points < max_hp)
+		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+
 	return true;
 }
 
@@ -328,7 +345,7 @@ bool HumanGatherer::PostUpdate(float dt)
 
 bool HumanGatherer::CleanUp()
 {
-	if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
+	//if (work_mine_space != nullptr)work_mine_space->mine_lights = MINE_LIGHTS::LIGHTS_OFF;
 	close_entity_list.clear();
 	colliding_entity_list.clear();
 	visionEntity->deleteEntity = true;

@@ -61,6 +61,11 @@ public:
 	bool Load(pugi::xml_node& data);
 	bool Save(pugi::xml_node& data) const;
 
+	virtual uint GetDynEntType()
+	{
+		return 0u;
+	}
+
 	//Spatial Audio
 	void SpatialAudio(int channel, int SFX, int posx, int posy);
 
@@ -88,7 +93,7 @@ public:
 
 	bool deployed = true;
 	FoWEntity* visionEntity = nullptr;
-
+	float hp_conversion;
 	
 };
 

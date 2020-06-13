@@ -87,6 +87,8 @@ bool HumanFootman::Start()
 
 	current_animation = &moving_down;
 
+	
+
 	return true;
 }
 
@@ -138,6 +140,13 @@ bool HumanFootman::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
+		if (target_entity != nullptr)
+		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+		}
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
@@ -155,10 +164,12 @@ bool HumanFootman::Update(float dt)
 	{
 		tier_swordman = App->scene->upgrade_swordman;
 		life_points += stats_upgrade_life;
+		max_hp += stats_upgrade_life;
 		attack_damage += stats_upgrade_damage;
 		if (tier_swordman == 2)
 		{
 			life_points = 200;
+			max_hp = 200;
 			attack_damage = 24;
 		}
 	}
@@ -175,6 +186,15 @@ bool HumanFootman::Update(float dt)
 	{ 
 		App->render->Blit(App->entity->foot_man_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation); 
 	}
+
+	hp_conversion = (float)25 / (float)max_hp;
+	SDL_Rect section;
+	section.x = 0;
+	section.y = 0;
+	section.w = ((int)life_points * hp_conversion);
+	section.h = 2;
+	if (life_points < max_hp)
+	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;
 }

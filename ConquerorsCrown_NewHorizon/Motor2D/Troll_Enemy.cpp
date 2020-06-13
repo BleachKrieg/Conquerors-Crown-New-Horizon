@@ -26,6 +26,7 @@ TrollEnemy::TrollEnemy(int posx, int posy) : DynamicEnt(DynamicEntityType::ENEMY
 	// TODO: Should get all the DATA from a xml file
 	speed = { NULL, NULL };
 	life_points = 80;
+	max_hp = life_points;
 	attack_vision = 200;
 	attack_range = 100;
 	time_attack = 1400;
@@ -88,10 +89,18 @@ bool TrollEnemy::Start()
 
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 0, 96, 32, 32 }, 1, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{  0, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 32, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 64, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 96, 32, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{  0, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 32, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 64, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 96, 64, 32, 32 }, 0.25, 0, 0, 0, 0);
+
 
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entity->arrow, anim, false);
 	particleSystem->PushEmiter(emiter );
 	particleSystem->Desactivate();
 
@@ -110,7 +119,7 @@ bool TrollEnemy::Update(float dt)
 	speed = { 0, 0 };
 	origin = App->map->WorldToMap(position.x, position.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_REPEAT && isSelected && App->scene->debug)
+	if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_REPEAT && isSelected && App->scene->debug)
 		life_points = 0;
 	
 
@@ -197,6 +206,11 @@ bool TrollEnemy::Update(float dt)
 		current_animation = &attacking_right;
 		if (particleSystem != nullptr && target_entity != nullptr)
 		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
@@ -278,7 +292,19 @@ bool TrollEnemy::Update(float dt)
 
 	}
 	if (fogId == -1 && shroudId == -1 || App->scene->debug)
-	App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+	{
+		App->render->Blit(App->entity->troll_tex, (int)(position.x - (*r).w / 2), (int)(position.y - (*r).h / 2), r, 1.0f, 1.0f, orientation);
+
+		hp_conversion = (float)25 / (float)max_hp;
+		SDL_Rect section;
+		section.x = 0;
+		section.y = 0;
+		section.w = ((int)life_points * hp_conversion);
+		section.h = 2;
+		if (life_points < max_hp)
+		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
+
+	}
 	return true;
 }
 

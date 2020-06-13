@@ -21,6 +21,9 @@
 #include "j1Tutorial.h"
 #include "FoWManager.h"
 #include "j1Video.h"
+#include "J1GroupMov.h"
+#include "AssetsManager.h"
+
 
 
 j1Scene::j1Scene() : j1Module()
@@ -63,6 +66,28 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
+	if (!PHYSFS_exists("Assets/data.xml"))
+		return false;
+
+	char* buffer;
+
+	pugi::xml_document dataFile;
+	int bytesFile = App->assetManager->Load("Assets/data.xml", &buffer);
+
+	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
+	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	//// We load all the ZIP texture files
+	//LoadTexFile(dataFile);
+
+	//// We load all the ZIP fx files
+	//LoadFxFile(dataFile);
+
+	//// We load and play the desired music from the ZIP
+	//LoadMusFile(dataFile);
+
+
 	current_scene = scenes::logo;
 	current_level = "Tutorial.tmx";
 	debug = false;
@@ -77,9 +102,11 @@ bool j1Scene::Start()
 	upgrade_archer = 0;
 	upgrade_knight = 0;
 
+	
+
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 
-	intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
 	wall_create = false;
@@ -181,7 +208,7 @@ bool j1Scene::Update(float dt)
 		
 		break;
 	case scenes::tutorial:
-		if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) 
+		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) 
 		{
 			App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		}
@@ -194,7 +221,6 @@ bool j1Scene::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
 			App->audio->PlayFx(2, App->audio->click_to_play, 0);
-
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 				
@@ -214,13 +240,13 @@ bool j1Scene::Update(float dt)
 			if (logoTextTimer == 88) {
 				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
-	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
 
-	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->audio->PauseMusic(1.0f);
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		
@@ -241,6 +267,8 @@ bool j1Scene::Update(float dt)
 		break;
 	case scenes::defeat:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
+			App->audio->PauseMusic(1.0f);
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 		
@@ -330,16 +358,25 @@ bool j1Scene::Update(float dt)
 			debug = !debug;
 			App->map->blitColliders = !App->map->blitColliders;
 		}			
-
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			App->scene->AddResource("wood", 100);
+			App->scene->AddResource("stone", 100);
+			App->scene->AddResource("gold", 100);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::defeat, 2.0f);
+			win_lose_counter = 0;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+			App->fade->FadeToBlack(scenes::victory, 2.0f);
+			win_lose_counter = 0;
+		}
 		if (debug)
 		{
 			if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::SWORDMAN, { mouse_position.x, mouse_position.y });
-			}
-			if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
-			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 			{
@@ -351,61 +388,55 @@ bool j1Scene::Update(float dt)
 			}
 			if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::KNIGHT, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
 			{
-				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { mouse_position.x, mouse_position.y });
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::TROLL, { mouse_position.x, mouse_position.y });
 			}
 			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN)
 			{
+				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::OGRE, { mouse_position.x, mouse_position.y });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+			{
 				App->requests->AddRequest(Petition::SPAWN, 0.f, SpawnTypes::GRUNT, { mouse_position.x, mouse_position.y });
 			}
-			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanBarracks, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_9) == KEY_DOWN)
-			{
-				App->scene->AddResource("wood", 100);
-				App->scene->AddResource("stone", 100);
-				App->scene->AddResource("gold", 100);
-			}
-			if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
-			}
-
-			/*if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN) {
-				App->fade->FadeToBlack(scenes::defeat, 2.0f);
-			}
-			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-				App->fade->FadeToBlack(scenes::victory, 2.0f);
-			}*/
-			if (App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanUpgrade, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
-			if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && !Building_preview)
+			if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN && !Building_preview)
 			{
 				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 				Building_preview = true;
 			}
+			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN && !Building_preview)
+			{
+				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::Barn, mouse_position.x, mouse_position.y);
+				Building_preview = true;
+			}
+			// testing winlose scenes
+			
+
+			
 		}
 
 		if (stone >= 100 && wall_create == true && !Building_preview)
 		{
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanWall, mouse_position.x, mouse_position.y);
 			Building_preview = true;
-
-			if(App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
-				App->entity->CreateStaticEntity(StaticEnt::StaticEntType::enemy_barrack, mouse_position.x, mouse_position.y);
 
 		}
 
@@ -444,16 +475,6 @@ bool j1Scene::Update(float dt)
 		}
 		break;
 	}
-	
-	// testing winlose scenes
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN && debug) {
-		App->fade->FadeToBlack(scenes::defeat, 2.0f);
-		win_lose_counter = 0;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN && debug) {
-		App->fade->FadeToBlack(scenes::victory, 2.0f);
-		win_lose_counter = 0;
-	}
 
 	//App->render->Blit(debug_tex, p.x, p.y);
 
@@ -471,9 +492,90 @@ bool j1Scene::PostUpdate(float dt)
 
 		break;
 	case scenes::tutorial:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
+
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_knight"))
+			{
+				SDL_Rect rect = { 3126, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+
+		}
 		break;
 	case scenes::ingame:
+		//portraits
+		if (App->movement->portrait_entity != nullptr)
+		{
 
+			if (App->movement->portrait_entity->name == p2SString("town_hall"))
+			{
+				SDL_Rect rect = { 3126, 312, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_barracks"))
+			{
+				SDL_Rect rect = { 3126, 468, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_footman"))
+			{
+				SDL_Rect rect = { 2978, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_gatherer"))
+			{
+				SDL_Rect rect = { 2978, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_archer"))
+			{
+				SDL_Rect rect = { 3126, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_upgrade"))
+			{
+				SDL_Rect rect = { 3126, 624, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("human_knight"))
+			{
+				SDL_Rect rect = { 3126, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+
+		}
 		//Mouse input for UI buttons
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 			if (App->entity->IsSomethingSelected())
@@ -508,7 +610,7 @@ bool j1Scene::PostUpdate(float dt)
 
 			if (intro_video == 0 && loop)
 			{
-				intro_video = App->video->Load("Assets/video/team-logo.ogv", App->render->renderer);
+				intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
 
 
 			}
@@ -560,7 +662,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/victory.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/victory.ogv", App->render->renderer);
 
 
 		}
@@ -591,7 +693,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets/video/defeat.ogv", App->render->renderer);
+			intro_video = App->video->Load("Assets_old/video/defeat.ogv", App->render->renderer);
 
 		}
 
@@ -613,11 +715,11 @@ bool j1Scene::CleanUp()
 	bool ret = true;
 	ret = App->tex->UnLoad(video_texture);
 	ret = App->tex->UnLoad(videologo_tex);
-	loader = nullptr;
-	App->minimap->CleanUp();
-	LOG("Freeing scene");
+loader = nullptr;
+App->minimap->CleanUp();
+LOG("Freeing scene");
 
-	return ret;
+return ret;
 }
 bool j1Scene::Load(pugi::xml_node& data)
 {
@@ -640,7 +742,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	LOG("Saving Scene state");
-	
+
 
 	pugi::xml_node scenename = data.append_child("scenename");
 	scenename.append_attribute("name") = current_level.GetString();
@@ -661,6 +763,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::LoadTiledEntities() {
 
 	list<MapLayer*>::iterator Layer_list;
+	vector<iPoint> positions;
+	int maxpositions = 0;
 	MapLayer* layer;
 
 	for (Layer_list = App->map->data.layers.begin(); Layer_list != App->map->data.layers.end(); ++Layer_list)
@@ -682,11 +786,11 @@ void j1Scene::LoadTiledEntities() {
 						switch (tile_id) {
 						case 381:
 							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 20u);
+							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 50u);
 							break;
 						case 401:
-							active = true;
-							App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall,pos.x, pos.y);
+							maxpositions++;
+							positions.push_back(pos);
 							break;
 						case 418:
 							active = true;
@@ -694,7 +798,7 @@ void j1Scene::LoadTiledEntities() {
 							break;
 						case 422:
 							if (current_scene == scenes::tutorial) {
-								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 40u);
+								App->entity->CreateStaticEntity(StaticEnt::StaticEntType::GoldMine, pos.x, pos.y, 0u, 80u);
 							}
 						}
 						if (tile_id >= 102 && tile_id <= 141 && tile_id != 126)
@@ -710,10 +814,36 @@ void j1Scene::LoadTiledEntities() {
 			}
 		}
 	}
-	active = false;
-	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1175 });
-	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1165 });
-	App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { 3520, 1185 });
+	
+	if (current_scene == scenes::ingame)
+	{
+		int pos_id = 0;
+		if (maxpositions > 0)
+		{
+			pos_id = rand() % maxpositions;
+			
+			active = true;
+			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, positions[pos_id].x, positions[pos_id].y);
+
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y + 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y - 10 });
+			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { positions[pos_id].x - 80,  positions[pos_id].y});
+			
+			App->render->camera.x = -positions[pos_id].x + App->win->width/2;
+			App->render->camera.y = -positions[pos_id].y + App->win->height/3;
+
+			active = false;
+		}
+
+		
+	}
+	
+
+	if (current_scene == scenes::ingame)
+	{
+		
+	}
 }
 
 void j1Scene::DeleteScene() {
@@ -796,8 +926,6 @@ void j1Scene::CreateScene(scenes next_scene) {
 		CreateInGame();
 		App->minimap->input = true;
 		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -2830;
-		App->render->camera.y = -967;
 		App->wave->Start();
 		gameClock.Start();
 		Cooldown.Start();
@@ -1180,7 +1308,7 @@ bool j1Scene::CreateLogo() {
 
 	//video
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	intro_video = App->video->Load("Assets/video/evangelion-opening.ogv", App->render->renderer);
+	intro_video = App->video->Load("Assets_old/video/evangelion-opening.ogv", App->render->renderer);
 
 	loop = true;
 	//Reseting camera to (0,0) position
@@ -1437,6 +1565,7 @@ void j1Scene::GuiInput(GuiItem* guiElement) {
 		}
 		else if (guiElement == pausemenuButtonExit) {
 			App->audio->PlayFx(-1, App->audio->click_to_play, 0);
+			App->audio->PauseMusic(1.0f);
 			DeletePauseMenu();
 			pauseMenu = false;
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
@@ -1527,4 +1656,22 @@ void j1Scene::LogoPushbacks() {
 void j1Scene::UpdateCameraPosition(int speed) 
 {
 
+}
+
+void j1Scene::LoadTexFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node tex_node = dataFile.child("data").child("texture");
+	texture = App->tex->Load(tex_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadFxFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node fx_node = dataFile.child("data").child("fx");
+	App->audio->LoadFx(fx_node.attribute("file").as_string());
+}
+
+void j1Scene::LoadMusFile(const pugi::xml_document& dataFile)
+{
+	pugi::xml_node mus_node = dataFile.child("data").child("mus");
+	App->audio->PlayMusic(mus_node.attribute("file").as_string());
 }

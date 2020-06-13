@@ -116,12 +116,17 @@ bool j1Render::CleanUp()
 // Load Game State
 bool j1Render::Load(pugi::xml_node& data)
 {
+	camera.x = data.child("camera").attribute("posX").as_int();
+	camera.y = data.child("camera").attribute("posY").as_int();
 	return true;
 }
 
 // Save Game State
 bool j1Render::Save(pugi::xml_node& data) const
 {
+	pugi::xml_node cameranode = data.append_child("camera");
+	cameranode.append_attribute("posX") = camera.x;
+	cameranode.append_attribute("posY") = camera.y;
 	return true;
 }
 
