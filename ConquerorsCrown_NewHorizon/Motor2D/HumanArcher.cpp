@@ -94,10 +94,10 @@ bool HumanArcher::Start()
 	
 	particleSystem = App->entity->CreateParticleSys(position.x, position.y);
 	Animation anim;
-	anim.PushBack(SDL_Rect{ 32, 96, 32, 32 }, 1, 0, 0, 0, 0);
+	anim.PushBack(SDL_Rect{ 0, 0, 32, 32 }, 1, 0, 0, 0, 0);
 
 	anim.Reset();
-	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 2, 2, nullptr, App->entity->arrow, anim, false);
+	Emiter emiter(position.x, position.y, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 2, nullptr, App->entity->arrow, anim, false);
 	particleSystem->PushEmiter(emiter);
 	particleSystem->Desactivate();
 
@@ -162,6 +162,11 @@ bool HumanArcher::Update(float dt)
 		current_animation = &attacking_right;
 		if (particleSystem != nullptr && target_entity != nullptr)
 		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+
 			if (!particleSystem->IsActive())
 			{
 				particleSystem->Activate();
@@ -249,6 +254,7 @@ bool HumanArcher::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
+	if (life_points < max_hp)
 	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;

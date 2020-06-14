@@ -30,6 +30,7 @@ HumanTownHall::HumanTownHall(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	canbuild = false;
 	active = true;
 	createUI = false;
+	createUIdefinitions = false;
 	create_gatherer = false;
 	selectable_buildings = true;
 	time_bar_start = false;
@@ -62,6 +63,7 @@ bool HumanTownHall::Start()
 		actualState = ST_TOWNHALL_AUTOMATIC;
 	}
 	createUI = true;
+	createUIdefinitions = false;
 	Button_Create_Gatherer = nullptr;
 	Gatherer_image = nullptr;
 	Gatherer_stone_cost = nullptr;
@@ -86,6 +88,10 @@ bool HumanTownHall::Start()
 	Barn_Text_stone = nullptr;
 	Barn_wood_cost = nullptr;
 	Barn_Text_Wood = nullptr;
+	Description_text_1 = nullptr;
+	Description_text_2 = nullptr;
+	Description_text_3 = nullptr;
+	Description_text_4 = nullptr;
 	deployed = false;
 	return true;
 }
@@ -161,6 +167,7 @@ bool HumanTownHall::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
+	if (life_points < max_hp)
 	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	//This render is placed behind the general blit for art purposes
 	if (actualState == ST_TOWNHALL_PREVIEW) {
@@ -390,7 +397,6 @@ void HumanTownHall::checkAnimation(float dt)
 		
 		if (isSelected == true && App->tutorial->ActualState != ST_Tutorial_Q4)
 		{
-			
 			if (createUI)
 			{
 				createUI = false;
@@ -410,6 +416,64 @@ void HumanTownHall::checkAnimation(float dt)
 						App->tutorial->Arrow_5 = App->gui->CreateGuiElement(Types::image, 1005, 450, { 2656, 212, 45, 64 }, App->scene->ingameTopBar);
 					}
 				}
+			}
+
+			if (Button_Create_Barrack != nullptr && Button_Create_Barrack->hover == true && createUIdefinitions == false)
+			{
+				Description_text_1 = App->gui->CreateGuiElement(Types::text,506 ,528, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "Barrack:", App->font->smallfont);
+				Description_text_2 = App->gui->CreateGuiElement(Types::text, 506, 568, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "This building will let you", App->font->xs_font);
+				Description_text_3 = App->gui->CreateGuiElement(Types::text, 506, 588, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "create troops and can be  ", App->font->xs_font);
+				Description_text_4 = App->gui->CreateGuiElement(Types::text, 506, 608, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "upgraded once ", App->font->xs_font);
+				createUIdefinitions = true;
+			}
+			else if (Button_Create_Wall != nullptr && Button_Create_Wall->hover == true && createUIdefinitions == false)
+			{
+				Description_text_1 = App->gui->CreateGuiElement(Types::text, 506, 528, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "The Wall:", App->font->smallfont);
+				Description_text_2 = App->gui->CreateGuiElement(Types::text, 506, 568, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "This structure will let you", App->font->xs_font);
+				Description_text_3 = App->gui->CreateGuiElement(Types::text, 506, 588, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "defend your buildings", App->font->xs_font);
+				Description_text_4 = App->gui->CreateGuiElement(Types::text, 506, 608, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, " ", App->font->xs_font);
+				createUIdefinitions = true;
+			}				
+			else if (Button_Create_Lab != nullptr && Button_Create_Lab->hover == true && createUIdefinitions == false)
+			{
+				Description_text_1 = App->gui->CreateGuiElement(Types::text, 506, 528, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "Laboratory:", App->font->smallfont);
+				Description_text_2 = App->gui->CreateGuiElement(Types::text, 506, 568, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "This building will let you", App->font->xs_font);
+				Description_text_3 = App->gui->CreateGuiElement(Types::text, 506, 588, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "upgrade your troops", App->font->xs_font);
+				Description_text_4 = App->gui->CreateGuiElement(Types::text, 506, 608, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "even their skins !!", App->font->xs_font);
+				createUIdefinitions = true;
+			}				
+			else if (Button_Create_Barn != nullptr && Button_Create_Barn->hover == true && createUIdefinitions == false)
+			{
+				Description_text_1 = App->gui->CreateGuiElement(Types::text, 506, 528, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "Barn:", App->font->smallfont);
+				Description_text_2 = App->gui->CreateGuiElement(Types::text, 506, 568, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "This building will let you", App->font->xs_font);
+				Description_text_3 = App->gui->CreateGuiElement(Types::text, 506, 588, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, "recruit horsemans", App->font->xs_font);
+				Description_text_4 = App->gui->CreateGuiElement(Types::text, 506, 608, { 0, 0, 138, 30 }, App->scene->ingameTopBar, nullptr, " ", App->font->xs_font);
+				createUIdefinitions = true;
+			}
+			else if (createUIdefinitions == true && Button_Create_Barrack->hover == false && Button_Create_Wall->hover == false && Button_Create_Lab->hover == false && Button_Create_Barn->hover == false)
+			{
+				if (Description_text_1 != nullptr) 
+				{
+					Description_text_1->to_delete = true;
+					Description_text_1 = nullptr;
+				}
+
+				if (Description_text_2 != nullptr)
+				{
+					Description_text_2->to_delete = true;
+					Description_text_2 = nullptr;
+				}
+				if (Description_text_3 != nullptr){
+				
+					Description_text_3->to_delete = true;
+					Description_text_3 = nullptr;
+				}
+				if (Description_text_4 != nullptr) {
+
+					Description_text_4->to_delete = true;
+					Description_text_4 = nullptr;
+				}
+				createUIdefinitions = false;
 			}
 
 			App->render->DrawQuad({ (int)position.x - 53, (int)position.y - 53, 105, 105 }, 200, 0, 0, 200, false);
@@ -645,6 +709,9 @@ void HumanTownHall::CreateTownHallUI()
 	Barrack_Text_Wood = App->gui->CreateGuiElement(Types::text, 1115, 145, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "100", App->font->smallfont);
 	Barrack_stone_cost = App->gui->CreateGuiElement(Types::image, 1085, 120, { 974, 5, 75, 26 }, App->scene->ingameUI, nullptr, NULL);
 	Barrack_Text_stone = App->gui->CreateGuiElement(Types::text, 1115, 120, { 0, 0, 138, 30 }, App->scene->ingameUI, nullptr, "200", App->font->smallfont);
+
+	//Button_Create_Barrack_definition = App->gui->CreateGuiElement(Types::button, 1095, 66, { 306, 192, 58, 50 }, App->scene->ingameUI, this, NULL);
+	//Button_Create_Barrack->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });
 
 	Button_Create_Wall = App->gui->CreateGuiElement(Types::button, 1010, 185, { 306, 125, 58, 50 }, App->scene->ingameUI, this, NULL);
 	Button_Create_Wall->setRects({ 365, 125, 58, 50 }, { 424, 125, 58, 50 });

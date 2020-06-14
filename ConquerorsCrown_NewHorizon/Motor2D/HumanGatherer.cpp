@@ -31,6 +31,7 @@ HumanGatherer::HumanGatherer(int posx, int posy) : DynamicEnt(DynamicEntityType:
 	body = 13;
 	coll_range = 13;
 	chop_time = 0;
+	quarry_time = 0;
 	position.x = posx;
 	position.y = posy;
 	orientation = SDL_FLIP_NONE;
@@ -259,13 +260,16 @@ bool HumanGatherer::Update(float dt)
 			CheckTownHall();
 		}
 		else {
-			if (chop_time >= 70 && work_name=="tree") {
+			if (chop_time >= 90 && work_name=="tree") {
 				SpatialAudio(10, App->audio->wood_gatherer, position.x, position.y);
-				//LOG("Position x: %i		Position y: %i", position.x, position.y);
 				chop_time = 0;
 			}
-
+			if (quarry_time >= 90 && work_name == "quarry") {
+				SpatialAudio(10, App->audio->mine_gatherer, position.x, position.y);
+				quarry_time = 0;
+			}
 			chop_time++;
+			quarry_time++;
 		}
 	}
 
@@ -326,7 +330,7 @@ bool HumanGatherer::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
-	if (to_blit)
+	if (to_blit && life_points < max_hp)
 		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	return true;

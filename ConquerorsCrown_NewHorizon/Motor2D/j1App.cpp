@@ -278,7 +278,7 @@ void j1App::FinishUpdate()
 		seconds_since_startup, prev_last_sec_frame_count, avg_fps, last_frame_ms,framecap.GetString(), vsync.GetString(),
 		App->scene->map_coordinates.x,App->scene->map_coordinates.y, App->render->camera.x, App->render->camera.y, App->render->camera.w);
 	*/
-	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u], %d, %d", prev_last_sec_frame_count, App->scene->mouse_position.x, App->scene->mouse_position.y);
+	sprintf_s(title, 256, "Conqueror's Crown: New Horizon [FPS:%02u]", prev_last_sec_frame_count);
 
 	App->win->SetTitle(title);
 
@@ -455,7 +455,7 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 	char* buffer;
-	load_game.create("save_game.xml");
+	load_game.create("Assets_old/save_game.xml");
 
 	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
 
@@ -555,8 +555,11 @@ bool j1App::SavegameNow()
 	{
 		std::stringstream stream;
 		data.save(stream);
+		//stream.str().c_str(); //contingut del fitxer
+		//stream.str().length(); //mida del fitxer
+		App->assetManager->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
 
-		data.save_file(save_game.GetString());
+		//data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	
 	}

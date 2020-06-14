@@ -78,7 +78,7 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	grunt_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Medium_Chop_Metal_3.wav"); 
 	ogre_attack = App->audio->LoadFx("Assets/Audio/SFX/Combat/Metal_Heavy_Chop_Metal_3.wav");
 	wood_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Resources/Axe_Medium_Chop_Wood_4.wav");
-	//mine_gatherer = App->audio->LoadFx("Audio/SFX/Humans/Peasant/Axe_Throwing.wav");
+	mine_gatherer = App->audio->LoadFx("Assets/Audio/SFX/Resources/Pick.wav");
 	die_footman = App->audio->LoadFx("Assets/Audio/SFX/Humans/footman/Footman_Death.wav");
 	die_archer = App->audio->LoadFx("Assets/Audio/SFX/Humans/archer/Archer_Death2.wav");
 	die_knight = App->audio->LoadFx("Assets/Audio/SFX/Humans/knight/Knight_Death.wav");
@@ -92,10 +92,12 @@ bool j1Audio::Awake(pugi::xml_node & config)
 	pause_fx_in = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_In.wav");
 	pause_fx_out = App->audio->LoadFx("Assets/Audio/SFX/UI/Game_Pause_Fade_Out.wav");
 
+	uther_welcome = App->audio->LoadFx("Assets/Audio/SFX/UI/Uther_Welcome.wav");
 	upgrade_complete = App->audio->LoadFx("Assets/Audio/SFX/Humans/Upgrade_Complete_1.wav");
 	quest_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Good_Job.wav");
 	guldan_laugh = App->audio->LoadFx("Assets/Audio/SFX/UI/Gul'dan_Laugh.wav");
 	tutorial_complete = App->audio->LoadFx("Assets/Audio/SFX/UI/Quest_Completed.wav");
+	warning_wave = App->audio->LoadFx("Assets/Audio/SFX/UI/Warning.wav");
 	
 	logo_game_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Game_SFX.wav");
 	logo_team_fx = App->audio->LoadFx("Assets/Audio/SFX/Logo/Logo_Team_SFX.wav");

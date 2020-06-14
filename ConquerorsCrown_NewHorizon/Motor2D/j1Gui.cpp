@@ -287,10 +287,18 @@ bool GuiItem::checkBoundaries(int x, int y)
 	{
 		if (y > posy && y < (posy + LocalRect.h)) 
 		{
-			if (type == Types::button)
-				textureRect = illuminatedRect; //Illuminated Button
+			if (type == Types::button) 
+			{
+				textureRect = illuminatedRect;
+				hover = true;
+			}//Illuminated Button
 			return true;
+
 		}
+	}
+	else 
+	{
+		hover = false;
 	}
 	return false;
 }

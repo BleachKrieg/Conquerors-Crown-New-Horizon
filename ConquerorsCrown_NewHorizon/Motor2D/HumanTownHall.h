@@ -94,6 +94,7 @@ public:
 
 	//UI BARRACK
 	GuiItem* Button_Create_Barrack;
+	GuiItem* Button_Create_Barrack_definition;
 	GuiItem* BarrackImage;
 	GuiItem* Barrack_stone_cost;
 	GuiItem* Barrack_Text_stone;
@@ -133,6 +134,11 @@ public:
 	iPoint pos4;
 	iPoint pos5;
 
+	//Description_UI
+	GuiItem* Description_text_1;
+	GuiItem* Description_text_2;
+	GuiItem* Description_text_3;
+	GuiItem* Description_text_4;
 private:
 	iPoint respawn;
 

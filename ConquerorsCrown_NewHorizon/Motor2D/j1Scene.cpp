@@ -220,7 +220,7 @@ bool j1Scene::Update(float dt)
 	case scenes::logo:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
 			App->audio->PauseMusic(1.0f);
-
+			App->audio->PlayFx(2, App->audio->click_to_play, 0);
 			App->fade->FadeToBlack(scenes::menu, 2.0f);
 		}
 				
@@ -240,10 +240,8 @@ bool j1Scene::Update(float dt)
 			if (logoTextTimer == 88) {
 				App->audio->PlayFx(1, App->audio->logo_game_fx, 0);
 			}
-	//		LOG("Logo text timer: %i", logoTextTimer);
 		}
 
-	//	LOG("Logo timer: %.2f", logoTimer.ReadSec());
 		break;
 	case scenes::victory:
 		if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN) {
@@ -576,6 +574,16 @@ bool j1Scene::PostUpdate(float dt)
 				SDL_Rect rect = { 3126, 156, 144, 152 };
 				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
+			if (App->movement->portrait_entity->name == p2SString("human_barn"))
+			{
+				SDL_Rect rect = { 3275, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("wall"))
+			{
+				SDL_Rect rect = { 3275, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
 
 		}
 		//Mouse input for UI buttons
@@ -831,6 +839,9 @@ void j1Scene::LoadTiledEntities() {
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y });
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::GATHERER, { positions[pos_id].x + 80,  positions[pos_id].y - 10 });
 			App->requests->AddRequest(Petition::SPAWN, 1.f, SpawnTypes::KNIGHT, { positions[pos_id].x - 80,  positions[pos_id].y});
+			
+			App->render->camera.x = -positions[pos_id].x + App->win->width/2;
+			App->render->camera.y = -positions[pos_id].y + App->win->height/3;
 
 			active = false;
 		}
@@ -925,8 +936,6 @@ void j1Scene::CreateScene(scenes next_scene) {
 		CreateInGame();
 		App->minimap->input = true;
 		App->audio->PlayMusic("Human/Human_Battle_1.ogg", 2.0F);
-		App->render->camera.x = -2830;
-		App->render->camera.y = -967;
 		App->wave->Start();
 		gameClock.Start();
 		Cooldown.Start();
