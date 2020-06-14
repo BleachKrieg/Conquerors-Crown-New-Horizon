@@ -1,5 +1,5 @@
 # Conquerors-Crown-New-Horizon
-This is the Alpha version of the videogame: Conqueror's Crown: New Horizon from our team BleachKrieg, for the subject of project 2 in UPC,CITM
+This is the Gold version of the videogame: Conqueror's Crown: New Horizon from our team BleachKrieg, for the subject of project 2 in UPC,CITM
 
 ## Repository
 <https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon>
@@ -88,6 +88,7 @@ If a troop is selected it will create and follow a path to the mouse position.
 - Our social media: 
 
 Twitter: https://twitter.com/bleachkrieg
+Webpage:
 
 ## License
 //MIT License

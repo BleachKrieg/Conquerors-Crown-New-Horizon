@@ -455,7 +455,7 @@ bool j1App::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 	char* buffer;
-	load_game.create("Assets_old/save_game.xml");
+	load_game.create("data/save_game.xml");
 
 	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
 
