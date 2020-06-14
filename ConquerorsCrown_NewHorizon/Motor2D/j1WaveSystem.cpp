@@ -170,19 +170,19 @@ bool j1WaveSystem::Update(float dt)
 				{
 					iPoint origin = App->map->WorldToMap(spawn1->position.x, spawn1->position.y);
 					iPoint destination = App->map->WorldToMap(spawn1->targetpos.x, spawn1->targetpos.y);
-					App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);;
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn1);
 				}
 				if (dis_to_2 > 0)
 				{
 					iPoint origin = App->map->WorldToMap(spawn2->position.x, spawn2->position.y);
 					iPoint destination = App->map->WorldToMap(spawn2->targetpos.x, spawn2->targetpos.y);
-					App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);;
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn2);
 				}
 				if (dis_to_3 > 0)
 				{
 					iPoint origin = App->map->WorldToMap(spawn3->position.x, spawn3->position.y);
 					iPoint destination = App->map->WorldToMap(spawn3->targetpos.x, spawn3->targetpos.y);
-					App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);;
+					App->pathfinding->RequestPath(origin, destination, nullptr, spawn3);
 				}
 			}
 		}
