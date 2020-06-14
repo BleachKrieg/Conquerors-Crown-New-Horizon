@@ -43,7 +43,7 @@ bool ModuleAssetsManager::Awake(pugi::xml_node& config)
 	// When you mount an archive, it is added to a virtual file system...
 	// all files in all of the archives are interpolated into a single hierachical file tree.
 	PHYSFS_mount("Assets.zip", nullptr, 1);
-	PHYSFS_setWriteDir("Assets_old");
+	PHYSFS_setWriteDir("data");
 	return true;
 }
 

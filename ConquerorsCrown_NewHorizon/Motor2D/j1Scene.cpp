@@ -66,27 +66,6 @@ bool j1Scene::Start()
 
 	LOG("Start scene");
 
-	if (!PHYSFS_exists("Assets/data.xml"))
-		return false;
-
-	char* buffer;
-
-	pugi::xml_document dataFile;
-	int bytesFile = App->assetManager->Load("Assets/data.xml", &buffer);
-
-	// Loading document from memory with PUGI: https://pugixml.org/docs/manual.html#loading.memory
-	pugi::xml_parse_result result = dataFile.load_buffer(buffer, bytesFile);
-	RELEASE_ARRAY(buffer);
-
-	//// We load all the ZIP texture files
-	//LoadTexFile(dataFile);
-
-	//// We load all the ZIP fx files
-	//LoadFxFile(dataFile);
-
-	//// We load and play the desired music from the ZIP
-	//LoadMusFile(dataFile);
-
 
 	current_scene = scenes::logo;
 	current_level = "Tutorial.tmx";
@@ -106,7 +85,7 @@ bool j1Scene::Start()
 
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
 
-	intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
+	intro_video = App->video->Load("data/video/team-logo.ogv", App->render->renderer);
 	loop = true;
 
 	wall_create = false;
@@ -620,7 +599,7 @@ bool j1Scene::PostUpdate(float dt)
 
 			if (intro_video == 0 && loop)
 			{
-				intro_video = App->video->Load("Assets_old/video/team-logo.ogv", App->render->renderer);
+				intro_video = App->video->Load("data/video/team-logo.ogv", App->render->renderer);
 
 
 			}
@@ -672,7 +651,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets_old/video/victory.ogv", App->render->renderer);
+			intro_video = App->video->Load("data/video/victory.ogv", App->render->renderer);
 
 
 		}
@@ -703,7 +682,7 @@ bool j1Scene::PostUpdate(float dt)
 
 		if (intro_video == 0 && loop)
 		{
-			intro_video = App->video->Load("Assets_old/video/defeat.ogv", App->render->renderer);
+			intro_video = App->video->Load("data/video/defeat.ogv", App->render->renderer);
 
 		}
 
@@ -1318,7 +1297,7 @@ bool j1Scene::CreateLogo() {
 
 	//video
 	//App->audio->PlayFx(1, App->audio->intro_fx, 0);
-	intro_video = App->video->Load("Assets_old/video/evangelion-opening.ogv", App->render->renderer);
+	intro_video = App->video->Load("data/video/evangelion-opening.ogv", App->render->renderer);
 
 	loop = true;
 	//Reseting camera to (0,0) position
