@@ -131,7 +131,7 @@ bool HumanGatherer::Update(float dt)
 			{
 				it_mine = App->entity->mines[i];
 				it = (j1Entity*)it_mine;
-				r = it_mine->GetAnimation()->GetCurrentSize();
+				r = *it_mine->current_rect;
 				r.x = it_mine->position.x + 64;
 				r.y = it_mine->position.y + 64;
 				r.w /= 2;

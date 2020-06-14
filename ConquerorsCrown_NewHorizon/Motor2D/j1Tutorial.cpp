@@ -102,6 +102,7 @@ bool j1Tutorial::Update(float dt)
 
 	if (App->scene->current_scene == scenes::tutorial)
 	{
+		App->scene->gameClock.Start();
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			App->scene->debug = !App->scene->debug;
@@ -115,7 +116,6 @@ bool j1Tutorial::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		{
 			if (App->CheckSaveGame()) {
-
 				App->fade->FadeToBlack(scenes::ingame, 2.0f);
 				App->scene->wants_to_load = true;
 				//App->LoadGame();

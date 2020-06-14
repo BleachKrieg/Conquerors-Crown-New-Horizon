@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "p2Log.h"
+#include "J1GroupMov.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
@@ -83,7 +84,7 @@ bool j1FadeToBlack::PostUpdate(float dt) {
 bool j1FadeToBlack::FadeToBlack(scenes scene, float time)
 {
 	bool ret = false;
-
+	App->movement->player_selected = nullptr;
 	if (current_step == fade_step::none)
 	{
 
