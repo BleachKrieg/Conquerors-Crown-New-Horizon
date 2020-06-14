@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Window.h"
+#include "j1Textures.h"
 
 #include "SDL/include/SDL.h"
 
@@ -63,6 +64,9 @@ bool j1Window::Awake(pugi::xml_node& config)
 		}
 
 		window = SDL_CreateWindow(App->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		SDL_Surface* icon = App->tex->CreateSurfaceFromPath("Assets/textures/GameIcon.png");
+		SDL_SetWindowIcon(window, icon);
+		SDL_FreeSurface(icon);
 
 		if(window == NULL)
 		{

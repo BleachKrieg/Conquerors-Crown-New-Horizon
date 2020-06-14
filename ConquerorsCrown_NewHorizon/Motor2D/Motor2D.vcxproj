@@ -183,6 +183,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="DynamicEnt.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceEntities.h" />
     <ClInclude Include="StaticEnt.h" />
     <ClInclude Include="HumanBarracks.h" />
@@ -190,6 +191,13 @@
     <ClInclude Include="theoraplay_cvtrgb.h" />
     <ClInclude Include="Troll_Enemy.h" />
     <ClInclude Include="HumanWall.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ConquerorsCrown_NewHorizon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="F:\GameIcon.ico" />
+    <Image Include="F:\GameIcon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
