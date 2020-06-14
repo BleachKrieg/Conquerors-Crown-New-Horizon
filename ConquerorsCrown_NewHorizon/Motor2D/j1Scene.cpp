@@ -23,6 +23,7 @@
 #include "j1Video.h"
 #include "J1GroupMov.h"
 #include "AssetsManager.h"
+#include <time.h>      
 
 
 
@@ -809,8 +810,9 @@ void j1Scene::LoadTiledEntities() {
 		int pos_id = 0;
 		if (maxpositions > 0)
 		{
+			srand(time(NULL));
 			pos_id = rand() % maxpositions;
-			
+	
 			active = true;
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, positions[pos_id].x, positions[pos_id].y);
 

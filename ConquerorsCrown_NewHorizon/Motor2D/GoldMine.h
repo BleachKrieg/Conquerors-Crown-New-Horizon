@@ -43,9 +43,9 @@ public:
 	void DecreaseExtractionCount();
 
 private:
-	Animation no_light_mine;
-	Animation light_mine;
-	Animation out_of_material_mine;
+	SDL_Rect no_light_mine;
+	SDL_Rect light_mine;
+	SDL_Rect out_of_material_mine;
 	uint extraction_limit;
 	uint max_resources;
 	uint pre_check;

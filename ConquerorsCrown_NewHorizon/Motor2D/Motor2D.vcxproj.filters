@@ -339,6 +339,7 @@
     <ClInclude Include="Emiter.h">
       <Filter>Particle System</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entities">
@@ -371,5 +372,13 @@
     <Filter Include="Particle System">
       <UniqueIdentifier>{4bc5ae9a-007d-44cf-a93e-f7ba05dad466}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ConquerorsCrown_NewHorizon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="F:\GameIcon.png" />
+    <Image Include="F:\GameIcon.ico" />
+    <Image Include="..\Game\GameIcon.ico" />
   </ItemGroup>
 </Project>

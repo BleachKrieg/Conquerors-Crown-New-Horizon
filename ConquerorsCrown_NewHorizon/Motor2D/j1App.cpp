@@ -515,12 +515,18 @@ bool j1App::CheckSaveGame()
 	//	return false;
 	//}
 
-	if (!PHYSFS_exists("save_game.xml"))
-	{
-		LOG("no available savegame");
-		return false;
-	}
+	pugi::xml_document data;
+	pugi::xml_node root;
+	char* buffer;
+	load_game.create("data/save_game.xml");
 
+	int bytesFile = App->assetManager->Load(load_game.GetString(), &buffer);
+
+	pugi::xml_parse_result result = data.load_buffer(buffer, bytesFile);
+	RELEASE_ARRAY(buffer);
+
+	if (result == NULL)
+		return false;
 	return true;
 
 
