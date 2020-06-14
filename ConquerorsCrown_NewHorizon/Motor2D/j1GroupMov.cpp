@@ -208,6 +208,11 @@ bool j1GroupMov::Update(float dt) {
 			}
 		}
 
+		if (selected.size() > 0)
+		{
+			player_selected = selected.front();
+		}
+
 		if (NewGroup)
 		{
 			NewGroup = false;
