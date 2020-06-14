@@ -574,6 +574,16 @@ bool j1Scene::PostUpdate(float dt)
 				SDL_Rect rect = { 3126, 156, 144, 152 };
 				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
 			}
+			if (App->movement->portrait_entity->name == p2SString("human_barn"))
+			{
+				SDL_Rect rect = { 3275, 156, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
+			if (App->movement->portrait_entity->name == p2SString("wall"))
+			{
+				SDL_Rect rect = { 3275, 0, 144, 152 };
+				App->render->Blit(App->gui->GetAtlas(), App->render->viewport.x + 332, App->render->viewport.y + 529, &rect, 0, 0);
+			}
 
 		}
 		//Mouse input for UI buttons
