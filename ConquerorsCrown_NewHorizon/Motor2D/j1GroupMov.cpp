@@ -58,6 +58,7 @@ bool j1GroupMov::Update(float dt) {
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && App->input->screen_click)
 	{
+		selected.clear();
 		player_selected = nullptr;
 		portrait_entity = nullptr;
 		App->input->GetMousePosition(origin.x, origin.y);
@@ -211,6 +212,7 @@ bool j1GroupMov::Update(float dt) {
 		if (selected.size() > 0)
 		{
 			player_selected = selected.front();
+			selected.front()->isSelected = true;
 		}
 
 		if (NewGroup)
