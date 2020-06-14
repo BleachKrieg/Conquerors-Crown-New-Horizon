@@ -125,3 +125,19 @@ void j1Textures::GetSize(const SDL_Texture* texture, uint& width, uint& height) 
 {
 	SDL_QueryTexture((SDL_Texture*)texture, NULL, NULL, (int*) &width, (int*) &height);
 }
+
+SDL_Surface* j1Textures::CreateSurfaceFromPath(const char* path) {
+
+	SDL_Surface* surface = IMG_Load_RW(App->assetManager->Load(path), 1);
+
+	if (surface == NULL)
+	{
+		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+		return nullptr;
+	}
+	else
+	{
+		return surface;
+		SDL_FreeSurface(surface);
+	}
+}

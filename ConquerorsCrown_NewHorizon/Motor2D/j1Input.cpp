@@ -56,7 +56,8 @@ bool j1Input::PreUpdate(float dt)
 	ScrollDown = false;
 	mouse_on_screen = false;
 	static SDL_Event event;
-	
+	mouse = App->render->ScreenToWorld(mouse_x, mouse_y);
+
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	for(int i = 0; i < MAX_KEYS; ++i)
@@ -116,7 +117,6 @@ bool j1Input::PreUpdate(float dt)
 
 			case SDL_MOUSEBUTTONDOWN:
 				mouse_buttons[event.button.button - 1] = KEY_DOWN;
-				mouse = App->render->ScreenToWorld(mouse_x, mouse_y);
 				if (mouse.y > (-App->render->camera.y + 36) && mouse.y < ((-App->render->camera.y) + App->render->camera.h - 272))
 					screen_click = true;
 				else 
