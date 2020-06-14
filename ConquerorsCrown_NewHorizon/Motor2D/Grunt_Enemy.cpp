@@ -173,6 +173,13 @@ bool GruntEnemy::Update(float dt)
 		current_animation = &moving_diagonal_down;
 		break;
 	case DynamicState::INTERACTING:
+		if (target_entity != nullptr)
+		{
+			if (target_entity->position.x > position.x)
+				orientation = SDL_FLIP_NONE;
+			else
+				orientation = SDL_FLIP_HORIZONTAL;
+		}
 		current_animation = &attacking_right;
 		break;
 	case DynamicState::DYING:
@@ -224,6 +231,7 @@ bool GruntEnemy::Update(float dt)
 		section.y = 0;
 		section.w = ((int)life_points * hp_conversion);
 		section.h = 2;
+		if (life_points < max_hp)
 		App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 
 	}

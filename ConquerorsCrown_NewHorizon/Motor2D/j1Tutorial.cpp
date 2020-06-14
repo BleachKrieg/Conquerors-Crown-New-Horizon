@@ -100,7 +100,6 @@ bool j1Tutorial::Update(float dt)
 {
 	BROFILER_CATEGORY("Update_Scene", Profiler::Color::Tomato);
 
-
 	if (App->scene->current_scene == scenes::tutorial)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -307,9 +306,11 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			
+			App->audio->PlayFx(-1, App->audio->uther_welcome, 0);
 			CreatePopUpMessage(480, 96, "Uther", "Welcome to the Conquerors", "Crown new horizon tutorial!", "Here you'll learn the basics of", "the game and how to play!"," ");
 		}
+		App->render->camera.x = -576;
+		App->render->camera.y = -281;
 	}
 
 	// Step 2.5
@@ -344,7 +345,6 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-
 			// Create TownHall
 			App->scene->active = true;
 			App->entity->CreateStaticEntity(StaticEnt::StaticEntType::HumanTownHall, 995, 600);
@@ -385,7 +385,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "click on it and then click", "on the resource you want to", "collect.");
+			CreatePopUpMessage(480, 96, "Uther", "In order to send your gatherer to", "collect resources, you have to", "select it and then click", "on the resource you want to", "collect.");
 		}
 	}
 
@@ -408,7 +408,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack fom the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
+			CreatePopUpMessage(480, 96, "Uther", "Knowing the basics, create a", "barrack from the Townhall!", "Pro tip: You can create more", "gatherers to obtain the", "resources faster.");	
 		}
 	}
 
@@ -429,6 +429,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
+			App->audio->PlayFx(-1, App->audio->guldan_laugh, 0);
 			CreatePopUpMessage(480, 96, "Gul'dan", "MUAHAHAHAHA", "I'LL DESTROY YOUR VILLAGE!", " ", " ", " ");
 
 			App->cutscene->StartCutscene("Tutorial2");
@@ -449,7 +450,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 		if (createUI)
 		{
 			createUI = false;
-			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a hord", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
+			CreatePopUpMessage(480, 96, "Uther", "Oh no! he's creating a horde", "Quick, recuit more swordmans", "and avenge our soldiers now", "that there are just a few ", "of them!  ");
 		}
 	}
 
@@ -521,6 +522,7 @@ void j1Tutorial::CheckTutorialStep(float dt)
 	if (ActualState == ST_Tutorial_Finished && App->scene->current_scene == scenes::tutorial)
 	{
 		App->scene->current_scene = scenes::ingame;
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 
 		MinimapActive = false;
@@ -583,11 +585,10 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	// Step 1
 	if (guiElement == Button_Yes)
 	{
-
 		App->audio->PlayFx(-1, App->audio->normal_click, 0);
+		App->audio->PauseMusic(1.0f);
 		App->fade->FadeToBlack(scenes::ingame, 2.0f);
 		deleteUI(1);
-
 	}
 	else if (guiElement == Button_No)
 	{
@@ -597,8 +598,6 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 	}
 	else if (guiElement == PopUpButton) {
 		deleteUI(0);
-		App->audio->PlayFx(-1, App->audio->normal_click, 0);
-
 		if (ActualState == ST_Tutorial_Q2)
 		{
 			ActualState = ST_Tutorial_Q2_1;
@@ -660,6 +659,7 @@ void j1Tutorial::GuiInput(GuiItem* guiElement) {
 			ActualState = ST_Tutorial_Finished;
 		}
 		createUI = true;
+		App->audio->PlayFx(-1, App->audio->normal_click, 0);
 	}
 	
 }

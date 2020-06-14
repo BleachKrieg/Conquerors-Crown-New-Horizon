@@ -83,10 +83,12 @@ public:
 	int pause_fx_in;
 	int pause_fx_out;
 
+	int uther_welcome;
 	int upgrade_complete;
 	int quest_complete;
-	int quest_failed;
+	int guldan_laugh;
 	int tutorial_complete;
+	int warning_wave;
 
 	int logo_game_fx;
 	int logo_team_fx;

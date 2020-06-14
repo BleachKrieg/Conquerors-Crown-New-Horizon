@@ -31,7 +31,7 @@ EnemyBarracks::EnemyBarracks(int posx, int posy) : StaticEnt(StaticEntType::Huma
 	spawn_cooldown.Start();
 	defenses_spawned = false;
 	spawn_counter = 0;
-
+	createUI = false;
 
 	//pos0 = { 827, 103 };
 	//pos1 = { 890, 103 };
@@ -92,6 +92,7 @@ bool EnemyBarracks::Update(float dt)
 	section.y = 0;
 	section.w = ((int)life_points * hp_conversion);
 	section.h = 2;
+	if (life_points < max_hp)
 	App->render->Blit(App->entity->life_bar, (int)(position.x - (*r).w / 4), (int)(position.y + (*r).h / 3), &section);
 	return true;
 }
