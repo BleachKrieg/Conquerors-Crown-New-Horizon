@@ -75,7 +75,6 @@ public:
 protected:
 	Animation* current_animation = nullptr;
 
-
 public: 	
 	bool isSelected;
 	bool selectable;
@@ -94,7 +93,8 @@ public:
 	bool deployed = true;
 	FoWEntity* visionEntity = nullptr;
 	float hp_conversion;
-	
+	SDL_Rect* current_rect = nullptr;
+
 };
 
 #endif // __j1Entity_H__

@@ -196,6 +196,7 @@
     <ResourceCompile Include="ConquerorsCrown_NewHorizon.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Game\GameIcon.ico" />
     <Image Include="F:\GameIcon.ico" />
     <Image Include="F:\GameIcon.png" />
   </ItemGroup>

@@ -25,10 +25,10 @@ GoldMine::GoldMine(int posx, int posy, uint amount) : StaticEnt(StaticEntType::G
 	active = true;
 	selectable = true;
 	team = TeamType::NO_TYPE;
-	no_light_mine.PushBack({ 4,8,96,89 }, 0.2, 0, 0, 0, 0);
-	out_of_material_mine.PushBack({ 103,8,96,89 }, 0.2, 0, 0, 0, 0);
+	no_light_mine = { 4,8,96,89 };
+	out_of_material_mine = { 103,8,96,89 };
 	has_limit = true;
-	light_mine.PushBack({ 4,104,96,89 }, 0.2, 0, 0, 0, 0);
+	light_mine = { 4,104,96,89 };
 	isSelected = false;
 	extraction_limit = amount;
 	max_resources = extraction_limit;
@@ -43,7 +43,7 @@ bool GoldMine::Start()
 	mine_lights = LIGHTS_OFF;
 	has_limit = true;
 	to_delete = false;
-	current_animation = &no_light_mine;
+	current_rect = &no_light_mine;
 	if (extraction_limit >= 1999u)
 		extraction_limit = 0u;
 	pre_check = extraction_limit;
@@ -52,18 +52,17 @@ bool GoldMine::Start()
 
 bool GoldMine::Update(float dt)
 {
-	SDL_Rect* r;
 	if (extraction_limit == 0)
 	{
-		current_animation = &out_of_material_mine;
+		current_rect = &out_of_material_mine;
 	}
 	else if (extraction_limit > 0 && mine_lights == LIGHTS_OFF)
 	{
-		current_animation = &no_light_mine;
+		current_rect = &no_light_mine;
 	}
 	else if (extraction_limit > 0 && mine_lights == LIGHTS_ON)
 	{
-		current_animation = &light_mine;
+		current_rect = &light_mine;
 		if (mine_time >= 70) {
 			SpatialAudio(11, App->audio->mine_gatherer, position.x, position.y);
 			mine_time = 0;
@@ -77,7 +76,7 @@ bool GoldMine::Update(float dt)
 		SDL_Rect r;
 		App->input->GetMousePosition(m_pos.x, m_pos.y);
 		m_pos = App->render->ScreenToWorld(m_pos.x, m_pos.y);
-		r = GetAnimation()->GetCurrentSize();
+		r = *current_rect;
 		r.x = position.x + 64;
 		r.y = position.y + 64;
 		r.w /= 2;
@@ -86,9 +85,9 @@ bool GoldMine::Update(float dt)
 			App->mouse_cursor->on_resources = true;
 	}
 
-	r = &current_animation->GetCurrentFrame(dt);
+	
 
-	App->render->Blit(App->entity->miscs, position.x, position.y, r, 1.0F, 1.0F);
+	App->render->Blit(App->entity->miscs, position.x, position.y, current_rect, 1.0F, 1.0F);
 
 	SDL_Rect section;
 	float 	bar_conversion = (float)50 / (float)max_resources;
@@ -99,7 +98,7 @@ bool GoldMine::Update(float dt)
 	section.h = 2;
 
 	if(extraction_limit< max_resources && extraction_limit != 0)
-	App->render->Blit(App->entity->life_bar, (int)(position.x + (*r).w / 3), (int)(position.y + (*r).h), &section);
+	App->render->Blit(App->entity->life_bar, (int)(position.x + (*current_rect).w / 3), (int)(position.y + (*current_rect).h), &section);
 
 	return true;
 }
