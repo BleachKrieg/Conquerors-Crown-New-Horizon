@@ -46,7 +46,7 @@ bool j1WaveSystem::Awake(pugi::xml_node& config)
 	spawn2->position.y = config.child("spawnpoints").child("spawnpoint2").attribute("y").as_int();
 	spawn3->position.x = config.child("spawnpoints").child("spawnpoint3").attribute("x").as_int();
 	spawn3->position.y = config.child("spawnpoints").child("spawnpoint3").attribute("y").as_int();
-
+	to_win = true;
 	return ret;
 }
 
@@ -71,12 +71,12 @@ bool j1WaveSystem::Start()
 	ogre_counter = 0;
 	wave_ongoing = false;
 	max_waves = 7;
-	to_win = false;
+	
 
 	troll_value = 15;
 	grunt_value = 10;
 	ogre_value = 30;
-	spawn_buildings = 0;
+	spawn_buildings = -1;
 
 	return ret;
 }
@@ -245,8 +245,8 @@ bool j1WaveSystem::Update(float dt)
 			spawn_buildings = 2;
 		}
 		else { spawn_buildings = 3; }
-
-		if (spawn_buildings == 0 && to_win == false && App->scene->timer - 660 < 10)
+		
+		if (spawn_buildings == 0 && to_win == false)
 		{
 			App->fade->FadeToBlack(scenes::victory, 2.0f);
 			to_win = true;
@@ -272,6 +272,7 @@ bool j1WaveSystem::Load(pugi::xml_node& data)
 	LOG("Loading Wave state");
 	current_wave = data.attribute("wave").as_int();
 	loaded_time = data.attribute("time").as_int();
+	to_win = false;
 
 	int distance = 100000;
 	if (data.child("spawn_1").attribute("Has_Building").as_bool())
