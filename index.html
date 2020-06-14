@@ -7,6 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Conquerors Crown New Horizon</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!--Template based on URL below-->
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
@@ -15,7 +17,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Place your stylesheet here-->
-    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="webpage/style.css" rel="stylesheet" type="text/css">
+    <script>
+        function openNewTab(url){
+            var win = window.open(url, '_blank');
+            win.focus;
+        }
+    </script>
 </head>
 
 <body class="back">
@@ -38,7 +46,7 @@
                     <a class="nav-link" href="#progress">Game Progression</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#progress">Downloads</a>
+                    <a class="nav-link" href="#download">Downloads</a>
                 </li>
             </ul>
         </div>
@@ -57,6 +65,8 @@
             <p class="lead">Create a powerful army and go all over the map to destroy enemy bases to reach the glory.</p>
             <h5>Collect resources and explore the whole map</h5>
             <p class="lead" id="controls">Make your gatherers work tirelessly to take resources such as gold, stone or wood. But watch out! They are limited, so go throught the map to find more mines, forests and quarrys.</p>
+            <button class="btn" onclick="openNewTab('https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.1.0')"><i class="fa fa-download"></i>Download Latest Version</button>
+            
         </div>
 
         <div class="text-left mt-5 pt-5">
@@ -138,11 +148,11 @@
                 - UI polish.<br></p>
         </div>
         <div class="text-left mt-5 pt-5">
-            <h3 id="download">Downloads</h3>
+            <h3>Downloads</h3>
             <p>Latest Versions:</p>
-            <a>Conquerors Crown New Horizon v1.0</a><br>
-            <a href="https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.0.8">Conquerors Crown New Horizon v0.8</a><br>
-            <a href="https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.0.7">Conquerors Crown New Horizon v0.7</a>
+            <button class="btn" onclick="openNewTab('https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.1.0')"><i class="fa fa-download"></i>Conquerors Crown New Horizon v1.0</button><br><br>
+            <button class="btn" onclick="openNewTab('https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.0.8')"><i class="fa fa-download"></i>Conquerors Crown New Horizon v0.8</button><br><br>
+            <button id="download" class="btn" onclick="openNewTab('https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/releases/tag/v.0.7')"><i class="fa fa-download"></i>Conquerors Crown New Horizon v0.7</button>
         </div>
         <div class="text-left mt-2 pt-5">
             <h5>Visit our <a href="https://twitter.com/bleachkrieg">Twitter</a> or check out our <a href="https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon">Github</a> account to see interesting stuff!</h5>

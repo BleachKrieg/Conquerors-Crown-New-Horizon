@@ -1,3 +1,20 @@
 .back {
-    background-color: white;
+    background-color: black;
+}
+
+.btn {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.btn:hover {
+    background-color: darkgreen;
+}
+
+.text {
+    color: white;
 }
