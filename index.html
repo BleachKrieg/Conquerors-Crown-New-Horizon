@@ -21,7 +21,6 @@
             var win = window.open(url, '_blank');
             win.focus;
         }
-
     </script>
     <style>
         body {
@@ -75,16 +74,11 @@
             padding-bottom: 24px;
         }
 
-        .position {
-            margin-top: -90px;
-        }
-
         div.style2 {
             background-color: rgb(40, 40, 40);
             opacity: 86%;
             border-radius: 16px;
         }
-
     </style>
 </head>
 
@@ -124,20 +118,21 @@
         <br>
         <br>
         <div class="text-center mt-5 text style">
-            <img class="title position" src="webpage/assets/head%20title.png">
-            <h3 class="position">Resist the hords and conquer the world!</h3>
+            <img class="title" style="padding-top: 48px;" src="webpage/assets/head%20title.png">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/uTWdznBf9Uk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <br>
+            <h3>Resist the hords and conquer the world!</h3>
             <p class="lead">
                 Conqueror's Crown: New Horizon is an awesome RTS video game in which you are lockdown in a place where every now and then a horde of orcs will attack you. Make a good strategy and stay alive as much as possible!</p>
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/pGJKbqugGPs" allowfullscreen></iframe>
-            </div>
             <a href="https://github.com/BleachKrieg/Conquerors-Crown-New-Horizon/blob/gh-pages/webpage/assets/downloads/BleachKrieg-ConquerorsCrown_NewHorizon_v.1.0.zip?raw=true" class="btn mt-4"><i class="fa fa-download"></i>Download Latest Version</a>
         </div>
 
         <div class="style-carousel mt-5">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <div class="carousel-item active">s
                         <img class="d-block w-100" src="webpage/assets/carrousel%201.png" alt="First slide">
                         <div class="carousel-caption d-none d-md-block style2">
                             <h5 style="opacity: 100%;">Fortify your base and survive the hords</h5>
@@ -165,66 +160,69 @@
                 </a>
                 <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only" id="team">Next</span>
+                    <span class="sr-only">Next</span>
                 </a>
             </div>
         </div>
 
+        <div class="text-center mt-5 text style">
+            <h3 class="lead" style="font-size: 32px;font-weight: bold;padding-top: 12px;margin-bottom: -8px;">Watch the reveal gameplay!</h3>
+            <br>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/pGJKbqugGPs" allowfullscreen></iframe>
+            </div>
+        </div>
+        <br id="team">
+        <br>
+        <br>
         <div class="text-left mt-5 pt-4 text style">
             <h3>BleachKrieg Team</h3>
             <img src="webpage/assets/Group%20Photo.jpg" style="width: 100%">
             <br>
             <br>
             <p>We are 9 students from CITM Terrassa who have created this amazing game for our Project II subject. Here we are:</p>
-
+            <br>
             <div class="container text-center">
                 <div class="row">
-                    <div class="col">
-                        <img src="webpage/assets/albert%20garcia.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Albert Garcia Belerda:</a> Team Leader
+                    <div class="col-sm">
+                        <img src="webpage/assets/albert%20garcia.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Albert Garcia Belerda:</a> Team Leader
                     </div>
-                    <div class="col">
-                        <img src="webpage/assets/marc%20palma.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Marc Palma Turón:</a> Code Programmer 1
+                    <div class="col-sm">
+                        <img src="webpage/assets/marc%20palma.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Marc Palma Turón:</a> Code Programmer 1
                     </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <img src="webpage/assets/marc%20rosell.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Marc Rosell Hernàndez:</a> Code Programmer 2
-                    </div>
-                    <div class="col">
-                        <img src="webpage/assets/carlos%20redolar.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Carlos Redolar Torres:</a> Management
+                    <div class="col-sm">
+                        <img src="webpage/assets/marc%20rosell.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Marc Rosell Hernàndez:</a> Code Programmer 2
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col">
-                        <img src="webpage/assets/oscar%20royo.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Oscar Royo Moreno:</a> UI Programmer
+                    <div class="col-sm">
+                        <img src="webpage/assets/carlos%20redolar.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Carlos Redolar Torres:</a> Management
                     </div>
-                    <div class="col">
-                        <img src="webpage/assets/pol%20galan.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol Galán i Morales:</a> Designer
+                    <div class="col-sm">
+                        <img src="webpage/assets/oscar%20royo.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Oscar Royo Moreno:</a> UI Programmer
                     </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <img src="webpage/assets/pau%20raurell.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pau Raurell Gomis:</a> Artist
-                    </div>
-                    <div class="col">
-                        <img src="webpage/assets/pol%20camacho.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol Camacho Banal:</a> Audio Programmer
+                    <div class="col-sm">
+                        <img src="webpage/assets/pol%20galan.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol Galán i Morales:</a> Designer
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col">
-                        <img src="webpage/assets/pol%20de%20la%20torre.png" style="width:48%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol de la Torre Solé:</a> QA Tester
+                    <div class="col-sm">
+                        <img src="webpage/assets/pau%20raurell.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pau Raurell Gomis:</a> Artist
                     </div>
-                    <div class="col" id="controls">
-                        <img class="icon ml-4" src="webpage/assets/BLEACHKRIEG%20LOGO.png" style="height: 90%;width:auto"><br>BleachKrieg Team
+                    <div class="col-sm">
+                        <img src="webpage/assets/pol%20camacho.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol Camacho Banal:</a> Audio Programmer
+                    </div>
+                    <div class="col-sm">
+                        <img src="webpage/assets/pol%20de%20la%20torre.png" style="width:70%;"><br><a href="https://github.com/Ap011y0n" style="color: deepskyblue">Pol de la Torre Solé:</a> QA Tester
                     </div>
                 </div>
             </div>
         </div>
-
+        <br id="controls">
+        <br>
+        <br>
         <div class="text-left mt-5 pt-4 text style">
             <h3>Controls</h3>
             <h5 class="ml-3">In-Game && Tutorial:</h5>
@@ -331,6 +329,9 @@
                 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
                 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             </p>
+            <div class="text-center">
+                <img src="webpage/assets/BLEACHKRIEG%20LOGO.png" style="width:8%;">
+            </div>
         </div>
 
     </main><!-- /.container -->
@@ -343,6 +344,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-</body>
-
-</html>
+</body></html>
